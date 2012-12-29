@@ -1,0 +1,5 @@
+
+Ptero.input = (function(){
+	return {
+	};
+})();
