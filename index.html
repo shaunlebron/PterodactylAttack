@@ -18,8 +18,6 @@
 
 <body>
 
-	<canvas id="canvas">Your browser does not support HTML Canvas.  Please upgrade your browser!</canvas>
-
 	<script src="lib/requestAnimationFrame.js"></script>
 	<script src="src/ptero.js"></script>
 	<script src="src/assets.js"></script>
@@ -30,8 +28,10 @@
 	<script src="src/stress/enemy.js"></script>
 	<script>
 		window.onload = function() {
+			var canvas = document.createElement('canvas');
+			document.body.appendChild(canvas);
 			Ptero.assets.load(function(){
-				Ptero.screen.init(document.getElementById("canvas"));
+				Ptero.screen.init(canvas);
 				Ptero.setScene(Ptero.stress_scene);
 				Ptero.executive.start();
 			});
