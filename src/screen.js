@@ -1,27 +1,42 @@
 Ptero.screen = (function(){
-	var width = 720;
-	var height = 480;
+	var width;
+	var height;
+	var aspect;
 	var fov = 60*Math.PI/180;
 	var near = 1;
 	var far = 100;
 	var canvas,ctx;
 
-	var init = function(_canvas) {
-		canvas = _canvas;
-		ctx = canvas.getContext("2d");
+	var setSize = function(w,h) {
+		width = w;
+		height = h;
+		aspect = width/height;
 		canvas.width = width;
 		canvas.height = height;
 	};
 
+	var init = function(_canvas) {
+		canvas = _canvas;
+		ctx = canvas.getContext("2d");
+
+		if (navigator.isCocoonJS) {
+			setSize(window.innerWidth, window.innerHeight);
+		}
+		else {
+			setSize(720,480);
+		}
+	};
+
 	return {
-		width: width,
-		height: height,
-		fov: fov,
-		near: near,
-		far: far,
 		init: init,
-		getCanvas: function(){return canvas;},
-		getCtx: function(){return ctx;},
+		getWidth:	function() { return width; },
+		getHeight:  function() { return height; },
+		getAspect:  function() { return aspect; },
+		getFov:		function() { return fov; },
+		getNear:    function() { return near; },
+		getFar:		function() { return far; },
+		getCanvas:	function(){ return canvas; },
+		getCtx:		function(){ return ctx; },
 	};
 })();
 

@@ -29,7 +29,7 @@ var Ptero = Ptero || {};
 Ptero.assets = (function(){
 
 	var imageSources = {
-		"bg":   "img/Desert_BG.png",
+		"desert": "img/Final_Desert.jpg",
 		"baby": "img/baby_sheet.png",
 		"boom1": "img/boom1_sheet.png",
 		"boom2": "img/boom2_sheet.png",
@@ -93,6 +93,33 @@ Ptero.assets = (function(){
 		sheets: sheets,
 	};
 })();
+
+Ptero.background = (function(){
+
+	var image;
+	var scale;
+
+	return {
+		setImage: function(img) {
+			image = img;
+			var aspect = image.width / image.height;
+			var scaleH = Ptero.screen.getHeight() / image.height;
+			var scaleW = Ptero.screen.getWidth() / image.width;
+			scale = (aspect > Ptero.screen.getAspect()) ? scaleH : scaleW;
+		},
+		draw: function(ctx) {
+			var sx = 0;
+			var sy = 0;
+			var sw = image.width;
+			var sh = image.height;
+			var dw = sw * scale;
+			var dh = sh * scale;
+			var dx = Ptero.screen.getWidth()/2 - dw/2;
+			var dy = Ptero.screen.getHeight()/2 - dh/2;
+			ctx.drawImage(image, sx,sy,sw,sh, dx,dy,dw,dh);
+		},
+	};
+})();
 Ptero.setScene = function(scene) {
 	Ptero.scene = scene;
 	scene.init();
@@ -135,7 +162,7 @@ Ptero.executive = (function(){
 		ctx.fillStyle = "#FFF";
 		var pad = 5;
 		var x = pad;
-		var y = Ptero.screen.height - pad;
+		var y = Ptero.screen.getHeight() - pad;
 		ctx.fillText(Math.floor(fps)+" fps", x, y);
 	};
 
@@ -175,29 +202,44 @@ Ptero.executive = (function(){
 	};
 })();
 Ptero.screen = (function(){
-	var width = 720;
-	var height = 480;
+	var width;
+	var height;
+	var aspect;
 	var fov = 60*Math.PI/180;
 	var near = 1;
 	var far = 100;
 	var canvas,ctx;
 
-	var init = function(_canvas) {
-		canvas = _canvas;
-		ctx = canvas.getContext("2d");
+	var setSize = function(w,h) {
+		width = w;
+		height = h;
+		aspect = width/height;
 		canvas.width = width;
 		canvas.height = height;
 	};
 
+	var init = function(_canvas) {
+		canvas = _canvas;
+		ctx = canvas.getContext("2d");
+
+		if (navigator.isCocoonJS) {
+			setSize(window.innerWidth, window.innerHeight);
+		}
+		else {
+			setSize(720,480);
+		}
+	};
+
 	return {
-		width: width,
-		height: height,
-		fov: fov,
-		near: near,
-		far: far,
 		init: init,
-		getCanvas: function(){return canvas;},
-		getCtx: function(){return ctx;},
+		getWidth:	function() { return width; },
+		getHeight:  function() { return height; },
+		getAspect:  function() { return aspect; },
+		getFov:		function() { return fov; },
+		getNear:    function() { return near; },
+		getFar:		function() { return far; },
+		getCanvas:	function(){ return canvas; },
+		getCtx:		function(){ return ctx; },
 	};
 })();
 
@@ -302,11 +344,9 @@ Ptero.stress_scene = (function(){
 	var babies = [];
 	var numBabies = 30;
 
-	var bgImg;
-
 	var init = function() {
 
-		bgImg = Ptero.assets.images.bg;
+		Ptero.background.setImage(Ptero.assets.images.desert);
 
 		var i;
 		for (i=0; i<numBabies; i++) {
@@ -322,7 +362,7 @@ Ptero.stress_scene = (function(){
 	};
 
 	var draw = function(ctx) {
-		ctx.drawImage(bgImg,0,0);
+		Ptero.background.draw(ctx);
 		var i;
 		for (i=0; i<numBabies; i++) {
 			babies[i].draw(ctx);
@@ -331,8 +371,8 @@ Ptero.stress_scene = (function(){
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
 		var radius = 100;
-		var x = Ptero.screen.width/2;
-		var y = Ptero.screen.height;
+		var x = Ptero.screen.getWidth()/2;
+		var y = Ptero.screen.getHeight();
 		ctx.arc(x,y,radius, 0, 2*Math.PI);
 		ctx.fill();
 	};
@@ -351,8 +391,8 @@ Ptero.StressEnemy = function() {
 	this.scaleRange = (this.maxScale - this.minScale);
 	this.scale = Math.random()*this.scaleRange + this.minScale;
 
-	var screen_w = Ptero.screen.width;
-	var screen_h = Ptero.screen.height;
+	var screen_w = Ptero.screen.getWidth();
+	var screen_h = Ptero.screen.getHeight();
 	this.x = (Math.random()*screen_w);
 	this.y = (Math.random()*screen_h);
 

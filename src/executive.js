@@ -40,7 +40,7 @@ Ptero.executive = (function(){
 		ctx.fillStyle = "#FFF";
 		var pad = 5;
 		var x = pad;
-		var y = Ptero.screen.height - pad;
+		var y = Ptero.screen.getHeight() - pad;
 		ctx.fillText(Math.floor(fps)+" fps", x, y);
 	};
 
