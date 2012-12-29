@@ -25,14 +25,14 @@
 	<script src="src/assets.js"></script>
 	<script src="src/executive.js"></script>
 	<script src="src/screen.js"></script>
-	<script src="src/scene.js"></script>
 	<script src="src/sprites.js"></script>
-	<script src="src/enemy.js"></script>
+	<script src="src/stress/scene.js"></script>
+	<script src="src/stress/enemy.js"></script>
 	<script>
 		window.onload = function() {
 			Ptero.assets.load(function(){
-				Ptero.scene.init();
 				Ptero.screen.init(document.getElementById("canvas"));
+				Ptero.setScene(Ptero.stress_scene);
 				Ptero.executive.start();
 			});
 		};

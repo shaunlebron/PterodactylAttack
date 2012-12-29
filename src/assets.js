@@ -1,25 +1,42 @@
 
 Ptero.assets = (function(){
-	var sources = {
+
+	var imageSources = {
 		"bg":   "img/Desert_BG.png",
 		"baby": "img/baby_sheet.png",
+		"boom1": "img/boom1_sheet.png",
+		"boom2": "img/boom2_sheet.png",
 	};
 
 	var images = {};
 	var sheets = {};
 
-	var onLoad = function() {
-		var rows,cols,frames;
-		rows = 4;
-		cols = 5;
-		frames = 18;
-		sheets.baby = new Ptero.SpriteSheet(images.baby, rows, cols, frames);
+	var loadSpriteSheets = function() {
+		var name,req,src;
+		for (name in imageSources) {
+			if (imageSources.hasOwnProperty(name)) {
+				src = imageSources[name];
+				if (! /_sheet/.test(src)) {
+					continue;
+				}
+				src += ".json";
+
+				req = new XMLHttpRequest();
+				req.open('GET', src, false);
+				req.send();
+				if (req.status == 200) {
+					var info = JSON.parse(req.responseText);
+					sheets[name] = new Ptero.SpriteSheet(images[name], info);
+				}
+			}
+		}
 	};
 
 	var load = function(callback) {
 		var count = 0;
-		for (name in sources) {
-			if (sources.hasOwnProperty(name)) {
+		var name;
+		for (name in imageSources) {
+			if (imageSources.hasOwnProperty(name)) {
 				count++;
 			}
 		}
@@ -27,16 +44,16 @@ Ptero.assets = (function(){
 		var handleLoad = function() {
 			count--;
 			if (count == 0) {
-				onLoad();
+				loadSpriteSheets();
 				callback && callback();
 			}
 		};
 
 		var img;
-		for (name in sources) {
-			if (sources.hasOwnProperty(name)) {
+		for (name in imageSources) {
+			if (imageSources.hasOwnProperty(name)) {
 				img = new Image();
-				img.src = sources[name];
+				img.src = imageSources[name];
 				img.onload = handleLoad;
 				images[name] = img;
 			}

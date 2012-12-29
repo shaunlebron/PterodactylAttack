@@ -1,7 +1,7 @@
-Ptero.scene = (function(){
+Ptero.stress_scene = (function(){
 
 	var babies = [];
-	var numBabies = 50;
+	var numBabies = 30;
 
 	var bgImg;
 
@@ -11,7 +11,7 @@ Ptero.scene = (function(){
 
 		var i;
 		for (i=0; i<numBabies; i++) {
-			babies[i] = new Ptero.Enemy();
+			babies[i] = new Ptero.StressEnemy();
 		}
 	};
 

@@ -1,12 +1,20 @@
 
-Ptero.SpriteSheet = function(img,rows,cols,frames) {
+Ptero.SpriteSheet = function(img,dict) {
 	this.img = img;
-	this.rows = rows;
-	this.cols = cols;
-	this.frames = frames;
 
-	this.tileWidth = img.width / cols;
-	this.tileHeight = img.height / rows;
+	this.rows = dict.rows;
+	this.cols = dict.cols;
+	this.frames = dict.frames;
+	this.fps = dict.fps;
+
+	this.tileWidth = img.width / this.cols;
+	this.tileHeight = img.height / this.rows;
+
+	if (dict.centerX == undefined) dict.centerX = 0.5;
+	if (dict.centerY == undefined) dict.centerY = 0.5;
+
+	this.tileCenterX = this.tileWidth * dict.centerX;
+	this.tileCenterY = this.tileHeight * dict.centerY;
 };
 
 Ptero.SpriteSheet.prototype = {
@@ -26,33 +34,63 @@ Ptero.SpriteSheet.prototype = {
 			sx,sy,sw,sh,
 			x,y,dw,dh);
 	},
+	drawCentered: function(ctx,x,y,frame,scale) {
+		x -= this.tileCenterX * scale;
+		y -= this.tileCenterY * scale;
+		this.draw(ctx,x,y,frame,scale);
+	},
 };
 
-Ptero.AnimSprite = function(sheet,fps) {
+Ptero.AnimSprite = function(sheet) {
 	this.sheet = sheet;
-	this.fps = fps;
 
-	this.frameDuration = 1/fps;
+	this.frameDuration = 1/this.sheet.fps;
 	this.totalDuration = this.frameDuration * sheet.frames;
 	this.time = 0;
 	this.frame = 0;
+
+	this.animating = true;
+	this.repeat = true;
 };
 
 Ptero.AnimSprite.prototype = {
+	start: function() {
+		this.animating = true;
+	},
+	stop: function() {
+		this.animating = false;
+	},
+	reset: function() {
+		this.time = 0;
+	},
+	setRepeat: function(on) {
+		this.repeat = on;
+	},
+	setFinishCallback: function(callback) {
+		this.onFinish = callback;
+	},
 	update: function(dt) {
+		if (!this.animating) {
+			return;
+		}
+
 		this.time += dt;
+		if (this.time >= this.totalDuration) {
+			this.onFinish && this.onFinish();
+			if (!this.repeat) {
+				this.stop();
+				return;
+			}
+		}
+
 		this.time %= this.totalDuration;
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
 	draw: function(ctx,x,y,scale) {
-		if (this.centered) {
-			x -= this.sheet.tileWidth*scale/2;
-			y -= this.sheet.tileHeight*scale/2;
-		}
 		this.sheet.draw(ctx,x,y,this.frame,scale);
 	},
-	setCentered: function(on) {
-		this.centered = on;
+	drawCentered: function(ctx,x,y,scale) {
+		this.sheet.drawCentered(ctx,x,y,this.frame,scale);
 	},
 };
 

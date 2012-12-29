@@ -1,3 +1,8 @@
+Ptero.setScene = function(scene) {
+	Ptero.scene = scene;
+	scene.init();
+};
+
 Ptero.executive = (function(){
 
 	var lastTime;
@@ -45,11 +50,12 @@ Ptero.executive = (function(){
 		var dt = Math.min((time-lastTime)/1000, 1/minFps);
 		lastTime = time;
 
+		var scene = Ptero.scene;
 		if (!isPaused) {
-			Ptero.scene.update(dt);
+			scene.update(dt);
 		}
 		var ctx = Ptero.screen.getCtx();
-		Ptero.scene.draw(ctx);
+		scene.draw(ctx);
 		drawFps(ctx);
 		requestAnimationFrame(tick);
 	};
