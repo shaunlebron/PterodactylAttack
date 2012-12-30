@@ -501,6 +501,8 @@ Ptero.Enemy = function() {
 	this.isHit = false;
 
 	this.babySprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+	this.babySprite.update(Math.random()*this.babySprite.totalDuration);
+
 	this.boom1Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom1);
 	this.boom1Sprite.setRepeat(false);
 	this.boom2Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom2);
