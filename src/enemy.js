@@ -79,5 +79,23 @@ Ptero.Enemy.prototype = {
 		}
 	},
 	draw: function(ctx) {
+		var pos = this.path.state.pos;
+
+		// this is the scale of the image when it is on the near plane.
+		var nearScale = 0.8;
+
+		// this is the apparent scale resulting from its depth.
+		var scale = Ptero.screen.frustum.getDepthScale(pos.z, nearScale);
+
+		var screenPos = Ptero.screen.spaceToScreen(pos.x, pos.y, pos.z);
+
+		if (this.isHit) {
+			this.boomSprite.drawCentered(ctx, screenPos.x, screenPos.y, scale);
+		}
+		else if (this.path.isDone()) {
+		}
+		else {
+			this.babySprite.drawCentered(ctx, screenPos.x, screenPos.y, scale);
+		}
 	},
 };
