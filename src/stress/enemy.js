@@ -1,11 +1,5 @@
 
 Ptero.StressEnemy = function() {
-	this.scaleDir = 1;
-	this.minScale = 0.01;
-	this.maxScale = 0.8;
-	this.scaleRange = (this.maxScale - this.minScale);
-	this.scale = Math.random()*this.scaleRange + this.minScale;
-
 	var screen_w = Ptero.screen.getWidth();
 	var screen_h = Ptero.screen.getHeight();
 	this.x = (Math.random()*screen_w);

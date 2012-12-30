@@ -1,5 +1,9 @@
 window.onload = function() {
-	var canvas = document.createElement('canvas');
+
+	// Create the canvas element.
+	// (CocoonJS provides a more efficient screencanvas if you're using one main canvas).
+	var canvas = document.createElement(
+			navigator.isCocoonJS ? 'screencanvas' : 'canvas');
 	document.body.appendChild(canvas);
 
 	// CocoonJS extended property for scaling canvas to a display:
@@ -10,7 +14,7 @@ window.onload = function() {
 
 	Ptero.assets.load(function(){
 		Ptero.screen.init(canvas);
-		Ptero.setScene(Ptero.stress_scene);
+		Ptero.setScene(Ptero.scene_game);
 		Ptero.executive.start();
 	});
 };

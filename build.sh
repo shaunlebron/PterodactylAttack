@@ -9,6 +9,14 @@ cat lib/requestAnimationFrame.js \
 	src/sprites.js \
 	src/stress/scene.js \
 	src/stress/enemy.js \
+	src/enemy.js \
+	src/frustum.js \
+	src/orb.js \
+	src/path.js \
+	src/paths.js \
+	src/scene_game.js \
+	src/time.js \
+	src/vector.js \
 	src/main.js > cocoon.js
 
 zip cocoon.zip cocoon.js img/*
