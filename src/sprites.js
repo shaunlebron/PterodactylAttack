@@ -57,6 +57,10 @@ Ptero.AnimSprite.prototype = {
 	start: function() {
 		this.animating = true;
 	},
+	restart: function() {
+		this.reset();
+		this.start();
+	},
 	stop: function() {
 		this.animating = false;
 	},
@@ -68,6 +72,9 @@ Ptero.AnimSprite.prototype = {
 	},
 	setFinishCallback: function(callback) {
 		this.onFinish = callback;
+	},
+	isDone: function() {
+		return (this.time >= this.totalDuration);
 	},
 	update: function(dt) {
 		if (!this.animating) {

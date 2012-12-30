@@ -5,7 +5,7 @@ Ptero.StopWatch = function() {
 
 Ptero.StopWatch.prototype = {
 	reset: function() {
-		this.elapseMillis = 0;
+		this.elapsedMillis = 0;
 	},
 	increment: function(millis) {
 		this.elapsedMillis += millis;
@@ -18,6 +18,9 @@ Ptero.Timer = function(millisLimit) {
 };
 
 Ptero.Timer.prototype = {
+	setFinishCallback: function(callback) {
+		this.onFinish = callback;
+	},
 	isDone: function() {
 		return this.stopWatch.elapsedMillis > this.millisLimit;
 	},
@@ -28,7 +31,10 @@ Ptero.Timer.prototype = {
 		this.stopWatch.reset();
 	},
 	increment: function(millis) {
-		if (!this.isDone()) {
+		if (this.isDone()) {
+			this.onFinish && this.onFinish();
+		}
+		else {
 			this.stopWatch.increment(millis);
 		}
 	},

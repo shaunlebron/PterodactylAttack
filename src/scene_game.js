@@ -1,7 +1,7 @@
 
 Ptero.scene_game = (function() {
 	var enemies = [];
-	var numEnemies = 30;
+	var numEnemies = 20;
 
 	var sortEnemies = function() {
 		enemies.sort(function(a,b) {

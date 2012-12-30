@@ -24,10 +24,10 @@ Ptero.screen = (function(){
 			setSize(720,480);
 		}
 
-		var fov = 60*Math.PI/180;
-		var near = 1;
-		var far = 100;
-		frustum = new Ptero.frustum(near,far,fov,aspect);
+		var fov = 30*Math.PI/180;
+		var near = width/2 / Math.tan(fov/2);
+		var far = near*7;
+		frustum = new Ptero.Frustum(near,far,fov,aspect);
 
 		Ptero.sizeFactor = frustum.nearTop;
 	};
@@ -55,9 +55,6 @@ Ptero.screen = (function(){
 		getWidth:	function() { return width; },
 		getHeight:  function() { return height; },
 		getAspect:  function() { return aspect; },
-		getFov:		function() { return fov; },
-		getNear:    function() { return near; },
-		getFar:		function() { return far; },
 		getCanvas:	function() { return canvas; },
 		getCtx:		function() { return ctx; },
 		getFrustum: function() { return frustum; },

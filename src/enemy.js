@@ -8,13 +8,20 @@ Ptero.Enemy = function() {
 	this.boom1Sprite.setRepeat(false);
 	this.boom2Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom2);
 	this.boom2Sprite.setRepeat(false);
+	this.randomizeBoom();
 
-	this.doneTimer = new Timer(1000);
+	this.doneTimer = new Ptero.Timer(1000);
+
+	this.setTimeBomb();
 };
 
 Ptero.Enemy.prototype = {
+	setTimeBomb: function() {
+		this.bombTimer = new Ptero.Timer((Math.random()*10 + 3)*1000);
+	},
 	randomizeBoom: function() {
 		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
+		this.boomSprite.restart();
 	},
 	isHittable: function() {
 		return !this.path.isDone() && !this.isHit; // only hittable if not already hit
@@ -34,16 +41,15 @@ Ptero.Enemy.prototype = {
 		// scene.streakCount++;
 
 		// register hit to begin explosion
-		isHit = true;
-		this.randomizeBoom();
+		this.isHit = true;
 		var that = this;
-		this.boomSprite.setFinishCallback(function() {
-			that.resetPosition();
-		});
 	},
 	resetPosition: function() {
+		this.randomizeBoom();
 		this.path = Ptero.makeEnemyPath();
 		this.isHit = false;
+		this.doneTimer.reset();
+		this.setTimeBomb();
 	},
 	update: function(dt) {
 		var millis = dt*1000;
@@ -54,6 +60,9 @@ Ptero.Enemy.prototype = {
 		if (this.isHit) {
 			// BOOM
 			this.boomSprite.update(dt);
+			if (this.boomSprite.isDone()) {
+				this.resetPosition();
+			}
 		}
 		else if (this.path.isDone()) {
 			// HIT SCREEN
@@ -64,28 +73,32 @@ Ptero.Enemy.prototype = {
 			}
 			this.doneTimer.increment(millis);
 			if (this.doneTimer.isDone()) {
-				this.doneTimer.reset();
 				this.resetPosition();
 			}
 		}
 		else {
 			// FLYING TOWARD SCREEN
+			this.bombTimer.increment(millis);
+			if (this.bombTimer.isDone()) {
+				this.onHit();
+			}
+			else {
+				// update position
+				this.path.step(dt);
 
-			// update position
-			this.path.step(dt);
-
-			// update animation
-			this.babySprite.update(dt);
+				// update animation
+				this.babySprite.update(dt);
+			}
 		}
 	},
 	draw: function(ctx) {
 		var pos = this.path.state.pos;
 
 		// this is the scale of the image when it is on the near plane.
-		var nearScale = 0.8;
+		var screenWidth = this.boomSprite.sheet.tileWidth;
 
 		// this is the apparent scale resulting from its depth.
-		var scale = Ptero.screen.frustum.getDepthScale(pos.z, nearScale);
+		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, screenWidth) / screenWidth;
 
 		var screenPos = Ptero.screen.spaceToScreen(pos.x, pos.y, pos.z);
 

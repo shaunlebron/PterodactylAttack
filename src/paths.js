@@ -1,14 +1,12 @@
 
 Ptero.makeEnemyPath = function() {
 
-	var speed = 15; // space units per second
-
 	// frustum attributes
 	var aspect = Ptero.screen.getAspect();
 	var frustum = Ptero.screen.getFrustum();
-	var size = frustum.nearTop;
-	var near = Ptero.screen.getNear();
-	var far = Ptero.screen.getFar();
+	var size = Ptero.sizeFactor;
+	var near = frustum.near;
+	var far = frustum.far;
 
 	// starting depth
 	var start = Math.random()*(4*far)+far;
@@ -33,9 +31,11 @@ Ptero.makeEnemyPath = function() {
 	var x1,y1,z1;
 
 	// random screen position
+	xrange /= 2;
+	yrange /= 2;
 	x1 = Math.random()*xrange - xrange/2;
 	y1 = Math.random()*yrange - yrange/2;
-	z1 = near+Math.sqrt(3);
+	z1 = near;
 
 	// get distance traveled
 	var dx = x1-x0;
@@ -44,6 +44,7 @@ Ptero.makeEnemyPath = function() {
 	var dist = Math.sqrt(dx*dx+dy*dy+dz*dz);
 
 	// get time to complete
+	var speed = (far-near) / 5;
 	var time = dist/speed;
 
 	// set path
