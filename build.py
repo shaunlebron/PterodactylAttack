@@ -37,6 +37,7 @@ if __name__ == "__main__":
 		"src/background.js",
 		"src/executive.js",
 		"src/screen.js",
+		"src/input.js",
 		"src/sprites.js",
 		"src/stress/scene.js",
 		"src/stress/enemy.js",

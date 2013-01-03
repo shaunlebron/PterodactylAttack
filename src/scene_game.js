@@ -34,6 +34,14 @@ Ptero.scene_game = (function() {
 			enemies[i].draw(ctx);
 		}
 		Ptero.orb.draw(ctx);
+		var point;
+		if (Ptero.input.isDragging()) {
+			point = Ptero.input.getPoint();
+			ctx.fillStyle = "rgba(255,0,0,0.5)";
+			ctx.beginPath();
+			ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
+			ctx.fill();
+		}
 	};
 
 	return {

@@ -2,13 +2,18 @@
 Ptero.input = (function(){
 
 	var dragging = false;
+	var point = {};
 	var touchStart = function(x,y) {
 		dragging = true;
+		point.x = x;
+		point.y = y;
 	};
 	var touchDrag = function(x,y) {
 		if (!dragging) {
 			return;
 		}
+		point.x = x;
+		point.y = y;
 	};
 	var touchEnd = function(x,y) {
 		dragging = false;
@@ -24,8 +29,17 @@ Ptero.input = (function(){
 		var wrapFunc = function(f) {
 			return function(evt) {
 				var p = {x:canvasPos.x, y:canvasPos.y};
-				p.x = evt.pageX - p.x;
-				p.y = evt.pageY - p.y;
+				var x,y;
+				if (evt.touches && evt.touches.length > 0) {
+					x = evt.touches[0].pageX;
+					y = evt.touches[0].pageY;
+				}
+				else {
+					x = evt.pageX;
+					y = evt.pageY;
+				}
+				p.x = x - p.x;
+				p.y = y - p.y;
 				f(p.x,p.y);
 			};
 		};
@@ -34,7 +48,7 @@ Ptero.input = (function(){
 		canvas.addEventListener('mouseup',		wrapFunc(touchEnd));
 		canvas.addEventListener('mouseout',		wrapFunc(touchCancel));
 		canvas.addEventListener('touchstart',	wrapFunc(touchStart));
-		canvas.addEventListener('touchdrag',	wrapFunc(touchDrag));
+		canvas.addEventListener('touchmove',	wrapFunc(touchDrag));
 		canvas.addEventListener('touchend',		wrapFunc(touchEnd));
 		canvas.addEventListener('touchcancel',	wrapFunc(touchCancel));
 
@@ -42,5 +56,7 @@ Ptero.input = (function(){
 
 	return {
 		init: init,
+		isDragging: function() { return dragging; },
+		getPoint: function() { return point; },
 	};
 })();

@@ -15,6 +15,7 @@ window.onload = function() {
 	Ptero.assets.load(function(){
 		Ptero.screen.init(canvas);
 		//Ptero.setScene(Ptero.stress_scene);
+		Ptero.input.init();
 		Ptero.setScene(Ptero.scene_game);
 		Ptero.executive.start();
 	});
