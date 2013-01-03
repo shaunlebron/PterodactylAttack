@@ -96,11 +96,12 @@ Ptero.Enemy.prototype = {
 	draw: function(ctx) {
 		var pos = this.path.state.pos;
 
-		// this is the scale of the image when it is on the near plane.
-		var screenWidth = this.boomSprite.sheet.tileWidth;
+		// This is the width of the image when it is on the near plane.
+		// It is multiplied to match the scale of the background.
+		var closeWidth = this.boomSprite.sheet.tileWidth * Ptero.background.getScale();
 
-		// this is the apparent scale resulting from its depth.
-		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, screenWidth) / screenWidth;
+		// This is the apparent scale resulting from its depth.
+		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, closeWidth) / closeWidth;
 
 		var screenPos = Ptero.screen.spaceToScreen(pos.x, pos.y, pos.z);
 

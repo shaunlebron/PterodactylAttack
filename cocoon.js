@@ -100,6 +100,7 @@ Ptero.background = (function(){
 	var scale;
 
 	return {
+		getScale: function() { return scale; },
 		setImage: function(img) {
 			image = img;
 			var aspect = image.width / image.height;
@@ -253,6 +254,23 @@ Ptero.screen = (function(){
 		};
 	};
 
+	var getCanvasPos = function() {
+		var p = {x:0,y:0};
+		if (navigator.isCocoonJS) {
+			return p;
+		}
+		var obj = canvas;
+		var addOffset = function(obj) {
+			p.x += obj.offsetLeft;
+			p.y += obj.offsetTop;
+		};
+		addOffset(obj);
+		while (obj = obj.offsetParent) {
+			addOffset(obj);
+		}
+		return p;
+	};
+
 	return {
 		init: init,
 		getWidth:	function() { return width; },
@@ -263,6 +281,7 @@ Ptero.screen = (function(){
 		getFrustum: function() { return frustum; },
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
+		getCanvasPos: getCanvasPos,
 	};
 })();
 
@@ -593,11 +612,12 @@ Ptero.Enemy.prototype = {
 	draw: function(ctx) {
 		var pos = this.path.state.pos;
 
-		// this is the scale of the image when it is on the near plane.
-		var screenWidth = this.boomSprite.sheet.tileWidth;
+		// This is the width of the image when it is on the near plane.
+		// It is multiplied to match the scale of the background.
+		var closeWidth = this.boomSprite.sheet.tileWidth * Ptero.background.getScale();
 
-		// this is the apparent scale resulting from its depth.
-		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, screenWidth) / screenWidth;
+		// This is the apparent scale resulting from its depth.
+		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, closeWidth) / closeWidth;
 
 		var screenPos = Ptero.screen.spaceToScreen(pos.x, pos.y, pos.z);
 

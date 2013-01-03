@@ -5,6 +5,7 @@ Ptero.background = (function(){
 	var scale;
 
 	return {
+		getScale: function() { return scale; },
 		setImage: function(img) {
 			image = img;
 			var aspect = image.width / image.height;

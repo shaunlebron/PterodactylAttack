@@ -50,6 +50,23 @@ Ptero.screen = (function(){
 		};
 	};
 
+	var getCanvasPos = function() {
+		var p = {x:0,y:0};
+		if (navigator.isCocoonJS) {
+			return p;
+		}
+		var obj = canvas;
+		var addOffset = function(obj) {
+			p.x += obj.offsetLeft;
+			p.y += obj.offsetTop;
+		};
+		addOffset(obj);
+		while (obj = obj.offsetParent) {
+			addOffset(obj);
+		}
+		return p;
+	};
+
 	return {
 		init: init,
 		getWidth:	function() { return width; },
@@ -60,6 +77,7 @@ Ptero.screen = (function(){
 		getFrustum: function() { return frustum; },
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
+		getCanvasPos: getCanvasPos,
 	};
 })();
 
