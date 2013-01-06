@@ -35,7 +35,7 @@ Ptero.scene_game = (function() {
 		}
 		Ptero.orb.draw(ctx);
 		var point;
-		if (Ptero.input.isDragging()) {
+		if (Ptero.input.isTouched()) {
 			point = Ptero.input.getPoint();
 			ctx.fillStyle = "rgba(255,0,0,0.5)";
 			ctx.beginPath();
