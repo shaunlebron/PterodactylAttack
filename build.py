@@ -58,5 +58,7 @@ if __name__ == "__main__":
 	print "done."
 
 	print "Copying to android device ..."
-	subprocess.call(["adb","push","cocoon.zip","/sdcard/"])
-	print "done."
+	try:
+		subprocess.call(["adb","push","cocoon.zip","/sdcard/"])
+	except:
+		print "	ERROR: couldn't copy to android device"

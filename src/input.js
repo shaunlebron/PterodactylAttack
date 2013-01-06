@@ -69,9 +69,9 @@ Ptero.input = (function(){
 	var init = function() {
 
 		// Makes sure the given callback function gets canvas coords, not absolute coords.
+        var canvas = Ptero.screen.getCanvas();
 		var wrapFunc = function(f) {
 			return function(evt) {
-				var canvas = Ptero.screen.getCanvas();
 				var canvasPos = Ptero.screen.getCanvasPos();
 				var p = {x:canvasPos.x, y:canvasPos.y};
 				var x,y;

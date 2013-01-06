@@ -25,7 +25,7 @@ Ptero.screen = (function(){
 		}
 
 		var fov = 30*Math.PI/180;
-		var near = width/2 / Math.tan(fov/2);
+		var near = height/2 / Math.tan(fov/2);
 		var far = near*7;
 		frustum = new Ptero.Frustum(near,far,fov,aspect);
 
@@ -49,6 +49,10 @@ Ptero.screen = (function(){
 			z: frustum.near,
 		};
 	};
+
+    var getScreenToSpaceRatio = function() {
+        return (width) / frustum.nearWidth;
+    };
 
 	var getCanvasPos = function() {
 		var p = {x:0,y:0};
@@ -77,6 +81,7 @@ Ptero.screen = (function(){
 		getFrustum: function() { return frustum; },
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
+        getScreenToSpaceRatio: getScreenToSpaceRatio,
 		getCanvasPos: getCanvasPos,
 	};
 })();
