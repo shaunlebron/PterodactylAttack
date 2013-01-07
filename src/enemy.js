@@ -103,7 +103,7 @@ Ptero.Enemy.prototype = {
 		// This is the apparent scale resulting from its depth.
 		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, closeWidth) / closeWidth;
 
-		var screenPos = Ptero.screen.spaceToScreen(pos.x, pos.y, pos.z);
+		var screenPos = Ptero.screen.spaceToScreen(pos);
 
 		if (this.isHit) {
 			this.boomSprite.drawCentered(ctx, screenPos.x, screenPos.y, scale);

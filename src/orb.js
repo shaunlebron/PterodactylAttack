@@ -1,132 +1,195 @@
 Ptero.orb = (function(){
 
-	var rAspect = 1/2*0.8; // radius multipler on half of screen height
+	// radius of the orb on screen and in space
 	function getRadius() {
-		return Ptero.screen.getHeight()/2 * rAspect;
+		return Ptero.screen.getHeight()/2 * (1/2*0.8);
 	}
 	function getSpaceRadius() {
 		return getRadius() / Ptero.screen.getScreenToSpaceRatio();
 	}
 
-	var bullets;
-	var charging;
-	var maxChargeTime = 7;
-	var chargeTime;
-	var ox,oy,oz;		// bullet origin
-	var nox,noy,noz;	// next bullet origin
-	var isMoving;
-	var spring = 0.1; // used to transition origin
+	// charging object
+	var charge = (function(){
+		var on = false;
+		var maxTime = 7;
+		var time = 0;
+
+		var update = function(dt) {
+			if (on) {
+				time = Math.min(time+dt, maxTime);
+			}
+		};
+
+		var draw = function(ctx,pos) {
+			ctx.fillStyle = "rgba(255,0,0,0.5)";
+			var s;
+			if (time == maxTime) {
+				s = 1;
+			}
+			else {
+				s = time/maxTime*(1 + Math.cos(20*time)*0.05);
+			}
+			ctx.beginPath();
+			ctx.arc(pos.x,pos.y,s*getRadius(), 0, 2*Math.PI);
+			ctx.fill();
+		};
+
+		var reset = function() {
+			on = false;
+			time = 0;
+		};
+
+		var start = function() {
+			on = true;
+			time = 0;
+		};
+		
+		return {
+			start: start,
+			reset: reset,
+			update: update,
+			draw: draw,
+			isOn: function() { return on; },
+		};
+	})();
+
+	// origin of the orb with next transition point
+	var origin;
+	var next_origin;
+	var setOrigin,setNextOrigin;
+	(function(){
+		var convertFracToAbs = function(xfrac, yfrac) {
+			var frustum = Ptero.screen.getFrustum();
+			return new Ptero.Vector(
+					xfrac * frustum.nearRight,
+					yfrac * frustum.nearTop,
+					frustum.near);
+		};
+		setNextOrigin = function(xfrac, yfrac) {
+			next_origin = convertFracToAbs(xfrac,yfrac);
+		};
+		setOrigin = function(xfrac, yfrac) {
+			origin = convertFracToAbs(xfrac,yfrac);
+		};
+	})();
 
 	// bullet speed
 	var v = 50;
-	var xv, yv, zv;
+	var direction;
 
+	// the orb's targets.
 	var targets;
 
 	var init = function() {
-		chargeTime = 0;
-		charging = false;
+		charge.reset();
 		setOrigin(0,-2);
 		enableTouch();
 	};
 
 	var update = function(dt) {
-		var dx = nox-ox;
-		var dy = noy-oy;
-		var dz = noz-oz;
-		var dist = Math.sqrt(dx*dx+dy*dy+dz*dz);
-		isMoving = dist > 0.1;
-		ox = ox + (nox-ox)*spring;
-		oy = oy + (noy-oy)*spring;
-		oz = oz + (noz-oz)*spring;
-
-		// bullets.update(dt);
-
-		if (charging)
-			chargeTime = Math.min(chargeTime+dt, maxChargeTime);
-		else
-			chargeTime = 0;
+		origin.ease_to(next_origin, 0.1);
+		Ptero.bulletpool.update(dt);
+		charge.update(dt);
 	};
 
 	var draw = function(ctx) {
 		var radius = getRadius();
-		var p = Ptero.screen.spaceToScreen(ox,oy,oz);
+		var p = Ptero.screen.spaceToScreen(origin);
 
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
 		ctx.arc(p.x,p.y,radius, 0, 2*Math.PI);
 		ctx.fill();
+		charge.draw(ctx,p);
+	};
 
-		ctx.fillStyle = "rgba(255,0,0,0.5)";
-		var s;
-		if (chargeTime == maxChargeTime) {
-			s = 1;
+	var tryShoot = function(vector) {
+
+		var getRelNormVector = function(vector) {
+			return (new Ptero.Vector).set(vector).sub(origin).normalize();
+		};
+
+		var shoot_vec = getRelNormVector(vector);
+
+		// find visible cube nearest to our line of trajectory
+		var angle = 30*Math.PI/180;
+		var index = -1;
+		var i,len;
+		var frustum = Ptero.screen.getFrustum();
+		for (i=0,len=targets.length; targets && i<len; ++i) {
+			if (!targets[i].isHittable()) {
+				continue;
+			}
+
+			// skip if not visible
+			var target_pos = targets[i].getPosition();
+			if (!frustum.isInside(target_pos)) {
+				continue;
+			}
+
+			// calculate near-plane normalized vector
+			var target_proj = frustum.projectToNear(target_pos);
+			var target_vec = getRelNormVector(target_proj);
+			var target_angle = target_vec.angle(shoot_vec);
+
+			// update closest
+			if (target_angle < angle) {
+				angle = target_angle;
+				index = i;
+			}
 		}
-		else {
-			s = chargeTime/maxChargeTime*(1 + Math.cos(20*chargeTime)*0.05);
+
+		// dry fire
+		if (index == -1) {
+			aimRadius = 0.75f;
+			aimPlane = -46f;
+			shootDry(x,y);
+			return;
 		}
-		ctx.beginPath();
-		ctx.arc(p.x,p.y,s*radius, 0, 2*Math.PI);
-		ctx.fill();
+
+		// compute aiming bounds and get collision time
+		var t = constrictAim(targets[index]);
+
+		if (t < 0) {
+			return;
+		}
+
+		// fire the bullet
+		shoot(x,y,t,targets[index]);
 	};
 
 	var setTargets = function(_targets) {
 		targets = _targets;
 	};
 
-	var setNextOrigin = function(xfrac, yfrac) {
-		var p = convertFracToAbs(xfrac,yfrac);
-		nox = p.x;
-		noy = p.y;
-		noz = Ptero.screen.getFrustum().near;
-	};
-
-	var setOrigin = function(xfrac, yfrac) {
-		var p = convertFracToAbs(xfrac,yfrac);
-		ox = p.x;
-		oy = p.y;
-		oz = Ptero.screen.getFrustum().near;
-	}
-
-	var convertFracToAbs = function(xfrac, yfrac) {
-		var frustum = Ptero.screen.getFrustum();
-		return new Ptero.Vector(
-				xfrac * frustum.nearRight,
-				yfrac * frustum.nearTop);
-	};
-
-	var isInside = function(x,y) {
-		var dx = x-ox;
-		var dy = y-oy;
-		var dist_sq = dx*dx + dy*dy;
-		var r = getSpaceRadius();
-		return dist_sq <= r*r;
-	};
-
 	var touchHandler = (function(){
-		var start = function(x,y) {
-			if (isInside(x,y)) {
-				charging = true;
+		var isInside = function(vector) {
+			var r = getSpaceRadius();
+			return vector.dist_sq(origin) <= r*r;
+		};
+		var start = function(vector) {
+			if (isInside(vector)) {
+				charge.start();
 			}
 		};
-		var move = function(x,y) {
-			if (charging && !isInside(x,y)) {
-				// try shooting
-				charging = false;
+		var move = function(vector) {
+			if (charge.on && !isInside(vector)) {
+				tryShoot(vector);
+				charge.stop();
 			}
 		};
-		var end = function(x,y) {
-			charging = false;
+		var end = function() {
+			charge.stop();
 		};
-		var cancel = function(x,y) {
-			charging = false;
+		var cancel = function() {
+			charge.stop();
 		};
 
 		// convert the incoming xy coords from screen to space.
 		var wrapFunc = function(f) {
 			return function(x,y) {
-				var p = Ptero.screen.screenToSpace(x,y);
-				f(p.x,p.y);
+				var vector = Ptero.screen.screenToSpace({x:x,y:y});
+				f(vector);
 			};
 		};
 		return {
@@ -136,11 +199,9 @@ Ptero.orb = (function(){
 			cancel: wrapFunc(cancel),
 		};
 	})();
-
 	var enableTouch = function() {
 		Ptero.input.addTouchHandler(touchHandler);
 	};
-
 	var disableTouch = function() {
 		Ptero.input.removeTouchHandler(touchHandler);
 	};
@@ -160,59 +221,6 @@ Ptero.orb = (function(){
 //	{
 //		bullets = new BulletPool();
 //		setOrigin(0,0);
-//	}
-//
-//
-//	public void update(float dt)
-//	{
-//		float dx = nox-ox;
-//		float dy = noy-oy;
-//		float dz = noz-oz;
-//		float dist = (float)Math.sqrt(dx*dx+dy*dy+dz*dz);
-//		this.isMoving = dist > 0.1f;
-//		ox = ox + (nox-ox)*spring;
-//		oy = oy + (noy-oy)*spring;
-//		oz = oz + (noz-oz)*spring;
-//
-//
-//		bullets.update(dt);
-//
-//		if (this.isMoving) {
-//			return;
-//		}
-//
-//		Vector2 p = Screen.getLastTouch();
-//		float x = p.x;
-//		float y = p.y;
-//
-//		Input input = Gdx.app.getInput();
-//		boolean touch = input.isTouched();
-//		boolean start = input.justTouched();
-//		boolean in = contains(x,y);
-//
-//		if (start && in)
-//			charging = true;
-//
-//		if (charging)
-//		{
-//			if (touch)
-//			{
-//				if (!in)
-//				{
-//					tryShoot(x,y);
-//					charging = false;
-//				}
-//			}
-//			else
-//			{
-//				charging = false;
-//			}
-//		}
-//
-//		if (charging)
-//			chargeTime = Math.min(chargeTime+dt, maxChargeTime);
-//		else
-//			chargeTime = 0;
 //	}
 //
 //	// x,y are screen coordinates
