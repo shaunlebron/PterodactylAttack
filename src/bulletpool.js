@@ -6,7 +6,7 @@ Ptero.bulletpool = (function(){
 	var getFreeIndex = function() {
 		var i;
 		for (i=0; i<max_bullets; i++) {
-			if (bullets[i]) {
+			if (!bullets[i]) {
 				return i;
 			}
 		}
@@ -48,9 +48,17 @@ Ptero.bulletpool = (function(){
 		}
 	};
 
+	var clear = function() {
+		var i;
+		for (i=0; i<max_bullets; i++) {
+			delete bullets[i];
+		}
+	};
+
 	return {
 		add: add,
 		update: update,
 		draw: draw,
+		clear: clear,
 	};
 })();

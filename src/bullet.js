@@ -1,16 +1,16 @@
 
-Ptero.Bullet = function(x,y,z,xv,yv,zv,v,t,target) {
-	this.pos = new Ptero.Vector(x,y,z);
-	this.dir = new Ptero.Vector(xv,yv,zv);
-	this.v = v;
+Ptero.Bullet = function() {
+	this.pos = new Ptero.Vector;
+	this.dir = new Ptero.Vector;
+	this.speed = 0;
 	this.time = 0;
-	this.collideTime = t;
-	this.target = target;
+	this.collideTime = null;
+	this.collideTarget = null;
 };
 
 Ptero.Bullet.prototype = {
 	update: function(dt) {
-		this.pos.add((new Ptero.Vector).set(this.dir).mul(this.v*dt));
+		this.pos.add((new Ptero.Vector).set(this.dir).mul(this.speed*dt));
 		this.time += dt;
 	},
 	draw: function(ctx) {

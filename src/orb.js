@@ -74,8 +74,7 @@ Ptero.orb = (function(){
 	})();
 
 	// bullet speed
-	var v = 50;
-	var direction;
+	var bullet_speed = 50;
 
 	// the orb's targets.
 	var targets;
@@ -103,17 +102,15 @@ Ptero.orb = (function(){
 		charge.draw(ctx,p);
 	};
 
-	var tryShoot = function(vector) {
+	var getShootVector = function(vector) {
+		return (new Ptero.Vector).set(vector).sub(origin).normalize();
+	};
 
-		var getRelNormVector = function(vector) {
-			return (new Ptero.Vector).set(vector).sub(origin).normalize();
-		};
-
-		var shoot_vec = getRelNormVector(vector);
+	var chooseTargetFromAimVector = function(vector) {
 
 		// find visible cube nearest to our line of trajectory
 		var angle = 30*Math.PI/180;
-		var index = -1;
+		var chosen_target = null;
 		var i,len;
 		var frustum = Ptero.screen.getFrustum();
 		for (i=0,len=targets.length; targets && i<len; ++i) {
@@ -129,33 +126,86 @@ Ptero.orb = (function(){
 
 			// calculate near-plane normalized vector
 			var target_proj = frustum.projectToNear(target_pos);
-			var target_vec = getRelNormVector(target_proj);
+			var target_vec = getShootVector(target_proj);
 			var target_angle = target_vec.angle(shoot_vec);
 
 			// update closest
 			if (target_angle < angle) {
 				angle = target_angle;
-				index = i;
+				chosen_target = targets[i];
+			}
+		}
+		return chosen_target;
+	};
+
+	var shoot = function(vector) {
+		var target = chooseTargetFromAimVector(vector);
+		var bullet;
+		if (target) {
+			bullet = getHomingBullet(target);
+		}
+		else {
+			bullet = getStrayBullet(vector);
+		}
+
+		if (bullet) {
+			Ptero.bulletpool.add(bullet);
+		}
+	};
+
+	var getHomingBullet = function(target) {
+
+		// Create bullet with default speed.
+		var bullet = new Ptero.Bullet;
+		bullet.speed = bullet_speed;
+
+		// Create time window and step size to search for a collision.
+		var t;
+		var maxT = 6; // only search this many seconds ahead.
+		var dt = 1/100; // search in increments of dt.
+
+		// Determine the threshold for a valid collision.
+		var dist = Infinity;
+		var minDist = 0.4;
+
+		// Search for a collision.
+		var target_pos;
+		for (t=0; t < maxT; t += dt)
+		{
+			// Get the target position at time t.
+			target_pos = target.getFuturePosition(t);
+
+			// Aim bullet at target and advance to time t.
+			bullet.time = 0;
+			bullet.pos.set(origin);
+			bullet.dir.set(getShootVector(target_pos));
+			bullet.update(t);
+
+			// Determine distance between target and bullet.
+			dist = bullet.pos.dist(target_pos);
+
+			// Set bullet's target and collide time if collision detected.
+			if (dist < minDist) {
+				bullet.collideTarget = target;
+				bullet.collideTime = t;
+				break;
 			}
 		}
 
-		// dry fire
-		if (index == -1) {
-			aimRadius = 0.75f;
-			aimPlane = -46f;
-			shootDry(x,y);
-			return;
+		// If no collision was made, just aim bullet at target.
+		if (!bullet.collideTarget) {
+			bullet.dir.set(getShootVector(target.getPosition()));
 		}
 
-		// compute aiming bounds and get collision time
-		var t = constrictAim(targets[index]);
+		// Reset bullet position and time.
+		bullet.pos.set(origin);
+		bullet.time = 0;
 
-		if (t < 0) {
-			return;
-		}
+		return bullet;
+	};
 
-		// fire the bullet
-		shoot(x,y,t,targets[index]);
+	var getStrayBullet = function(vector) {
+		return null;
 	};
 
 	var setTargets = function(_targets) {
@@ -174,7 +224,7 @@ Ptero.orb = (function(){
 		};
 		var move = function(vector) {
 			if (charge.on && !isInside(vector)) {
-				tryShoot(vector);
+				shoot(getShootVector(vector));
 				charge.stop();
 			}
 		};
@@ -209,6 +259,7 @@ Ptero.orb = (function(){
 	return {
 		init: init,
 		draw: draw,
+		setTargets: setTargets,
 		setOrigin: setOrigin,
 		setNextOrigin: setNextOrigin,
 		update: update,
@@ -355,64 +406,6 @@ Ptero.orb = (function(){
 //			bullets.add(new Bullet(ox,oy,oz,xv,yv,zv,v,chargeTime/maxChargeTime,t,null));
 //		}
 //
-//	}
-//
-//	float aimPlane;
-//	float aimRadius;
-//
-//	private float constrictAim(Target target)
-//	{
-//		float t;
-//		float dt = 1f/100;
-//
-//		float dist = Float.MAX_VALUE;
-//		float tol = 0.4f;
-//
-//		// do a simple linear search through time
-//		float bx=0,by=0,bz=0; // bullet position
-//		for (t=0; dist > tol && t < 6; t += dt)
-//		{
-//			// get position of cube in t seconds
-//			Vector3 p = target.getFuturePosition(t);
-//
-//			// get position of bullet in t seconds if aimed at cube's predicted position
-//			aimAt(p.x,p.y,p.z);
-//			bx = ox+xv*t*v;
-//			by = oy+yv*t*v;
-//			bz = oz+zv*t*v;
-//
-//			float dx = bx-p.x;
-//			float dy = by-p.y;
-//			float dz = bz-p.z;
-//			dist = (float)Math.sqrt(dx*dx+dy*dy+dz*dz);
-//		}
-//
-//		if (dist > tol)
-//		{
-//			//System.out.printf("couldn't fire closer than %f units from the cube\n", dist);
-//			return -1;
-//		}
-//		else
-//		{
-//			aimPlane = bz;
-//
-//			float dx = bx / bz * -Screen.near - ox;
-//			float dy = by / bz * -Screen.near - oy;
-//			aimRadius = (float)Math.sqrt(dx*dx+dy*dy);
-//
-//			return t;
-//		}
-//	}
-//
-//	private void aimAt(float x0, float y0, float z0)
-//	{
-//		xv = x0-ox;
-//		yv = y0-oy;
-//		zv = z0-oz;
-//		float dist = (float)Math.sqrt(xv*xv+yv*yv+zv*zv);
-//		xv/=dist;
-//		yv/=dist;
-//		zv/=dist;
 //	}
 //
 //	private boolean contains(float x, float y)

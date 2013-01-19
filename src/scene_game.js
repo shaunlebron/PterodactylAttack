@@ -19,6 +19,7 @@ Ptero.scene_game = (function() {
 		}
 
 		Ptero.orb.init();
+		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
 	};
 
