@@ -1,8 +1,8 @@
 Ptero.PathState = function(index,indexStep,time,pos) {
-	if (index == undefined) index = 0;
-	if (indexStep == undefined) indexStep = 1;
-	if (time == undefined) time = 0;
-	if (pos == undefined) pos = {};
+	if (index == null) index = 0;
+	if (indexStep == null) indexStep = 1;
+	if (time == null) time = 0;
+	if (pos == null) pos = new Ptero.Vector;
 	this.index = index;
 	this.indexStep = indexStep;
 	this.time = time;
@@ -12,8 +12,9 @@ Ptero.PathState = function(index,indexStep,time,pos) {
 Ptero.Path = function(points, times, loop) {
 	this.points = points;
 	this.times = times;
-	this.state = new Ptero.PathState;
 	this.loop = loop;
+	this.state = new Ptero.PathState;
+	this.reset();
 };
 
 
@@ -79,7 +80,7 @@ Ptero.Path.prototype = {
 		this.state.index = 0;
 		this.state.indexStep = 1;
 		this.state.time = 0;
-		this.state.pos.set(points[0]);
+		this.state.pos.set(this.points[0]);
 	},
 
 	isDone: function isDone() {

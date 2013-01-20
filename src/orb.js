@@ -117,8 +117,17 @@ Ptero.orb = (function(){
 	};
 
 	// Try to fire a bullet into the given direction.
+	var shotEnemy = null;
 	function shoot(aim_vector) {
 		var target = chooseTargetFromAimVector(aim_vector);
+		if (shotEnemy) {
+			shotEnemy.highlight = false;
+		}
+		shotEnemy = target;
+		if (shotEnemy) {
+			shotEnemy.highlight = true;
+		}
+
 		var bullet = target ? getHomingBullet(target) : getStrayBullet(aim_vector);
 		if (bullet) {
 			Ptero.bulletpool.add(bullet);
@@ -141,13 +150,14 @@ Ptero.orb = (function(){
 			// skip if not visible
 			var target_pos = targets[i].getPosition();
 			if (!frustum.isInside(target_pos)) {
-				continue;
+				//continue;
 			}
 
 			// calculate near-plane normalized vector
 			var target_proj = frustum.projectToNear(target_pos);
 			var target_vec = getAimVector(target_proj);
 			var target_angle = target_vec.angle(aim_vector);
+			console.log(target_vec, target_angle);
 
 			// update closest
 			if (target_angle < angle) {
@@ -233,9 +243,9 @@ Ptero.orb = (function(){
 
 		// Shoot a bullet when the touch point exits the orb.
 		function move(point) {
-			if (charge.on && !isInside(point)) {
-				shoot(getAimVector(point));
+			if (charge.isOn() && !isInside(point)) {
 				charge.reset();
+				shoot(getAimVector(point));
 			}
 		};
 

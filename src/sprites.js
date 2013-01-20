@@ -18,7 +18,7 @@ Ptero.SpriteSheet = function(img,dict) {
 };
 
 Ptero.SpriteSheet.prototype = {
-	draw: function draw(ctx,x,y,frame,scale) {
+	draw: function draw(ctx,x,y,frame,scale,highlight) {
 		if (scale == undefined) {
 			scale = 1;
 		}
@@ -33,11 +33,16 @@ Ptero.SpriteSheet.prototype = {
 		ctx.drawImage(this.img,
 			sx,sy,sw,sh,
 			x,y,dw,dh);
+		if (highlight) {
+			ctx.strokeStyle = "#f00";
+			ctx.lineWidth = 2;
+			ctx.strokeRect(x,y,dw,dh);
+		}
 	},
-	drawCentered: function drawCentered(ctx,x,y,frame,scale) {
+	drawCentered: function drawCentered(ctx,x,y,frame,scale,highlight) {
 		x -= this.tileCenterX * scale;
 		y -= this.tileCenterY * scale;
-		this.draw(ctx,x,y,frame,scale);
+		this.draw(ctx,x,y,frame,scale,highlight);
 	},
 };
 
@@ -93,11 +98,11 @@ Ptero.AnimSprite.prototype = {
 		this.time %= this.totalDuration;
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
-	draw: function draw(ctx,x,y,scale) {
-		this.sheet.draw(ctx,x,y,this.frame,scale);
+	draw: function draw(ctx,x,y,scale,highlight) {
+		this.sheet.draw(ctx,x,y,this.frame,scale,highlight);
 	},
-	drawCentered: function drawCentered(ctx,x,y,scale) {
-		this.sheet.drawCentered(ctx,x,y,this.frame,scale);
+	drawCentered: function drawCentered(ctx,x,y,scale, highlight) {
+		this.sheet.drawCentered(ctx,x,y,this.frame,scale,highlight);
 	},
 };
 

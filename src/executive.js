@@ -63,7 +63,6 @@ Ptero.executive = (function(){
 		catch (e) {
 			console.error(e.message + "@" + e.sourceURL);
 			console.error(e.stack);
-			debugger;
 		}
 	};
 

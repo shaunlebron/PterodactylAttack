@@ -106,12 +106,13 @@ Ptero.Enemy.prototype = {
 		var screenPos = Ptero.screen.spaceToScreen(pos);
 
 		if (this.isHit) {
-			this.boomSprite.drawCentered(ctx, screenPos.x, screenPos.y, scale);
+			this.boomSprite.drawCentered(ctx, screenPos.x, screenPos.y, scale, this.highlight);
 		}
 		else if (this.path.isDone()) {
 		}
 		else {
-			this.babySprite.drawCentered(ctx, screenPos.x, screenPos.y, scale);
+			this.babySprite.drawCentered(ctx, screenPos.x, screenPos.y, scale, this.highlight);
 		}
+
 	},
 };

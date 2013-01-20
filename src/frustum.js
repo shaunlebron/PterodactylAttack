@@ -20,7 +20,7 @@ Ptero.Frustum = function(near,far,fov,aspect) {
 
 Ptero.Frustum.prototype = {
 	projectToZ: function projectToZ(vector,newz) {
-		return Ptero.Vector(
+		return new Ptero.Vector(
 			vector.x/vector.z*newz,
 			vector.y/vector.z*newz,
 			newz);
@@ -30,7 +30,7 @@ Ptero.Frustum.prototype = {
 	},
 	isInside: function isInside(vector) {
 		var v = this.projectToNear(vector);
-		return (far < vector.z && vector.z < near && // ( far < z < near)
+		return (this.far < vector.z && vector.z < this.near && // ( far < z < near)
 				Math.abs(v.x) < this.nearRight &&
 				Math.abs(v.y) < this.nearTop);
 	},

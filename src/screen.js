@@ -35,19 +35,17 @@ Ptero.screen = (function(){
 	// Determine screen coordinates from a point in the frustum.
 	function spaceToScreen(vector) {
 		var v = frustum.projectToNear(vector);
-		return {
-			x: (v.x/frustum.nearWidth + 0.5) * width,
-			y: (-v.y/frustum.nearHeight + 0.5) * height,
-		};
+		return new Ptero.Vector(
+			(v.x/frustum.nearWidth + 0.5) * width,
+			(-v.y/frustum.nearHeight + 0.5) * height);
 	};
 
 	// Determine point on the frustum's near plane from a screen coordinate.
 	function screenToSpace(vector) {
-		return {
-			x: (vector.x/width - 0.5) * frustum.nearWidth,
-			y: -(vector.y/height - 0.5) * frustum.nearHeight,
-			z: frustum.near,
-		};
+		return new Ptero.Vector(
+			(vector.x/width - 0.5) * frustum.nearWidth,
+			-(vector.y/height - 0.5) * frustum.nearHeight,
+			frustum.near);
 	};
 
     function getScreenToSpaceRatio() {

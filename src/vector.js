@@ -55,7 +55,7 @@ Ptero.Vector.prototype = {
 		this.z += (vector.z - this.z) * ratio;
 	},
 	mag: function() {
-		return (this.x*this.x + this.y*this.y + this.z*this.z);
+		return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
 	},
 	normalize: function() {
 		var d = this.mag();
