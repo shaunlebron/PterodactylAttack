@@ -3,7 +3,7 @@ Ptero.bulletpool = (function(){
 	var bullets = [];
 	var max_bullets = 100;
 
-	var getFreeIndex = function() {
+	function getFreeIndex() {
 		var i;
 		for (i=0; i<max_bullets; i++) {
 			if (!bullets[i]) {
@@ -13,14 +13,14 @@ Ptero.bulletpool = (function(){
 		return -1;
 	};
 
-	var add = function(bullet) {
+	function add(bullet) {
 		var i = getFreeIndex();
 		if (i != -1) {
 			bullets[i] = bullet;
 		}
 	};
 
-	var update = function(dt) {
+	function update(dt) {
 		var i,b;
 		var frustum = Ptero.screen.getFrustum();
 		for (i=0; i<max_bullets; i++) {
@@ -40,7 +40,7 @@ Ptero.bulletpool = (function(){
 		}
 	};
 
-	var draw = function(ctx) {
+	function draw(ctx) {
 		var i,b;
 		for (i=0; i<max_bullets; i++) {
 			b = bullets[i];
@@ -48,7 +48,7 @@ Ptero.bulletpool = (function(){
 		}
 	};
 
-	var clear = function() {
+	function clear() {
 		var i;
 		for (i=0; i<max_bullets; i++) {
 			delete bullets[i];

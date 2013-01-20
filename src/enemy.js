@@ -18,26 +18,26 @@ Ptero.Enemy = function() {
 };
 
 Ptero.Enemy.prototype = {
-	setTimeBomb: function() {
+	setTimeBomb: function setTimeBomb() {
 		this.bombTimer = new Ptero.Timer((Math.random()*10 + 3)*1000);
 	},
-	randomizeBoom: function() {
+	randomizeBoom: function randomizeBoom() {
 		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
 		this.boomSprite.restart();
 	},
-	isHittable: function() {
+	isHittable: function isHittable() {
 		return !this.path.isDone() && !this.isHit; // only hittable if not already hit
 	},
-	getPosition: function() {
+	getPosition: function getPosition() {
 		return this.path.state.pos;
 	},
-	getCollisionRadius: function() {
+	getCollisionRadius: function getCollisionRadius() {
 		return Ptero.sizeFactor * 2;
 	},
-	getFuturePosition: function(time) {
+	getFuturePosition: function getFuturePosition(time) {
 		return this.path.seek(time).pos;
 	},
-	onHit: function() {
+	onHit: function onHit() {
 		// update score
 		// scene.score += 100 + scene.getStreakBonus();
 		// scene.streakCount++;
@@ -46,14 +46,14 @@ Ptero.Enemy.prototype = {
 		this.isHit = true;
 		var that = this;
 	},
-	resetPosition: function() {
+	resetPosition: function resetPosition() {
 		this.randomizeBoom();
 		this.path = Ptero.makeEnemyPath();
 		this.isHit = false;
 		this.doneTimer.reset();
 		this.setTimeBomb();
 	},
-	update: function(dt) {
+	update: function update(dt) {
 		var millis = dt*1000;
 
 		// update position of quad object
@@ -93,7 +93,7 @@ Ptero.Enemy.prototype = {
 			}
 		}
 	},
-	draw: function(ctx) {
+	draw: function draw(ctx) {
 		var pos = this.path.state.pos;
 
 		// This is the width of the image when it is on the near plane.

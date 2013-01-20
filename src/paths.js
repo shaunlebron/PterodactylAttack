@@ -1,5 +1,5 @@
 
-Ptero.makeEnemyPath = function() {
+Ptero.makeEnemyPath = function makeEnemyPath() {
 
 	// frustum attributes
 	var aspect = Ptero.screen.getAspect();

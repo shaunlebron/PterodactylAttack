@@ -16,7 +16,7 @@ Ptero.executive = (function(){
         var endIndex = -1;
         var filled = false;
 
-        return function(now) {
+        return function updateFps(now) {
             if (filled) {
                 startIndex = (startIndex+1) % length;
             }
@@ -35,7 +35,7 @@ Ptero.executive = (function(){
             fps = frames / seconds;
         };
     })();
-	var drawFps = function(ctx) {
+	function drawFps(ctx) {
 		ctx.font = "30px Arial";
 		ctx.fillStyle = "#FFF";
 		var pad = 5;
@@ -44,31 +44,38 @@ Ptero.executive = (function(){
 		ctx.fillText(Math.floor(fps)+" fps", x, y);
 	};
 
-	var tick = function(time) {
-		updateFps(time);
+	function tick(time) {
+		try {
+			updateFps(time);
 
-		var dt = Math.min((time-lastTime)/1000, 1/minFps);
-		lastTime = time;
+			var dt = Math.min((time-lastTime)/1000, 1/minFps);
+			lastTime = time;
 
-		var scene = Ptero.scene;
-		if (!isPaused) {
-			scene.update(dt);
+			var scene = Ptero.scene;
+			if (!isPaused) {
+				scene.update(dt);
+			}
+			var ctx = Ptero.screen.getCtx();
+			scene.draw(ctx);
+			drawFps(ctx);
+			requestAnimationFrame(tick);
 		}
-		var ctx = Ptero.screen.getCtx();
-		scene.draw(ctx);
-		drawFps(ctx);
-		requestAnimationFrame(tick);
+		catch (e) {
+			console.error(e.message + "@" + e.sourceURL);
+			console.error(e.stack);
+			debugger;
+		}
 	};
 
 	var isPaused = false;
-	var pause = function() {
+	function pause() {
 		isPaused = true;
 	};
-	var resume = function() {
+	function resume() {
 		isPaused = false;
 	};
 
-	var start = function() {
+	function start() {
 		lastTime = (new Date).getTime();
 		requestAnimationFrame(tick);
 	};

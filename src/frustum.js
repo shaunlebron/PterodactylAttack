@@ -19,22 +19,22 @@ Ptero.Frustum = function(near,far,fov,aspect) {
 };
 
 Ptero.Frustum.prototype = {
-	projectToZ: function(vector,newz) {
+	projectToZ: function projectToZ(vector,newz) {
 		return Ptero.Vector(
 			vector.x/vector.z*newz,
 			vector.y/vector.z*newz,
 			newz);
 	},
-	projectToNear: function(vector) {
+	projectToNear: function projectToNear(vector) {
 		return this.projectToZ(vector,this.near);
 	},
-	isInside: function(vector) {
+	isInside: function isInside(vector) {
 		var v = this.projectToNear(vector);
 		return (far < vector.z && vector.z < near && // ( far < z < near)
 				Math.abs(v.x) < this.nearRight &&
 				Math.abs(v.y) < this.nearTop);
 	},
-	getDepthScale: function(z,nearScale) {
+	getDepthScale: function getDepthScale(z,nearScale) {
 		return nearScale/z*this.near;
 	},
 };

@@ -5,7 +5,7 @@ Ptero.screen = (function(){
 	var canvas,ctx;
 	var frustum;
 
-	var setSize = function(w,h) {
+	function setSize(w,h) {
 		width = w;
 		height = h;
 		aspect = width/height;
@@ -13,7 +13,7 @@ Ptero.screen = (function(){
 		canvas.height = height;
 	};
 
-	var init = function(_canvas) {
+	function init(_canvas) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
@@ -33,7 +33,7 @@ Ptero.screen = (function(){
 	};
 
 	// Determine screen coordinates from a point in the frustum.
-	var spaceToScreen = function(vector) {
+	function spaceToScreen(vector) {
 		var v = frustum.projectToNear(vector);
 		return {
 			x: (v.x/frustum.nearWidth + 0.5) * width,
@@ -42,7 +42,7 @@ Ptero.screen = (function(){
 	};
 
 	// Determine point on the frustum's near plane from a screen coordinate.
-	var screenToSpace = function(vector) {
+	function screenToSpace(vector) {
 		return {
 			x: (vector.x/width - 0.5) * frustum.nearWidth,
 			y: -(vector.y/height - 0.5) * frustum.nearHeight,
@@ -50,11 +50,11 @@ Ptero.screen = (function(){
 		};
 	};
 
-    var getScreenToSpaceRatio = function() {
+    function getScreenToSpaceRatio() {
         return (width) / frustum.nearWidth;
     };
 
-	var getCanvasPos = function() {
+	function getCanvasPos() {
 		var p = {x:0,y:0};
 		if (navigator.isCocoonJS) {
 			return p;

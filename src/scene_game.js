@@ -3,13 +3,13 @@ Ptero.scene_game = (function() {
 	var enemies = [];
 	var numEnemies = 20;
 
-	var sortEnemies = function() {
+	function sortEnemies() {
 		enemies.sort(function(a,b) {
 			return b.path.state.pos.z - a.path.state.pos.z;
 		});
 	};
 
-	var init = function() {
+	function init() {
 
 		Ptero.background.setImage(Ptero.assets.images.desert);
 
@@ -23,7 +23,7 @@ Ptero.scene_game = (function() {
         Ptero.orb.setNextOrigin(0,-1);
 	};
 
-	var update = function(dt) {
+	function update(dt) {
 		var i;
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
@@ -32,7 +32,7 @@ Ptero.scene_game = (function() {
 		Ptero.orb.update(dt);
 	};
 
-	var draw = function(ctx) {
+	function draw(ctx) {
 		Ptero.background.draw(ctx);
 		var i;
 		for (i=0; i<numEnemies; i++) {

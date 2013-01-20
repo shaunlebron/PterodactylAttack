@@ -13,16 +13,16 @@ Ptero.input = (function(){
 	//			},
 	//		};
 	var touchHandlers = [];
-	var addTouchHandler = function(h) {
+	function addTouchHandler(h) {
 		touchHandlers.push(h);
 	};
-	var removeTouchHandler = function(h) {
+	function removeTouchHandler(h) {
 		var i;
 		while ( (i=touchHandlers.indexOf(h)) != -1) {
 			touchHandlers.splice(i,1);
 		}
 	};
-	var forEachTouchHandler = function(callback) {
+	function forEachTouchHandler(callback) {
 		var len = touchHandlers.length;
 		var i;
 		for (i=0; i<len; i++) {
@@ -34,7 +34,7 @@ Ptero.input = (function(){
 	var point = {}; // current touch point.
 
 	// Main dispatch functions for each touch event.
-	var touchStart = function(x,y) {
+	function touchStart(x,y) {
 		touched = true;
 		point.x = x;
 		point.y = y;
@@ -42,7 +42,7 @@ Ptero.input = (function(){
 			h.start && h.start(x,y);
 		});
 	};
-	var touchMove = function(x,y) {
+	function touchMove(x,y) {
 		if (!touched) {
 			return;
 		}
@@ -52,13 +52,13 @@ Ptero.input = (function(){
 			h.move && h.move(x,y);
 		});
 	};
-	var touchEnd = function(x,y) {
+	function touchEnd(x,y) {
 		touched = false;
 		forEachTouchHandler(function(h) {
 			h.end && h.end(x,y);
 		});
 	};
-	var touchCancel = function(x,y) {
+	function touchCancel(x,y) {
 		touched = false;
 		forEachTouchHandler(function(h) {
 			h.cancel && h.cancel(x,y);
@@ -66,7 +66,7 @@ Ptero.input = (function(){
 	};
 
 	// initialize 
-	var init = function() {
+	function init() {
 
 		// Makes sure the given callback function gets canvas coords, not absolute coords.
         var canvas = Ptero.screen.getCanvas();

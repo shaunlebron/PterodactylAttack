@@ -5,15 +5,15 @@ Ptero.background = (function(){
 	var scale;
 
 	return {
-		getScale: function() { return scale; },
-		setImage: function(img) {
+		getScale: function getScale() { return scale; },
+		setImage: function setImage(img) {
 			image = img;
 			var aspect = image.width / image.height;
 			var scaleH = Ptero.screen.getHeight() / image.height;
 			var scaleW = Ptero.screen.getWidth() / image.width;
 			scale = (aspect > Ptero.screen.getAspect()) ? scaleH : scaleW;
 		},
-		draw: function(ctx) {
+		draw: function draw(ctx) {
 			var sx = 0;
 			var sy = 0;
 			var sw = image.width;

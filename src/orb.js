@@ -21,13 +21,13 @@ Ptero.orb = (function(){
 		var maxTime = 7;
 		var time = 0;
 
-		var update = function(dt) {
+		function update(dt) {
 			if (on) {
 				time = Math.min(time+dt, maxTime);
 			}
 		};
 
-		var draw = function(ctx,pos) {
+		function draw(ctx,pos) {
 			ctx.fillStyle = "rgba(255,0,0,0.5)";
 			var s;
 			if (time == maxTime) {
@@ -41,12 +41,12 @@ Ptero.orb = (function(){
 			ctx.fill();
 		};
 
-		var reset = function() {
+		function reset() {
 			on = false;
 			time = 0;
 		};
 
-		var start = function() {
+		function start() {
 			on = true;
 			time = 0;
 		};
@@ -64,44 +64,43 @@ Ptero.orb = (function(){
 	var origin;
 	var next_origin;
 	var setOrigin,setNextOrigin;
-	(function(){
-		var convertFracToAbs = function(xfrac, yfrac) {
-			var frustum = Ptero.screen.getFrustum();
-			return new Ptero.Vector(
-					xfrac * frustum.nearRight,
-					yfrac * frustum.nearTop,
-					frustum.near);
-		};
-		setNextOrigin = function(xfrac, yfrac) {
-			next_origin = convertFracToAbs(xfrac,yfrac);
-		};
-		setOrigin = function(xfrac, yfrac) {
-			origin = convertFracToAbs(xfrac,yfrac);
-		};
-	})();
+	function convertFracToAbs(xfrac, yfrac) {
+		var frustum = Ptero.screen.getFrustum();
+		return new Ptero.Vector(
+				xfrac * frustum.nearRight,
+				yfrac * frustum.nearTop,
+				frustum.near);
+	};
+	function setNextOrigin(xfrac, yfrac) {
+		next_origin = convertFracToAbs(xfrac,yfrac);
+	};
+	function setOrigin(xfrac, yfrac) {
+		origin = convertFracToAbs(xfrac,yfrac);
+	};
 
 	// bullet speed
 	var bullet_speed = 50;
 
 	// the orb's targets.
 	var targets;
-	var setTargets = function(_targets) {
+	function setTargets(_targets) {
 		targets = _targets;
 	};
 
-	var init = function() {
+	function init() {
 		charge.reset();
 		setOrigin(0,-2);
 		enableTouch();
 	};
 
-	var update = function(dt) {
+	function update(dt) {
 		origin.ease_to(next_origin, 0.1);
 		Ptero.bulletpool.update(dt);
 		charge.update(dt);
 	};
 
-	var draw = function(ctx) {
+	function draw(ctx) {
+		Ptero.bulletpool.draw(ctx);
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToScreen(origin);
 
@@ -112,22 +111,22 @@ Ptero.orb = (function(){
 		charge.draw(ctx,p);
 	};
 
-	// Get a unit vector pointing from the origin to the given vector.
-	var getShootVector = function(vector) {
-		return vector.copy().sub(origin).normalize();
+	// Get a unit vector pointing from the origin to the given point in space.
+	function getAimVector(point) {
+		return point.copy().sub(origin).normalize();
 	};
 
 	// Try to fire a bullet into the given direction.
-	var shoot = function(vector) {
-		var target = chooseTargetFromAimVector(vector);
-		var bullet = target ? getHomingBullet(target) : getStrayBullet(vector);
+	function shoot(aim_vector) {
+		var target = chooseTargetFromAimVector(aim_vector);
+		var bullet = target ? getHomingBullet(target) : getStrayBullet(aim_vector);
 		if (bullet) {
 			Ptero.bulletpool.add(bullet);
 		}
 	};
 
 	// Choose which target to shoot with the given aiming vector.
-	var chooseTargetFromAimVector = function(vector) {
+	function chooseTargetFromAimVector(aim_vector) {
 
 		// find visible cube nearest to our line of trajectory
 		var angle = 30*Math.PI/180;
@@ -147,8 +146,8 @@ Ptero.orb = (function(){
 
 			// calculate near-plane normalized vector
 			var target_proj = frustum.projectToNear(target_pos);
-			var target_vec = getShootVector(target_proj);
-			var target_angle = target_vec.angle(shoot_vec);
+			var target_vec = getAimVector(target_proj);
+			var target_angle = target_vec.angle(aim_vector);
 
 			// update closest
 			if (target_angle < angle) {
@@ -160,7 +159,7 @@ Ptero.orb = (function(){
 	};
 
 	// Create a bullet with the necessary trajectory to hit the given target.
-	var getHomingBullet = function(target) {
+	function getHomingBullet(target) {
 
 		// Create bullet with default speed.
 		var bullet = new Ptero.Bullet;
@@ -185,7 +184,7 @@ Ptero.orb = (function(){
 			// Aim bullet at target and advance to time t.
 			bullet.time = 0;
 			bullet.pos.set(origin);
-			bullet.dir.set(getShootVector(target_pos));
+			bullet.dir.set(getAimVector(target_pos));
 			bullet.update(t);
 
 			// Determine distance between target and bullet.
@@ -201,7 +200,7 @@ Ptero.orb = (function(){
 
 		// If no collision was made, just aim bullet at target.
 		if (!bullet.collideTarget) {
-			bullet.dir.set(getShootVector(target.getPosition()));
+			bullet.dir.set(getAimVector(target.getPosition()));
 		}
 
 		// Reset bullet position and time.
@@ -212,7 +211,7 @@ Ptero.orb = (function(){
 	};
 
 	// Create a bullet with some trajectory for the given aiming vector.
-	var getStrayBullet = function(vector) {
+	function getStrayBullet(aim_vector) {
 		return null;
 	};
 
@@ -220,39 +219,39 @@ Ptero.orb = (function(){
 	var touchHandler = (function(){
 
 		// Determine if the given point is in the orb's touch surface.
-		var isInside = function(vector) {
+		function isInside(point) {
 			var r = getSpaceRadius();
-			return vector.dist_sq(origin) <= r*r;
+			return point.dist_sq(origin) <= r*r;
 		};
 
 		// Start the charge if touch starts inside the orb.
-		var start = function(vector) {
-			if (isInside(vector)) {
+		function start(point) {
+			if (isInside(point)) {
 				charge.start();
 			}
 		};
 
 		// Shoot a bullet when the touch point exits the orb.
-		var move = function(vector) {
-			if (charge.on && !isInside(vector)) {
-				shoot(getShootVector(vector));
-				charge.stop();
+		function move(point) {
+			if (charge.on && !isInside(point)) {
+				shoot(getAimVector(point));
+				charge.reset();
 			}
 		};
 
 		// Stop charging if touch point is released or canceled.
-		var end = function() {
-			charge.stop();
+		function end() {
+			charge.reset();
 		};
-		var cancel = function() {
-			charge.stop();
+		function cancel() {
+			charge.reset();
 		};
 
 		// Convert the incoming xy coords from screen to space.
-		var wrapFunc = function(f) {
-			return function(x,y) {
-				var vector = Ptero.screen.screenToSpace({x:x,y:y});
-				f(vector);
+		function wrapFunc(f) {
+			return function screenToSpaceWrapper(x,y) {
+				var point = Ptero.screen.screenToSpace({x:x,y:y});
+				f(point);
 			};
 		};
 		return {
@@ -262,10 +261,10 @@ Ptero.orb = (function(){
 			cancel: wrapFunc(cancel),
 		};
 	})();
-	var enableTouch = function() {
+	function enableTouch() {
 		Ptero.input.addTouchHandler(touchHandler);
 	};
-	var disableTouch = function() {
+	function disableTouch() {
 		Ptero.input.removeTouchHandler(touchHandler);
 	};
 

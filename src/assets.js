@@ -11,7 +11,7 @@ Ptero.assets = (function(){
 	var images = {};
 	var sheets = {};
 
-	var loadSpriteSheets = function() {
+	function loadSpriteSheets() {
 		var name,req,src;
 		for (name in imageSources) {
 			if (imageSources.hasOwnProperty(name)) {
@@ -32,7 +32,7 @@ Ptero.assets = (function(){
 		}
 	};
 
-	var load = function(callback) {
+	function load(callback) {
 		var count = 0;
 		var name;
 		for (name in imageSources) {

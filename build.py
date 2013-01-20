@@ -41,6 +41,8 @@ if __name__ == "__main__":
 		"src/sprites.js",
 		"src/stress/scene.js",
 		"src/stress/enemy.js",
+		"src/bullet.js",
+		"src/bulletpool.js",
 		"src/enemy.js",
 		"src/frustum.js",
 		"src/orb.js",

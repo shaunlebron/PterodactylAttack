@@ -18,7 +18,7 @@ Ptero.SpriteSheet = function(img,dict) {
 };
 
 Ptero.SpriteSheet.prototype = {
-	draw: function(ctx,x,y,frame,scale) {
+	draw: function draw(ctx,x,y,frame,scale) {
 		if (scale == undefined) {
 			scale = 1;
 		}
@@ -34,7 +34,7 @@ Ptero.SpriteSheet.prototype = {
 			sx,sy,sw,sh,
 			x,y,dw,dh);
 	},
-	drawCentered: function(ctx,x,y,frame,scale) {
+	drawCentered: function drawCentered(ctx,x,y,frame,scale) {
 		x -= this.tileCenterX * scale;
 		y -= this.tileCenterY * scale;
 		this.draw(ctx,x,y,frame,scale);
@@ -54,29 +54,29 @@ Ptero.AnimSprite = function(sheet) {
 };
 
 Ptero.AnimSprite.prototype = {
-	start: function() {
+	start: function start() {
 		this.animating = true;
 	},
-	restart: function() {
+	restart: function restart() {
 		this.reset();
 		this.start();
 	},
-	stop: function() {
+	stop: function stop() {
 		this.animating = false;
 	},
-	reset: function() {
+	reset: function reset() {
 		this.time = 0;
 	},
-	setRepeat: function(on) {
+	setRepeat: function setRepeat(on) {
 		this.repeat = on;
 	},
-	setFinishCallback: function(callback) {
+	setFinishCallback: function setFinishCallback(callback) {
 		this.onFinish = callback;
 	},
-	isDone: function() {
+	isDone: function isDone() {
 		return (this.time >= this.totalDuration);
 	},
-	update: function(dt) {
+	update: function update(dt) {
 		if (!this.animating) {
 			return;
 		}
@@ -93,10 +93,10 @@ Ptero.AnimSprite.prototype = {
 		this.time %= this.totalDuration;
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
-	draw: function(ctx,x,y,scale) {
+	draw: function draw(ctx,x,y,scale) {
 		this.sheet.draw(ctx,x,y,this.frame,scale);
 	},
-	drawCentered: function(ctx,x,y,scale) {
+	drawCentered: function drawCentered(ctx,x,y,scale) {
 		this.sheet.drawCentered(ctx,x,y,this.frame,scale);
 	},
 };
