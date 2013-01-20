@@ -13,6 +13,9 @@ Ptero.Vector.prototype = {
 		this.z = vector.z;
 		return this;
 	},
+	copy: function() {
+		return (new Ptero.Vector).set(this);
+	},
 	add: function(vector) {
 		this.x += vector.x;
 		this.y += vector.y;

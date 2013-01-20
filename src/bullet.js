@@ -10,7 +10,7 @@ Ptero.Bullet = function() {
 
 Ptero.Bullet.prototype = {
 	update: function(dt) {
-		this.pos.add((new Ptero.Vector).set(this.dir).mul(this.speed*dt));
+		this.pos.add(this.dir.copy().mul(this.speed*dt));
 		this.time += dt;
 	},
 	draw: function(ctx) {
