@@ -16,12 +16,16 @@ Ptero.Bullet.prototype = {
 	draw: function draw(ctx) {
 		var p = Ptero.screen.spaceToScreen(this.pos);
 		ctx.beginPath();
-		var r = this.getRadius() / Ptero.screen.getScreenToSpaceRatio();
-		ctx.arc(p.x,p.y,r,0,Math.PI*2);
+		var closeWidth = this.getSpaceRadius();
+		var scale = Ptero.screen.getFrustum().getDepthScale(this.pos.z, closeWidth) / closeWidth;
+		ctx.arc(p.x,p.y,this.getRadius()*scale,0,Math.PI*2);
 		ctx.fillStyle = "#f00";
 		ctx.fill();
 	},
 	getRadius: function getRadius() {
 		return Ptero.screen.getHeight()/12;
+	},
+	getSpaceRadius: function getSpaceRadius() {
+		return this.getRadius() / Ptero.screen.getScreenToSpaceRatio();
 	},
 };

@@ -78,8 +78,6 @@ Ptero.orb = (function(){
 		origin = convertFracToAbs(xfrac,yfrac);
 	};
 
-	// bullet speed
-	var bullet_speed = 50;
 
 	// the orb's targets.
 	var targets;
@@ -116,22 +114,46 @@ Ptero.orb = (function(){
 		return point.copy().sub(origin).normalize();
 	};
 
+	// Highlights specific targets for debugging. (currently the lock-on target).
+	var shotTarget = null;
+	var setShotTarget = function(target) {
+		if (shotTarget) {
+			shotTarget.highlight = false;
+		}
+		shotTarget = target;
+		if (shotTarget) {
+			shotTarget.highlight = true;
+		}
+	};
+
+	var maxAimAngleError = 5 * Math.PI/180;
+
 	// Try to fire a bullet into the given direction.
-	var shotEnemy = null;
 	function shoot(aim_vector) {
 		var target = chooseTargetFromAimVector(aim_vector);
-		if (shotEnemy) {
-			shotEnemy.highlight = false;
+		setShotTarget(target);
+
+		var aimAngleError = getAimAngleError(target.getPosition(), aim_vector);
+		var bullet, bulletCone;
+		if (aimAngleError < maxAimAngleError) {
+			bullet = createHomingBullet(target);
 		}
-		shotEnemy = target;
-		if (shotEnemy) {
-			shotEnemy.highlight = true;
+		else {
+			bulletCone = target ? getTargetBulletCone(target) : getDefaultBulletCone(aim_vector);
+			bullet = createBulletFromCone(bulletCone, aim_vector);
 		}
 
-		var bullet = target ? getHomingBullet(target) : getStrayBullet(aim_vector);
 		if (bullet) {
 			Ptero.bulletpool.add(bullet);
 		}
+	};
+
+	// Return the angle error of our aim when targeting the given position.
+	function getAimAngleError(target_pos, aim_vector) {
+		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
+		var target_vec = getAimVector(target_proj);
+		var target_angle = target_vec.angle(aim_vector);
+		return target_angle;
 	};
 
 	// Choose which target to shoot with the given aiming vector.
@@ -153,11 +175,7 @@ Ptero.orb = (function(){
 				//continue;
 			}
 
-			// calculate near-plane normalized vector
-			var target_proj = frustum.projectToNear(target_pos);
-			var target_vec = getAimVector(target_proj);
-			var target_angle = target_vec.angle(aim_vector);
-			console.log(target_vec, target_angle);
+			var target_angle = getAimAngleError(target_pos, aim_vector);
 
 			// update closest
 			if (target_angle < angle) {
@@ -168,23 +186,27 @@ Ptero.orb = (function(){
 		return chosen_target;
 	};
 
+	function getBulletSpeed() {
+		return Ptero.background.getScale() * Ptero.screen.getHeight() * 50;
+	}
+
 	// Create a bullet with the necessary trajectory to hit the given target.
-	function getHomingBullet(target) {
+	function createHomingBullet(target) {
 
 		// Create bullet with default speed.
 		var bullet = new Ptero.Bullet;
-		bullet.speed = bullet_speed;
+		bullet.collideTarget = target;
+		bullet.speed = getBulletSpeed();
 
 		// Create time window and step size to search for a collision.
 		var t;
-		var maxT = 6; // only search this many seconds ahead.
+		var maxT = 20; // only search this many seconds ahead.
 		var dt = 1/100; // search in increments of dt.
 
 		// Determine the threshold for a valid collision.
-		var dist = Infinity;
-		var minDist = 0.4;
+		var dist, minDist = Infinity;
 
-		// Search for a collision.
+		// Find when the bullet will collide with the target.
 		var target_pos;
 		for (t=0; t < maxT; t += dt)
 		{
@@ -200,18 +222,16 @@ Ptero.orb = (function(){
 			// Determine distance between target and bullet.
 			dist = bullet.pos.dist(target_pos);
 
-			// Set bullet's target and collide time if collision detected.
+			// Update the collision info when closest distance reached.
 			if (dist < minDist) {
-				bullet.collideTarget = target;
 				bullet.collideTime = t;
-				break;
+				bullet.collideDir = bullet.dir.copy();
+				minDist = dist;
 			}
 		}
 
-		// If no collision was made, just aim bullet at target.
-		if (!bullet.collideTarget) {
-			bullet.dir.set(getAimVector(target.getPosition()));
-		}
+		// Aim bullet at point of closest distance.
+		bullet.dir.set(bullet.collideDir);
 
 		// Reset bullet position and time.
 		bullet.time = 0;
@@ -220,9 +240,30 @@ Ptero.orb = (function(){
 		return bullet;
 	};
 
-	// Create a bullet with some trajectory for the given aiming vector.
-	function getStrayBullet(aim_vector) {
-		return null;
+	function getTargetBulletCone(target) {
+		var target_pos = target.getPosition();
+		var z = target_pos.z;
+		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
+		var r = target_proj.dist(origin);
+		return {r:r, z:z};
+	};
+
+	function getDefaultBulletCone() {
+		var frustum = Ptero.screen.getFrustum();
+		return {r: frustum.nearTop, z: frustum.near * 3};
+	};
+
+	function createBulletFromCone(cone, aim_vector) {
+		var frustum = Ptero.screen.getFrustum();
+		var vector = aim_vector.copy().mul(cone.r);
+		vector.add(origin);
+		vector.set(frustum.projectToZ(vector,cone.z)).sub(origin).normalize();
+
+		var bullet = new Ptero.Bullet;
+		bullet.speed = getBulletSpeed();
+		bullet.pos.set(origin);
+		bullet.dir.set(vector);
+		return bullet;
 	};
 
 	// Create touch controls.

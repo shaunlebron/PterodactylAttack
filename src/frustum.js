@@ -30,7 +30,7 @@ Ptero.Frustum.prototype = {
 	},
 	isInside: function isInside(vector) {
 		var v = this.projectToNear(vector);
-		return (this.far < vector.z && vector.z < this.near && // ( far < z < near)
+		return (this.far >= vector.z && vector.z > 0 &&
 				Math.abs(v.x) < this.nearRight &&
 				Math.abs(v.y) < this.nearTop);
 	},

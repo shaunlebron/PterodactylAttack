@@ -34,6 +34,8 @@ Ptero.SpriteSheet.prototype = {
 			sx,sy,sw,sh,
 			x,y,dw,dh);
 		if (highlight) {
+			ctx.fillStyle = "rgba(255,0,0,0.5)";
+			ctx.fillRect(x,y,dw,dh);
 			ctx.strokeStyle = "#f00";
 			ctx.lineWidth = 2;
 			ctx.strokeRect(x,y,dw,dh);

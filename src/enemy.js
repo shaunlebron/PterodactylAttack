@@ -13,14 +13,9 @@ Ptero.Enemy = function() {
 	this.randomizeBoom();
 
 	this.doneTimer = new Ptero.Timer(1000);
-
-	this.setTimeBomb();
 };
 
 Ptero.Enemy.prototype = {
-	setTimeBomb: function setTimeBomb() {
-		this.bombTimer = new Ptero.Timer((Math.random()*10 + 3)*1000);
-	},
 	randomizeBoom: function randomizeBoom() {
 		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
 		this.boomSprite.restart();
@@ -51,7 +46,6 @@ Ptero.Enemy.prototype = {
 		this.path = Ptero.makeEnemyPath();
 		this.isHit = false;
 		this.doneTimer.reset();
-		this.setTimeBomb();
 	},
 	update: function update(dt) {
 		var millis = dt*1000;
@@ -80,18 +74,15 @@ Ptero.Enemy.prototype = {
 		}
 		else {
 			// FLYING TOWARD SCREEN
-			this.bombTimer.increment(millis);
-			if (this.bombTimer.isDone()) {
-				this.onHit();
-			}
-			else {
-				// update position
-				this.path.step(dt);
+			// update position
+			this.path.step(dt);
 
-				// update animation
-				this.babySprite.update(dt);
-			}
+			// update animation
+			this.babySprite.update(dt);
 		}
+	},
+	getSize: function() {
+		return this.babySprite.sheet.tileWidth;
 	},
 	draw: function draw(ctx) {
 		var pos = this.path.state.pos;

@@ -29,12 +29,11 @@ Ptero.bulletpool = (function(){
 				continue;
 			}
 			b.update(dt);
-			if (!frustum.isInside(b.pos)) {
-				delete bullets[i]; 
-				continue;
+			if (b.collideTarget && b.time > b.collideTime) {
+				b.collideTarget.onHit && b.collideTarget.onHit();
+				delete bullets[i];
 			}
-			if (b.target && b.time > b.collideTime) {
-				b.target.onHit && b.target.onHit();
+			else if (b.time > 5) {
 				delete bullets[i];
 			}
 		}
@@ -44,7 +43,9 @@ Ptero.bulletpool = (function(){
 		var i,b;
 		for (i=0; i<max_bullets; i++) {
 			b = bullets[i];
-			b && b.draw(ctx);
+			if (b) {
+				b.draw(ctx);
+			}
 		}
 	};
 
