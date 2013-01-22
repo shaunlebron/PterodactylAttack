@@ -6,26 +6,17 @@ Ptero.Bullet = function() {
 	this.time = 0;
 	this.collideTime = null;
 	this.collideTarget = null;
+	this.sprite = new Ptero.AnimSprite(Ptero.assets.sheets.bullet);
 };
 
 Ptero.Bullet.prototype = {
+	lifeTime: 5, // seconds
 	update: function update(dt) {
 		this.pos.add(this.dir.copy().mul(this.speed*dt));
 		this.time += dt;
 	},
 	draw: function draw(ctx) {
 		var p = Ptero.screen.spaceToScreen(this.pos);
-		ctx.beginPath();
-		var closeWidth = this.getSpaceRadius();
-		var scale = Ptero.screen.getFrustum().getDepthScale(this.pos.z, closeWidth) / closeWidth;
-		ctx.arc(p.x,p.y,this.getRadius()*scale,0,Math.PI*2);
-		ctx.fillStyle = "#f00";
-		ctx.fill();
-	},
-	getRadius: function getRadius() {
-		return Ptero.screen.getHeight()/12;
-	},
-	getSpaceRadius: function getSpaceRadius() {
-		return this.getRadius() / Ptero.screen.getScreenToSpaceRatio();
+		this.sprite.draw3D(ctx, this.pos);
 	},
 };

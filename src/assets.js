@@ -6,6 +6,7 @@ Ptero.assets = (function(){
 		"baby": "img/baby_sheet.png",
 		"boom1": "img/boom1_sheet.png",
 		"boom2": "img/boom2_sheet.png",
+		"bullet": "img/bullet_sheet.png",
 	};
 
 	var images = {};

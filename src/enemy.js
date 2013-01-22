@@ -46,6 +46,7 @@ Ptero.Enemy.prototype = {
 		this.path = Ptero.makeEnemyPath();
 		this.isHit = false;
 		this.doneTimer.reset();
+		this.isGoingToDie = false;
 	},
 	update: function update(dt) {
 		var millis = dt*1000;
@@ -87,22 +88,13 @@ Ptero.Enemy.prototype = {
 	draw: function draw(ctx) {
 		var pos = this.path.state.pos;
 
-		// This is the width of the image when it is on the near plane.
-		// It is multiplied to match the scale of the background.
-		var closeWidth = this.boomSprite.sheet.tileWidth * Ptero.background.getScale();
-
-		// This is the apparent scale resulting from its depth.
-		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, closeWidth) / closeWidth;
-
-		var screenPos = Ptero.screen.spaceToScreen(pos);
-
 		if (this.isHit) {
-			this.boomSprite.drawCentered(ctx, screenPos.x, screenPos.y, scale, this.highlight);
+			this.boomSprite.draw3D(ctx, pos, this.highlight);
 		}
 		else if (this.path.isDone()) {
 		}
 		else {
-			this.babySprite.drawCentered(ctx, screenPos.x, screenPos.y, scale, this.highlight);
+			this.babySprite.draw3D(ctx, pos, this.highlight);
 		}
 
 	},

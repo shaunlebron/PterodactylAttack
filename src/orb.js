@@ -131,12 +131,13 @@ Ptero.orb = (function(){
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
 		var target = chooseTargetFromAimVector(aim_vector);
-		setShotTarget(target);
+		//setShotTarget(target);
 
 		var aimAngleError = getAimAngleError(target.getPosition(), aim_vector);
 		var bullet, bulletCone;
-		if (aimAngleError < maxAimAngleError) {
+		if (!target.isGoingToDie && aimAngleError < maxAimAngleError) {
 			bullet = createHomingBullet(target);
+			target.isGoingToDie = true;
 		}
 		else {
 			bulletCone = target ? getTargetBulletCone(target) : getDefaultBulletCone(aim_vector);
@@ -145,6 +146,9 @@ Ptero.orb = (function(){
 
 		if (bullet) {
 			Ptero.bulletpool.add(bullet);
+		}
+		else {
+			console.error("unable to create bullet");
 		}
 	};
 
@@ -200,7 +204,7 @@ Ptero.orb = (function(){
 
 		// Create time window and step size to search for a collision.
 		var t;
-		var maxT = 20; // only search this many seconds ahead.
+		var maxT = bullet.lifeTime; // only search this many seconds ahead.
 		var dt = 1/100; // search in increments of dt.
 
 		// Determine the threshold for a valid collision.

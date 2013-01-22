@@ -22,7 +22,6 @@ Ptero.bulletpool = (function(){
 
 	function update(dt) {
 		var i,b;
-		var frustum = Ptero.screen.getFrustum();
 		for (i=0; i<max_bullets; i++) {
 			b = bullets[i];
 			if (!b) {
@@ -31,10 +30,10 @@ Ptero.bulletpool = (function(){
 			b.update(dt);
 			if (b.collideTarget && b.time > b.collideTime) {
 				b.collideTarget.onHit && b.collideTarget.onHit();
-				delete bullets[i];
+				bullets[i] = null;
 			}
-			else if (b.time > 5) {
-				delete bullets[i];
+			else if (b.time > b.lifeTime) {
+				bullets[i] = null;
 			}
 		}
 	};
@@ -52,7 +51,7 @@ Ptero.bulletpool = (function(){
 	function clear() {
 		var i;
 		for (i=0; i<max_bullets; i++) {
-			delete bullets[i];
+			bullets[i] = null;
 		}
 	};
 
