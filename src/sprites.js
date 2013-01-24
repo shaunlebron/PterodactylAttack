@@ -114,3 +114,32 @@ Ptero.AnimSprite.prototype = {
 	},
 };
 
+// Deferred sprites allow for drawing the sprites in a correct order.
+// This allows closer sprites to be drawn over those further away.
+Ptero.deferredSprites = (function(){
+	var sprites=[];
+	var len=0;
+	function clear() {
+		sprites.length = 0;
+		len = 0;
+	};
+	function defer(draw,z) {
+		sprites[len++] = {draw:draw, z:z};
+	};
+	function finalize() {
+		sprites.sort(function(a,b) { return b.z - a.z; });
+	};
+	function draw(ctx) {
+		var i;
+		for (i=0; i<len; i++) {
+			sprites[i].draw(ctx);
+		}
+	};
+	return {
+		clear: clear,
+		defer: defer,
+		finalize: finalize,
+		draw: draw,
+	};
+})();
+

@@ -38,12 +38,18 @@ Ptero.bulletpool = (function(){
 		}
 	};
 
-	function draw(ctx) {
+	function deferBullets() {
 		var i,b;
 		for (i=0; i<max_bullets; i++) {
 			b = bullets[i];
 			if (b) {
-				b.draw(ctx);
+				Ptero.deferredSprites.defer(
+					(function(b){
+						return function(ctx) {
+							b.draw(ctx);
+						};
+					})(b),
+					b.pos.z);
 			}
 		}
 	};
@@ -58,7 +64,7 @@ Ptero.bulletpool = (function(){
 	return {
 		add: add,
 		update: update,
-		draw: draw,
+		deferBullets: deferBullets,
 		clear: clear,
 	};
 })();

@@ -519,6 +519,35 @@ Ptero.AnimSprite.prototype = {
 	},
 };
 
+// Deferred sprites allow for drawing the sprites in a correct order.
+// This allows closer sprites to be drawn over those further away.
+Ptero.deferredSprites = (function(){
+	var sprites=[];
+	var len=0;
+	function clear() {
+		sprites.length = 0;
+		len = 0;
+	};
+	function defer(draw,z) {
+		sprites[len++] = {draw:draw, z:z};
+	};
+	function finalize() {
+		sprites.sort(function(a,b) { return b.z - a.z; });
+	};
+	function draw(ctx) {
+		var i;
+		for (i=0; i<len; i++) {
+			sprites[i].draw(ctx);
+		}
+	};
+	return {
+		clear: clear,
+		defer: defer,
+		finalize: finalize,
+		draw: draw,
+	};
+})();
+
 Ptero.stress_scene = (function(){
 
 	var babies = [];
@@ -679,7 +708,6 @@ Ptero.bulletpool = (function(){
 				return i;
 			}
 		}
-		console.error("no free bullet index");
 		return -1;
 	};
 
@@ -687,7 +715,6 @@ Ptero.bulletpool = (function(){
 		var i = getFreeIndex();
 		if (i != -1) {
 			bullets[i] = bullet;
-			console.log("fired bullet "+i);
 		}
 	};
 
@@ -702,21 +729,25 @@ Ptero.bulletpool = (function(){
 			if (b.collideTarget && b.time > b.collideTime) {
 				b.collideTarget.onHit && b.collideTarget.onHit();
 				bullets[i] = null;
-				console.log("collided bullet "+i+" at time "+b.time);
 			}
 			else if (b.time > b.lifeTime) {
 				bullets[i] = null;
-				console.log("expired bullet "+i);
 			}
 		}
 	};
 
-	function draw(ctx) {
+	function deferBullets() {
 		var i,b;
 		for (i=0; i<max_bullets; i++) {
 			b = bullets[i];
 			if (b) {
-				b.draw(ctx);
+				Ptero.deferredSprites.defer(
+					(function(b){
+						return function(ctx) {
+							b.draw(ctx);
+						};
+					})(b),
+					b.pos.z);
 			}
 		}
 	};
@@ -731,7 +762,7 @@ Ptero.bulletpool = (function(){
 	return {
 		add: add,
 		update: update,
-		draw: draw,
+		deferBullets: deferBullets,
 		clear: clear,
 	};
 })();
@@ -976,7 +1007,6 @@ Ptero.orb = (function(){
 	};
 
 	function draw(ctx) {
-		Ptero.bulletpool.draw(ctx);
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToScreen(origin);
 
@@ -1361,12 +1391,6 @@ Ptero.scene_game = (function() {
 	var enemies = [];
 	var numEnemies = 20;
 
-	function sortEnemies() {
-		enemies.sort(function(a,b) {
-			return b.path.state.pos.z - a.path.state.pos.z;
-		});
-	};
-
 	function init() {
 
 		Ptero.background.setImage(Ptero.assets.images.desert);
@@ -1382,20 +1406,27 @@ Ptero.scene_game = (function() {
 	};
 
 	function update(dt) {
+		Ptero.deferredSprites.clear();
 		var i;
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
+			// TODO: only defer if visible
+			Ptero.deferredSprites.defer(
+				(function(e) {
+					return function(ctx){
+						e.draw(ctx);
+					};
+				})(enemies[i]),
+				enemies[i].getPosition().z);
 		}
-		sortEnemies();
 		Ptero.orb.update(dt);
+		Ptero.bulletpool.deferBullets();
+		Ptero.deferredSprites.finalize();
 	};
 
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
-		var i;
-		for (i=0; i<numEnemies; i++) {
-			enemies[i].draw(ctx);
-		}
+		Ptero.deferredSprites.draw(ctx);
 		Ptero.orb.draw(ctx);
 		var point;
 		if (Ptero.input.isTouched()) {

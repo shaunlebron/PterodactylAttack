@@ -98,7 +98,6 @@ Ptero.orb = (function(){
 	};
 
 	function draw(ctx) {
-		Ptero.bulletpool.draw(ctx);
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToScreen(origin);
 
