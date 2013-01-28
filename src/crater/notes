@@ -1,0 +1,25 @@
+
+canvas:
+   	1. divide window into 4 sections:
+   		(top ortho x,y)     (front perspective)
+   		(front ortho x,z)   (right ortho y,z)
+   	2. create function (canvas coord) -> (section,space coord)
+   	3. fixed window ranges based on aspect ratio
+
+point editing:
+   	1. append a point to the current path.
+   	2. move a point
+   	3. delete a point
+   	4. insert point between points
+
+input/output:
+   	1. textarea for input.
+   	2. drag and drop for loading files.
+
+file format:
+   	[
+   		{x:x,y:y,z:z,t:t},
+   		...
+   	]
+
+

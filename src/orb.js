@@ -190,7 +190,8 @@ Ptero.orb = (function(){
 	};
 
 	function getBulletSpeed() {
-		return Ptero.background.getScale() * Ptero.screen.getHeight() * 50;
+		var frustum = Ptero.screen.getFrustum();
+		return frustum.nearTop * 120;
 	}
 
 	// Create a bullet with the necessary trajectory to hit the given target.

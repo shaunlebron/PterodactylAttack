@@ -45,6 +45,7 @@ Ptero.makeEnemyPath = function makeEnemyPath() {
 
 	// get time to complete
 	var speed = (far-near) / 5;
+
 	var time = dist/speed;
 
 	// set path
