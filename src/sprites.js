@@ -107,8 +107,8 @@ Ptero.AnimSprite.prototype = {
 		this.sheet.drawCentered(ctx,x,y,this.frame,scale,highlight);
 	},
 	draw3D: function draw3D(ctx,pos,highlight) {
-		var closeWidth = this.sheet.tileWidth * Ptero.background.getScale();
-		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, closeWidth) / closeWidth;
+		var frustum = Ptero.screen.getFrustum();
+		var scale = Ptero.background.getScale() / pos.z * frustum.near;
 		var screenPos = Ptero.screen.spaceToScreen(pos);
 		this.drawCentered(ctx, screenPos.x, screenPos.y, scale, highlight);
 	},

@@ -11,6 +11,7 @@ Ptero.PathState = function(index,indexStep,time,pos) {
 
 Ptero.Path = function(points, times, loop) {
 	this.points = points;
+	this.numPoints = points.length;
 	this.times = times;
 	this.loop = loop;
 	this.state = new Ptero.PathState;
@@ -22,6 +23,10 @@ Ptero.Path.prototype = {
 
 	// return a predicted state that is dt seconds in the future
 	seek: function seek(dt) {
+		if (this.numPoints == 1) {
+			var p = (new Ptero.Vector).set(this.points[0]);
+			return new Ptero.PathState(0,1,0,p);
+		}
 
 		var i = this.state.index;
 		var iStep = this.state.indexStep;

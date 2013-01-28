@@ -13,16 +13,16 @@ Ptero.screen = (function(){
 		canvas.height = height;
 	};
 
+	function setStartSize(w,h) {
+		width = w;
+		height = h;
+	};
+
 	function init(_canvas) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		if (navigator.isCocoonJS) {
-			setSize(window.innerWidth, window.innerHeight);
-		}
-		else {
-			setSize(720,480);
-		}
+		setSize(width,height);
 
 		var fov = 30*Math.PI/180;
 		//var near = height/2 / Math.tan(fov/2);
@@ -78,6 +78,7 @@ Ptero.screen = (function(){
 		getCanvas:	function() { return canvas; },
 		getCtx:		function() { return ctx; },
 		getFrustum: function() { return frustum; },
+		setStartSize: setStartSize,
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
         getScreenToSpaceRatio: getScreenToSpaceRatio,

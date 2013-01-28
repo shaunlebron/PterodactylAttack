@@ -13,6 +13,13 @@ window.onload = function() {
 	// NOTE: commented out for now as it is not working
 
 	Ptero.assets.load(function(){
+		if (navigator.isCocoonJS) {
+			Ptero.screen.setStartSize(window.innerWidth, window.innerHeight);
+		}
+		else {
+			Ptero.screen.setStartSize(720,480);
+			//Ptero.screen.setStartSize(500,300);
+		}
 		Ptero.screen.init(canvas);
 		//Ptero.setScene(Ptero.stress_scene);
 		Ptero.input.init();
