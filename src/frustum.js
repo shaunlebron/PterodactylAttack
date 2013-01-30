@@ -11,11 +11,8 @@ Ptero.Frustum = function(near,far,fov,aspect) {
 	this.fov = fov;
 	this.aspect = aspect;
 
-	this.nearTop = Math.tan(fov/2)*near;
-	this.nearRight = this.nearTop * aspect;
-
-	this.nearWidth = this.nearRight * 2;
-	this.nearHeight = this.nearTop * 2;
+	this.createBoundingBox();
+	this.createEdges();
 };
 
 Ptero.Frustum.prototype = {
@@ -36,5 +33,56 @@ Ptero.Frustum.prototype = {
 	},
 	getDepthScale: function getDepthScale(z,nearScale) {
 		return nearScale/z*this.near;
+	},
+	createBoundingBox: function createBoundingBox() {
+		this.nearTop = Math.tan(fov/2)*near;
+		this.nearRight = this.nearTop * aspect;
+		this.nearBottom = -this.nearTop;
+		this.nearLeft = -this.nearRight;
+		this.nearWidth = this.nearRight * 2;
+		this.nearHeight = this.nearTop * 2;
+
+		this.farTop = Math.tan(fov/2)*far;
+		this.farRight = this.farTop * aspect;
+		this.farBottom = -this.farTop;
+		this.farLeft = -this.farRight;
+		this.farWidth = this.farRight * 2;
+		this.farHeight = this.farTop * 2;
+
+		this.xmin = this.farLeft;
+		this.xmax = this.farRight;
+		this.ymin = this.farBottom;
+		this.ymax = this.farTop;
+		this.zmin = this.near;
+		this.zmax = this.far;
+
+		this.xrange = this.xmax-this.xmin;
+		this.yrange = this.ymax-this.ymin;
+		this.zrange = this.zmax-this.zmin;
+
+		this.xcenter = this.xmin + this.xrange/2;
+		this.ycenter = this.ymin + this.yrange/2;
+		this.zcenter = this.zmin + this.zrange/2;
+	},
+	createEdges: function createEdges() {
+		n = this.near;
+		f = this.far;
+		nl = this.nearLeft;
+		nr = this.nearRight;
+		nt = this.nearTop;
+		nb = this.nearBottom;
+		fl = this.farLeft;
+		fr = this.farRight;
+		ft = this.farTop;
+		fb = this.farBottom;
+
+		return [
+			[{x:nl, y:nt, z:n}, {x:nr, y:nt, z:n}, {x:nr, y:nb, z:n}, {x:nl, y:nb, z:n}], // near edges
+			[{x:fl, y:ft, z:f}, {x:fr, y:ft, z:f}, {x:fr, y:fb, z:f}, {x:fl, y:fb, z:f}], // far edges
+			[{x:nl, y:nt, z:n}, {x:fl, y:ft, z:f}], // top left edge
+			[{x:nr, y:nt, z:n}, {x:fr, y:ft, z:f}], // top right edge
+			[{x:nr, y:nb, z:n}, {x:fr, y:fb, z:f}], // bottom right edge
+			[{x:nl, y:nb, z:n}, {x:fl, y:fb, z:f}], // top left edge
+		];
 	},
 };

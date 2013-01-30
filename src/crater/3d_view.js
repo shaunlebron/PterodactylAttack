@@ -7,11 +7,10 @@ Ptero.Crater.3d_view = (function() {
 		var w = Ptero.screen.getPaneWidth();
 		var h = Ptero.screen.getPaneHeight();
 
-		// TODO: get frustum and create list of lines for frustum edges so that each Pane can draw them.
+		var frustum = Ptero.screen.getFrustum();
 
 		// TODO: to compute units per pixel and left,top pane coords.
-		//		1. compute bounding box around frustum
-		//		2. get scale of a fitted bounding box in w,h screen box
+		//		1. get scale of a fitted bounding box in w,h screen box
 
 		var topCoords = new Ptero.Crater.PaneCoords(
 			w,h,
