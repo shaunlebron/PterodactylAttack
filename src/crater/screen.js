@@ -3,16 +3,16 @@ Ptero.Crater.screen = (function(){
 
 	var canvas;
 
-	var sectionWidth = 400;
-	var sectionHeight = 200;
-	var width = sectionWidth*2;
-	var height = sectionHeight*2;
+	var paneWidth = 400;
+	var paneHeight = 200;
+	var width =  paneWidth*2;
+	var height = paneHeight*2;
 
 	function init(_canvas) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		Ptero.screen.setStartSize(sectionWidth, sectionHeight);
+		Ptero.screen.setStartSize(paneWidth, paneHeight);
 		Ptero.screen.init(canvas);
 		canvas.width = width;
 		canvas.height = height;
@@ -20,5 +20,7 @@ Ptero.Crater.screen = (function(){
 
 	return {
 		init: init,
+		getPaneWidth: function() { return paneWidth; },
+		getPaneHeight: function() { return paneHeight; },
 	};
 })();
