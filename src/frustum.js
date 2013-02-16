@@ -35,15 +35,15 @@ Ptero.Frustum.prototype = {
 		return nearScale/z*this.near;
 	},
 	createBoundingBox: function createBoundingBox() {
-		this.nearTop = Math.tan(fov/2)*near;
-		this.nearRight = this.nearTop * aspect;
+		this.nearTop = Math.tan(this.fov/2)*this.near;
+		this.nearRight = this.nearTop * this.aspect;
 		this.nearBottom = -this.nearTop;
 		this.nearLeft = -this.nearRight;
 		this.nearWidth = this.nearRight * 2;
 		this.nearHeight = this.nearTop * 2;
 
-		this.farTop = Math.tan(fov/2)*far;
-		this.farRight = this.farTop * aspect;
+		this.farTop = Math.tan(this.fov/2)*this.far;
+		this.farRight = this.farTop * this.aspect;
 		this.farBottom = -this.farTop;
 		this.farLeft = -this.farRight;
 		this.farWidth = this.farRight * 2;

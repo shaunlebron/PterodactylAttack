@@ -18,12 +18,14 @@ window.onload = function() {
 		}
 		else {
 			Ptero.screen.setStartSize(720,480);
-			//Ptero.screen.setStartSize(500,300);
 		}
+		console.log("initing screen");
 		Ptero.screen.init(canvas);
-		//Ptero.setScene(Ptero.stress_scene);
+		console.log("initing input");
 		Ptero.input.init();
+		console.log("setting scene");
 		Ptero.setScene(Ptero.scene_game);
+		console.log("starting exec");
 		Ptero.executive.start();
 	});
 };
