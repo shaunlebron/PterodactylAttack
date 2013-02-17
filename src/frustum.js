@@ -76,7 +76,7 @@ Ptero.Frustum.prototype = {
 		ft = this.farTop;
 		fb = this.farBottom;
 
-		return [
+		this.edges = [
 			[{x:nl, y:nt, z:n}, {x:nr, y:nt, z:n}, {x:nr, y:nb, z:n}, {x:nl, y:nb, z:n}], // near edges
 			[{x:fl, y:ft, z:f}, {x:fr, y:ft, z:f}, {x:fr, y:fb, z:f}, {x:fl, y:fb, z:f}], // far edges
 			[{x:nl, y:nt, z:n}, {x:fl, y:ft, z:f}], // top left edge
