@@ -15,12 +15,7 @@ Ptero.Crater.executive = (function(){
 				scene.update(dt);
 			}
 			var ctx = Ptero.screen.getCtx();
-			ctx.save();
-			ctx.beginPath();
-			ctx.rect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
-			ctx.clip();
 			scene.draw(ctx);
-			ctx.restore();
 			requestAnimationFrame(tick);
 		}
 		catch (e) {

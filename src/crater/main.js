@@ -13,7 +13,7 @@ window.onload = function() {
 		console.log("initing input");
 		Ptero.input.init();
 		console.log("setting scene");
-		Ptero.setScene(Ptero.Crater.scene_crater);
+		Ptero.setScene(Ptero.Crater.panes);
 		console.log("starting exec");
 		Ptero.Crater.executive.start();
 	});
