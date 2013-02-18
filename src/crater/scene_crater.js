@@ -10,6 +10,8 @@ Ptero.Crater.scene_crater = (function() {
 			[new Ptero.Vector(0,0,Ptero.screen.getFrustum().near)],
 			[1],
 			true);
+
+		Ptero.Crater.enemy = enemy;
 	};
 
 	function update(dt) {

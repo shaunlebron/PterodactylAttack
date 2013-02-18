@@ -63,7 +63,7 @@ Ptero.Crater.Pane.prototype = {
 		var a = this.axes[0];
 		var b = this.axes[1];
 
-		var pad = 0.08;
+		var pad = 0.3;
 		var apad = frustum[a+'range']*pad;
 		var amin = frustum[a+'min']-apad;
 		var amax = frustum[a+'max']+apad;
@@ -120,6 +120,25 @@ Ptero.Crater.Pane.prototype = {
 			this.lineTo(ctx, points[i]);
 		}
 		ctx.closePath();
+		ctx.stroke();
+	},
+	fillCircle: function(ctx, spacePos, radius, color) {
+		ctx.beginPath();
+		var pos = this.transform(spacePos);
+		var a = this.axes[0];
+		var b = this.axes[1];
+		ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
+		ctx.fillStyle = color;
+		ctx.fill();
+	},
+	strokeCircle: function(ctx, spacePos, radius, color, thickness) {
+		ctx.beginPath();
+		var pos = this.transform(spacePos);
+		var a = this.axes[0];
+		var b = this.axes[1];
+		ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
+		ctx.lineWidth = thickness;
+		ctx.strokeStyle = color;
 		ctx.stroke();
 	},
 
@@ -195,6 +214,10 @@ Ptero.Crater.Pane.prototype = {
 		}
 	},
 
+	drawEnemy: function(ctx) {
+		this.strokeCircle(ctx, Ptero.Crater.enemy.path.state.pos, 5, "#F00",2);
+	},
+
 	/* MAIN FUNCTIONS */
 
 	draw: function(ctx) {
@@ -202,6 +225,7 @@ Ptero.Crater.Pane.prototype = {
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawFrustum(ctx);
 		this.drawAxes(ctx);
+		this.drawEnemy(ctx);
 	},
 	update: function(dt) {
 	},
