@@ -79,7 +79,10 @@ Ptero.Crater.Pane.prototype = {
 	screenToSpace: function(x,y) {
 		var a = (x - this.origin.x) / this.scale;
 		var b = -(y - this.origin.y) / this.scale;
-		return { a:a, b:b, };
+		var pos = {};
+		pos[this.axes[0]] = a;
+		pos[this.axes[1]] = b;
+		return pos;
 	},
 	_spaceToScreen: function(a,b) {
 		var x = a * this.scale + this.origin.x;

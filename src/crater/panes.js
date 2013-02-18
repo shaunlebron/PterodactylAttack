@@ -2,10 +2,15 @@
 Ptero.Crater.panes = (function() {
 
 	var topPane, frontPane, rightPane, livePane;
+	var panes;
+
+	var paneWidth,paneHeight;
 
 	function init() {
 		var w = Ptero.Crater.screen.getPaneWidth();
 		var h = Ptero.Crater.screen.getPaneHeight();
+		paneWidth = w;
+		paneHeight = h;
 
 		var frustum = Ptero.screen.getFrustum();
 
@@ -26,13 +31,59 @@ Ptero.Crater.panes = (function() {
 		rightPane.zoom(scale);
 
 		// Set the live pane to a scene and initialize it.
-		livePane = Ptero.Crater.scene_crater;
+		livePane = new Ptero.Crater.LivePane();
 		livePane.init();
+
+		// This determines the position of the panes on the screen.
+		panes = [livePane, topPane, rightPane, frontPane];
+
+		initControls();
+	};
+
+	function getPaneFromXY(x,y) {
+		var row = Math.floor(y/paneHeight);
+		var col = Math.floor(x/paneWidth);
+		return panes[row*2+col];
+	};
+
+	function getPaneRect(pane) {
+		var w = paneWidth;
+		var h = paneHeight;
+
+		var i;
+		for (i=0; i<4; i++) {
+			if (pane == panes[i]) {
+				break;
+			}
+		}
+
+		var row = Math.floor(i/2);
+		var col = i%2;
+
+		return {
+			x: col*w,
+			y: row*h,
+			w: w,
+			h: h,
+		};
+	};
+
+	function initControls() {
+		Ptero.input.addTouchHandler({
+			start: function(x,y) {
+			},
+			move: function(x,y) {
+			},
+			end: function(x,y) {
+			},
+			cancel: function(x,y) {
+			},
+		});
 	};
 
 	function draw(ctx) {
-		var w = Ptero.Crater.screen.getPaneWidth();
-		var h = Ptero.Crater.screen.getPaneHeight();
+		var w = paneWidth;
+		var h = paneHeight;
 
 		function drawPane(pane,x,y) {
 			ctx.save();
@@ -44,11 +95,14 @@ Ptero.Crater.panes = (function() {
 			ctx.restore();
 		}
 
-		drawPane(livePane,0,0);
-		drawPane(topPane,w,0);
-		drawPane(frontPane,w,h);
-		drawPane(rightPane,0,h);
+		var i=0, row, col;
+		for (i=0; i<4; i++) {
+			row = Math.floor(i/2);
+			col = i%2;
+			drawPane(panes[i], col*w, row*h);
+		}
 
+		// Draw pane borders.
 		ctx.strokeStyle = "#FFF";
 		ctx.lineWidth = 2;
 		ctx.beginPath();
@@ -60,10 +114,10 @@ Ptero.Crater.panes = (function() {
 	};
 
 	function update(dt) {
-		livePane.update(dt);
-		topPane.update(dt);
-		frontPane.update(dt);
-		rightPane.update(dt);
+		var i;
+		for (i=0; i<4; i++) {
+			panes[i].update(dt);
+		}
 	};
 
 	return {
