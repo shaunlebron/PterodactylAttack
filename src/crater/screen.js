@@ -5,6 +5,7 @@ Ptero.Crater.screen = (function(){
 
 	var paneWidth = 400;
 	var paneHeight = 200;
+
 	var width =  paneWidth*2;
 	var height = paneHeight*2;
 

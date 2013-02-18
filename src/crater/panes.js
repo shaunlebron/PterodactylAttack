@@ -10,9 +10,9 @@ Ptero.Crater.panes = (function() {
 		var frustum = Ptero.screen.getFrustum();
 
 		// Create the panes for each projection.
-		topPane = new Ptero.Crater.Pane( w,h, ['x','z']);
-		frontPane = new Ptero.Crater.Pane( w,h, ['x','y']);
-		rightPane = new Ptero.Crater.Pane( w,h, ['z','y']);
+		topPane = new Ptero.Crater.Pane( w,h, ['x','z'], 'top');
+		frontPane = new Ptero.Crater.Pane( w,h, ['x','y'], 'front');
+		rightPane = new Ptero.Crater.Pane( w,h, ['z','y'], 'right');
 
 		// Set the pane windows to fit the frustum.
 		topPane.fitFrustum(frustum);

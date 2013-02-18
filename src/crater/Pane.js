@@ -1,5 +1,5 @@
 
-Ptero.Crater.Pane = function (w,h,axes) {
+Ptero.Crater.Pane = function (w,h,axes,title) {
 	// 2 axes labels (x,y,or z)
 	this.axes = axes;
 
@@ -7,6 +7,8 @@ Ptero.Crater.Pane = function (w,h,axes) {
 	this.pixelW = w;
 	this.pixelH = h;
 	this.aspect = w/h;
+
+	this.title = title;
 };
 
 Ptero.Crater.Pane.prototype = {
@@ -121,11 +123,68 @@ Ptero.Crater.Pane.prototype = {
 		ctx.stroke();
 	},
 
-	/* MAIN FUNCTIONS */
+	/* DRAWING FUNCTIONS */
 
-	draw: function(ctx) {
-		ctx.fillStyle = "#EEE";
-		ctx.fillRect(0,0,this.pixelW,this.pixelH);
+	drawAxes: function(ctx) {
+		var colors = {x:"#F00", y:"#00F", z:"#0F0"};
+
+		var margin = 20;
+		var x = margin;
+		var y = this.pixelH - margin;
+		
+		var axisLen = 50;
+		var arrowSize = 5;
+
+		// draw horizontal axis
+		ctx.beginPath();
+		ctx.moveTo(x+1,y);
+		ctx.lineTo(x+axisLen,y);
+		ctx.fillStyle = ctx.strokeStyle = colors[this.axes[0]];
+		ctx.stroke();
+
+		// draw horizontal axis arrow
+		ctx.beginPath();
+		ctx.moveTo(x+axisLen,y);
+		ctx.lineTo(x+axisLen-arrowSize,y-arrowSize);
+		ctx.lineTo(x+axisLen-arrowSize,y+arrowSize);
+		ctx.fill();
+
+		// draw vertical axis
+		ctx.beginPath();
+		ctx.moveTo(x,y-1);
+		ctx.lineTo(x,y-axisLen);
+		ctx.fillStyle = ctx.strokeStyle = colors[this.axes[1]];
+		ctx.stroke();
+
+		// draw vertical axis arrow
+		ctx.beginPath();
+		ctx.moveTo(x,y-axisLen);
+		ctx.lineTo(x-arrowSize,y-axisLen+arrowSize);
+		ctx.lineTo(x+arrowSize,y-axisLen+arrowSize);
+		ctx.fill();
+
+		// draw horizontal axis label
+		ctx.font = "italic 1em serif";
+		ctx.fillStyle = "#000";
+		ctx.textAlign = 'left';
+		ctx.textBaseline = 'middle';
+		ctx.fillText(this.axes[0],x+axisLen+arrowSize,y);
+
+		// draw vertical axis label
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'bottom';
+		ctx.fillText(this.axes[1],x,y-axisLen-arrowSize);
+
+		// draw title
+		ctx.textAlign = 'right';
+		ctx.textBaseline = 'top';
+		ctx.font = '1em serif';
+		ctx.fillStyle = "#777";
+		margin = 5;
+		ctx.fillText(' '+this.title+' ', this.pixelW - margin, margin);
+	},
+
+	drawFrustum: function(ctx) {
 		ctx.strokeStyle = "#555";
 		ctx.lineWidth = 1;
 		if (this.frustum) {
@@ -134,6 +193,15 @@ Ptero.Crater.Pane.prototype = {
 				this.lines(ctx, edges[i]);
 			}
 		}
+	},
+
+	/* MAIN FUNCTIONS */
+
+	draw: function(ctx) {
+		ctx.fillStyle = "#EEE";
+		ctx.fillRect(0,0,this.pixelW,this.pixelH);
+		this.drawFrustum(ctx);
+		this.drawAxes(ctx);
 	},
 	update: function(dt) {
 	},
