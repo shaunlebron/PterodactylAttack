@@ -235,12 +235,12 @@ Ptero.Crater.Pane.prototype = {
 
 	updateEnemyPosition: function(x,y) {
 		var pos = this.screenToSpace(x,y);
-		console.log(pos);
 		var a = this.axes[0];
 		var b = this.axes[1];
 		var point = Ptero.Crater.enemy.path.points[0];
 		point[a] = pos[a];
 		point[b] = pos[b];
+		point.z = Math.max(0.0001, point.z);
 	},
 
 	/* MAIN FUNCTIONS */
