@@ -46,6 +46,14 @@ Ptero.Crater.panes = (function() {
 		return panes[row*2+col];
 	};
 
+	function getXYRelativeToPane(x,y,pane) {
+		var rect = getPaneRect(pane);
+		return {
+			x: x-rect.x,
+			y: y-rect.y,
+		};
+	};
+
 	function getPaneRect(pane) {
 		var w = paneWidth;
 		var h = paneHeight;
@@ -69,15 +77,32 @@ Ptero.Crater.panes = (function() {
 	};
 
 	function initControls() {
+		var pane;
+		function start(x,y) {
+			pane = getPaneFromXY(x,y);
+			if (pane) {
+				var pos = getXYRelativeToPane(x,y,pane);
+				pane.mouseStart(pos.x,pos.y);
+			}
+		}
+		function move(x,y) {
+			if (pane) {
+				var pos = getXYRelativeToPane(x,y,pane);
+				pane.mouseMove(pos.x,pos.y);
+			}
+		}
+		function end(x,y) {
+			if (pane) {
+				var pos = getXYRelativeToPane(x,y,pane);
+				pane.mouseEnd(pos.x,pos.y);
+				pane = null;
+			}
+		}
 		Ptero.input.addTouchHandler({
-			start: function(x,y) {
-			},
-			move: function(x,y) {
-			},
-			end: function(x,y) {
-			},
-			cancel: function(x,y) {
-			},
+			start: start,
+			move: move,
+			end: end,
+			cancel: end,
 		});
 	};
 

@@ -220,6 +220,28 @@ Ptero.Crater.Pane.prototype = {
 	drawEnemy: function(ctx) {
 		this.strokeCircle(ctx, Ptero.Crater.enemy.path.state.pos, 5, "#F00",2);
 	},
+	
+	/* INPUT FUNCTIONS */
+
+	mouseStart: function(x,y) {
+		this.updateEnemyPosition(x,y);
+	},
+	mouseMove: function(x,y) {
+		this.updateEnemyPosition(x,y);
+	},
+	mouseEnd: function(x,y) {
+		this.updateEnemyPosition(x,y);
+	},
+
+	updateEnemyPosition: function(x,y) {
+		var pos = this.screenToSpace(x,y);
+		console.log(pos);
+		var a = this.axes[0];
+		var b = this.axes[1];
+		var point = Ptero.Crater.enemy.path.points[0];
+		point[a] = pos[a];
+		point[b] = pos[b];
+	},
 
 	/* MAIN FUNCTIONS */
 
