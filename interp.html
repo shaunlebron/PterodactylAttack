@@ -9,6 +9,7 @@
 			border: 1px solid black;
 		}
 	</style>
+	<script src="lib/requestAnimationFrame.js"></script>
 </head>
 <body>
 <canvas id='canvas'></canvas>
@@ -116,11 +117,11 @@ window.addEventListener('load',function(){
 	var ys = [];
 	var ts = [];
 	var totalTime = 0;
-	var minTime = 0.1;
+	var minTime = 0.5;
 	var maxTime = 4;
 	for (i=0; i<len; i++) {
 		xs[i] = (w/(len+1))*(i+1);
-		ys[i] = Math.random() * h;
+		ys[i] = h/2 + (Math.random()<0.5?-1:1)*(Math.random() * h/3);
 		if (i > 0) {
 			ts[i] = Math.random()*(maxTime-minTime) + minTime;
 			totalTime += ts[i];
@@ -129,7 +130,6 @@ window.addEventListener('load',function(){
 			ts[i] = 0;
 		}
 	}
-	console.log(ts);
 
 	function dot(x,y,r) {
 		ctx.beginPath();
@@ -137,29 +137,56 @@ window.addEventListener('load',function(){
 		ctx.fill();
 	}
 
-	ctx.fillStyle = "#000";
-	for (i=0; i<len; i++) {
-		dot(xs[i],ys[i],3);
-	}
-
 	var xinterp = createinterp(xs,ts);
 	var yinterp = createinterp(ys,ts);
 
-	var numpts = 1000;
-	ctx.strokeStyle = "#F00";
-	ctx.beginPath();
-	for (i=0; i<=numpts; i++) {
-		var t = i/numpts*totalTime;
-		var x = xinterp(t);
-		var y = yinterp(t);
-		if (i > 0) {
-			ctx.lineTo(x,y);
+	function draw(mt) {
+		ctx.clearRect(0,0,w,h);
+		var numpts = 1000;
+		ctx.fillStyle = ctx.strokeStyle = "#777";
+
+		// draw interp lines
+		ctx.beginPath();
+		for (i=0; i<=numpts; i++) {
+			var t = i/numpts*totalTime;
+			var x = xinterp(t);
+			var y = yinterp(t);
+			if (i > 0) {
+				ctx.lineTo(x,y);
+			}
+			else {
+				ctx.moveTo(x,y);
+			}
+			ctx.fillStyle
 		}
-		else {
-			ctx.moveTo(x,y);
+		ctx.stroke();
+
+		// draw interp dots
+		for (i=0; i<=numpts; i++) {
+			var t = i/numpts*totalTime;
+			var x = xinterp(t);
+			var y = yinterp(t);
+			dot(x,y,1.5);
 		}
+
+		ctx.fillStyle = "#000";
+		for (i=0; i<len; i++) {
+			dot(xs[i],ys[i],3);
+		}
+
+		var mx = xinterp(mt);
+		var my = yinterp(mt);
+		ctx.fillStyle = "#F00";
+		dot(mx,my,5);
 	}
-	ctx.stroke();
+
+	var mytime = 0;
+	function tick(time) {
+		draw(3*(time/1000) % totalTime);
+		requestAnimationFrame(tick);
+	}
+
+	requestAnimationFrame(tick);
 });
 
 </script>
