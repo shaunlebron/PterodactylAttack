@@ -1,10 +1,15 @@
+Generic Path class changes:
+	1. Make interpolator functions will be created for Linear and Hermite.
+		* Input: points and times
+		* Output: function: time -> point
+	2. Path class constructor will an interpolator function (see #1)
+	3. Path class's role will be to manage a state of an interpolator function.
+		* Current time and position.
+		* Helper functions (isDone, getPos, reset, seek, step)
 
-canvas:
-   	1. divide window into 4 sections:
-   		(top ortho x,y)     (front perspective)
-   		(front ortho x,z)   (right ortho y,z)
-   	2. create function (canvas coord) -> (section,space coord)
-   	3. fixed window ranges based on aspect ratio
+PathEditor class:
+	1. Contains points and times for a single path being edited.
+	2. Adds and handles UI point list elements.
 
 point editing:
    	1. append a point to the current path.
