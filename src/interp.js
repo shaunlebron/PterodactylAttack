@@ -26,9 +26,9 @@
 	// Get the total time length from a given list of delta times.
 	function getTotalTime(deltaTimes) {
 		var i,len = deltaTimes.length;
-		var totalTime;
+		var totalTime = 0;
 		for (i=0; i<len; i++) {
-			totalTime += times[i];
+			totalTime += deltaTimes[i];
 		}
 		return totalTime;
 	}
@@ -37,24 +37,28 @@
 	function getTimeSegment(t, deltaTimes) {
 		var i,len=deltaTimes.length;
 		for (i=0; i<len; i++) {
-			if (t <= times[i]) {
+			if (t <= deltaTimes[i]) {
 				break;
 			}
 			else {
-				t -= times[i];
+				t -= deltaTimes[i];
 			}
+		}
+		if (i == len) {
+			i = len-1;
+			t = deltaTimes[len-1];
 		}
 		return {
 			index: i,
 			time: t,
-			timeFrac: t/times[i],
+			timeFrac: t/deltaTimes[i],
 		};
 	}
 
 	// Bound a value to the given min and max.
 	function bound(value, min, max) {
-		value = Math.min(min, value);
-		value = Math.max(max, value);
+		value = Math.max(min, value);
+		value = Math.min(max, value);
 		return value;
 	}
 
@@ -123,7 +127,7 @@
 			var seg = getTimeSegment(t, deltaTimes);
 			var i = seg.index;
 		
-			var result;
+			var result = {};
 			var ki,key;
 			for (ki=0; ki<numKeys; ki++) {
 				key = keys[ki];
@@ -202,7 +206,7 @@
 		// points = all the points to be interpolated
 		// deltaTimes = delta times for each point
 		function calcslopes(points,deltaTimes) {
-			var len = pts.length;
+			var len = points.length;
 			var slopes=[],s;
 			for (i=0;i<len;i++) {
 				if (i==0) {
@@ -260,14 +264,15 @@
 		//
 		//   (Get interpolated value at 0.75s)
 		//   var val = interp(0.75);
-		Ptero.Crater.makeHermiteInterp = function(values,deltaTimes) {
+		Ptero.makeHermiteInterp = function(values,deltaTimes) {
 			var totalTime = getTotalTime(deltaTimes);
 
-			var slopes = calcslopes(points,deltaTimes);
-			var splinefuncs = calcspline(points,deltaTimes,slopes);
+			var slopes = calcslopes(values,deltaTimes);
+			var splinefuncs = calcspline(values,deltaTimes,slopes);
 
 			return function(t) {
-				var seg = getTimeSegment(t, times);
+				t = bound(t, 0, totalTime);
+				var seg = getTimeSegment(t, deltaTimes);
 				return splinefuncs[seg.index](seg.time);
 			};
 		}
@@ -292,7 +297,7 @@
 		//
 		//   (Get interpolated value at 0.75s)
 		//   var val = interp(0.75);
-		Ptero.Crater.makeHermiteInterpForObjs = function(objs,keys,deltaTimes) {
+		Ptero.makeHermiteInterpForObjs = function(objs,keys,deltaTimes) {
 			var numKeys = keys.length;
 			var numObjs = objs.length;
 
@@ -311,8 +316,9 @@
 			}
 
 			return function(t) {
-				var seg = getTimeSegment(t, times);
-				var result;
+				t = bound(t, 0, totalTime);
+				var seg = getTimeSegment(t, deltaTimes);
+				var result = {};
 				var ki,key;
 				for (ki=0; ki<numKeys; ki++) {
 					key = keys[ki];

@@ -1,0 +1,123 @@
+
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Interpolation Experiment</title>
+	<style>
+		canvas {
+			border: 1px solid black;
+		}
+	</style>
+	<script src="lib/requestAnimationFrame.js"></script>
+	<script src="src/ptero.js"></script>
+	<script src="src/interp.js"></script>
+</head>
+<body>
+<canvas id='canvas'></canvas>
+<script>
+
+window.addEventListener('load',function(){
+
+	var w = 400;
+	var h = 300;
+
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+
+	canvas.width = w;
+	canvas.height = h;
+
+	var i,len=16;
+	var xs=[],ys=[],points = [];
+	var times = [];
+	var totalTime = 0;
+	var minTime = 0.5;
+	var maxTime = 4;
+	for (i=0; i<len; i++) {
+		xs[i] = (w/(len+1))*(i+1); 
+		ys[i] = h/2 + (Math.random()<0.5?-1:1)*(Math.random() * h/3);
+		points[i] = {
+			x: xs[i],
+			y: ys[i],
+		};
+		if (i < len-1) {
+			times[i] = Math.random()*(maxTime-minTime) + minTime;
+			totalTime += times[i];
+		}
+	}
+
+	function dot(x,y,r) {
+		ctx.beginPath();
+		ctx.arc(x, y, r, 0, Math.PI*2);
+		ctx.fill();
+	}
+
+	//var xinterp = Ptero.makeHermiteInterp(xs, times);
+	//var yinterp = Ptero.makeHermiteInterp(ys, times);
+	//var interp = Ptero.makeHermiteInterpForObjs(points, ['x','y'], times);
+	var xinterp = Ptero.makeInterp('linear', xs, times);
+	var yinterp = Ptero.makeInterp('linear', ys, times);
+	var interp = Ptero.makeInterpForObjs('linear', points, ['x','y'], times);
+
+	function draw(mt) {
+		ctx.clearRect(0,0,w,h);
+		var numpts = 1000;
+		ctx.fillStyle = ctx.strokeStyle = "#777";
+
+		var x,y,p,t;
+
+		// draw interp lines
+		ctx.beginPath();
+		for (i=0; i<=numpts; i++) {
+			t = i/numpts*totalTime;
+			p = interp(t);
+			x = xinterp(t);
+			y = yinterp(t);
+			if (i > 0) {
+				ctx.lineTo(p.x,p.y);
+				//ctx.lineTo(x,y);
+			}
+			else {
+				ctx.moveTo(p.x,p.y);
+				//ctx.moveTo(x,y);
+			}
+		}
+		ctx.stroke();
+
+		// draw interp dots
+		for (i=0; i<=numpts; i++) {
+			t = i/numpts*totalTime;
+			x = xinterp(t);
+			y = yinterp(t);
+			p = interp(t);
+			dot(p.x,p.y,1.5);
+			//dot(x,y,1.5);
+		}
+
+		ctx.fillStyle = "#000";
+		for (i=0; i<len; i++) {
+			dot(points[i].x,points[i].y,3);
+			//dot(xs[i],ys[i],3);
+		}
+
+		p = interp(mt);
+		x = xinterp(mt);
+		y = yinterp(mt);
+		ctx.fillStyle = "#F00";
+		dot(p.x,p.y,5);
+		//dot(x,y,5);
+	}
+
+	var mytime = 0;
+	function tick(time) {
+		draw(3*(time/1000) % totalTime);
+		requestAnimationFrame(tick);
+	}
+
+	requestAnimationFrame(tick);
+});
+
+</script>
+</body>
+</html>
