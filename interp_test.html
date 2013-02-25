@@ -7,6 +7,7 @@
 	<style>
 		canvas {
 			border: 1px solid black;
+			
 		}
 	</style>
 	<script src="lib/requestAnimationFrame.js"></script>
@@ -15,23 +16,20 @@
 </head>
 <body>
 <canvas id='canvas'></canvas>
+<canvas id='canvas2'></canvas>
 <script>
 
-window.addEventListener('load',function(){
+var w = 300;
+var h = 300;
 
-	var w = 400;
-	var h = 300;
+var xs,ys,points,times,totalTime,len;
 
-	var canvas = document.getElementById('canvas');
-	var ctx = canvas.getContext('2d');
-
-	canvas.width = w;
-	canvas.height = h;
-
-	var i,len=16;
-	var xs=[],ys=[],points = [];
-	var times = [];
-	var totalTime = 0;
+function createData() {
+	var i;
+	len=16;
+	xs=[],ys=[],points = [];
+	times = [];
+	totalTime = 0;
 	var minTime = 0.5;
 	var maxTime = 4;
 	for (i=0; i<len; i++) {
@@ -46,72 +44,102 @@ window.addEventListener('load',function(){
 			totalTime += times[i];
 		}
 	}
+}
 
-	function dot(x,y,r) {
-		ctx.beginPath();
-		ctx.arc(x, y, r, 0, Math.PI*2);
-		ctx.fill();
+var xinterp_dict, yinterp_dict, interp_dict;
+function createInterps() {
+	xinterp_dict = {};
+	yinterp_dict = {};
+	interp_dict = {};
+
+	xinterp_dict.hermite = Ptero.makeHermiteInterp(xs, times);
+	yinterp_dict.hermite = Ptero.makeHermiteInterp(ys, times);
+	interp_dict.hermite  = Ptero.makeHermiteInterpForObjs(points, ['x','y'], times);
+	xinterp_dict.linear = Ptero.makeInterp('linear', xs, times);
+	yinterp_dict.linear = Ptero.makeInterp('linear', ys, times);
+	interp_dict.linear  = Ptero.makeInterpForObjs('linear', points, ['x','y'], times);
+}
+
+function dot(ctx,x,y,r) {
+	ctx.beginPath();
+	ctx.arc(x, y, r, 0, Math.PI*2);
+	ctx.fill();
+}
+
+function drawCanvas(type, ctx, mt, dotColor) {
+	var xinterp = xinterp_dict[type];
+	var yinterp = yinterp_dict[type];
+	var interp = interp_dict[type];
+
+	ctx.clearRect(0,0,w,h);
+	var numpts = 1000;
+	ctx.fillStyle = ctx.strokeStyle = "#777";
+
+	var x,y,p,t;
+
+	// draw interp lines
+	ctx.beginPath();
+	for (i=0; i<=numpts; i++) {
+		t = i/numpts*totalTime;
+		p = interp(t);
+		x = xinterp(t);
+		y = yinterp(t);
+		if (i > 0) {
+			ctx.lineTo(p.x,p.y);
+			//ctx.lineTo(x,y);
+		}
+		else {
+			ctx.moveTo(p.x,p.y);
+			//ctx.moveTo(x,y);
+		}
+	}
+	ctx.stroke();
+
+	// draw interp dots
+	for (i=0; i<=numpts; i++) {
+		t = i/numpts*totalTime;
+		x = xinterp(t);
+		y = yinterp(t);
+		p = interp(t);
+		dot(ctx,p.x,p.y,1.5);
+		//dot(ctx,x,y,1.5);
 	}
 
-	var xinterp = Ptero.makeHermiteInterp(xs, times);
-	var yinterp = Ptero.makeHermiteInterp(ys, times);
-	var interp = Ptero.makeHermiteInterpForObjs(points, ['x','y'], times);
-	//var xinterp = Ptero.makeInterp('linear', xs, times);
-	//var yinterp = Ptero.makeInterp('linear', ys, times);
-	//var interp = Ptero.makeInterpForObjs('linear', points, ['x','y'], times);
-
-	function draw(mt) {
-		ctx.clearRect(0,0,w,h);
-		var numpts = 1000;
-		ctx.fillStyle = ctx.strokeStyle = "#777";
-
-		var x,y,p,t;
-
-		// draw interp lines
-		ctx.beginPath();
-		for (i=0; i<=numpts; i++) {
-			t = i/numpts*totalTime;
-			p = interp(t);
-			x = xinterp(t);
-			y = yinterp(t);
-			if (i > 0) {
-				ctx.lineTo(p.x,p.y);
-				//ctx.lineTo(x,y);
-			}
-			else {
-				ctx.moveTo(p.x,p.y);
-				//ctx.moveTo(x,y);
-			}
-		}
-		ctx.stroke();
-
-		// draw interp dots
-		for (i=0; i<=numpts; i++) {
-			t = i/numpts*totalTime;
-			x = xinterp(t);
-			y = yinterp(t);
-			p = interp(t);
-			dot(p.x,p.y,1.5);
-			//dot(x,y,1.5);
-		}
-
-		ctx.fillStyle = "#000";
-		for (i=0; i<len; i++) {
-			dot(points[i].x,points[i].y,3);
-			//dot(xs[i],ys[i],3);
-		}
-
-		p = interp(mt);
-		x = xinterp(mt);
-		y = yinterp(mt);
-		ctx.fillStyle = "#F00";
-		dot(p.x,p.y,5);
-		//dot(x,y,5);
+	ctx.fillStyle = "#000";
+	for (i=0; i<len; i++) {
+		dot(ctx,points[i].x,points[i].y,3);
+		//dot(ctx,xs[i],ys[i],3);
 	}
+
+	p = interp(mt);
+	x = xinterp(mt);
+	y = yinterp(mt);
+	ctx.fillStyle = dotColor;
+	dot(ctx,p.x,p.y,5);
+	//dot(ctx,x,y,5);
+
+}
+
+window.addEventListener('load',function(){
+
+	var canvas = document.getElementById('canvas');
+	var canvas2 = document.getElementById('canvas2');
+	var ctx = canvas.getContext('2d');
+	var ctx2 = canvas2.getContext('2d');
+
+	canvas.width = w;
+	canvas.height = h;
+	canvas2.width = w;
+	canvas2.height = h;
+
+	createData();
+	createInterps();
 
 	var mytime = 0;
 	function tick(time) {
-		draw(3*(time/1000) % totalTime);
+		var mt = 3*(time/1000) % totalTime;
+		drawCanvas('linear',ctx,mt, "#F00");
+		drawCanvas('hermite',ctx2,mt, "#F00");
 		requestAnimationFrame(tick);
 	}
 
