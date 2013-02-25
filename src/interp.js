@@ -1,23 +1,26 @@
 (function(){
 	/*
-
 	In general, we want a way to interpolate between a collection of points.
 	Each point should have a "delta time", the time it takes to get to this
 	point from the last.
 
-	For example, for points (a,b,c), and delta times (t1, t2).
+	For example, for points (a,b,c), and delta times (t1, t2):
 
 		at t=0,     point = a
 		at t=t1,    point = b
 		at t=t1+t2, point = c
 
 	We also want an _interpolation_ function to give us a point at any given
-	time in the valid time range.
+	time in the valid time range:
 
-	function interp(t) {
-		return a point interpolated between the given points
-	}
+	    function interp(t) {
+	    	return a point interpolated between the given points
+	    }
 
+	Currently, we have two types of interpolation functions:
+
+	1. Point-to-point interpolation using different easing functions (e.g. linear, sinusoid)
+	2. Spline interpolation with continuous 1st and 2nd derivative for smooth movement between control points.
 	*/
 
 	// Get the total time length from a given list of delta times.
@@ -105,7 +108,7 @@
 	// Example:
 	//
 	//   (Create linear interpolation for {x:0,y:0} to {x:20,y:35} in 2.5s)
-	//   var interp = makeInterp('linear', [{x:0,y:0}, {x:20, y:35}], [2.5]);
+	//   var interp = makeInterp('linear', [{x:0,y:0}, {x:20, y:35}], ['x', 'y'], [2.5]);
 	//
 	//   (Get interpolated object at 0.75s)
 	//   var obj = interp(0.75);
@@ -139,13 +142,13 @@
 		// See "Interpolation on arbitrary interval" at:
 		//    http://en.wikipedia.org/wiki/Cubic_Hermite_spline
 		//
-		// m0 = start slope
 		// p0 = start position
+		// m0 = start slope
+		// x0 = start time
 		// p1 = end position
 		// m1 = end slope
-		// x0 = start time
 		// x1 = end time
-		function cubichermite(m0,p0,p1,m1,x0,x1) {
+		function cubichermite(p0,m0,x0,p1,m1,x1) {
 			return function(x) {
 				var dx = x1-x0;
 				var t = (x-x0) / dx;
@@ -235,18 +238,28 @@
 			var splinefuncs = [];
 			for (i=0; i<len-1; i++) {
 				splinefuncs[i] = cubichermite(
-					slopes[i],points[i],
-					points[i+1],slopes[i+1],
-					0,deltaTimes[i+1]);
+					points[i],   slopes[i],   0,
+					points[i+1], slopes[i+1], deltaTimes[i+1]);
 			}
 			return splinefuncs;
 		}
 
-		// Create interpolation function.
-		// Returns a function mapping time to an interpolated value.
+		// Create a Cubic Hermite interpolation function for a given collection of points and delta times.
 		//
-		// points = all the points to be interpolated
-		// deltaTimes = delta times for each point
+		// Input:
+		//   values = values to be interpolated
+		//   deltaTimes = times between each value
+		//
+		// Output:
+		//   function(t) -> interpolated value
+		//
+		// Example:
+		//
+		//   (Create Cubic Hermite interpolation from 0 to 10 in 2.5s)
+		//   var interp = makeHermiteInterp([2,10,8], [2.5,1.25]);  
+		//
+		//   (Get interpolated value at 0.75s)
+		//   var val = interp(0.75);
 		Ptero.Crater.makeHermiteInterp = function(values,deltaTimes) {
 			var totalTime = getTotalTime(deltaTimes);
 
@@ -259,27 +272,46 @@
 			};
 		}
 
+		// Create a dimension-wise Cubic Hermite interpolation function for a
+		// given colleciton of multidimensional points and delta times.
+		//
+		// Input:
+		//   values = values to be interpolated
+		//   deltaTimes = times between each value
+		//
+		// Output:
+		//   function(t) -> interpolated value
+		//
+		// Example:
+		//
+		//   (Create Cubic Hermite interpolation)
+		//   var interp = makeHermiteInterp(
+		//        [{x:2,y:4}, {x:7,y:25}, {x:32, y:3}],
+		//        ['x','y'],
+		//        [2.5, 1.25]);  
+		//
+		//   (Get interpolated value at 0.75s)
+		//   var val = interp(0.75);
 		Ptero.Crater.makeHermiteInterpForObjs = function(objs,keys,deltaTimes) {
 			var numKeys = keys.length;
 			var numObjs = objs.length;
 
 			var totalTime = getTotalTime(deltaTimes);
 
-			var values={},slopes={}, splinefuncs={};
+			var values, slopes, splinefuncs={};
 			var i,ki,key;
 			for (ki=0; ki<numKeys; ki++) {
 				key = keys[ki];
-				values[key] = [];
+				values = [];
 				for (i=0; i<numObjs; i++) {
-					values[key][i] = objs[i][key];
+					values[i] = objs[i][key];
 				}
-				slopes[key] = calcslopes(values[key], deltaTimes);
-				splinefuncs[key] = calcspline(values[key],deltaTimes,slopes[key]);
+				slopes = calcslopes(values, deltaTimes);
+				splinefuncs[key] = calcspline(values, deltaTimes, slopes);
 			}
 
 			return function(t) {
 				var seg = getTimeSegment(t, times);
-
 				var result;
 				var ki,key;
 				for (ki=0; ki<numKeys; ki++) {
@@ -288,7 +320,7 @@
 				}
 				return result;
 			};
-		}
+		};
 
 	})(); // Close scope for cubic hermite interpolation.
 
