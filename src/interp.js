@@ -243,7 +243,7 @@
 			for (i=0; i<len-1; i++) {
 				splinefuncs[i] = cubichermite(
 					points[i],   slopes[i],   0,
-					points[i+1], slopes[i+1], deltaTimes[i+1]);
+					points[i+1], slopes[i+1], deltaTimes[i]);
 			}
 			return splinefuncs;
 		}

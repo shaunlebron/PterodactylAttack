@@ -53,12 +53,12 @@ window.addEventListener('load',function(){
 		ctx.fill();
 	}
 
-	//var xinterp = Ptero.makeHermiteInterp(xs, times);
-	//var yinterp = Ptero.makeHermiteInterp(ys, times);
-	//var interp = Ptero.makeHermiteInterpForObjs(points, ['x','y'], times);
-	var xinterp = Ptero.makeInterp('linear', xs, times);
-	var yinterp = Ptero.makeInterp('linear', ys, times);
-	var interp = Ptero.makeInterpForObjs('linear', points, ['x','y'], times);
+	var xinterp = Ptero.makeHermiteInterp(xs, times);
+	var yinterp = Ptero.makeHermiteInterp(ys, times);
+	var interp = Ptero.makeHermiteInterpForObjs(points, ['x','y'], times);
+	//var xinterp = Ptero.makeInterp('linear', xs, times);
+	//var yinterp = Ptero.makeInterp('linear', ys, times);
+	//var interp = Ptero.makeInterpForObjs('linear', points, ['x','y'], times);
 
 	function draw(mt) {
 		ctx.clearRect(0,0,w,h);
