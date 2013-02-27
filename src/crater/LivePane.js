@@ -5,7 +5,7 @@ Ptero.Crater.LivePane = function() {
 
 Ptero.Crater.LivePane.prototype = {
 	screenToSpace: function(x,y) {
-		var z = Ptero.Crater.enemy.path.state.pos.z;
+		var z = Ptero.Crater.enemy.path.pos.z;
 		var frustum = Ptero.screen.getFrustum();
 		var spacePos = Ptero.screen.screenToSpace({x:x,y:y});
 		spacePos = frustum.projectToZ(spacePos, z);
@@ -29,7 +29,7 @@ Ptero.Crater.LivePane.prototype = {
 
 	updateEnemyPosition: function(x,y) {
 		var pos = this.screenToSpace(x,y);
-		var point = Ptero.Crater.enemy.path.points[0];
+		var point = Ptero.Crater.enemy_points[0];
 		point.x = pos.x;
 		point.y = pos.y;
 		point.z = Math.max(0.0001, point.z);

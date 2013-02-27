@@ -128,8 +128,6 @@ Ptero.Crater.Pane.prototype = {
 	fillCircle: function(ctx, spacePos, radius, color) {
 		ctx.beginPath();
 		var pos = this.transform(spacePos);
-		var a = this.axes[0];
-		var b = this.axes[1];
 		ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
 		ctx.fillStyle = color;
 		ctx.fill();
@@ -137,8 +135,6 @@ Ptero.Crater.Pane.prototype = {
 	strokeCircle: function(ctx, spacePos, radius, color, thickness) {
 		ctx.beginPath();
 		var pos = this.transform(spacePos);
-		var a = this.axes[0];
-		var b = this.axes[1];
 		ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
 		ctx.lineWidth = thickness;
 		ctx.strokeStyle = color;
@@ -218,28 +214,41 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	drawEnemy: function(ctx) {
-		this.strokeCircle(ctx, Ptero.Crater.enemy.path.state.pos, 5, "#F00",2);
+		this.strokeCircle(ctx, Ptero.Crater.enemy_points[0], 5, "#F00",2);
 	},
-	
+
 	/* INPUT FUNCTIONS */
+
+	getNodeFromPointer: function(x,y) {
+		// select the path node within a radius of the given selection point
+	},
+
+	selectNode: function(node) {
+		this.selectedNode = node;
+		if (node) {
+		}
+		this.updateNodePosition(x,y);
+	},
 
 	mouseStart: function(x,y) {
 		this.updateEnemyPosition(x,y);
+		// TODO:get node selection
 	},
 	mouseMove: function(x,y) {
 		this.updateEnemyPosition(x,y);
 	},
 	mouseEnd: function(x,y) {
-		this.updateEnemyPosition(x,y);
 	},
 
 	updateEnemyPosition: function(x,y) {
 		var pos = this.screenToSpace(x,y);
 		var a = this.axes[0];
 		var b = this.axes[1];
-		var point = Ptero.Crater.enemy.path.points[0];
+		var point = Ptero.Crater.enemy_points[0];
 		point[a] = pos[a];
 		point[b] = pos[b];
+
+		// prevent z from going behind camera (causes some errors I haven't accounted for yet)
 		point.z = Math.max(0.0001, point.z);
 	},
 

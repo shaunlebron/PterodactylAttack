@@ -9,7 +9,7 @@ Ptero.scene_game = (function() {
 
 		var i;
 		for (i=0; i<numEnemies; i++) {
-			enemies.push(new Ptero.Enemy);
+			enemies.push(new Ptero.Enemy(Ptero.makeHermiteEnemyPath));
 		}
 
 		Ptero.orb.init();

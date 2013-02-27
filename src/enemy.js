@@ -1,5 +1,7 @@
 
-Ptero.Enemy = function() {
+Ptero.Enemy = function(makePath) {
+	this.makePath = makePath;
+
 	this.babySprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
 	this.babySprite.update(Math.random()*this.babySprite.totalDuration);
 
@@ -9,7 +11,6 @@ Ptero.Enemy = function() {
 	this.boom2Sprite.setRepeat(false);
 	this.randomizeBoom();
 
-	this.doneTimer = new Ptero.Timer(1000);
 	this.resetPosition();
 };
 
@@ -41,9 +42,8 @@ Ptero.Enemy.prototype = {
 	},
 	resetPosition: function resetPosition() {
 		this.randomizeBoom();
-		this.path = Ptero.makeHermiteEnemyPath();
+		this.path = this.makePath();
 		this.isHit = false;
-		this.doneTimer.reset();
 		this.isGoingToDie = false;
 	},
 	update: function update(dt) {
@@ -62,14 +62,8 @@ Ptero.Enemy.prototype = {
 		else if (this.path.isDone()) {
 			// HIT SCREEN
 
-			if (this.doneTimer.getElapsedMillis() == 0) {
-				navigator.vibrate && navigator.vibrate(200);
-				// Screen.shakeScreen(1000);
-			}
-			this.doneTimer.increment(millis);
-			if (this.doneTimer.isDone()) {
-				this.resetPosition();
-			}
+			navigator.vibrate && navigator.vibrate(200);
+			this.resetPosition();
 		}
 		else {
 			// FLYING TOWARD SCREEN
