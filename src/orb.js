@@ -125,7 +125,8 @@ Ptero.orb = (function(){
 		}
 	};
 
-	var maxAimAngleError = 5 * Math.PI/180;
+	// Player will only hit a target if their aim is within this angle.
+	var max2dHitAngle = 5 * Math.PI/180;
 
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
@@ -139,8 +140,8 @@ Ptero.orb = (function(){
 			bullet = createBulletFromCone(bulletCone, aim_vector);
 		}
 		else {
-			var aimAngleError = getAimAngleError(target.getPosition(), aim_vector);
-			if (!target.isGoingToDie && aimAngleError < maxAimAngleError) {
+			var aim2dAngle = get2dAimAngle(target.getPosition(), aim_vector);
+			if (!target.isGoingToDie && aim2dAngle < max2dHitAngle) {
 				bullet = createHomingBullet(target);
 				target.isGoingToDie = true;
 			}
@@ -158,10 +159,17 @@ Ptero.orb = (function(){
 		}
 	};
 
-	// Return the angle error of our aim when targeting the given position.
-	function getAimAngleError(target_pos, aim_vector) {
+	// Returns the angle between the target projected on the screen and the aim vector.
+	function get2dAimAngle(target_pos, aim_vector) {
 		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
 		var target_vec = getAimVector(target_proj);
+		var target_angle = target_vec.angle(aim_vector);
+		return target_angle;
+	};
+
+	// Returns the angle between the target and the aim vector.
+	function get3dAimAngle(target_pos, aim_vector) {
+		var target_vec = getAimVector(target_pos);
 		var target_angle = target_vec.angle(aim_vector);
 		return target_angle;
 	};
@@ -170,7 +178,8 @@ Ptero.orb = (function(){
 	function chooseTargetFromAimVector(aim_vector) {
 
 		// find visible cube nearest to our line of trajectory
-		var angle = 30*Math.PI/180;
+		var maxAim2dAngle = 15*Math.PI/180;
+		var closestZ = Infinity;
 		var chosen_target = null;
 		var i,len;
 		var frustum = Ptero.screen.getFrustum();
@@ -185,11 +194,12 @@ Ptero.orb = (function(){
 				continue;
 			}
 
-			var target_angle = getAimAngleError(target_pos, aim_vector);
+			var target2dAngle = get2dAimAngle(target_pos, aim_vector);
 
 			// update closest
-			if (target_angle < angle) {
-				angle = target_angle;
+			if (target2dAngle < maxAim2dAngle && target_pos.z < closestZ) {
+				closestZ = target_pos.z;
+				maxAim2dAngle = target2dAngle;
 				chosen_target = targets[i];
 			}
 		}
