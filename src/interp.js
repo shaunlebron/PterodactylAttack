@@ -23,14 +23,21 @@
 	2. Spline interpolation with continuous 1st and 2nd derivative for smooth movement between control points.
 	*/
 
-	// Get the total time length from a given list of delta times.
-	function getTotalTime(deltaTimes) {
-		var i,len = deltaTimes.length;
-		var totalTime = 0;
+	// Get the sum of the numbers in the given array.
+	function sum(values) {
+		var i,len = values.length;
+		var total = 0;
 		for (i=0; i<len; i++) {
-			totalTime += deltaTimes[i];
+			total += values[i];
 		}
-		return totalTime;
+		return total;
+	}
+
+	// Bound a value to the given min and max.
+	function bound(value, min, max) {
+		value = Math.max(min, value);
+		value = Math.min(max, value);
+		return value;
 	}
 
 	// Get the current time segment from the given current time and delta times.
@@ -53,13 +60,6 @@
 			time: t,
 			timeFrac: t/deltaTimes[i],
 		};
-	}
-
-	// Bound a value to the given min and max.
-	function bound(value, min, max) {
-		value = Math.max(min, value);
-		value = Math.min(max, value);
-		return value;
 	}
 
 	// A collection of easing functions.
@@ -86,15 +86,18 @@
 	//   (Get interpolated value at 0.75s)
 	//   var val = interp(0.75);
 	Ptero.makeInterp = function(easeFuncName, values, deltaTimes) {
-		var totalTime = getTotalTime(deltaTimes);
+		var totalTime = sum(deltaTimes);
 		var easeFunc = easeFunctions[easeFuncName];
 
-		return function(t) {
+		function interp(t) {
 			t = bound(t, 0, totalTime);
 			var seg = getTimeSegment(t, deltaTimes);
 			var i = seg.index;
 			return easeFunc(values[i], values[i+1], seg.timeFrac);
 		};
+		interp.totalTime = totalTime;
+
+		return interp;
 	};
 
 	// Create a dimension-wise interpolation function for a given colleciton of
@@ -119,10 +122,10 @@
 	Ptero.makeInterpForObjs = function(easeFuncName, objs, keys, deltaTimes) {
 		var numKeys = keys.length;
 
-		var totalTime = getTotalTime(deltaTimes);
+		var totalTime = sum(deltaTimes);
 		var easeFunc = easeFunctions[easeFuncName];
 
-		return function(t) {
+		function interp(t) {
 			t = bound(t, 0, totalTime);
 			var seg = getTimeSegment(t, deltaTimes);
 			var i = seg.index;
@@ -135,6 +138,9 @@
 			}
 			return result;
 		};
+		interp.totalTime = totalTime;
+
+		return interp;
 	};
 
 	// Begin scope for cubic hermite interpolation.
@@ -265,16 +271,19 @@
 		//   (Get interpolated value at 0.75s)
 		//   var val = interp(0.75);
 		Ptero.makeHermiteInterp = function(values,deltaTimes) {
-			var totalTime = getTotalTime(deltaTimes);
+			var totalTime = sum(deltaTimes);
 
 			var slopes = calcslopes(values,deltaTimes);
 			var splinefuncs = calcspline(values,deltaTimes,slopes);
 
-			return function(t) {
+			function interp(t) {
 				t = bound(t, 0, totalTime);
 				var seg = getTimeSegment(t, deltaTimes);
 				return splinefuncs[seg.index](seg.time);
 			};
+			interp.totalTime = totalTime;
+
+			return interp;
 		}
 
 		// Create a dimension-wise Cubic Hermite interpolation function for a
@@ -301,7 +310,7 @@
 			var numKeys = keys.length;
 			var numObjs = objs.length;
 
-			var totalTime = getTotalTime(deltaTimes);
+			var totalTime = sum(deltaTimes);
 
 			var values, slopes, splinefuncs={};
 			var i,ki,key;
@@ -315,7 +324,7 @@
 				splinefuncs[key] = calcspline(values, deltaTimes, slopes);
 			}
 
-			return function(t) {
+			function interp(t) {
 				t = bound(t, 0, totalTime);
 				var seg = getTimeSegment(t, deltaTimes);
 				var result = {};
@@ -326,6 +335,9 @@
 				}
 				return result;
 			};
+			interp.totalTime = totalTime;
+
+			return interp;
 		};
 
 	})(); // Close scope for cubic hermite interpolation.

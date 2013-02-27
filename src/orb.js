@@ -132,15 +132,22 @@ Ptero.orb = (function(){
 		var target = chooseTargetFromAimVector(aim_vector);
 		//setShotTarget(target);
 
-		var aimAngleError = getAimAngleError(target.getPosition(), aim_vector);
+		// create bullet
 		var bullet, bulletCone;
-		if (!target.isGoingToDie && aimAngleError < maxAimAngleError) {
-			bullet = createHomingBullet(target);
-			target.isGoingToDie = true;
+		if (!target) {
+			bulletCone = getDefaultBulletCone(aim_vector);
+			bullet = createBulletFromCone(bulletCone, aim_vector);
 		}
 		else {
-			bulletCone = target ? getTargetBulletCone(target) : getDefaultBulletCone(aim_vector);
-			bullet = createBulletFromCone(bulletCone, aim_vector);
+			var aimAngleError = getAimAngleError(target.getPosition(), aim_vector);
+			if (!target.isGoingToDie && aimAngleError < maxAimAngleError) {
+				bullet = createHomingBullet(target);
+				target.isGoingToDie = true;
+			}
+			else {
+				bulletCone = getTargetBulletCone(target);
+				bullet = createBulletFromCone(bulletCone, aim_vector);
+			}
 		}
 
 		if (bullet) {
@@ -175,7 +182,7 @@ Ptero.orb = (function(){
 			// skip if not visible
 			var target_pos = targets[i].getPosition();
 			if (!frustum.isInside(target_pos)) {
-				//continue;
+				continue;
 			}
 
 			var target_angle = getAimAngleError(target_pos, aim_vector);

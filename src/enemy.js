@@ -1,8 +1,5 @@
 
 Ptero.Enemy = function() {
-	this.path = Ptero.makeEnemyPath();
-	this.isHit = false;
-
 	this.babySprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
 	this.babySprite.update(Math.random()*this.babySprite.totalDuration);
 
@@ -13,6 +10,7 @@ Ptero.Enemy = function() {
 	this.randomizeBoom();
 
 	this.doneTimer = new Ptero.Timer(1000);
+	this.resetPosition();
 };
 
 Ptero.Enemy.prototype = {
@@ -24,13 +22,13 @@ Ptero.Enemy.prototype = {
 		return !this.path.isDone() && !this.isHit; // only hittable if not already hit
 	},
 	getPosition: function getPosition() {
-		return this.path.state.pos;
+		return this.path.pos;
 	},
 	getCollisionRadius: function getCollisionRadius() {
 		return Ptero.sizeFactor * 2;
 	},
 	getFuturePosition: function getFuturePosition(time) {
-		return this.path.seek(time).pos;
+		return this.path.seek(time);
 	},
 	onHit: function onHit() {
 		// update score
@@ -43,7 +41,7 @@ Ptero.Enemy.prototype = {
 	},
 	resetPosition: function resetPosition() {
 		this.randomizeBoom();
-		this.path = Ptero.makeEnemyPath();
+		this.path = Ptero.makeHermiteEnemyPath();
 		this.isHit = false;
 		this.doneTimer.reset();
 		this.isGoingToDie = false;
@@ -86,7 +84,7 @@ Ptero.Enemy.prototype = {
 		return this.babySprite.sheet.tileWidth;
 	},
 	draw: function draw(ctx) {
-		var pos = this.path.state.pos;
+		var pos = this.path.pos;
 
 		if (this.isHit) {
 			this.boomSprite.draw3D(ctx, pos, this.highlight);
