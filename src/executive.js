@@ -48,7 +48,13 @@ Ptero.executive = (function(){
 		try {
 			updateFps(time);
 
-			var dt = Math.min((time-lastTime)/1000, 1/minFps);
+			var dt;
+			if (lastTime == undefined) {
+				dt = 0;
+			}
+			else {
+				dt = Math.min((time-lastTime)/1000, 1/minFps);
+			}
 			lastTime = time;
 
 			var scene = Ptero.scene;
@@ -75,7 +81,6 @@ Ptero.executive = (function(){
 	};
 
 	function start() {
-		lastTime = (new Date).getTime();
 		requestAnimationFrame(tick);
 	};
 
