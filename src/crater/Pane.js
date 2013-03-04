@@ -9,6 +9,7 @@ Ptero.Crater.Pane = function (w,h,axes,title) {
 	this.aspect = w/h;
 
 	this.title = title;
+	this.nodeRadius = 5;
 };
 
 Ptero.Crater.Pane.prototype = {
@@ -213,43 +214,87 @@ Ptero.Crater.Pane.prototype = {
 		}
 	},
 
-	drawEnemy: function(ctx) {
-		this.strokeCircle(ctx, Ptero.Crater.enemy_points[0], 5, "#F00",2);
+	drawNodes: function(ctx) {
+		var nodes = Ptero.Crater.enemy_points;
+		var i,len = nodes.length;
+		var selectedIndex = Ptero.Crater.selectedIndex;
+		for (i=0; i<len; i++) {
+			if (selectedIndex != i) {
+				this.strokeCircle(ctx, nodes[i], this.nodeRadius, "#00F",2);
+			}
+		}
+		for (i=0; i<len; i++) {
+			if (selectedIndex == i) {
+				this.strokeCircle(ctx, nodes[i], this.nodeRadius, "#F00",2);
+			}
+		}
 	},
 
 	/* INPUT FUNCTIONS */
 
-	getNodeFromPointer: function(x,y) {
-		// select the path node within a radius of the given selection point
+	// select the path node within a radius of the given selection point
+	getNodeInfoFromCursor: function(x,y) {
+		var min_dist_sq = 100;
+		var nodes = Ptero.Crater.enemy_points;
+		var i,len = nodes.length;
+
+		var node,pos;
+		var dx,dy,dist_sq;
+		var closest_index;
+		var offset_x, offset_y;
+
+		for (i=0; i<len; i++) {
+			node = nodes[i];
+			pos = this.spaceToScreen(node);
+			dx = pos.x - x;
+			dy = pos.y - y;
+			dist_sq = dx*dx + dy*dy;
+			if (dist_sq < min_dist_sq) {
+				closest_index = i;
+				min_dist_sq = dist_sq;
+				offset_x = dx;
+				offset_y = dy;
+			}
+		}
+
+		return {
+			index: closest_index,
+			offset_x: offset_x,
+			offset_y: offset_y,
+		};
 	},
 
-	selectNode: function(node) {
-		this.selectedNode = node;
-		if (node) {
+	selectNode: function(index,offset_x,offset_y) {
+		Ptero.Crater.selectedIndex = index;
+		this.selectedOffsetX = offset_x;
+		this.selectedOffsetY = offset_y;
+	},
+
+	updateNodePosition: function(x,y) {
+		var point = Ptero.Crater.enemy_points[Ptero.Crater.selectedIndex];
+		if (point) {
+			var pos = this.screenToSpace(
+				x + this.selectedOffsetX,
+				y + this.selectedOffsetY
+			);
+			var a = this.axes[0];
+			var b = this.axes[1];
+			point[a] = pos[a];
+			point[b] = pos[b];
+
+			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
+			point.z = Math.max(0.0001, point.z);
 		}
-		this.updateNodePosition(x,y);
 	},
 
 	mouseStart: function(x,y) {
-		this.updateEnemyPosition(x,y);
-		// TODO:get node selection
+		var i = this.getNodeInfoFromCursor(x,y);
+		this.selectNode(i.index, i.offset_x, i.offset_y);
 	},
 	mouseMove: function(x,y) {
-		this.updateEnemyPosition(x,y);
+		this.updateNodePosition(x,y);
 	},
 	mouseEnd: function(x,y) {
-	},
-
-	updateEnemyPosition: function(x,y) {
-		var pos = this.screenToSpace(x,y);
-		var a = this.axes[0];
-		var b = this.axes[1];
-		var point = Ptero.Crater.enemy_points[0];
-		point[a] = pos[a];
-		point[b] = pos[b];
-
-		// prevent z from going behind camera (causes some errors I haven't accounted for yet)
-		point.z = Math.max(0.0001, point.z);
 	},
 
 	/* MAIN FUNCTIONS */
@@ -259,7 +304,7 @@ Ptero.Crater.Pane.prototype = {
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawFrustum(ctx);
 		this.drawAxes(ctx);
-		this.drawEnemy(ctx);
+		this.drawNodes(ctx);
 	},
 	update: function(dt) {
 	},
