@@ -12,6 +12,8 @@ Ptero.Enemy = function(makePath) {
 	this.randomizeBoom();
 
 	this.resetPosition();
+
+	this.scale = 1.0;
 };
 
 Ptero.Enemy.prototype = {
@@ -42,7 +44,9 @@ Ptero.Enemy.prototype = {
 	},
 	resetPosition: function resetPosition() {
 		this.randomizeBoom();
-		this.path = this.makePath();
+		if (this.makePath) {
+			this.path = this.makePath();
+		}
 		this.isHit = false;
 		this.isGoingToDie = false;
 	},

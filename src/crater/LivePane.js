@@ -18,21 +18,10 @@ Ptero.Crater.LivePane.prototype = {
 	/* INPUT FUNCTIONS */
 
 	mouseStart: function(x,y) {
-		this.updateEnemyPosition(x,y);
 	},
 	mouseMove: function(x,y) {
-		this.updateEnemyPosition(x,y);
 	},
 	mouseEnd: function(x,y) {
-		this.updateEnemyPosition(x,y);
-	},
-
-	updateEnemyPosition: function(x,y) {
-		var pos = this.screenToSpace(x,y);
-		var point = Ptero.Crater.enemy_points[0];
-		point.x = pos.x;
-		point.y = pos.y;
-		point.z = Math.max(0.0001, point.z);
 	},
 
 	draw: function(ctx) {

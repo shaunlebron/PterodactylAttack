@@ -9,7 +9,7 @@ Ptero.Crater.Pane = function (w,h,axes,title) {
 	this.aspect = w/h;
 
 	this.title = title;
-	this.nodeRadius = 5;
+	this.nodeRadius = 4;
 };
 
 Ptero.Crater.Pane.prototype = {
@@ -204,7 +204,7 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	drawFrustum: function(ctx) {
-		ctx.strokeStyle = "#555";
+		ctx.strokeStyle = "#BBB";
 		ctx.lineWidth = 1;
 		if (this.frustum) {
 			var i,len,edges=this.frustum.edges;
@@ -214,19 +214,34 @@ Ptero.Crater.Pane.prototype = {
 		}
 	},
 
+	drawPath: function(ctx) {
+		var interp = Ptero.Crater.enemy_model.interp;
+		var totalTime = interp.totalTime;
+		var numPoints = 100;
+		var step = totalTime/numPoints;
+
+		ctx.beginPath();
+		this.moveTo(ctx, interp(0));
+		for (t=step; t<=totalTime; t+=step) {
+			this.lineTo(ctx, interp(t));
+		}
+		ctx.strokeStyle = "#777";
+		ctx.lineWidth = 2;
+		ctx.stroke();
+	},
+
 	drawNodes: function(ctx) {
-		var nodes = Ptero.Crater.enemy_points;
+		var nodes = Ptero.Crater.enemy_model.points;
 		var i,len = nodes.length;
-		var selectedIndex = Ptero.Crater.selectedIndex;
+		var selectedIndex = Ptero.Crater.enemy_model.selectedIndex;
 		for (i=0; i<len; i++) {
 			if (selectedIndex != i) {
-				this.strokeCircle(ctx, nodes[i], this.nodeRadius, "#00F",2);
+				this.fillCircle(ctx, nodes[i], this.nodeRadius, "#555",2);
 			}
 		}
-		for (i=0; i<len; i++) {
-			if (selectedIndex == i) {
-				this.strokeCircle(ctx, nodes[i], this.nodeRadius, "#F00",2);
-			}
+		var selectedPoint = Ptero.Crater.enemy_model.getSelectedPoint();
+		if (selectedPoint) {
+			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
 		}
 	},
 
@@ -235,7 +250,7 @@ Ptero.Crater.Pane.prototype = {
 	// select the path node within a radius of the given selection point
 	getNodeInfoFromCursor: function(x,y) {
 		var min_dist_sq = 100;
-		var nodes = Ptero.Crater.enemy_points;
+		var nodes = Ptero.Crater.enemy_model.points;
 		var i,len = nodes.length;
 
 		var node,pos;
@@ -265,13 +280,13 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	selectNode: function(index,offset_x,offset_y) {
-		Ptero.Crater.selectedIndex = index;
+		Ptero.Crater.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
 	},
 
 	updateNodePosition: function(x,y) {
-		var point = Ptero.Crater.enemy_points[Ptero.Crater.selectedIndex];
+		var point = Ptero.Crater.enemy_model.getSelectedPoint();
 		if (point) {
 			var pos = this.screenToSpace(
 				x + this.selectedOffsetX,
@@ -284,6 +299,7 @@ Ptero.Crater.Pane.prototype = {
 
 			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
 			point.z = Math.max(0.0001, point.z);
+			Ptero.Crater.enemy_model.refreshPath();
 		}
 	},
 
@@ -304,6 +320,7 @@ Ptero.Crater.Pane.prototype = {
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawFrustum(ctx);
 		this.drawAxes(ctx);
+		this.drawPath(ctx);
 		this.drawNodes(ctx);
 	},
 	update: function(dt) {

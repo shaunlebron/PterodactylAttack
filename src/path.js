@@ -15,6 +15,9 @@ Ptero.Path.prototype = {
 
 	step: function step(dt) {
 		this.time += dt;
+		if (this.loop) {
+			this.time %= this.totalTime;
+		}
 		this.pos = this.seek(0);
 	},
 
@@ -24,6 +27,6 @@ Ptero.Path.prototype = {
 	},
 
 	isDone: function isDone() {
-		return this.time >= this.totalTime; 
+		return !this.loop && this.time >= this.totalTime; 
 	},
 };
