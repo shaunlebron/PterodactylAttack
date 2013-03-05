@@ -33,6 +33,9 @@ Ptero.SpriteSheet.prototype = {
 			this.billboard
 		);
 	},
+	drawBorder: function(ctx,pos,color) {
+		Ptero.painter.drawBorder(ctx,pos,color,this.billboard);
+	},
 };
 
 Ptero.AnimSprite = function(sheet) {
@@ -48,6 +51,9 @@ Ptero.AnimSprite = function(sheet) {
 };
 
 Ptero.AnimSprite.prototype = {
+	shuffleTime: function() {
+		this.time = Math.random()*this.totalDuration;
+	},
 	start: function start() {
 		this.animating = true;
 	},
@@ -89,6 +95,9 @@ Ptero.AnimSprite.prototype = {
 	},
 	draw: function(ctx,pos) {
 		this.sheet.draw(ctx,pos,this.frame);
+	},
+	drawBorder: function(ctx,pos,color) {
+		this.sheet.drawBorder(ctx,pos,color);
 	},
 };
 

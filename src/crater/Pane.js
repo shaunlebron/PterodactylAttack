@@ -243,6 +243,9 @@ Ptero.Crater.Pane.prototype = {
 		if (selectedPoint) {
 			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
 		}
+		else {
+			this.fillCircle(ctx, Ptero.Crater.enemy_model.enemy.getPosition(), this.nodeRadius, "#00F",2);
+		}
 	},
 
 	/* INPUT FUNCTIONS */

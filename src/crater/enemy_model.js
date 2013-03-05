@@ -7,6 +7,8 @@ Ptero.Crater.enemy_model = new function() {
 	this.points = [];
 	this.times = [];
 
+	this.nodeSprites = [];
+
 	this.refreshPath = function() {
 		that.interp = that.makeInterp();
 		that.enemy.path.interp = that.interp;
@@ -31,12 +33,16 @@ Ptero.Crater.enemy_model = new function() {
 		var far = frustum.far;
 		var dist = far-near;
 		var i;
+		var sprite;
 		for (i=0; i<numPoints; i++) {
 			that.points[i] = {
 				x:0,
 				y:0,
 				z:far - i/(numPoints-1)*dist,
 			};
+			sprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+			sprite.shuffleTime();
+			that.nodeSprites[i] = sprite;
 		}
 		for (i=0; i<numPoints-1; i++) {
 			that.times[i] = 1.0;
@@ -51,11 +57,46 @@ Ptero.Crater.enemy_model = new function() {
 	};
 
 	this.update = function(dt) {
-		that.enemy.update(ctx);
+		if (that.selectedIndex == null) {
+			that.enemy.update(dt);
+			Ptero.deferredSprites.defer(
+				(function(e){
+					return function(ctx) {
+						e.draw(ctx);
+					};
+				})(that.enemy),
+				that.enemy.getPosition().z);
+		}
+		else {
+			for (i=0; i<that.nodeSprites.length; i++) {
+				if (that.selectedIndex == i) {
+					that.nodeSprites[i].update(dt);
+				}
+				Ptero.deferredSprites.defer(
+					(function(sprite,pos,isSelected) {
+						return function(ctx){
+							if (isSelected) {
+								sprite.draw(ctx,pos);
+								sprite.drawBorder(ctx,pos,"#F00");
+							}
+							else {
+								var backupAlpha = ctx.globalAlpha;
+								ctx.globalAlpha = 0.7;
+								sprite.draw(ctx,pos);
+								ctx.globalAlpha = backupAlpha;
+							}
+						};
+					})(that.nodeSprites[i],that.points[i],that.selectedIndex == i),
+					that.points[i].z);
+			}
+		}
 	};
 
 	this.draw = function(ctx) {
-		that.enemy.draw(ctx);
+		if (that.selectedIndex != null) {
+			ctx.fillStyle = "rgba(255,255,255,0.5)";
+			ctx.fillRect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
+		}
 	};
 
 	this.selectPoint = function(index) {

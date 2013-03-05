@@ -19,8 +19,20 @@ Ptero.painter = (function(){
 		drawImageFrame(ctx,image,sx,sy,sw,sh,billboard);
 	};
 
+	function drawBorder(ctx,pos,color,billboard) {
+		var rect = billboard.getScreenRect(pos);
+		ctx.strokeStyle = color;
+		ctx.lineWidth = 2;
+		ctx.strokeRect(
+			rect.x,
+			rect.y,
+			rect.w,
+			rect.h);
+	};
+
 	return {
 		drawImageFrame: drawImageFrame,
 		drawImage: drawImage,
+		drawBorder: drawBorder,
 	};
 })();
