@@ -71,7 +71,7 @@ Ptero.makeHermiteEnemyPath = function() {
 		Math.random()*xrange - xrange/2,
 		Math.random()*yrange - yrange/2,
 		near);
-	var endZ = near/2;
+	var endZ = near;
 	endPos = frustum.projectToZ(endPos, endZ);
 
 	// create interpolation on a time scale of 1 second

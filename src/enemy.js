@@ -1,6 +1,6 @@
 
-Ptero.Enemy = function(makePath) {
-	this.makePath = makePath;
+Ptero.Enemy = function(makeNewPath) {
+	this.makeNewPath = makeNewPath;
 
 	this.babySprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
 	this.babySprite.update(Math.random()*this.babySprite.totalDuration);
@@ -44,8 +44,8 @@ Ptero.Enemy.prototype = {
 	},
 	resetPosition: function resetPosition() {
 		this.randomizeBoom();
-		if (this.makePath) {
-			this.path = this.makePath();
+		if (this.makeNewPath) {
+			this.path = this.makeNewPath();
 		}
 		this.isHit = false;
 		this.isGoingToDie = false;
@@ -78,19 +78,16 @@ Ptero.Enemy.prototype = {
 			this.babySprite.update(dt);
 		}
 	},
-	getSize: function() {
-		return this.babySprite.sheet.tileWidth;
-	},
 	draw: function draw(ctx) {
 		var pos = this.path.pos;
 
 		if (this.isHit) {
-			this.boomSprite.draw3D(ctx, pos, this.highlight);
+			this.boomSprite.draw(ctx, pos);
 		}
 		else if (this.path.isDone()) {
 		}
 		else {
-			this.babySprite.draw3D(ctx, pos, this.highlight);
+			this.babySprite.draw(ctx, pos);
 		}
 
 	},

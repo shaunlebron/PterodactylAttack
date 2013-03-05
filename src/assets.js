@@ -9,8 +9,44 @@ Ptero.assets = (function(){
 		"bullet": "img/bullet_sheet.png",
 	};
 
+	var imageScales = {
+		"baby": 2.0,
+		"boom1": 2.0,
+		"boom2": 2.0,
+	};
+
 	var images = {};
 	var sheets = {};
+	var billboards = {};
+
+	function makeBillboards() {
+		var x,y,w,h,scale,sheet,img,board;
+		for (name in imageSources) {
+			sheet = img = null;
+			if (sheets.hasOwnProperty(name)) {
+				sheet = sheets[name];
+				x = sheet.tileCenterX;
+				y = sheet.tileCenterY;
+				w = sheet.tileWidth;
+				h = sheet.tileHeight;
+			}
+			else if (images.hasOwnProperty(name)) {
+				img = images[name];
+				w = img.width;
+				h = img.height;
+				x = w/2;
+				y = h/2;
+			}
+			else {
+				continue;
+			}
+			board = new Ptero.Billboard(x,y,w,h,imageScales[name]);
+			if (sheet) {
+				sheet.billboard = board;
+			}
+			billboards[name] = board;
+		}
+	};
 
 	function loadSpriteSheets() {
 		var name,req,src;
@@ -46,6 +82,7 @@ Ptero.assets = (function(){
 			count--;
 			if (count == 0) {
 				loadSpriteSheets();
+				makeBillboards();
 				callback && callback();
 			}
 		};
@@ -65,5 +102,6 @@ Ptero.assets = (function(){
 		load: load,
 		images: images,
 		sheets: sheets,
+		billboards: billboards,
 	};
 })();

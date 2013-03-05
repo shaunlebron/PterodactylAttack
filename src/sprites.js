@@ -18,33 +18,20 @@ Ptero.SpriteSheet = function(img,dict) {
 };
 
 Ptero.SpriteSheet.prototype = {
-	draw: function draw(ctx,x,y,frame,scale,highlight) {
-		if (scale == undefined) {
-			scale = 1;
-		}
+	draw: function(ctx,pos,frame) {
 		var row = Math.floor(frame / this.cols);
 		var col = frame % this.cols;
 		var sx = col * this.tileWidth;
 		var sy = row * this.tileHeight;
 		var sw = this.tileWidth;
 		var sh = this.tileHeight;
-		var dw = sw*scale;
-		var dh = sh*scale;
-		ctx.drawImage(this.img,
+		Ptero.painter.drawImageFrame(
+			ctx,
+			this.img,
+			pos,
 			sx,sy,sw,sh,
-			x,y,dw,dh);
-		if (highlight) {
-			ctx.fillStyle = "rgba(255,0,0,0.5)";
-			ctx.fillRect(x,y,dw,dh);
-			ctx.strokeStyle = "#f00";
-			ctx.lineWidth = 2;
-			ctx.strokeRect(x,y,dw,dh);
-		}
-	},
-	drawCentered: function drawCentered(ctx,x,y,frame,scale,highlight) {
-		x -= this.tileCenterX * scale;
-		y -= this.tileCenterY * scale;
-		this.draw(ctx,x,y,frame,scale,highlight);
+			this.billboard
+		);
 	},
 };
 
@@ -100,17 +87,8 @@ Ptero.AnimSprite.prototype = {
 		this.time %= this.totalDuration;
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
-	draw: function draw(ctx,x,y,scale,highlight) {
-		this.sheet.draw(ctx,x,y,this.frame,scale,highlight);
-	},
-	drawCentered: function drawCentered(ctx,x,y,scale, highlight) {
-		this.sheet.drawCentered(ctx,x,y,this.frame,scale,highlight);
-	},
-	draw3D: function draw3D(ctx,pos,highlight) {
-		var frustum = Ptero.screen.getFrustum();
-		var scale = Ptero.background.getScale() / pos.z * frustum.near;
-		var screenPos = Ptero.screen.spaceToScreen(pos);
-		this.drawCentered(ctx, screenPos.x, screenPos.y, scale, highlight);
+	draw: function(ctx,pos) {
+		this.sheet.draw(ctx,pos,this.frame);
 	},
 };
 
