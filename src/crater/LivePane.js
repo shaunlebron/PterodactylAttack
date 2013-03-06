@@ -24,6 +24,8 @@ Ptero.Crater.LivePane.prototype = {
 
 	/* INPUT FUNCTIONS */
 
+	// Determine if the given coord is inside the selection rectangle
+	// of the given path knot index. Return an offset object if true.
 	getNodeSelectOffset: function(x,y,index) {
 		if (index == undefined) {
 			return;
@@ -47,15 +49,14 @@ Ptero.Crater.LivePane.prototype = {
 	getNodeInfoFromCursor: function(x,y) {
 		var enemy = Ptero.Crater.enemy_model;
 
+		// First, see if any of the knots are clicked.
 		var min_dist_sq = 100;
 		var nodes = Ptero.Crater.enemy_model.points;
 		var i,len = nodes.length;
-
 		var node,pos;
 		var dx,dy,dist_sq;
 		var closest_index;
 		var offset_x, offset_y;
-
 		for (i=0; i<len; i++) {
 			node = nodes[i];
 			pos = this.spaceToScreen(node);
@@ -69,19 +70,25 @@ Ptero.Crater.LivePane.prototype = {
 		}
 
 		var node_offset;
+
+		// If a knot is clicked, return the offset from that knot.
 		if (node_offset = this.getNodeSelectOffset(x,y,closest_index)) {
 			return node_offset;
 		}
+
+		// Else, return the offset from the selected node our click is inside a selection rectangle.
 		else if (node_offset = this.getNodeSelectOffset(x,y,enemy.selectedIndex)) {
 			return node_offset;
 		}
 
+		// Finally, return the offset from an unselected node rectangle if our click is inside one.
 		for (i=0; i<len; i++) {
 			if (node_offset = this.getNodeSelectOffset(x,y,i)) {
 				return node_offset;
 			}
 		}
 
+		// Return an empty object if we cannot deduce a click selection.
 		return {};
 		
 	},
