@@ -4,13 +4,14 @@ Ptero.Crater.panes = (function() {
 	var topPane, frontPane, rightPane, livePane, timePane;
 	var panes;
 
-	var paneWidth,paneHeight;
+	var paneWidth,paneHeight,timePaneHeight;
 
 	function init() {
 		var w = Ptero.Crater.screen.getPaneWidth();
 		var h = Ptero.Crater.screen.getPaneHeight();
 		paneWidth = w;
 		paneHeight = h;
+		timePaneHeight = Ptero.Crater.screen.getTimePaneHeight();
 
 		var frustum = Ptero.screen.getFrustum();
 
@@ -34,7 +35,7 @@ Ptero.Crater.panes = (function() {
 		livePane = new Ptero.Crater.LivePane();
 		livePane.init();
 
-		//timePane = new Ptero.Crater.TimePane(2*w, 50, 10);
+		timePane = new Ptero.Crater.TimePane(2*w, timePaneHeight, 10);
 
 		// This determines the position of the panes on the screen.
 		panes = [livePane, topPane, rightPane, frontPane];
@@ -43,6 +44,9 @@ Ptero.Crater.panes = (function() {
 	};
 
 	function getPaneFromXY(x,y) {
+		if (y > 2*paneHeight) {
+			return timePane;
+		}
 		var row = Math.floor(y/paneHeight);
 		var col = Math.floor(x/paneWidth);
 		return panes[row*2+col];
@@ -59,6 +63,15 @@ Ptero.Crater.panes = (function() {
 	function getPaneRect(pane) {
 		var w = paneWidth;
 		var h = paneHeight;
+
+		if (pane == timePane) {
+			return {
+				x: 0,
+				y: 2*h,
+				w: timePane.pixelW,
+				h: timePane.pixelH,
+			};
+		}
 
 		var i;
 		for (i=0; i<4; i++) {
@@ -112,22 +125,22 @@ Ptero.Crater.panes = (function() {
 		var w = paneWidth;
 		var h = paneHeight;
 
-		function drawPane(pane,x,y) {
+		function drawPane(pane) {
 			ctx.save();
 			ctx.beginPath();
-			ctx.rect(x,y,w,h);
+			var r = getPaneRect(pane);
+			ctx.rect(r.x, r.y, r.w, r.h);
 			ctx.clip();
-			ctx.translate(x,y);
+			ctx.translate(r.x,r.y);
 			pane.draw(ctx);
 			ctx.restore();
 		}
 
 		var i=0, row, col;
 		for (i=0; i<4; i++) {
-			row = Math.floor(i/2);
-			col = i%2;
-			drawPane(panes[i], col*w, row*h);
+			drawPane(panes[i]);
 		}
+		drawPane(timePane);
 
 		// Draw pane borders.
 		ctx.strokeStyle = "#FFF";
@@ -137,7 +150,10 @@ Ptero.Crater.panes = (function() {
 		ctx.lineTo(w,2*h);
 		ctx.moveTo(0,h);
 		ctx.lineTo(2*w,h);
+		ctx.moveTo(0,2*h);
+		ctx.lineTo(2*w,2*h);
 		ctx.stroke();
+
 	};
 
 	function update(dt) {
@@ -145,6 +161,7 @@ Ptero.Crater.panes = (function() {
 		for (i=0; i<4; i++) {
 			panes[i].update(dt);
 		}
+		timePane.update(dt);
 	};
 
 	return {
