@@ -106,4 +106,8 @@ Ptero.Crater.enemy_model = new function() {
 	this.getSelectedPoint = function() {
 		return that.points[that.selectedIndex];
 	};
+
+	this.getSelectedNodeSprite = function() {
+		return that.nodeSprites[that.selectedIndex];
+	};
 };

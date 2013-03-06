@@ -1,7 +1,7 @@
 
 Ptero.Crater.panes = (function() {
 
-	var topPane, frontPane, rightPane, livePane;
+	var topPane, frontPane, rightPane, livePane, timePane;
 	var panes;
 
 	var paneWidth,paneHeight;
@@ -33,6 +33,8 @@ Ptero.Crater.panes = (function() {
 		// Set the live pane to a scene and initialize it.
 		livePane = new Ptero.Crater.LivePane();
 		livePane.init();
+
+		//timePane = new Ptero.Crater.TimePane(2*w, 50, 10);
 
 		// This determines the position of the panes on the screen.
 		panes = [livePane, topPane, rightPane, frontPane];

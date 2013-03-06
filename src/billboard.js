@@ -4,10 +4,10 @@
 // All scales are relative to the background scale, since we use it
 // to determine the aspect ratio of the game.
 
-Ptero.Billboard = function(x,y,w,h,scaleAtNear) {
+Ptero.Billboard = function(x,y,w,h,scale) {
 	this.setCenter(x,y);
 	this.setSize(w,h);
-	this.scaleAtNear = (scaleAtNear == undefined) ? 1 : scaleAtNear;
+	this.scale = (scale == undefined) ? 1 : scale;
 };
 
 Ptero.Billboard.prototype = {
@@ -47,7 +47,7 @@ Ptero.Billboard.prototype = {
 	getScreenRect: function(pos) {
 		var frustum = Ptero.screen.getFrustum();
 		var screenPos = Ptero.screen.spaceToScreen(pos);
-		var scale = this.scaleAtNear * Ptero.background.getScale();
+		var scale = this.scale * Ptero.background.getScale();
 		scale = scale / pos.z * frustum.near;
 		return {
 			w: this.w * scale,

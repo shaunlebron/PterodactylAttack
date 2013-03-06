@@ -99,6 +99,9 @@ Ptero.AnimSprite.prototype = {
 	drawBorder: function(ctx,pos,color) {
 		this.sheet.drawBorder(ctx,pos,color);
 	},
+	getBillboard: function() {
+		return this.sheet.billboard;
+	},
 };
 
 // Deferred sprites allow for drawing the sprites in a correct order.
