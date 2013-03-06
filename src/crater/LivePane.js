@@ -75,9 +75,15 @@ Ptero.Crater.LivePane.prototype = {
 		else if (node_offset = this.getNodeSelectOffset(x,y,enemy.selectedIndex)) {
 			return node_offset;
 		}
-		else {
-			return {};
+
+		for (i=0; i<len; i++) {
+			if (node_offset = this.getNodeSelectOffset(x,y,i)) {
+				return node_offset;
+			}
 		}
+
+		return {};
+		
 	},
 
 	selectNode: function(index,offset_x,offset_y) {
