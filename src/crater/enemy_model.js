@@ -94,7 +94,7 @@ Ptero.Crater.enemy_model = new function() {
 
 	this.draw = function(ctx) {
 		if (that.selectedIndex != null) {
-			ctx.fillStyle = "rgba(255,255,255,0.5)";
+			ctx.fillStyle = "rgba(255,255,255,0.8)";
 			ctx.fillRect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
 		}
 	};
