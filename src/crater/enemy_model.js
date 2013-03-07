@@ -46,20 +46,27 @@ Ptero.Crater.enemy_model = new function() {
 			sprite.shuffleTime();
 			that.nodeSprites[i] = sprite;
 		}
-		for (i=0; i<numPoints-1; i++) {
-			that.delta_times[i] = 1.0;
+		var t = 0;
+		for (i=0; i<numPoints; i++) {
+			that.times[i] = t;
+			t += 1.0;
 		}
 		that.refreshTimes();
 		that.initPath();
 	};
 
-	// Compute absolute times based on the delta times
+	// Reorder points and compute delta times.
 	this.refreshTimes = function() {
-		var i,len = that.delta_times.length;
-		that.times = [];
-		that.times[0] = 0;
-		for (i=1; i<len+1; i++) {
-			that.times[i] = that.times[i-1] + that.delta_times[i-1];
+		var i,len = that.points.length;
+		for (i=0; i<len; i++) {
+			that.points[i].t = that.times[i];
+		}
+		that.points.sort(function(a,b) { return a.t - b.t; });
+		that.times.sort();
+
+		that.delta_times = [];
+		for (i=1; i<len; i++) {
+			that.delta_times[i-1] = that.times[i] - that.times[i-1];
 		}
 	};
 

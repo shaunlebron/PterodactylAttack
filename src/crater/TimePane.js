@@ -81,8 +81,13 @@ Ptero.Crater.TimePane.prototype = {
 				y + this.selectedOffsetY
 			);
 
-			time = Math.max(times[i-1]+0.1, time);
-			delta_times[i-1] = time-times[i-1];
+			var threshold = 0.1;
+
+			time = Math.max(times[i-1]+threshold, time);
+			if (times[i+1]) {
+				time = Math.min(times[i+1]-threshold, time);
+			}
+			times[i] = time;
 
 			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
 			Ptero.Crater.enemy_model.refreshTimes();
