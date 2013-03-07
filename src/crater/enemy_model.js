@@ -5,13 +5,15 @@ Ptero.Crater.enemy_model = new function() {
 
 	this.enemy = null;
 	this.points = [];
+	this.delta_times = [];
 	this.times = [];
 
 	this.nodeSprites = [];
 
 	this.refreshPath = function() {
-		that.interp = that.makeInterp();
-		that.enemy.path.interp = that.interp;
+		//that.interp = that.makeInterp();
+		//that.enemy.path.interp = that.interp;
+		that.initPath();
 	};
 
 	this.initPath = function() {
@@ -23,7 +25,7 @@ Ptero.Crater.enemy_model = new function() {
 		return Ptero.makeHermiteInterpForObjs(
 			that.points,
 			['x','y','z'],
-			that.times
+			that.delta_times
 		);
 	};
 
@@ -45,9 +47,20 @@ Ptero.Crater.enemy_model = new function() {
 			that.nodeSprites[i] = sprite;
 		}
 		for (i=0; i<numPoints-1; i++) {
-			that.times[i] = 1.0;
+			that.delta_times[i] = 1.0;
 		}
+		that.refreshTimes();
 		that.initPath();
+	};
+
+	// Compute absolute times based on the delta times
+	this.refreshTimes = function() {
+		var i,len = that.delta_times.length;
+		that.times = [];
+		that.times[0] = 0;
+		for (i=1; i<len+1; i++) {
+			that.times[i] = that.times[i-1] + that.delta_times[i-1];
+		}
 	};
 
 	this.init = function() {

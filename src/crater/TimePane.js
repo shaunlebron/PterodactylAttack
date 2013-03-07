@@ -34,12 +34,72 @@ Ptero.Crater.TimePane.prototype = {
 
 	/* INPUT FUNCTIONS */
 
+	getNodeInfoFromCursor: function(x,y) {
+		var min_dist_sq = 100;
+		var times = Ptero.Crater.enemy_model.times;
+		var i,len = times.length;
+
+		var node,pos;
+		var dx,dy,dist_sq;
+		var closest_index;
+		var offset_x, offset_y;
+
+		for (i=0; i<len; i++) {
+			pos = this.timeToScreen(times[i]);
+			dx = pos.x - x;
+			dy = pos.y - y;
+			dist_sq = dx*dx + dy*dy;
+			if (dist_sq < min_dist_sq) {
+				closest_index = i;
+				min_dist_sq = dist_sq;
+				offset_x = dx;
+				offset_y = dy;
+			}
+		}
+
+		return {
+			index: closest_index,
+			offset_x: offset_x,
+			offset_y: offset_y,
+		};
+	},
+
+	selectNode: function(index,offset_x,offset_y) {
+		Ptero.Crater.enemy_model.selectPoint(index);
+		this.selectedOffsetX = offset_x;
+		this.selectedOffsetY = offset_y;
+	},
+
+	updateNodePosition: function(x,y) {
+		var times = Ptero.Crater.enemy_model.times;
+		var delta_times = Ptero.Crater.enemy_model.delta_times;
+		var i = Ptero.Crater.enemy_model.selectedIndex;
+
+		if (i > 0) {
+			var time = this.screenToTime(
+				x + this.selectedOffsetX,
+				y + this.selectedOffsetY
+			);
+
+			time = Math.max(times[i-1]+0.1, time);
+			delta_times[i-1] = time-times[i-1];
+
+			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
+			Ptero.Crater.enemy_model.refreshTimes();
+			Ptero.Crater.enemy_model.refreshPath();
+		}
+	},
+
 	mouseStart: function(x,y) {
+		var i = this.getNodeInfoFromCursor(x,y);
+		this.selectNode(i.index, i.offset_x, i.offset_y);
 	},
 	mouseMove: function(x,y) {
+		this.updateNodePosition(x,y);
 	},
 	mouseEnd: function(x,y) {
 	},
+
 
 	/* PAINTER FUNCTIONS */
 
@@ -130,26 +190,25 @@ Ptero.Crater.TimePane.prototype = {
 
 	drawNodes: function(ctx) {
 		var times = Ptero.Crater.enemy_model.times;
-		var i,len = times.length+1;
+		var delta_times = Ptero.Crater.enemy_model.delta_times;
+		var i,len = times.length;
 		var selectedIndex = Ptero.Crater.enemy_model.selectedIndex;
-		var t = 0,j;
+		ctx.textBaseline = "bottom";
+		ctx.textAlign = "center";
 		for (i=0; i<len; i++) {
-			if (i > 0) {
-				t += times[i-1];
-			}
 			if (selectedIndex != i) {
-				this.fillCircle(ctx, {t:t, y:0}, this.nodeRadius, "#555",2);
+				this.fillCircle(ctx, {t:times[i], y:0}, this.nodeRadius, "#555",2);
+			}
+			if (i > 0) {
+				var pos = this.transform({t:times[i-1]+delta_times[i-1]/2, y:0.1});
+				ctx.fillText(delta_times[i-1].toFixed(2)+"s", pos.x, pos.y);
 			}
 		}
 		var selectedPoint = Ptero.Crater.enemy_model.getSelectedPoint();
 		if (selectedPoint) {
-			t = 0;
 			for (i=0; i<len; i++) {
-				if (i > 0) {
-					t += times[i-1];
-				}
 				if (selectedIndex == i) {
-					this.fillCircle(ctx, {t:t, y:0}, this.nodeRadius, "#F00",2);
+					this.fillCircle(ctx, {t:times[i], y:0}, this.nodeRadius, "#F00",2);
 				}
 			}
 		}
