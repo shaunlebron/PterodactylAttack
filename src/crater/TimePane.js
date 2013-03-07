@@ -81,12 +81,11 @@ Ptero.Crater.TimePane.prototype = {
 				y + this.selectedOffsetY
 			);
 
+			// I'm not guarding against crazy divide by zero errors right now that may
+			// result from points occupying the exact same pixel.
+			// But I am preventing the time from equaling the first point of t=0.
 			var threshold = 0.1;
-
-			time = Math.max(times[i-1]+threshold, time);
-			if (times[i+1]) {
-				time = Math.min(times[i+1]-threshold, time);
-			}
+			time = Math.max(times[0]+threshold, time);
 			times[i] = time;
 
 			// prevent z from going behind camera (causes some errors i haven't accounted for yet)

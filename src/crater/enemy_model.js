@@ -57,16 +57,33 @@ Ptero.Crater.enemy_model = new function() {
 
 	// Reorder points and compute delta times.
 	this.refreshTimes = function() {
+		var prevSelectedPoint = that.getSelectedPoint();
+
+		// We need to sort the points by time, so we attach a 't' variable as a sort key.
 		var i,len = that.points.length;
 		for (i=0; i<len; i++) {
 			that.points[i].t = that.times[i];
 		}
 		that.points.sort(function(a,b) { return a.t - b.t; });
+
+		// also sort the times.
 		that.times.sort();
 
+		// compute the delta times in the newly sorted list.
 		that.delta_times = [];
 		for (i=1; i<len; i++) {
 			that.delta_times[i-1] = that.times[i] - that.times[i-1];
+		}
+
+		// The selected point may have a different index upon resorting, so find out where it went.
+		var selectedPoint = that.getSelectedPoint();
+		if (selectedPoint != prevSelectedPoint) {
+			for (i=0; i<len;i++) {
+				if (that.points[i] == prevSelectedPoint) {
+					that.selectedIndex = i;
+					break;
+				}
+			}
 		}
 	};
 
