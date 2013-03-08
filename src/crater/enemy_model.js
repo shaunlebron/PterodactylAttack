@@ -24,7 +24,7 @@ Ptero.Crater.enemy_model = new function() {
 	this.makeInterp = function() {
 		return Ptero.makeHermiteInterpForObjs(
 			that.points,
-			['x','y','z'],
+			['x','y','z','angle'],
 			that.delta_times
 		);
 	};
@@ -41,6 +41,7 @@ Ptero.Crater.enemy_model = new function() {
 				x:0,
 				y:0,
 				z:far - i/(numPoints-1)*dist,
+				angle: 0,
 			};
 			sprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
 			sprite.shuffleTime();

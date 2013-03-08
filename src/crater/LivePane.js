@@ -31,13 +31,11 @@ Ptero.Crater.LivePane.prototype = {
 			return;
 		}
 
-		var enemy = Ptero.Crater.enemy_model;
-		var nodeSprite = enemy.nodeSprites[index];
-		var spaceCenter = enemy.points[index];
-		var spaceRect = nodeSprite.getBillboard().getSpaceRect(spaceCenter);
+		var enemy_model = Ptero.Crater.enemy_model;
+		var nodeSprite = enemy_model.nodeSprites[index];
+		var spaceCenter = enemy_model.points[index];
 		var spaceClick = this.screenToSpace(x,y,spaceCenter.z);
-		if (spaceRect.x <= spaceClick.x && spaceClick.x <= spaceRect.x + spaceRect.w &&
-			spaceRect.y <= spaceClick.y && spaceClick.y <= spaceRect.y + spaceRect.h) {
+		if (enemy_model.enemy.babySprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
 			return {
 				index: index,
 				offset_x: spaceCenter.x - spaceClick.x,
@@ -47,14 +45,19 @@ Ptero.Crater.LivePane.prototype = {
 	},
 
 	getNodeInfoFromCursor: function(x,y) {
+
 		var enemy = Ptero.Crater.enemy_model;
+		
+		var dx,dy,dist_sq;
+		if (enemy.selectedIndex != undefined) {
+
+		}
 
 		// First, see if any of the knots are clicked.
 		var min_dist_sq = 100;
 		var nodes = Ptero.Crater.enemy_model.points;
 		var i,len = nodes.length;
 		var node,pos;
-		var dx,dy,dist_sq;
 		var closest_index;
 		var offset_x, offset_y;
 		for (i=0; i<len; i++) {

@@ -56,4 +56,42 @@ Ptero.Billboard.prototype = {
 			y: screenPos.y - this.centerY*scale,
 		};
 	},
+
+	getRelativeCursor: function(x,y,pos) {
+		var rect = this.getScreenRect(pos);
+		var midx = rect.x + rect.w/2;
+		var midy = rect.y + rect.h/2;
+		x -= midx;
+		y -= midy;
+		var nx,ny;
+		
+		// (x+yi)(cos + isin)
+		// (xcos + ixsin + iycos - ysin)
+		if (pos.angle) {
+			var c = Math.cos(-pos.angle);
+			var s = Math.sin(-pos.angle);
+			nx = x*c - y*s;
+			ny = x*s + y*c;
+		}
+		else {
+			nx = x;
+			ny = y;
+		}
+
+		nx += rect.w/2;
+		ny += rect.h/2;
+		return {x:nx, y:ny};
+	},
+
+	isInsideScreenRect: function(x,y,pos) {
+		var rect = this.getScreenRect(pos);
+		console.log(x,y,rect);
+		var p = this.getRelativeCursor(x,y,pos);
+		if (0 <= p.x && p.x <= rect.w &&
+			0 <= p.y && p.y <= rect.h) {
+			return true;
+		}
+		return false;
+	},
+
 };
