@@ -190,6 +190,23 @@ Ptero.Crater.LivePane.prototype = {
 	drawPath: function(ctx) {
 		var interp = Ptero.Crater.enemy_model.interp;
 		var totalTime = interp.totalTime;
+		var numPoints = 70;
+		var step = totalTime/numPoints;
+
+		ctx.beginPath();
+		for (t=0; t<=totalTime-step; t+=1.4*step) {
+			this.moveTo(ctx, interp(t));
+			this.lineTo(ctx, interp(t+step));
+		}
+		ctx.strokeStyle = "#777";
+		ctx.lineWidth = 2;
+		ctx.stroke();
+	},
+
+/*
+	drawPath: function(ctx) {
+		var interp = Ptero.Crater.enemy_model.interp;
+		var totalTime = interp.totalTime;
 		var numPoints = 100;
 		var step = totalTime/numPoints;
 
@@ -198,10 +215,12 @@ Ptero.Crater.LivePane.prototype = {
 		for (t=step; t<=totalTime; t+=step) {
 			this.lineTo(ctx, interp(t));
 		}
+		this.lineTo(ctx, interp(totalTime));
 		ctx.strokeStyle = "#777";
 		ctx.lineWidth = 2;
 		ctx.stroke();
 	},
+	*/
 
 	draw: function(ctx) {
 		this.scene.draw(ctx);
