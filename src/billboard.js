@@ -85,7 +85,6 @@ Ptero.Billboard.prototype = {
 
 	isInsideScreenRect: function(x,y,pos) {
 		var rect = this.getScreenRect(pos);
-		console.log(x,y,rect);
 		var p = this.getRelativeCursor(x,y,pos);
 		if (0 <= p.x && p.x <= rect.w &&
 			0 <= p.y && p.y <= rect.h) {
@@ -94,4 +93,12 @@ Ptero.Billboard.prototype = {
 		return false;
 	},
 
+	isOverRotationHandle: function(x,y,pos) {
+		var rect = this.getScreenRect(pos);
+		var p = this.getRelativeCursor(x,y,pos);
+		var dx = (rect.w/2) - p.x;
+		var dy = 0 - p.y;
+		var dist_sq = dx*dx+dy*dy;
+		return dist_sq <= 64;
+	},
 };
