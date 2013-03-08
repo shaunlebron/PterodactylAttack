@@ -4,8 +4,7 @@ Ptero.Crater = Ptero.Crater || {};
 window.onload = function() {
 
 	// Create the canvas element.
-	var canvas = document.createElement('canvas');
-	document.body.appendChild(canvas);
+	var canvas = document.getElementById('canvas');
 
 	Ptero.assets.load(function(){
 		console.log("initing screen");
