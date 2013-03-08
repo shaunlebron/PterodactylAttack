@@ -203,25 +203,6 @@ Ptero.Crater.LivePane.prototype = {
 		ctx.stroke();
 	},
 
-/*
-	drawPath: function(ctx) {
-		var interp = Ptero.Crater.enemy_model.interp;
-		var totalTime = interp.totalTime;
-		var numPoints = 100;
-		var step = totalTime/numPoints;
-
-		ctx.beginPath();
-		this.moveTo(ctx, interp(0));
-		for (t=step; t<=totalTime; t+=step) {
-			this.lineTo(ctx, interp(t));
-		}
-		this.lineTo(ctx, interp(totalTime));
-		ctx.strokeStyle = "#777";
-		ctx.lineWidth = 2;
-		ctx.stroke();
-	},
-	*/
-
 	draw: function(ctx) {
 		this.scene.draw(ctx);
 		if (Ptero.Crater.enemy_model.getSelectedPoint()) {

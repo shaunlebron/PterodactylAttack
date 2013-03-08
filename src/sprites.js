@@ -33,8 +33,8 @@ Ptero.SpriteSheet.prototype = {
 			this.billboard
 		);
 	},
-	drawBorder: function(ctx,pos,color) {
-		Ptero.painter.drawBorder(ctx,pos,color,this.billboard);
+	drawBorder: function(ctx,pos,color,handle) {
+		Ptero.painter.drawBorder(ctx,pos,color,this.billboard,handle);
 	},
 };
 
@@ -96,8 +96,8 @@ Ptero.AnimSprite.prototype = {
 	draw: function(ctx,pos) {
 		this.sheet.draw(ctx,pos,this.frame);
 	},
-	drawBorder: function(ctx,pos,color) {
-		this.sheet.drawBorder(ctx,pos,color);
+	drawBorder: function(ctx,pos,color,handle) {
+		this.sheet.drawBorder(ctx,pos,color,handle);
 	},
 	getBillboard: function() {
 		return this.sheet.billboard;
