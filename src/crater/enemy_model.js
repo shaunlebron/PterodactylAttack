@@ -137,6 +137,12 @@ Ptero.Crater.enemy_model = new function() {
 	};
 
 	this.selectPoint = function(index) {
+
+		// If we have deselected a point, then make sure the animation
+		// starts at said point.
+		if (index == undefined && that.selectedIndex != undefined) {
+			that.enemy.path.time = that.points[that.selectedIndex].t;
+		}
 		that.selectedIndex = index;
 	};
 
