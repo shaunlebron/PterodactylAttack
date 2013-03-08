@@ -74,10 +74,19 @@ Ptero.makeHermiteEnemyPath = function() {
 	var endZ = near;
 	endPos = frustum.projectToZ(endPos, endZ);
 
+	// create random angles
+	function randAngle() {
+		var a = 50*Math.PI/180;
+		return Math.random()*2*a - a;
+	}
+	startPos.angle = randAngle();
+	midPos.angle = randAngle();
+	endPos.angle = randAngle();
+
 	// create interpolation on a time scale of 1 second
 	var interp = Ptero.makeHermiteInterpForObjs(
 		[ startPos, midPos, endPos ],
-		['x','y','z'],
+		['x','y','z','angle'],
 		[0.5, 0.5]);
 
 	// approximate distance of the interpolated path
@@ -98,7 +107,7 @@ Ptero.makeHermiteEnemyPath = function() {
 	// create interpolation on the desired time scale
 	interp = Ptero.makeHermiteInterpForObjs(
 		[ startPos, midPos, endPos ],
-		['x','y','z'],
+		['x','y','z','angle'],
 		[time/2, time/2]);
 
 	return new Ptero.Path(interp);

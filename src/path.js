@@ -10,7 +10,14 @@ Ptero.Path.prototype = {
 
 	// return a predicted state that is dt seconds in the future
 	seek: function seek(dt) {
-		return (new Ptero.Vector).set(this.interp(this.time+dt));
+
+		// Turn the interpolated value into a vector object.
+		// Also add the "angle" property to it.
+		var i = this.interp(this.time+dt);
+		var v = (new Ptero.Vector).set(i);
+		v.angle = i.angle;
+
+		return v;
 	},
 
 	step: function step(dt) {
