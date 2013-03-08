@@ -22,6 +22,19 @@ Ptero.Crater.LivePane.prototype = {
 		return Ptero.screen.spaceToScreen(pos);
 	},
 
+	screenToAngle: function(x,y,cx,cy) {
+		x -= cx;
+		y -= cy;
+		var dist = Math.sqrt(x*x+y*y);
+		y /= dist;
+		y = -y;
+		var a = Math.acos(y);
+		if (x <= 0) {
+			a = -a;
+		}
+		return a;
+	},
+
 	/* INPUT FUNCTIONS */
 
 	// Determine if the given coord is inside the selection rectangle
@@ -46,11 +59,25 @@ Ptero.Crater.LivePane.prototype = {
 
 	getNodeInfoFromCursor: function(x,y) {
 
-		var enemy = Ptero.Crater.enemy_model;
-		
-		var dx,dy,dist_sq;
-		if (enemy.selectedIndex != undefined) {
+		var enemy_model = Ptero.Crater.enemy_model;
 
+		function getPointDistSq(x0,y0,x1,y1) {
+			var dx,dy,dist_sq;
+			dx = x0-x1;
+			dy = y0-y1;
+			return dx*dx + dy*dy;
+		}
+		
+		if (enemy_model.selectedIndex != undefined) {
+			var point = enemy_model.getSelectedPoint();
+			if (enemy_model.enemy.babySprite.getBillboard().isOverRotationHandle(x,y,point)) {
+				var p = Ptero.screen.spaceToScreen(point);
+				var click_angle = this.screenToAngle(x,y,p.x,p.y);
+				return {
+					index: enemy_model.selectedIndex,
+					offset_angle: point.angle - click_angle,
+				};
+			}
 		}
 
 		// First, see if any of the knots are clicked.
@@ -63,9 +90,7 @@ Ptero.Crater.LivePane.prototype = {
 		for (i=0; i<len; i++) {
 			node = nodes[i];
 			pos = this.spaceToScreen(node);
-			dx = pos.x - x;
-			dy = pos.y - y;
-			dist_sq = dx*dx + dy*dy;
+			dist_sq = getPointDistSq(pos.x,pos.y,x,y);
 			if (dist_sq < min_dist_sq) {
 				closest_index = i;
 				min_dist_sq = dist_sq;
@@ -80,7 +105,7 @@ Ptero.Crater.LivePane.prototype = {
 		}
 
 		// Else, return the offset from the selected node our click is inside a selection rectangle.
-		else if (node_offset = this.getNodeSelectOffset(x,y,enemy.selectedIndex)) {
+		else if (node_offset = this.getNodeSelectOffset(x,y,enemy_model.selectedIndex)) {
 			return node_offset;
 		}
 
@@ -96,25 +121,37 @@ Ptero.Crater.LivePane.prototype = {
 		
 	},
 
-	selectNode: function(index,offset_x,offset_y) {
+	selectNode: function(index,offset_x,offset_y,offset_angle) {
 		Ptero.Crater.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
+		this.selectedOffsetAngle = offset_angle;
 	},
 
 	updateNodePosition: function(x,y) {
-		var point = Ptero.Crater.enemy_model.getSelectedPoint();
+		var enemy_model = Ptero.Crater.enemy_model;
+		var point = enemy_model.getSelectedPoint();
 		if (point) {
-			var spaceClick = this.screenToSpace(x,y,point.z);
-			point.x = spaceClick.x + this.selectedOffsetX;
-			point.y = spaceClick.y + this.selectedOffsetY;
+			if (this.selectedOffsetAngle != undefined) {
+				// rotate
+				var point = enemy_model.getSelectedPoint();
+				var p = Ptero.screen.spaceToScreen(point);
+				var click_angle = this.screenToAngle(x,y,p.x,p.y);
+				point.angle = click_angle + this.selectedOffsetAngle;
+			}
+			else {
+				// move
+				var spaceClick = this.screenToSpace(x,y,point.z);
+				point.x = spaceClick.x + this.selectedOffsetX;
+				point.y = spaceClick.y + this.selectedOffsetY;
+			}
 			Ptero.Crater.enemy_model.refreshPath();
 		}
 	},
 
 	mouseStart: function(x,y) {
 		var i = this.getNodeInfoFromCursor(x,y);
-		this.selectNode(i.index, i.offset_x, i.offset_y);
+		this.selectNode(i.index, i.offset_x, i.offset_y, i.offset_angle);
 	},
 
 	mouseMove: function(x,y) {

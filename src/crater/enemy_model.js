@@ -29,6 +29,20 @@ Ptero.Crater.enemy_model = new function() {
 		);
 	};
 
+	this.makeDrunkPath = function() {
+		that.points = [{x:0, y:1.568, z:4.968, angle:0, t:0}, {x:0.4657957308104658, y:0.45696529386929846, z:3.6986666666666674, angle:3.0323682713097586, t:1}, {x:0.9421658595279333, y:0.013190245579409409, z:2.4613333333333336, angle:-2.041096203558521, t:2}, {x:-0.7880350551730984, y:-0.049967165404555786, z:1.192, angle:3.036493463448331, t:3}]
+		
+		var i,len=that.points.length;
+		for (i=0; i<len; i++) {
+			that.times[i] = that.points[i].t;
+			sprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+			sprite.shuffleTime();
+			that.nodeSprites[i] = sprite;
+		}
+		that.refreshTimes();
+		that.refreshPath();
+	};
+
 	this.makeDefaultPath = function(numPoints) {
 		var frustum = Ptero.screen.getFrustum();
 		var near = frustum.near;
@@ -90,8 +104,12 @@ Ptero.Crater.enemy_model = new function() {
 
 	this.init = function() {
 		that.enemy = new Ptero.Enemy();
-		that.enemy.scale = 2.0;
-		that.makeDefaultPath(4);
+		if (window.location.hash == "#drunk") {
+			that.makeDrunkPath();
+		}
+		else {
+			that.makeDefaultPath(4);
+		}
 	};
 
 	this.update = function(dt) {
@@ -143,6 +161,7 @@ Ptero.Crater.enemy_model = new function() {
 		// starts at said point.
 		if (index == undefined && that.selectedIndex != undefined) {
 			that.enemy.path.time = that.points[that.selectedIndex].t;
+			that.enemy.babySprite.time = that.nodeSprites[that.selectedIndex].time;
 		}
 		that.selectedIndex = index;
 	};
