@@ -64,7 +64,7 @@ Ptero.Crater.enemy_model = new function() {
 		var t = 0;
 		for (i=0; i<numPoints; i++) {
 			that.times[i] = t;
-			t += 1.0;
+			t += 3.0;
 		}
 		that.refreshTimes();
 		that.initPath();
@@ -145,7 +145,7 @@ Ptero.Crater.enemy_model = new function() {
 			that.makeDrunkPath();
 		}
 		else {
-			that.makeDefaultPath(5);
+			that.makeDefaultPath(2);
 		}
 	};
 
