@@ -94,6 +94,7 @@ Ptero.Crater.enemy_model = new function() {
 	this.addPoint = function() {
 		var len = that.points.length;
 		var p = Ptero.screen.getFrustum().getRandomPoint();
+		p.angle = 0;
 		that.times.push(that.times[len-1] + 1.0);
 		p.t = that.times[len];
 		that.points.push(p);
