@@ -5,6 +5,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>Pterodactyl Attack - Crater</title>
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
 	<style>
 	body {
 		margin-right: auto;
@@ -21,9 +23,14 @@
 	button {
 		font-size: 1.2em;
 	}
+	canvas {
+	}
 	</style>
 
+	<script src="lib/jquery/jquery-1.9.1.min.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/requestAnimationFrame.js"></script>
+
 	<script src="src/ptero.js"></script>
 	<script src="src/interp.js"></script>
 	<script src="src/assets.js"></script>
@@ -61,6 +68,13 @@
 </head>
 
 <body>
+
+<h3 style="display:inline">Crater</h3>
+
+<form class="pull-right" style="margin-top:5px;margin-bottom:10px">
+<button class="btn btn-success" type="button"><i class="icon-plus icon-white"></i> Add Point</button>
+<button class="btn btn-danger" type="button" onclick="Ptero.Crater.enemy_model.removeSelectedPoint()"><i class="icon-minus icon-white"></i> Remove Point</button>
+</form>
 
 <canvas id='canvas'></canvas>
 

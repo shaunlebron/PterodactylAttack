@@ -70,6 +70,31 @@ Ptero.Crater.enemy_model = new function() {
 		that.initPath();
 	};
 
+	this.removePoint = function(index) {
+		var len = that.points.length;
+
+		if (index == 0 || !(index > 0 && index < len) || len <= 2) {
+			return;
+		}
+
+		that.points.splice(index,1);
+		that.times.splice(index,1);
+		that.nodeSprites.splice(index,1);
+
+		that.selectPoint(index-1);
+
+		that.refreshTimes();
+		that.refreshPath();
+		console.log(that.points,that.times);
+	};
+
+	this.removeSelectedPoint = function() {
+		that.removePoint(that.selectedIndex);
+	};
+
+	this.addPoint = function() {
+	};
+
 	// Reorder points and compute delta times.
 	this.refreshTimes = function() {
 		var prevSelectedPoint = that.getSelectedPoint();
@@ -108,7 +133,7 @@ Ptero.Crater.enemy_model = new function() {
 			that.makeDrunkPath();
 		}
 		else {
-			that.makeDefaultPath(4);
+			that.makeDefaultPath(5);
 		}
 	};
 
