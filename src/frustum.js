@@ -63,6 +63,7 @@ Ptero.Frustum.prototype = {
 		this.xcenter = this.xmin + this.xrange/2;
 		this.ycenter = this.ymin + this.yrange/2;
 		this.zcenter = this.zmin + this.zrange/2;
+
 	},
 	createEdges: function createEdges() {
 		n = this.near;
@@ -84,5 +85,11 @@ Ptero.Frustum.prototype = {
 			[{x:nr, y:nb, z:n}, {x:fr, y:fb, z:f}], // bottom right edge
 			[{x:nl, y:nb, z:n}, {x:fl, y:fb, z:f}], // top left edge
 		];
+	},
+	getRandomPoint: function() {
+		var x = Math.random() * this.xrange + this.xmin;
+		var y = Math.random() * this.yrange + this.ymin;
+		var z = Math.random() * this.zrange + this.zmin;
+		return this.projectToZ({x:x,y:y,z:this.far},z);
 	},
 };

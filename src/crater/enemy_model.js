@@ -85,7 +85,6 @@ Ptero.Crater.enemy_model = new function() {
 
 		that.refreshTimes();
 		that.refreshPath();
-		console.log(that.points,that.times);
 	};
 
 	this.removeSelectedPoint = function() {
@@ -93,6 +92,19 @@ Ptero.Crater.enemy_model = new function() {
 	};
 
 	this.addPoint = function() {
+		var len = that.points.length;
+		var p = Ptero.screen.getFrustum().getRandomPoint();
+		that.times.push(that.times[len-1] + 1.0);
+		p.t = that.times[len];
+		that.points.push(p);
+		var sprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+		sprite.shuffleTime();
+		that.nodeSprites.push(sprite);
+
+		that.selectPoint(len);
+
+		that.refreshTimes();
+		that.refreshPath();
 	};
 
 	// Reorder points and compute delta times.
