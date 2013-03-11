@@ -4,6 +4,7 @@ Ptero.screen = (function(){
 	var aspect;
 	var canvas,ctx;
 	var frustum;
+	var borderSize;
 
 	function setSize(w,h) {
 		width = w;
@@ -67,11 +68,16 @@ Ptero.screen = (function(){
 		while (obj = obj.offsetParent) {
 			addOffset(obj);
 		}
+		if (borderSize) {
+			p.x += borderSize;
+			p.y += borderSize;
+		}
 		return p;
 	};
 
 	return {
 		init: init,
+		setBorderSize: function(s) { borderSize = s; },
 		getWidth:	function() { return width; },
 		getHeight:  function() { return height; },
 		getAspect:  function() { return aspect; },
