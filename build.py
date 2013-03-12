@@ -4,6 +4,17 @@ import os
 import zipfile
 import shutil
 import subprocess
+import re
+
+def get_all_js_includes(filename):
+	pattern = re.compile(r'\s*<script src="(.*)"></script>')
+	includes = []
+	with open(filename) as f:
+		for line in f:
+			m = pattern.match(line)
+			if m:
+				includes.append(m.group(1))
+	return includes
 
 # Concatenate files into a single file (unix cat util)
 def cat(in_names,out_name):
@@ -30,29 +41,10 @@ def create_zip(in_names,out_name):
 
 if __name__ == "__main__":
 	print "Creating cocoon.js ...",
-	cat([
-		"lib/requestAnimationFrame.js",
-		"src/ptero.js",
-		"src/assets.js",
-		"src/background.js",
-		"src/executive.js",
-		"src/screen.js",
-		"src/input.js",
-		"src/sprites.js",
-		"src/stress/scene.js",
-		"src/stress/enemy.js",
-		"src/bullet.js",
-		"src/bulletpool.js",
-		"src/enemy.js",
-		"src/frustum.js",
-		"src/orb.js",
-		"src/path.js",
-		"src/paths.js",
-		"src/scene_game.js",
-		"src/time.js",
-		"src/vector.js",
-		"src/main.js",
-	], 'cocoon.js')
+	includes = get_all_js_includes("index.html")
+	for i in includes:
+		print "   " + i
+	cat(includes, 'cocoon.js')
 	print "done."
 
 	print "Creating cocoon.zip ...",

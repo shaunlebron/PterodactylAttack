@@ -25,19 +25,406 @@ if (!window.cancelAnimationFrame)
 }());
 
 var Ptero = Ptero || {};
+(function(){
+	/*
+	In general, we want a way to interpolate between a collection of points.
+	Each point should have a "delta time", the time it takes to get to this
+	point from the last.
+
+	For example, for points (a,b,c), and delta times (t1, t2):
+
+		at t=0,     point = a
+		at t=t1,    point = b
+		at t=t1+t2, point = c
+
+	We also want an _interpolation_ function to give us a point at any given
+	time in the valid time range:
+
+	    function interp(t) {
+	    	return a point interpolated between the given points
+	    }
+
+	Currently, we have two types of interpolation functions:
+
+	1. Point-to-point interpolation using different easing functions (e.g. linear, sinusoid)
+	2. Spline interpolation with continuous 1st and 2nd derivative for smooth movement between control points.
+	*/
+
+	// Get the sum of the numbers in the given array.
+	function sum(values) {
+		var i,len = values.length;
+		var total = 0;
+		for (i=0; i<len; i++) {
+			total += values[i];
+		}
+		return total;
+	}
+
+	// Bound a value to the given min and max.
+	function bound(value, min, max) {
+		value = Math.max(min, value);
+		value = Math.min(max, value);
+		return value;
+	}
+
+	// Get the current time segment from the given current time and delta times.
+	function getTimeSegment(t, deltaTimes) {
+		var i,len=deltaTimes.length;
+		for (i=0; i<len; i++) {
+			if (t <= deltaTimes[i]) {
+				break;
+			}
+			else {
+				t -= deltaTimes[i];
+			}
+		}
+		if (i == len) {
+			i = len-1;
+			t = deltaTimes[len-1];
+		}
+		return {
+			index: i,
+			time: t,
+			timeFrac: t/deltaTimes[i],
+		};
+	}
+
+	// A collection of easing functions.
+	// Input: two points (a,b) and 0<=t<=1
+	var easeFunctions = {
+		linear: function(a,b,t) { return a + (b-a) * t; },
+	};
+
+	// Create an interpolation function for a given collection of points and delta times.
+	//
+	// Input:
+	//   easeFuncName = name of function (from `easeFunctions`) to use to interpolate between two points
+	//   values = values to be interpolated
+	//   deltaTimes = times between each value
+	//
+	// Output:
+	//   function(t) -> interpolated value
+	//
+	// Example:
+	//
+	//   (Create linear interpolation from 0 to 10 in 2.5s)
+	//   var interp = makeInterp('linear', [0,10], [2.5]);  
+	//
+	//   (Get interpolated value at 0.75s)
+	//   var val = interp(0.75);
+	Ptero.makeInterp = function(easeFuncName, values, deltaTimes) {
+		var totalTime = sum(deltaTimes);
+		var easeFunc = easeFunctions[easeFuncName];
+
+		function interp(t) {
+			t = bound(t, 0, totalTime);
+			var seg = getTimeSegment(t, deltaTimes);
+			var i = seg.index;
+			return easeFunc(values[i], values[i+1], seg.timeFrac);
+		};
+		interp.totalTime = totalTime;
+
+		return interp;
+	};
+
+	// Create a dimension-wise interpolation function for a given colleciton of
+	// multidimensional points and delta times.
+	//
+	// Input:
+	//   easeFuncName = name of function (from `easeFunctions`) to use to interpolate between two points
+	//   objs = objects to be interpolated
+	//   keys = keys to interpolate for each object
+	//   deltaTimes = times between each value
+	//
+	// Output:
+	//   function(t) -> interpolated object
+	//
+	// Example:
+	//
+	//   (Create linear interpolation for {x:0,y:0} to {x:20,y:35} in 2.5s)
+	//   var interp = makeInterp('linear', [{x:0,y:0}, {x:20, y:35}], ['x', 'y'], [2.5]);
+	//
+	//   (Get interpolated object at 0.75s)
+	//   var obj = interp(0.75);
+	Ptero.makeInterpForObjs = function(easeFuncName, objs, keys, deltaTimes) {
+		var numKeys = keys.length;
+
+		var totalTime = sum(deltaTimes);
+		var easeFunc = easeFunctions[easeFuncName];
+
+		function interp(t) {
+			t = bound(t, 0, totalTime);
+			var seg = getTimeSegment(t, deltaTimes);
+			var i = seg.index;
+		
+			var result = {};
+			var ki,key;
+			for (ki=0; ki<numKeys; ki++) {
+				key = keys[ki];
+				result[key] = easeFunc(objs[i][key], objs[i+1][key], seg.timeFrac);
+			}
+			return result;
+		};
+		interp.totalTime = totalTime;
+
+		return interp;
+	};
+
+	// Begin scope for cubic hermite interpolation.
+	(function(){
+
+		// Returns a polynomial function to interpolate between the given points
+		// using hermite interpolation.
+		//
+		// See "Interpolation on arbitrary interval" at:
+		//    http://en.wikipedia.org/wiki/Cubic_Hermite_spline
+		//
+		// p0 = start position
+		// m0 = start slope
+		// x0 = start time
+		// p1 = end position
+		// m1 = end slope
+		// x1 = end time
+		function cubichermite(p0,m0,x0,p1,m1,x1) {
+			return function(x) {
+				var dx = x1-x0;
+				var t = (x-x0) / dx;
+				var t2 = t*t;
+				var t3 = t2*t;
+				return (
+					(2*t3 - 3*t2 + 1)*p0 +
+					(t3 - 2*t2 + t)*dx*m0 +
+					(-2*t3 + 3*t2)*p1 +
+					(t3-t2)*dx*m1
+				);
+			};
+		}
+
+		// Calculates an endpoint slope for cubic hermite interpolation.
+		//
+		// See "Finite difference" under "Interpolating a data set" at:
+		//    http://en.wikipedia.org/wiki/Cubic_Hermite_spline
+		//
+		// p0 = start position
+		// t0 = start time
+		// p1 = end position
+		// t1 = end time
+		function getendslope(p0,t0,p1,t1) {
+			return (p1-p0) / (t1-t0);
+		}
+
+		// Calculates a midpoint slope for cubic hermite interpolation.
+		//
+		// See "Finite difference" under "Interpolating a data set" at:
+		//    http://en.wikipedia.org/wiki/Cubic_Hermite_spline
+		//
+		// p0 = start position
+		// t0 = start time
+		// p1 = mid position
+		// t1 = mid time
+		// p2 = end position
+		// t2 = end time
+		function getmidslope(p0,t0,p1,t1,p2,t2) {
+			return (
+				0.5 * getendslope(p0,t0,p1,t1) +
+				0.5 * getendslope(p1,t1,p2,t2)
+			);
+		}
+
+		// Calculate the slopes for each points to be interpolated using a Cubic
+		// Hermite spline.
+		//
+		// See http://en.wikipedia.org/wiki/Cubic_Hermite_spline
+		//
+		// points = all the points to be interpolated
+		// deltaTimes = delta times for each point
+		function calcslopes(points,deltaTimes) {
+			var len = points.length;
+			var slopes=[],s;
+			for (i=0;i<len;i++) {
+				if (i==0) {
+					s = getendslope(
+							points[i],   0,
+							points[i+1], deltaTimes[i]);
+				}
+				else if (i==len-1) {
+					s = getendslope(
+							points[i-1], 0,
+							points[i],   deltaTimes[i-1]);
+				}
+				else {
+					s = getmidslope(
+							points[i-1], 0,
+							points[i],   deltaTimes[i-1],
+							points[i+1], deltaTimes[i-1]+deltaTimes[i]);
+				}
+				slopes[i] = s;
+			}
+			return slopes;
+		}
+
+		// Create a Cubic Hermite spline.
+		// Returns a piece-wise array of spline functions.
+		//
+		// points = all the points to be interpolated
+		// deltaTimes = delta times for each point
+		// slopes = slope at each point
+		//
+		function calcspline(points,deltaTimes,slopes) {
+			var i,len=points.length;
+			var splinefuncs = [];
+			for (i=0; i<len-1; i++) {
+				splinefuncs[i] = cubichermite(
+					points[i],   slopes[i],   0,
+					points[i+1], slopes[i+1], deltaTimes[i]);
+			}
+			return splinefuncs;
+		}
+
+		// Create a Cubic Hermite interpolation function for a given collection of points and delta times.
+		//
+		// Input:
+		//   values = values to be interpolated
+		//   deltaTimes = times between each value
+		//
+		// Output:
+		//   function(t) -> interpolated value
+		//
+		// Example:
+		//
+		//   (Create Cubic Hermite interpolation from 0 to 10 in 2.5s)
+		//   var interp = makeHermiteInterp([2,10,8], [2.5,1.25]);  
+		//
+		//   (Get interpolated value at 0.75s)
+		//   var val = interp(0.75);
+		Ptero.makeHermiteInterp = function(values,deltaTimes) {
+			var totalTime = sum(deltaTimes);
+
+			var slopes = calcslopes(values,deltaTimes);
+			var splinefuncs = calcspline(values,deltaTimes,slopes);
+
+			function interp(t) {
+				t = bound(t, 0, totalTime);
+				var seg = getTimeSegment(t, deltaTimes);
+				return splinefuncs[seg.index](seg.time);
+			};
+			interp.totalTime = totalTime;
+
+			return interp;
+		}
+
+		// Create a dimension-wise Cubic Hermite interpolation function for a
+		// given colleciton of multidimensional points and delta times.
+		//
+		// Input:
+		//   values = values to be interpolated
+		//   deltaTimes = times between each value
+		//
+		// Output:
+		//   function(t) -> interpolated value
+		//
+		// Example:
+		//
+		//   (Create Cubic Hermite interpolation)
+		//   var interp = makeHermiteInterp(
+		//        [{x:2,y:4}, {x:7,y:25}, {x:32, y:3}],
+		//        ['x','y'],
+		//        [2.5, 1.25]);  
+		//
+		//   (Get interpolated value at 0.75s)
+		//   var val = interp(0.75);
+		Ptero.makeHermiteInterpForObjs = function(objs,keys,deltaTimes) {
+			var numKeys = keys.length;
+			var numObjs = objs.length;
+
+			var totalTime = sum(deltaTimes);
+
+			var values, slopes, splinefuncs={};
+			var i,ki,key;
+			for (ki=0; ki<numKeys; ki++) {
+				key = keys[ki];
+				values = [];
+				for (i=0; i<numObjs; i++) {
+					values[i] = objs[i][key];
+				}
+				slopes = calcslopes(values, deltaTimes);
+				splinefuncs[key] = calcspline(values, deltaTimes, slopes);
+			}
+
+			function interp(t) {
+				t = bound(t, 0, totalTime);
+				var seg = getTimeSegment(t, deltaTimes);
+				var result = {};
+				var ki,key;
+				for (ki=0; ki<numKeys; ki++) {
+					key = keys[ki];
+					result[key] = splinefuncs[key][seg.index](seg.time);
+				}
+				return result;
+			};
+			interp.totalTime = totalTime;
+
+			return interp;
+		};
+
+	})(); // Close scope for cubic hermite interpolation.
+
+})();
 
 Ptero.assets = (function(){
 
 	var imageSources = {
 		"desert": "img/Final_Desert.jpg",
 		"baby": "img/baby_sheet.png",
-		"boom1": "img/boom1_sheet.png",
-		"boom2": "img/boom2_sheet.png",
+		"boom1": "img/boom1small_sheet.png",
+		"boom2": "img/boom2small_sheet.png",
+		"boom3": "img/boom3_sheet.png",
 		"bullet": "img/bullet_sheet.png",
+		"pause": "img/pause.png",
+		"logo": "img/logo_02.png",
+	};
+
+	var imageScales = {
+		"baby": 2.0,
+		"boom1": 2.0/1000*2720,
+		"boom2": 2.0/1000*3500,
+		"boom3": 4.0,
+		"pause": 1.0,
+		"logo": 0.8,
 	};
 
 	var images = {};
 	var sheets = {};
+	var billboards = {};
+
+	function makeBillboards() {
+		var x,y,w,h,scale,sheet,img,board;
+		for (name in imageSources) {
+			sheet = img = null;
+			if (sheets.hasOwnProperty(name)) {
+				sheet = sheets[name];
+				x = sheet.tileCenterX;
+				y = sheet.tileCenterY;
+				w = sheet.tileWidth;
+				h = sheet.tileHeight;
+			}
+			else if (images.hasOwnProperty(name)) {
+				img = images[name];
+				w = img.width;
+				h = img.height;
+				x = w/2;
+				y = h/2;
+			}
+			else {
+				continue;
+			}
+			board = new Ptero.Billboard(x,y,w,h,imageScales[name]);
+			if (sheet) {
+				sheet.billboard = board;
+			}
+			billboards[name] = board;
+		}
+	};
 
 	function loadSpriteSheets() {
 		var name,req,src;
@@ -73,6 +460,7 @@ Ptero.assets = (function(){
 			count--;
 			if (count == 0) {
 				loadSpriteSheets();
+				makeBillboards();
 				callback && callback();
 			}
 		};
@@ -92,6 +480,192 @@ Ptero.assets = (function(){
 		load: load,
 		images: images,
 		sheets: sheets,
+		billboards: billboards,
+	};
+})();
+// We try to remove the complexity of drawing a front-facing texture
+// in the frustum by creating the notion of a "billboard".
+// A billboard is a fixed-size rectangle that has a desired scale.
+// All scales are relative to the background scale, since we use it
+// to determine the aspect ratio of the game.
+
+Ptero.Billboard = function(x,y,w,h,scale) {
+	this.setCenter(x,y);
+	this.setSize(w,h);
+	this.scale = (scale == undefined) ? 1 : scale;
+};
+
+Ptero.Billboard.prototype = {
+	setSize: function(w,h) {
+		this.w = w;
+		this.h = h;
+	},
+	setCenter: function(x,y) {
+		this.centerX = x;
+		this.centerY = y;
+	},
+	getSpaceRect: function(pos) {
+		var frustum = Ptero.screen.getFrustum();
+		var scale = this.scale * Ptero.background.getScale();
+		scale /= Ptero.screen.getScreenToSpaceRatio();
+		return {
+			w: this.w * scale,
+			h: this.h * scale,
+			x: pos.x - this.centerX*scale,
+			y: pos.y - this.centerY*scale,
+			z: pos.z,
+		};
+	},
+	getNearRect: function(pos) {
+		var frustum = Ptero.screen.getFrustum();
+		var scale = this.scale * Ptero.background.getScale();
+		scale /= Ptero.screen.getScreenToSpaceRatio();
+		scale = scale / pos.z * frustum.near;
+		return {
+			w: this.w * scale,
+			h: this.h * scale,
+			x: pos.x - this.centerX*scale,
+			y: pos.y - this.centerY*scale,
+			z: frustum.near,
+		};
+	},
+	getScreenRect: function(pos) {
+		var frustum = Ptero.screen.getFrustum();
+		var screenPos = Ptero.screen.spaceToScreen(pos);
+		var scale = this.scale * Ptero.background.getScale();
+		scale = scale / pos.z * frustum.near;
+		return {
+			w: this.w * scale,
+			h: this.h * scale,
+			x: screenPos.x - this.centerX*scale,
+			y: screenPos.y - this.centerY*scale,
+		};
+	},
+
+	getRelativeCursor: function(x,y,pos) {
+		var rect = this.getScreenRect(pos);
+		var midx = rect.x + rect.w/2;
+		var midy = rect.y + rect.h/2;
+		x -= midx;
+		y -= midy;
+		var nx,ny;
+		
+		// (x+yi)(cos + isin)
+		// (xcos + ixsin + iycos - ysin)
+		if (pos.angle) {
+			var c = Math.cos(-pos.angle);
+			var s = Math.sin(-pos.angle);
+			nx = x*c - y*s;
+			ny = x*s + y*c;
+		}
+		else {
+			nx = x;
+			ny = y;
+		}
+
+		nx += rect.w/2;
+		ny += rect.h/2;
+		return {x:nx, y:ny};
+	},
+
+	isInsideScreenRect: function(x,y,pos) {
+		var rect = this.getScreenRect(pos);
+		var p = this.getRelativeCursor(x,y,pos);
+		if (0 <= p.x && p.x <= rect.w &&
+			0 <= p.y && p.y <= rect.h) {
+			return true;
+		}
+		return false;
+	},
+
+	isOverRotationHandle: function(x,y,pos) {
+		var rect = this.getScreenRect(pos);
+		var p = this.getRelativeCursor(x,y,pos);
+		var dx = (rect.w/2) - p.x;
+		var dy = 0 - p.y;
+		var dist_sq = dx*dx+dy*dy;
+		return dist_sq <= 64;
+	},
+};
+
+// Drawing functions that take 3d frustum coordinates.
+Ptero.painter = (function(){
+
+	function drawImageFrame(ctx,image,pos,sx,sy,sw,sh,billboard) {
+		var rect = billboard.getScreenRect(pos);
+		var dx = rect.x;
+		var dy = rect.y;
+		var dw = rect.w;
+		var dh = rect.h;
+		var x = dx + dw/2;
+		var y = dy + dh/2;
+		var angle = pos.angle;
+		if (angle) {
+			ctx.translate(x,y);
+			ctx.rotate(angle);
+			dx -= x;
+			dy -= y;
+			ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);
+			ctx.rotate(-angle);
+			ctx.translate(-x,-y);
+		}
+		else {
+			ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);
+		}
+	};
+
+	function drawImage(ctx,image,pos,billboard) {
+		var sx = 0;
+		var sy = 0;
+		var sw = image.width;
+		var sh = image.height;
+		drawImageFrame(ctx,image,pos,sx,sy,sw,sh,billboard);
+	};
+
+	function drawBorder(ctx,pos,color,billboard,handle) {
+		var rect = billboard.getScreenRect(pos);
+		var dx = rect.x;
+		var dy = rect.y;
+		var dw = rect.w;
+		var dh = rect.h;
+		var x = dx + dw/2;
+		var y = dy + dh/2;
+		var angle = pos.angle;
+		if (angle) {
+			ctx.translate(x,y);
+			ctx.rotate(angle);
+			dx -= x;
+			dy -= y;
+		}
+
+		ctx.strokeStyle = color;
+		ctx.lineWidth = 2;
+		if (handle) {
+			var r = 4;
+			ctx.beginPath();
+			ctx.moveTo(dx+dw/2-r, dy);
+			ctx.lineTo(dx,dy);
+			ctx.lineTo(dx,dy+dh);
+			ctx.lineTo(dx+dw,dy+dh);
+			ctx.lineTo(dx+dw,dy);
+			ctx.lineTo(dx+dw/2+r, dy);
+			ctx.arc(dx+dw/2,dy,r,0,Math.PI*2);
+			ctx.stroke();
+		}
+		else {
+			ctx.strokeRect(dx,dy,dw,dh);
+		}
+
+		if (angle) {
+			ctx.rotate(-angle);
+			ctx.translate(-x,-y);
+		}
+	};
+
+	return {
+		drawImageFrame: drawImageFrame,
+		drawImage: drawImage,
+		drawBorder: drawBorder,
 	};
 })();
 
@@ -127,6 +701,10 @@ Ptero.setScene = function(scene) {
 	scene.init();
 };
 
+Ptero.fadeToScene = function(scene, timeToFade) {
+	Ptero.scene = new Ptero.FadeScene(Ptero.scene, scene, timeToFade);
+};
+
 Ptero.executive = (function(){
 
 	var lastTime;
@@ -160,8 +738,13 @@ Ptero.executive = (function(){
         };
     })();
 	function drawFps(ctx) {
+		if (Ptero.scene == Ptero.scene_fact) {
+			return;
+		}
 		ctx.font = "30px Arial";
 		ctx.fillStyle = "#FFF";
+		ctx.textBaseline = "bottom";
+		ctx.textAlign = "left";
 		var pad = 5;
 		var x = pad;
 		var y = Ptero.screen.getHeight() - pad;
@@ -172,12 +755,18 @@ Ptero.executive = (function(){
 		try {
 			updateFps(time);
 
-			var dt = Math.min((time-lastTime)/1000, 1/minFps);
+			var dt;
+			if (lastTime == undefined) {
+				dt = 0;
+			}
+			else {
+				dt = Math.min((time-lastTime)/1000, 1/minFps);
+			}
 			lastTime = time;
 
 			var scene = Ptero.scene;
 			if (!isPaused) {
-				scene.update(dt);
+				scene.update(dt*speedScale);
 			}
 			var ctx = Ptero.screen.getCtx();
 			scene.draw(ctx);
@@ -199,13 +788,31 @@ Ptero.executive = (function(){
 	};
 
 	function start() {
-		lastTime = (new Date).getTime();
 		requestAnimationFrame(tick);
+	};
+
+	var speedScale = 1.0;
+	function slowmo() {
+		speedScale = 0.25;
+	};
+	function regmo() {
+		speedScale = 1.0;
 	};
 
 	return {
 		start: start,
 		pause: pause,
+		isPaused: function() { return isPaused; },
+		togglePause: function() {
+			if (isPaused) {
+				resume();
+			}
+			else {
+				pause();
+			}
+		},
+		slowmo: slowmo,
+		regmo: regmo,
 		resume: resume,
 	};
 })();
@@ -215,6 +822,7 @@ Ptero.screen = (function(){
 	var aspect;
 	var canvas,ctx;
 	var frustum;
+	var borderSize;
 
 	function setSize(w,h) {
 		width = w;
@@ -224,20 +832,21 @@ Ptero.screen = (function(){
 		canvas.height = height;
 	};
 
+	function setStartSize(w,h) {
+		width = w;
+		height = h;
+	};
+
 	function init(_canvas) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		if (navigator.isCocoonJS) {
-			setSize(window.innerWidth, window.innerHeight);
-		}
-		else {
-			setSize(720,480);
-		}
+		setSize(width,height);
 
 		var fov = 30*Math.PI/180;
-		var near = height/2 / Math.tan(fov/2);
-		var far = near*7;
+		//var near = height/2 / Math.tan(fov/2);
+		var near = 1;
+		var far = near*5;
 		frustum = new Ptero.Frustum(near,far,fov,aspect);
 
 		Ptero.sizeFactor = frustum.nearTop;
@@ -277,17 +886,23 @@ Ptero.screen = (function(){
 		while (obj = obj.offsetParent) {
 			addOffset(obj);
 		}
+		if (borderSize) {
+			p.x += borderSize;
+			p.y += borderSize;
+		}
 		return p;
 	};
 
 	return {
 		init: init,
+		setBorderSize: function(s) { borderSize = s; },
 		getWidth:	function() { return width; },
 		getHeight:  function() { return height; },
 		getAspect:  function() { return aspect; },
 		getCanvas:	function() { return canvas; },
 		getCtx:		function() { return ctx; },
 		getFrustum: function() { return frustum; },
+		setStartSize: setStartSize,
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
         getScreenToSpaceRatio: getScreenToSpaceRatio,
@@ -393,6 +1008,33 @@ Ptero.input = (function(){
 		canvas.addEventListener('touchmove',	wrapFunc(touchMove));
 		canvas.addEventListener('touchend',		wrapFunc(touchEnd));
 		canvas.addEventListener('touchcancel',	wrapFunc(touchCancel));
+
+		// from: https://developer.mozilla.org/en-US/docs/DOM/Using_fullscreen_mode
+		function toggleFullScreen(elm) {
+			if (!document.fullscreenElement &&    // alternative standard method
+					!document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+				if (elm.requestFullscreen) {
+					elm.requestFullscreen();
+				} else if (elm.mozRequestFullScreen) {
+					elm.mozRequestFullScreen();
+				} else if (elm.webkitRequestFullscreen) {
+					elm.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+				}
+			} else {
+				if (document.cancelFullScreen) {
+					document.cancelFullScreen();
+				} else if (document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if (document.webkitCancelFullScreen) {
+					document.webkitCancelFullScreen();
+				}
+			}
+		}
+		document.addEventListener('keydown', function(e) {
+			if (e.keyCode == 13) { // enter key
+				toggleFullScreen(document.body);
+			}
+		},false);
 	};
 
 	return {
@@ -423,33 +1065,23 @@ Ptero.SpriteSheet = function(img,dict) {
 };
 
 Ptero.SpriteSheet.prototype = {
-	draw: function draw(ctx,x,y,frame,scale,highlight) {
-		if (scale == undefined) {
-			scale = 1;
-		}
+	draw: function(ctx,pos,frame) {
 		var row = Math.floor(frame / this.cols);
 		var col = frame % this.cols;
 		var sx = col * this.tileWidth;
 		var sy = row * this.tileHeight;
 		var sw = this.tileWidth;
 		var sh = this.tileHeight;
-		var dw = sw*scale;
-		var dh = sh*scale;
-		ctx.drawImage(this.img,
+		Ptero.painter.drawImageFrame(
+			ctx,
+			this.img,
+			pos,
 			sx,sy,sw,sh,
-			x,y,dw,dh);
-		if (highlight) {
-			ctx.fillStyle = "rgba(255,0,0,0.5)";
-			ctx.fillRect(x,y,dw,dh);
-			ctx.strokeStyle = "#f00";
-			ctx.lineWidth = 2;
-			ctx.strokeRect(x,y,dw,dh);
-		}
+			this.billboard
+		);
 	},
-	drawCentered: function drawCentered(ctx,x,y,frame,scale,highlight) {
-		x -= this.tileCenterX * scale;
-		y -= this.tileCenterY * scale;
-		this.draw(ctx,x,y,frame,scale,highlight);
+	drawBorder: function(ctx,pos,color,handle) {
+		Ptero.painter.drawBorder(ctx,pos,color,this.billboard,handle);
 	},
 };
 
@@ -466,6 +1098,9 @@ Ptero.AnimSprite = function(sheet) {
 };
 
 Ptero.AnimSprite.prototype = {
+	shuffleTime: function() {
+		this.time = Math.random()*this.totalDuration;
+	},
 	start: function start() {
 		this.animating = true;
 	},
@@ -505,17 +1140,14 @@ Ptero.AnimSprite.prototype = {
 		this.time %= this.totalDuration;
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
-	draw: function draw(ctx,x,y,scale,highlight) {
-		this.sheet.draw(ctx,x,y,this.frame,scale,highlight);
+	draw: function(ctx,pos) {
+		this.sheet.draw(ctx,pos,this.frame);
 	},
-	drawCentered: function drawCentered(ctx,x,y,scale, highlight) {
-		this.sheet.drawCentered(ctx,x,y,this.frame,scale,highlight);
+	drawBorder: function(ctx,pos,color,handle) {
+		this.sheet.drawBorder(ctx,pos,color,handle);
 	},
-	draw3D: function draw3D(ctx,pos,highlight) {
-		var closeWidth = this.sheet.tileWidth * Ptero.background.getScale();
-		var scale = Ptero.screen.getFrustum().getDepthScale(pos.z, closeWidth) / closeWidth;
-		var screenPos = Ptero.screen.spaceToScreen(pos);
-		this.drawCentered(ctx, screenPos.x, screenPos.y, scale, highlight);
+	getBillboard: function() {
+		return this.sheet.billboard;
 	},
 };
 
@@ -693,7 +1325,7 @@ Ptero.Bullet.prototype = {
 	},
 	draw: function draw(ctx) {
 		var p = Ptero.screen.spaceToScreen(this.pos);
-		this.sprite.draw3D(ctx, this.pos);
+		this.sprite.draw(ctx, this.pos);
 	},
 };
 
@@ -767,38 +1399,40 @@ Ptero.bulletpool = (function(){
 	};
 })();
 
-Ptero.Enemy = function() {
-	this.path = Ptero.makeEnemyPath();
-	this.isHit = false;
+Ptero.Enemy = function(makeNewPath) {
+	this.makeNewPath = makeNewPath;
 
 	this.babySprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
-	this.babySprite.update(Math.random()*this.babySprite.totalDuration);
+	this.babySprite.shuffleTime();
 
 	this.boom1Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom1);
 	this.boom1Sprite.setRepeat(false);
 	this.boom2Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom2);
 	this.boom2Sprite.setRepeat(false);
+	this.boom3Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom3);
+	this.boom3Sprite.setRepeat(false);
 	this.randomizeBoom();
 
-	this.doneTimer = new Ptero.Timer(1000);
+	this.resetPosition();
 };
 
 Ptero.Enemy.prototype = {
 	randomizeBoom: function randomizeBoom() {
-		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
+		this.boomSprite = this.boom3Sprite;
+		//this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
 		this.boomSprite.restart();
 	},
 	isHittable: function isHittable() {
 		return !this.path.isDone() && !this.isHit; // only hittable if not already hit
 	},
 	getPosition: function getPosition() {
-		return this.path.state.pos;
+		return this.path.pos;
 	},
 	getCollisionRadius: function getCollisionRadius() {
 		return Ptero.sizeFactor * 2;
 	},
 	getFuturePosition: function getFuturePosition(time) {
-		return this.path.seek(time).pos;
+		return this.path.seek(time);
 	},
 	onHit: function onHit() {
 		// update score
@@ -811,9 +1445,10 @@ Ptero.Enemy.prototype = {
 	},
 	resetPosition: function resetPosition() {
 		this.randomizeBoom();
-		this.path = Ptero.makeEnemyPath();
+		if (this.makeNewPath) {
+			this.path = this.makeNewPath();
+		}
 		this.isHit = false;
-		this.doneTimer.reset();
 		this.isGoingToDie = false;
 	},
 	update: function update(dt) {
@@ -832,14 +1467,8 @@ Ptero.Enemy.prototype = {
 		else if (this.path.isDone()) {
 			// HIT SCREEN
 
-			if (this.doneTimer.getElapsedMillis() == 0) {
-				navigator.vibrate && navigator.vibrate(200);
-				// Screen.shakeScreen(1000);
-			}
-			this.doneTimer.increment(millis);
-			if (this.doneTimer.isDone()) {
-				this.resetPosition();
-			}
+			navigator.vibrate && navigator.vibrate(200);
+			this.resetPosition();
 		}
 		else {
 			// FLYING TOWARD SCREEN
@@ -850,19 +1479,16 @@ Ptero.Enemy.prototype = {
 			this.babySprite.update(dt);
 		}
 	},
-	getSize: function() {
-		return this.babySprite.sheet.tileWidth;
-	},
 	draw: function draw(ctx) {
-		var pos = this.path.state.pos;
+		var pos = this.path.pos;
 
 		if (this.isHit) {
-			this.boomSprite.draw3D(ctx, pos, this.highlight);
+			this.boomSprite.draw(ctx, pos);
 		}
 		else if (this.path.isDone()) {
 		}
 		else {
-			this.babySprite.draw3D(ctx, pos, this.highlight);
+			this.babySprite.draw(ctx, pos);
 		}
 
 	},
@@ -880,11 +1506,8 @@ Ptero.Frustum = function(near,far,fov,aspect) {
 	this.fov = fov;
 	this.aspect = aspect;
 
-	this.nearTop = Math.tan(fov/2)*near;
-	this.nearRight = this.nearTop * aspect;
-
-	this.nearWidth = this.nearRight * 2;
-	this.nearHeight = this.nearTop * 2;
+	this.createBoundingBox();
+	this.createEdges();
 };
 
 Ptero.Frustum.prototype = {
@@ -899,12 +1522,70 @@ Ptero.Frustum.prototype = {
 	},
 	isInside: function isInside(vector) {
 		var v = this.projectToNear(vector);
-		return (this.far >= vector.z && vector.z > 0 &&
+		return (/*this.far >= vector.z &&*/ vector.z > this.near &&
 				Math.abs(v.x) < this.nearRight &&
 				Math.abs(v.y) < this.nearTop);
 	},
 	getDepthScale: function getDepthScale(z,nearScale) {
 		return nearScale/z*this.near;
+	},
+	createBoundingBox: function createBoundingBox() {
+		this.nearTop = Math.tan(this.fov/2)*this.near;
+		this.nearRight = this.nearTop * this.aspect;
+		this.nearBottom = -this.nearTop;
+		this.nearLeft = -this.nearRight;
+		this.nearWidth = this.nearRight * 2;
+		this.nearHeight = this.nearTop * 2;
+
+		this.farTop = Math.tan(this.fov/2)*this.far;
+		this.farRight = this.farTop * this.aspect;
+		this.farBottom = -this.farTop;
+		this.farLeft = -this.farRight;
+		this.farWidth = this.farRight * 2;
+		this.farHeight = this.farTop * 2;
+
+		this.xmin = this.farLeft;
+		this.xmax = this.farRight;
+		this.ymin = this.farBottom;
+		this.ymax = this.farTop;
+		this.zmin = this.near;
+		this.zmax = this.far;
+
+		this.xrange = this.xmax-this.xmin;
+		this.yrange = this.ymax-this.ymin;
+		this.zrange = this.zmax-this.zmin;
+
+		this.xcenter = this.xmin + this.xrange/2;
+		this.ycenter = this.ymin + this.yrange/2;
+		this.zcenter = this.zmin + this.zrange/2;
+
+	},
+	createEdges: function createEdges() {
+		n = this.near;
+		f = this.far;
+		nl = this.nearLeft;
+		nr = this.nearRight;
+		nt = this.nearTop;
+		nb = this.nearBottom;
+		fl = this.farLeft;
+		fr = this.farRight;
+		ft = this.farTop;
+		fb = this.farBottom;
+
+		this.edges = [
+			[{x:nl, y:nt, z:n}, {x:nr, y:nt, z:n}, {x:nr, y:nb, z:n}, {x:nl, y:nb, z:n}], // near edges
+			[{x:fl, y:ft, z:f}, {x:fr, y:ft, z:f}, {x:fr, y:fb, z:f}, {x:fl, y:fb, z:f}], // far edges
+			[{x:nl, y:nt, z:n}, {x:fl, y:ft, z:f}], // top left edge
+			[{x:nr, y:nt, z:n}, {x:fr, y:ft, z:f}], // top right edge
+			[{x:nr, y:nb, z:n}, {x:fr, y:fb, z:f}], // bottom right edge
+			[{x:nl, y:nb, z:n}, {x:fl, y:fb, z:f}], // top left edge
+		];
+	},
+	getRandomPoint: function() {
+		var x = Math.random() * this.xrange + this.xmin;
+		var y = Math.random() * this.yrange + this.ymin;
+		var z = Math.random() * this.zrange + this.zmin;
+		return this.projectToZ({x:x,y:y,z:this.far},z);
 	},
 };
 Ptero.orb = (function(){
@@ -1034,22 +1715,30 @@ Ptero.orb = (function(){
 		}
 	};
 
-	var maxAimAngleError = 5 * Math.PI/180;
+	// Player will only hit a target if their aim is within this angle.
+	var max2dHitAngle = 5 * Math.PI/180;
 
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
 		var target = chooseTargetFromAimVector(aim_vector);
 		//setShotTarget(target);
 
-		var aimAngleError = getAimAngleError(target.getPosition(), aim_vector);
+		// create bullet
 		var bullet, bulletCone;
-		if (!target.isGoingToDie && aimAngleError < maxAimAngleError) {
-			bullet = createHomingBullet(target);
-			target.isGoingToDie = true;
+		if (!target) {
+			bulletCone = getDefaultBulletCone(aim_vector);
+			bullet = createBulletFromCone(bulletCone, aim_vector);
 		}
 		else {
-			bulletCone = target ? getTargetBulletCone(target) : getDefaultBulletCone(aim_vector);
-			bullet = createBulletFromCone(bulletCone, aim_vector);
+			var aim2dAngle = get2dAimAngle(target.getPosition(), aim_vector);
+			if (!target.isGoingToDie && aim2dAngle < max2dHitAngle) {
+				bullet = createHomingBullet(target);
+				target.isGoingToDie = true;
+			}
+			else {
+				bulletCone = getTargetBulletCone(target);
+				bullet = createBulletFromCone(bulletCone, aim_vector);
+			}
 		}
 
 		if (bullet) {
@@ -1060,10 +1749,17 @@ Ptero.orb = (function(){
 		}
 	};
 
-	// Return the angle error of our aim when targeting the given position.
-	function getAimAngleError(target_pos, aim_vector) {
+	// Returns the angle between the target projected on the screen and the aim vector.
+	function get2dAimAngle(target_pos, aim_vector) {
 		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
 		var target_vec = getAimVector(target_proj);
+		var target_angle = target_vec.angle(aim_vector);
+		return target_angle;
+	};
+
+	// Returns the angle between the target and the aim vector.
+	function get3dAimAngle(target_pos, aim_vector) {
+		var target_vec = getAimVector(target_pos);
 		var target_angle = target_vec.angle(aim_vector);
 		return target_angle;
 	};
@@ -1072,7 +1768,8 @@ Ptero.orb = (function(){
 	function chooseTargetFromAimVector(aim_vector) {
 
 		// find visible cube nearest to our line of trajectory
-		var angle = 30*Math.PI/180;
+		var maxAim2dAngle = 15*Math.PI/180;
+		var closestZ = Infinity;
 		var chosen_target = null;
 		var i,len;
 		var frustum = Ptero.screen.getFrustum();
@@ -1084,14 +1781,15 @@ Ptero.orb = (function(){
 			// skip if not visible
 			var target_pos = targets[i].getPosition();
 			if (!frustum.isInside(target_pos)) {
-				//continue;
+				continue;
 			}
 
-			var target_angle = getAimAngleError(target_pos, aim_vector);
+			var target2dAngle = get2dAimAngle(target_pos, aim_vector);
 
 			// update closest
-			if (target_angle < angle) {
-				angle = target_angle;
+			if (target2dAngle < maxAim2dAngle && target_pos.z < closestZ) {
+				closestZ = target_pos.z;
+				maxAim2dAngle = target2dAngle;
 				chosen_target = targets[i];
 			}
 		}
@@ -1099,7 +1797,8 @@ Ptero.orb = (function(){
 	};
 
 	function getBulletSpeed() {
-		return Ptero.background.getScale() * Ptero.screen.getHeight() * 50;
+		var frustum = Ptero.screen.getFrustum();
+		return frustum.nearTop * 120;
 	}
 
 	// Create a bullet with the necessary trajectory to hit the given target.
@@ -1242,22 +1941,10 @@ Ptero.orb = (function(){
 		disableTouch: disableTouch,
 	};
 })();
-Ptero.PathState = function(index,indexStep,time,pos) {
-	if (index == null) index = 0;
-	if (indexStep == null) indexStep = 1;
-	if (time == null) time = 0;
-	if (pos == null) pos = new Ptero.Vector;
-	this.index = index;
-	this.indexStep = indexStep;
-	this.time = time;
-	this.pos = pos;
-};
-
-Ptero.Path = function(points, times, loop) {
-	this.points = points;
-	this.times = times;
+Ptero.Path = function(interp, loop) {
+	this.interp = interp;
+	this.totalTime = interp.totalTime;
 	this.loop = loop;
-	this.state = new Ptero.PathState;
 	this.reset();
 };
 
@@ -1267,72 +1954,34 @@ Ptero.Path.prototype = {
 	// return a predicted state that is dt seconds in the future
 	seek: function seek(dt) {
 
-		var i = this.state.index;
-		var iStep = this.state.indexStep;
-		var t = this.state.time+dt;
-		var p = new Ptero.Vector;
+		// Turn the interpolated value into a vector object.
+		// Also add the "angle" property to it.
+		var i = this.interp(this.time+dt);
+		var v = (new Ptero.Vector).set(i);
+		v.angle = i.angle;
 
-		while (true) {
-
-			if (this.loop) {
-				// change direction if at ends
-				if (i == this.points.length-1) {
-					if (iStep == 1) {
-						iStep = -1;
-					}
-				}
-				else if (i == 0) {
-					if (iStep == -1) {
-						iStep = 1;
-					}
-				}
-			}
-			else {
-				// stop if at end
-				if (i == this.points.length-1) {
-					break;
-				}
-			}
-
-			if (t >= this.times[i+iStep]) {
-				t -= this.times[i+iStep];
-				i += iStep;
-				continue;
-			}
-			else {
-				break;
-			}
-		}
-
-		if (!this.loop && i == this.points.length-1) {
-			// end of path
-			p.set(this.points[i]);
-		}
-		else {
-			// between two control points
-			p.set(this.points[i+iStep]).sub(this.points[i]).mul(t/this.times[i+iStep]).add(this.points[i]);
-		}
-
-		return new Ptero.PathState(i,iStep,t,p);
+		return v;
 	},
 
 	step: function step(dt) {
-		this.state = this.seek(dt);
+		this.time += dt;
+		if (this.loop) {
+			this.time %= this.totalTime;
+		}
+		this.pos = this.seek(0);
 	},
 
 	reset: function reset() {
-		this.state.index = 0;
-		this.state.indexStep = 1;
-		this.state.time = 0;
-		this.state.pos.set(this.points[0]);
+		this.time = 0;
+		this.step(0);
 	},
 
 	isDone: function isDone() {
-		return !this.loop && this.state.index == this.points.length-1;
+		return !this.loop && this.time >= this.totalTime; 
 	},
 };
 
-Ptero.makeEnemyPath = function makeEnemyPath() {
+Ptero.makeLinearEnemyPath = function() {
 
 	// frustum attributes
 	var aspect = Ptero.screen.getAspect();
@@ -1341,55 +1990,154 @@ Ptero.makeEnemyPath = function makeEnemyPath() {
 	var near = frustum.near;
 	var far = frustum.far;
 
-	// starting depth
-	var start = Math.random()*(4*far)+far;
-
-	// start point
-	var x0,y0,z0;
-
-	// random screen position range
 	var xrange = aspect*size*2;
 	var yrange = size;
 
-	// random screen position
-	x0 = Math.random()*xrange - xrange/2;
-	y0 = Math.random()*yrange - yrange/3;
-
-	// project position to start depth
-	x0 = x0/near*start;
-	y0 = y0/near*start;
-	z0 = start;
-
-	// end point
-	var x1,y1,z1;
+	var startPos = new Ptero.Vector(
+		Math.random()*xrange - xrange/2,
+		Math.random()*yrange - yrange/3,
+		near);
+	var startZ = Math.random()*(4*far)+far;
+	startPos = frustum.projectToZ(startPos, startZ);
 
 	// random screen position
 	xrange /= 2;
 	yrange /= 2;
-	x1 = Math.random()*xrange - xrange/2;
-	y1 = Math.random()*yrange - yrange/2;
-	z1 = near;
+	
+	var endPos = new Ptero.Vector(
+		Math.random()*xrange - xrange/2,
+		Math.random()*yrange - yrange/2,
+		near);
 
-	// get distance traveled
-	var dx = x1-x0;
-	var dy = y1-y0;
-	var dz = z1-z0;
-	var dist = Math.sqrt(dx*dx+dy*dy+dz*dz);
-
-	// get time to complete
+	var dist = startPos.dist(endPos);
 	var speed = (far-near) / 5;
 	var time = dist/speed;
 
-	// set path
-	return new Ptero.Path(
-			[ new Ptero.Vector(x0,y0,z0), new Ptero.Vector(x1,y1,z1) ],
-			[ time, time ],
-			false); // loop flag
+	var interp = Ptero.makeInterpForObjs('linear', 
+		[ startPos, endPos ],
+		['x','y','z'],
+		[time]);
+
+	return new Ptero.Path(interp);
+};
+
+Ptero.makeHermiteEnemyPath = function() {
+
+	// frustum attributes
+	var aspect = Ptero.screen.getAspect();
+	var frustum = Ptero.screen.getFrustum();
+	var size = Ptero.sizeFactor;
+	var near = frustum.near;
+	var far = frustum.far;
+
+	var xrange = aspect*size*2;
+	var yrange = size;
+
+	var startPos = new Ptero.Vector(
+		Math.random()*xrange - xrange/2,
+		Math.random()*yrange + size,
+		near);
+	var startZ = Math.random()*(4*far)+far;
+	startPos = frustum.projectToZ(startPos, startZ);
+
+	var midPos = new Ptero.Vector(
+		Math.random()*xrange - xrange/2,
+		Math.random()*yrange,
+		near);
+	var midZ = near + (near + far)*0.75;
+	midPos = frustum.projectToZ(midPos, midZ);
+
+	xrange /= 2;
+	yrange /= 2;
+	var endPos = new Ptero.Vector(
+		Math.random()*xrange - xrange/2,
+		Math.random()*yrange - yrange/2,
+		near);
+	var endZ = near;
+	endPos = frustum.projectToZ(endPos, endZ);
+
+	// create random angles
+	function randAngle() {
+		var a = 50*Math.PI/180;
+		return Math.random()*2*a - a;
+	}
+	startPos.angle = randAngle();
+	midPos.angle = randAngle();
+	endPos.angle = randAngle();
+
+	// create interpolation on a time scale of 1 second
+	var interp = Ptero.makeHermiteInterpForObjs(
+		[ startPos, midPos, endPos ],
+		['x','y','z','angle'],
+		[0.5, 0.5]);
+
+	// approximate distance of the interpolated path
+	var t,dist = 0;
+	var pos,prevPos;
+	for (t=0; t<=1; t+=(1/1000)) {
+		pos = (new Ptero.Vector).set(interp(t));
+		if (prevPos) {
+			dist += prevPos.dist(pos);
+		}
+		prevPos = pos;
+	}
+
+	// compute time to complete path
+	var speed = (far-near) / 5;
+	var time = dist/speed;
+
+	// create interpolation on the desired time scale
+	interp = Ptero.makeHermiteInterpForObjs(
+		[ startPos, midPos, endPos ],
+		['x','y','z','angle'],
+		[time/2, time/2]);
+
+	return new Ptero.Path(interp);
+};
+
+Ptero.FadeScene = function(scene1, scene2, timeToFade) {
+	this.scene1 = scene1;
+	this.scene2 = scene2;
+	this.scene2.init();
+	this.interp = Ptero.makeInterp('linear',[1,0],[timeToFade]);
+	this.time = 0;
+};
+
+Ptero.FadeScene.prototype = {
+	update: function(dt) {
+		this.time += dt;
+		if (this.time > this.interp.totalTime) {
+			Ptero.scene = this.scene2;
+		}
+	},
+	draw: function(ctx) {
+		this.scene2.draw(ctx);
+		ctx.globalAlpha = this.interp(this.time);
+		this.scene1.draw(ctx);
+		ctx.globalAlpha = 1;
+	},
 };
 
 Ptero.scene_game = (function() {
 	var enemies = [];
 	var numEnemies = 20;
+
+
+
+	function onKeyDown(e) {
+		if (e.keyCode == 32) {
+			Ptero.executive.togglePause();
+		}
+		else if (e.keyCode == 16) {
+			Ptero.executive.slowmo();
+		}
+	}
+	
+	function onKeyUp(e) {
+		if (e.keyCode == 16) {
+			Ptero.executive.regmo();
+		}
+	}
 
 	function init() {
 
@@ -1397,12 +2145,15 @@ Ptero.scene_game = (function() {
 
 		var i;
 		for (i=0; i<numEnemies; i++) {
-			enemies.push(new Ptero.Enemy);
+			enemies.push(new Ptero.Enemy(Ptero.makeHermiteEnemyPath));
 		}
 
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
+
+		window.addEventListener("keydown", onKeyDown);
+		window.addEventListener("keyup", onKeyUp);
 	};
 
 	function update(dt) {
@@ -1424,6 +2175,8 @@ Ptero.scene_game = (function() {
 		Ptero.deferredSprites.finalize();
 	};
 
+	var pauseAlpha = 0;
+	var pauseTargetAlpha = 0;
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
 		Ptero.deferredSprites.draw(ctx);
@@ -1436,6 +2189,19 @@ Ptero.scene_game = (function() {
 			ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
 			ctx.fill();
 		}
+		if (Ptero.executive.isPaused()) {
+			pauseTargetAlpha = 1;
+		}
+		else {
+			pauseTargetAlpha = 0;
+		}
+		var img = Ptero.assets.images["pause"];
+		var x = Ptero.screen.getWidth() - img.width;
+		var y = Ptero.screen.getHeight() - img.height;
+		pauseAlpha += (pauseTargetAlpha - pauseAlpha) * 0.3;
+		ctx.globalAlpha = pauseAlpha;
+		ctx.drawImage(img, x,y);
+		ctx.globalAlpha = 1;
 	};
 
 	return {
@@ -1443,6 +2209,110 @@ Ptero.scene_game = (function() {
 		update: update,
 		draw: draw,
 	};
+})();
+
+Ptero.scene_fact = (function(){
+
+	var facts = [
+
+		'Pterosaurs ruled the skies for 155 million years.',
+		'Pteros, birds, & bats evolved flight independently.',
+		'Pteros ranged in size from sparrow to airplane.',
+		'The largest pteros mostly glided around.',
+		'Pteros had a wide range of head shapes.',
+		'Ptero wings were supported by really long pinkies.',
+		'Early Pterosaurs had long tails for balance.',
+		'Ptero fossils were first discovered in 1784.',
+		'Ptero wings were originally thought to be sea paddles.',
+		'Paleontologists prefer the word "Pterosaur".',
+		'One ptero fossil had a Spinosaur\'s broken tooth in it.',
+		'Baby pteros are called "flaplings".',
+		'Baby pteros could fly right after hatching.',
+		'Pteros walked on all fours.',
+		'Ptero extinction may have been caused by birds.',
+
+		"Pteranodons attacked people in Jurassic Park III.",
+
+	];
+
+	var interp;
+	var fact;
+	var time;
+	function init() {
+		time = 0;
+		fact = facts[Math.floor(Math.random()*facts.length)];
+		interp = Ptero.makeInterp('linear', [0,1,1,0,0],[1.0,1.5,1.0,0.5]);
+	}
+
+	function update(dt) {
+		if (time > interp.totalTime) {
+			Ptero.fadeToScene(Ptero.scene_menu,1.0);
+		}
+		else {
+			time += dt;
+		}
+	}
+
+	function draw(ctx) {
+		var w = Ptero.screen.getWidth();
+		var h = Ptero.screen.getHeight();
+		ctx.fillStyle = "#111";
+		ctx.fillRect(0,0,w,h);
+		ctx.font = "30px Arial";
+
+		ctx.globalAlpha = interp(time);
+		ctx.fillStyle = "#FFF";
+		ctx.textBaseline = "middle";
+		ctx.textAlign = "center";
+		ctx.fillText(fact, w/2,h/2);
+		ctx.globalAlpha = 1.0;
+	}
+	
+	return {
+		init: init,
+		update: update,
+		draw: draw,
+	};
+})();
+
+Ptero.scene_menu = (function(){
+
+	var titleImg;
+	var titleBoard;
+	function init() {
+		titleImg = Ptero.assets.images['logo'];
+		titleBoard = Ptero.assets.billboards['logo'];
+		Ptero.background.setImage(Ptero.assets.images.desert);
+		Ptero.input.addTouchHandler(touchHandler);
+	}
+
+	var touchHandler = {
+		start: function(x,y) {
+			Ptero.input.removeTouchHandler(touchHandler);
+			Ptero.fadeToScene(Ptero.scene_game, 1.0);
+		},
+		move: function(x,y) {
+		},
+		end: function(x,y) {
+		},
+		cancel: function(x,y) {
+		},
+	};
+
+	function update(dt) {
+	}
+
+	function draw(ctx) {
+		Ptero.background.draw(ctx);
+		Ptero.painter.drawImage(ctx,titleImg,{x:0,y:0,z:Ptero.screen.getFrustum().near},titleBoard);
+	}
+
+	return {
+		init: init,
+		update: update,
+		draw: draw,
+	};
+
 })();
 
 Ptero.StopWatch = function() {
@@ -1561,7 +2431,6 @@ window.onload = function() {
 	// (CocoonJS provides a more efficient screencanvas if you're using one main canvas).
 	var canvas = document.createElement(
 			navigator.isCocoonJS ? 'screencanvas' : 'canvas');
-	document.body.appendChild(canvas);
 
 	// CocoonJS extended property for scaling canvas to a display:
 	// (ScaleToFill, ScaleAspectFit, ScaleAspectFill)
@@ -1570,10 +2439,47 @@ window.onload = function() {
 	// NOTE: commented out for now as it is not working
 
 	Ptero.assets.load(function(){
+		if (navigator.isCocoonJS) {
+			Ptero.screen.setStartSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(canvas);
+		}
+		else {
+			document.body.style.backgroundColor = "#222";
+
+			var container = document.createElement('div');
+			document.body.appendChild(container);
+			container.appendChild(canvas);
+			container.id = "canvas-container";
+
+			var w = 720;
+			var h = w/16*9;
+			Ptero.screen.setStartSize(w,h);
+
+			var border_size = 50;
+			Ptero.screen.setBorderSize(border_size);
+			container.style.borderWidth = border_size+"px";
+			container.style.width = w + "px";
+			container.style.height = h + "px";
+
+			function center() {
+				var screenW = document.body.clientWidth;
+				var screenH = document.body.clientHeight;
+				container.style.position = "relative";
+				x = Math.max(-border_size,(screenW/2 - w/2 - border_size));
+				y = Math.max(-border_size,(screenH/2 - h/2 - border_size));
+				container.style.left = x+"px";
+				container.style.top = y+"px";
+			}
+			center();
+			window.addEventListener("resize", center,false);
+		}
+		console.log("initing screen");
 		Ptero.screen.init(canvas);
-		//Ptero.setScene(Ptero.stress_scene);
+		console.log("initing input");
 		Ptero.input.init();
-		Ptero.setScene(Ptero.scene_game);
+		console.log("setting scene");
+		Ptero.setScene(Ptero.scene_fact);
+		console.log("starting exec");
 		Ptero.executive.start();
 	});
 };
