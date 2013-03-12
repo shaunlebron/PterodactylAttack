@@ -95,6 +95,7 @@ Ptero.executive = (function(){
 	return {
 		start: start,
 		pause: pause,
+		isPaused: function() { return isPaused; },
 		togglePause: function() {
 			if (isPaused) {
 				resume();

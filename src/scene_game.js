@@ -36,6 +36,8 @@ Ptero.scene_game = (function() {
 		Ptero.deferredSprites.finalize();
 	};
 
+	var pauseAlpha = 0;
+	var pauseTargetAlpha = 0;
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
 		Ptero.deferredSprites.draw(ctx);
@@ -48,6 +50,19 @@ Ptero.scene_game = (function() {
 			ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
 			ctx.fill();
 		}
+		if (Ptero.executive.isPaused()) {
+			pauseTargetAlpha = 1;
+		}
+		else {
+			pauseTargetAlpha = 0;
+		}
+		var img = Ptero.assets.images["pause"];
+		var x = Ptero.screen.getWidth() - img.width;
+		var y = Ptero.screen.getHeight() - img.height;
+		pauseAlpha += (pauseTargetAlpha - pauseAlpha) * 0.3;
+		ctx.globalAlpha = pauseAlpha;
+		ctx.drawImage(img, x,y);
+		ctx.globalAlpha = 1;
 	};
 
 	return {
