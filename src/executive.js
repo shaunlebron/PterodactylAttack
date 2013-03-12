@@ -59,7 +59,7 @@ Ptero.executive = (function(){
 
 			var scene = Ptero.scene;
 			if (!isPaused) {
-				scene.update(dt);
+				scene.update(dt*speedScale);
 			}
 			var ctx = Ptero.screen.getCtx();
 			scene.draw(ctx);
@@ -84,9 +84,27 @@ Ptero.executive = (function(){
 		requestAnimationFrame(tick);
 	};
 
+	var speedScale = 1.0;
+	function slowmo() {
+		speedScale = 0.25;
+	};
+	function regmo() {
+		speedScale = 1.0;
+	};
+
 	return {
 		start: start,
 		pause: pause,
+		togglePause: function() {
+			if (isPaused) {
+				resume();
+			}
+			else {
+				pause();
+			}
+		},
+		slowmo: slowmo,
+		regmo: regmo,
 		resume: resume,
 	};
 })();

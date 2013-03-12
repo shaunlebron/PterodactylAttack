@@ -98,6 +98,21 @@ Ptero.input = (function(){
 		canvas.addEventListener('touchcancel',	wrapFunc(touchCancel));
 	};
 
+	window.addEventListener("keydown", function(e) {
+		if (e.keyCode == 32 || e.keyCode == 13) {
+			Ptero.executive.togglePause();
+		}
+		else if (e.keyCode == 16) {
+			Ptero.executive.slowmo();
+		}
+	});
+
+	window.addEventListener("keyup", function(e) {
+		if (e.keyCode == 16) {
+			Ptero.executive.regmo();
+		}
+	});
+
 	return {
 		init: init,
 		isTouched: function() { return touched; },
