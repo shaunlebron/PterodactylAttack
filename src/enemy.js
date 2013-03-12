@@ -9,6 +9,8 @@ Ptero.Enemy = function(makeNewPath) {
 	this.boom1Sprite.setRepeat(false);
 	this.boom2Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom2);
 	this.boom2Sprite.setRepeat(false);
+	this.boom3Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom3);
+	this.boom3Sprite.setRepeat(false);
 	this.randomizeBoom();
 
 	this.resetPosition();
@@ -16,7 +18,8 @@ Ptero.Enemy = function(makeNewPath) {
 
 Ptero.Enemy.prototype = {
 	randomizeBoom: function randomizeBoom() {
-		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
+		this.boomSprite = this.boom3Sprite;
+		//this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
 		this.boomSprite.restart();
 	},
 	isHittable: function isHittable() {
