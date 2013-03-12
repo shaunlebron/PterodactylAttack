@@ -96,22 +96,34 @@ Ptero.input = (function(){
 		canvas.addEventListener('touchmove',	wrapFunc(touchMove));
 		canvas.addEventListener('touchend',		wrapFunc(touchEnd));
 		canvas.addEventListener('touchcancel',	wrapFunc(touchCancel));
+
+		// from: https://developer.mozilla.org/en-US/docs/DOM/Using_fullscreen_mode
+		function toggleFullScreen(elm) {
+			if (!document.fullscreenElement &&    // alternative standard method
+					!document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+				if (elm.requestFullscreen) {
+					elm.requestFullscreen();
+				} else if (elm.mozRequestFullScreen) {
+					elm.mozRequestFullScreen();
+				} else if (elm.webkitRequestFullscreen) {
+					elm.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+				}
+			} else {
+				if (document.cancelFullScreen) {
+					document.cancelFullScreen();
+				} else if (document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if (document.webkitCancelFullScreen) {
+					document.webkitCancelFullScreen();
+				}
+			}
+		}
+		document.addEventListener('keydown', function(e) {
+			if (e.keyCode == 13) { // enter key
+				toggleFullScreen(document.body);
+			}
+		},false);
 	};
-
-	window.addEventListener("keydown", function(e) {
-		if (e.keyCode == 32 || e.keyCode == 13) {
-			Ptero.executive.togglePause();
-		}
-		else if (e.keyCode == 16) {
-			Ptero.executive.slowmo();
-		}
-	});
-
-	window.addEventListener("keyup", function(e) {
-		if (e.keyCode == 16) {
-			Ptero.executive.regmo();
-		}
-	});
 
 	return {
 		init: init,

@@ -3,6 +3,23 @@ Ptero.scene_game = (function() {
 	var enemies = [];
 	var numEnemies = 20;
 
+
+
+	function onKeyDown(e) {
+		if (e.keyCode == 32) {
+			Ptero.executive.togglePause();
+		}
+		else if (e.keyCode == 16) {
+			Ptero.executive.slowmo();
+		}
+	}
+	
+	function onKeyUp(e) {
+		if (e.keyCode == 16) {
+			Ptero.executive.regmo();
+		}
+	}
+
 	function init() {
 
 		Ptero.background.setImage(Ptero.assets.images.desert);
@@ -15,6 +32,9 @@ Ptero.scene_game = (function() {
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
+
+		window.addEventListener("keydown", onKeyDown);
+		window.addEventListener("keyup", onKeyUp);
 	};
 
 	function update(dt) {

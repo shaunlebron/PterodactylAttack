@@ -3,6 +3,10 @@ Ptero.setScene = function(scene) {
 	scene.init();
 };
 
+Ptero.fadeToScene = function(scene, timeToFade) {
+	Ptero.scene = new Ptero.FadeScene(Ptero.scene, scene, timeToFade);
+};
+
 Ptero.executive = (function(){
 
 	var lastTime;
@@ -36,8 +40,13 @@ Ptero.executive = (function(){
         };
     })();
 	function drawFps(ctx) {
+		if (Ptero.scene == Ptero.scene_fact) {
+			return;
+		}
 		ctx.font = "30px Arial";
 		ctx.fillStyle = "#FFF";
+		ctx.textBaseline = "bottom";
+		ctx.textAlign = "left";
 		var pad = 5;
 		var x = pad;
 		var y = Ptero.screen.getHeight() - pad;

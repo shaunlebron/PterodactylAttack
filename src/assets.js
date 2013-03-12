@@ -9,6 +9,7 @@ Ptero.assets = (function(){
 		"boom3": "img/boom3_sheet.png",
 		"bullet": "img/bullet_sheet.png",
 		"pause": "img/pause.png",
+		"logo": "img/logo_02.png",
 	};
 
 	var imageScales = {
@@ -17,6 +18,7 @@ Ptero.assets = (function(){
 		"boom2": 2.0/1000*3500,
 		"boom3": 4.0,
 		"pause": 1.0,
+		"logo": 0.8,
 	};
 
 	var images = {};
