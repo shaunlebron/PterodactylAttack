@@ -8,6 +8,7 @@ Ptero.scene_menu = (function(){
 		titleBoard = Ptero.assets.billboards['logo'];
 		Ptero.background.setImage(Ptero.assets.images.desert);
 		Ptero.input.addTouchHandler(touchHandler);
+		document.getElementById('theme1').play();
 	}
 
 	var touchHandler = {
