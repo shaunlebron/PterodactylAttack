@@ -48,7 +48,7 @@ if __name__ == "__main__":
 	print "done."
 
 	print "Creating cocoon.zip ...",
-	create_zip(['cocoon.js','img'], 'cocoon.zip')
+	create_zip(['cocoon.js','img','audio'], 'cocoon.zip')
 	print "done."
 
 	print "Copying to android device ..."

@@ -122,6 +122,9 @@ Ptero.input = (function(){
 			if (e.keyCode == 13) { // enter key
 				toggleFullScreen(document.body);
 			}
+			else if (e.keyCode == 70) {
+				Ptero.executive.toggleFps();
+			}
 		},false);
 	};
 

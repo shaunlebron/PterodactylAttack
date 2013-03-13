@@ -39,7 +39,11 @@ Ptero.executive = (function(){
             fps = frames / seconds;
         };
     })();
+	var showFps = false;
 	function drawFps(ctx) {
+		if (!showFps) {
+			return;
+		}
 		if (Ptero.scene == Ptero.scene_fact) {
 			return;
 		}
@@ -105,6 +109,9 @@ Ptero.executive = (function(){
 		start: start,
 		pause: pause,
 		isPaused: function() { return isPaused; },
+		toggleFps: function() {
+			showFps = !showFps;
+		},
 		togglePause: function() {
 			if (isPaused) {
 				resume();

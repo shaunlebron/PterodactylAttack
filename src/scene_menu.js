@@ -8,7 +8,10 @@ Ptero.scene_menu = (function(){
 		titleBoard = Ptero.assets.billboards['logo'];
 		Ptero.background.setImage(Ptero.assets.images.desert);
 		Ptero.input.addTouchHandler(touchHandler);
-		document.getElementById('theme1').play();
+		var song = Ptero.audio.getThemeSong();
+		if (song) {
+			song.play();
+		}
 	}
 
 	var touchHandler = {
@@ -29,7 +32,8 @@ Ptero.scene_menu = (function(){
 
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
-		Ptero.painter.drawImage(ctx,titleImg,{x:0,y:0,z:Ptero.screen.getFrustum().near},titleBoard);
+		var frustum = Ptero.screen.getFrustum();
+		Ptero.painter.drawImage(ctx,titleImg,{x:0,y:frustum.nearTop/3,z:frustum.near},titleBoard);
 	}
 
 	return {

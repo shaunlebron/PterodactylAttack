@@ -18,8 +18,8 @@ Ptero.Enemy = function(makeNewPath) {
 
 Ptero.Enemy.prototype = {
 	randomizeBoom: function randomizeBoom() {
-		this.boomSprite = this.boom3Sprite;
-		//this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
+		//this.boomSprite = this.boom3Sprite;
+		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
 		this.boomSprite.restart();
 	},
 	isHittable: function isHittable() {

@@ -376,18 +376,20 @@ Ptero.assets = (function(){
 	var imageSources = {
 		"desert": "img/Final_Desert.jpg",
 		"baby": "img/baby_sheet.png",
-		"boom1": "img/boom1small_sheet.png",
-		"boom2": "img/boom2small_sheet.png",
+		"boom1": "img/boom1_sheet.png",
+		"boom2": "img/boom2_sheet.png",
 		"boom3": "img/boom3_sheet.png",
 		"bullet": "img/bullet_sheet.png",
 		"pause": "img/pause.png",
-		"logo": "img/logo_02.png",
+		"logo": "img/LogoVivid.png",
 	};
 
 	var imageScales = {
 		"baby": 2.0,
-		"boom1": 2.0/1000*2720,
-		"boom2": 2.0/1000*3500,
+		//"boom1": 2.0/1000*2720,
+		//"boom2": 2.0/1000*3500,
+		"boom1": 2.0,
+		"boom2": 2.0,
 		"boom3": 4.0,
 		"pause": 1.0,
 		"logo": 0.8,
@@ -737,7 +739,11 @@ Ptero.executive = (function(){
             fps = frames / seconds;
         };
     })();
+	var showFps = false;
 	function drawFps(ctx) {
+		if (!showFps) {
+			return;
+		}
 		if (Ptero.scene == Ptero.scene_fact) {
 			return;
 		}
@@ -803,6 +809,9 @@ Ptero.executive = (function(){
 		start: start,
 		pause: pause,
 		isPaused: function() { return isPaused; },
+		toggleFps: function() {
+			showFps = !showFps;
+		},
 		togglePause: function() {
 			if (isPaused) {
 				resume();
@@ -1033,6 +1042,9 @@ Ptero.input = (function(){
 		document.addEventListener('keydown', function(e) {
 			if (e.keyCode == 13) { // enter key
 				toggleFullScreen(document.body);
+			}
+			else if (e.keyCode == 70) {
+				Ptero.executive.toggleFps();
 			}
 		},false);
 	};
@@ -1418,8 +1430,8 @@ Ptero.Enemy = function(makeNewPath) {
 
 Ptero.Enemy.prototype = {
 	randomizeBoom: function randomizeBoom() {
-		this.boomSprite = this.boom3Sprite;
-		//this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
+		//this.boomSprite = this.boom3Sprite;
+		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
 		this.boomSprite.restart();
 	},
 	isHittable: function isHittable() {
@@ -2284,6 +2296,10 @@ Ptero.scene_menu = (function(){
 		titleBoard = Ptero.assets.billboards['logo'];
 		Ptero.background.setImage(Ptero.assets.images.desert);
 		Ptero.input.addTouchHandler(touchHandler);
+		var song = Ptero.audio.getThemeSong();
+		if (song) {
+			song.play();
+		}
 	}
 
 	var touchHandler = {
@@ -2304,7 +2320,8 @@ Ptero.scene_menu = (function(){
 
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
-		Ptero.painter.drawImage(ctx,titleImg,{x:0,y:0,z:Ptero.screen.getFrustum().near},titleBoard);
+		var frustum = Ptero.screen.getFrustum();
+		Ptero.painter.drawImage(ctx,titleImg,{x:0,y:frustum.nearTop/3,z:frustum.near},titleBoard);
 	}
 
 	return {
@@ -2425,6 +2442,20 @@ Ptero.Vector.prototype = {
 		return Math.abs(Math.acos(this.dot(vector)));
 	},
 };
+
+Ptero.audio = (function() {
+	var theme;
+
+	function init() {
+		theme = new Audio();
+		theme.src = "audio/theme3.mp3"
+	}
+
+	return {
+		init: init,
+		getThemeSong: function() { return theme; },
+	};
+})();
 window.onload = function() {
 
 	// Create the canvas element.
@@ -2473,6 +2504,8 @@ window.onload = function() {
 			center();
 			window.addEventListener("resize", center,false);
 		}
+		console.log("initing audio");
+		Ptero.audio.init();
 		console.log("initing screen");
 		Ptero.screen.init(canvas);
 		console.log("initing input");

@@ -4,18 +4,20 @@ Ptero.assets = (function(){
 	var imageSources = {
 		"desert": "img/Final_Desert.jpg",
 		"baby": "img/baby_sheet.png",
-		"boom1": "img/boom1small_sheet.png",
-		"boom2": "img/boom2small_sheet.png",
+		"boom1": "img/boom1_sheet.png",
+		"boom2": "img/boom2_sheet.png",
 		"boom3": "img/boom3_sheet.png",
 		"bullet": "img/bullet_sheet.png",
 		"pause": "img/pause.png",
-		"logo": "img/logo_02.png",
+		"logo": "img/LogoVivid.png",
 	};
 
 	var imageScales = {
 		"baby": 2.0,
-		"boom1": 2.0/1000*2720,
-		"boom2": 2.0/1000*3500,
+		//"boom1": 2.0/1000*2720,
+		//"boom2": 2.0/1000*3500,
+		"boom1": 2.0,
+		"boom2": 2.0,
 		"boom3": 4.0,
 		"pause": 1.0,
 		"logo": 0.8,

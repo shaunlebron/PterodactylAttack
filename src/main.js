@@ -46,6 +46,8 @@ window.onload = function() {
 			center();
 			window.addEventListener("resize", center,false);
 		}
+		console.log("initing audio");
+		Ptero.audio.init();
 		console.log("initing screen");
 		Ptero.screen.init(canvas);
 		console.log("initing input");
