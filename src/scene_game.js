@@ -56,9 +56,19 @@ Ptero.scene_game = (function() {
 		Ptero.deferredSprites.finalize();
 	};
 
+	function keepExplosionsCached(ctx) {
+		// This seems to prevents the sporadic drawing of explosions from creating hiccups in the framerate.
+		// This method works by trying to keep the textures loaded in whatever internal cache the Chrome browser uses for drawing textures.
+		// We try to draw it in the smallest surface area possible.
+		var s = 10;
+		ctx.drawImage(Ptero.assets.images["boom1"],0,0,s,s);
+		ctx.drawImage(Ptero.assets.images["boom2"],0,0,s,s);
+	}
+
 	var pauseAlpha = 0;
 	var pauseTargetAlpha = 0;
 	function draw(ctx) {
+		keepExplosionsCached(ctx);
 		Ptero.background.draw(ctx);
 		Ptero.deferredSprites.draw(ctx);
 		Ptero.orb.draw(ctx);
