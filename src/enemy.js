@@ -28,11 +28,11 @@ Ptero.Enemy.prototype = {
 	getPosition: function getPosition() {
 		return this.path.pos;
 	},
-	getCollisionRadius: function getCollisionRadius() {
-		return Ptero.sizeFactor * 2;
-	},
 	getFuturePosition: function getFuturePosition(time) {
 		return this.path.seek(time);
+	},
+	getBillboard: function() {
+		return this.babySprite.getBillboard();
 	},
 	onHit: function onHit() {
 		// update score

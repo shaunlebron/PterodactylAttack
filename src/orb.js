@@ -130,7 +130,7 @@ Ptero.orb = (function(){
 
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
-		var target = chooseTargetFromAimVector(aim_vector);
+		var target_info = chooseTargetFromAimVector(aim_vector);
 		//setShotTarget(target);
 
 		// create bullet
@@ -174,15 +174,55 @@ Ptero.orb = (function(){
 		return target_angle;
 	};
 
+	function sign(a) {
+		if (a < 0) {
+			return -1;
+		}
+		else (a > 0) {
+			return 1;
+		}
+		return 0;
+	};
+
+	function isAimInsideCorners(aim, corners) {
+		var i,corner;
+		var proj;
+		var cross,prev_cross;
+		var angle;
+		for (i=0; i<4; i++) {
+			corner = corners[i];
+			proj = Ptero.screen.getFrustum().projectToNear(corner);
+			cross = proj.x * aim.y - aim.x * proj.y;
+			angle = get2dAimAngle(corner, aim);
+
+			// Fail if corners are behind the aiming vector's reach.
+			if (angle > Math.PI/2) {
+				return false;
+			}
+
+			// Succeed if the corners are on two sides of the aiming vector.
+			if (prev_cross != undefined && sign(cross) != sign(prev_cross)) {
+				return true;
+			}
+
+			prev_cross = cross;
+		}
+	};
+
 	// Choose which target to shoot with the given aiming vector.
 	function chooseTargetFromAimVector(aim_vector) {
 
 		// find visible cube nearest to our line of trajectory
-		var maxAim2dAngle = 15*Math.PI/180;
-		var closestZ = Infinity;
-		var chosen_target = null;
+		var closest_miss_angle = 15*Math.PI/180;
+		var closest_miss_z = Infinity;
+		var closest_miss_target = null;
+
+		var closest_hit_target = null;
+		var closest_hit_z = Infinity;
+
 		var i,len;
 		var frustum = Ptero.screen.getFrustum();
+		var z;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
 			if (!targets[i].isHittable()) {
 				continue;
@@ -194,16 +234,45 @@ Ptero.orb = (function(){
 				continue;
 			}
 
-			var target2dAngle = get2dAimAngle(target_pos, aim_vector);
+			// Skip if this target is further away than an existing closer hit.
+			z = target_pos.z;
+			if (z > closest_hit_z) {
+				continue;
+			}
 
-			// update closest
-			if (target2dAngle < maxAim2dAngle && target_pos.z < closestZ) {
-				closestZ = target_pos.z;
-				maxAim2dAngle = target2dAngle;
-				chosen_target = targets[i];
+			var target_billboard = targets[i].getBillboard();
+			var target_rect = target_billboard.getSpaceRect(target_pos);
+			var corners = [target_rect.tl, target_rect.tr, target_rect.bl, target_rect.br];
+
+			if (isAimInsideCorners(aim_vector,corners)) {
+				closest_hit_z = z;
+				closest_hit_target = targets[i];
+			}
+			else {
+				var target2dAngle = get2dAimAngle(target_pos, aim_vector);
+				// update closest
+				if (target2dAngle < closest_miss_angle && z < closest_miss_z) {
+					closest_miss_z = z;
+					closest_miss_angle = target2dAngle;
+					closest_miss_target = targets[i];
+				}
 			}
 		}
-		return chosen_target;
+		if (closest_hit_target) {
+			return {
+				hit: true,
+				target: closest_hit_target,
+			};
+		}
+		else if (closest_miss_target) {
+			return {
+				hit: false,
+				target: closest_miss_target,
+			};
+		}
+		else {
+			return null;
+		}
 	};
 
 	function getBulletSpeed() {

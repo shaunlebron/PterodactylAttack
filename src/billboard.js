@@ -23,12 +23,21 @@ Ptero.Billboard.prototype = {
 		var frustum = Ptero.screen.getFrustum();
 		var scale = this.scale * Ptero.background.getScale();
 		scale /= Ptero.screen.getScreenToSpaceRatio();
+		var w = this.w * scale;
+		var h = this.h * scale;
+		var x = pos.x - this.centerX*scale;
+		var y = pos.y - this.centerY*scale;
+		var z = pos.z;
 		return {
-			w: this.w * scale,
-			h: this.h * scale,
-			x: pos.x - this.centerX*scale,
-			y: pos.y - this.centerY*scale,
-			z: pos.z,
+			w: w,
+			h: h,
+			x: x,
+			y: y,
+			z: z,
+			tl: {x:x, y:y, z:z},
+			tr: {x:x+w, y:y, z:z},
+			bl: {x:x, y:y+h, z:z},
+			br: {x:x+w, y:y+h, z:z},
 		};
 	},
 	getNearRect: function(pos) {
