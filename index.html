@@ -27,11 +27,30 @@
 		border: 0px solid #000;
 		border-radius: 20px;
 	}
+	#controls {
+		position: fixed;
+		top: 0;
+		left: 0;
+		color: #FFF;
+	}
+	#controls li {
+		list-style-type: none;
+	}
+	#controls ul {
+		padding-left:1em;
+	}
 	</style>
 
 </head>
 
 <body>
+	<div id="controls">
+		<ul>
+		<li><strong>A</strong> - toggle aim spotlights</li>
+		<li><strong>F</strong> - toggle framerate display</li>
+		<li><strong>SPACE</strong> - toggle pause</li>
+		<li><strong>SHIFT</strong> - hold for slow motion</li>
+	</div>
 
 	<script src="lib/requestAnimationFrame.js"></script>
 	<script src="src/ptero.js"></script>

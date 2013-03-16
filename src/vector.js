@@ -40,6 +40,13 @@ Ptero.Vector.prototype = {
 			this.y * vector.y +
 			this.z * vector.z);
 	},
+	cross: function(vector) {
+		return new Ptero.Vector(
+			this.y*vector.z - this.z*vector.y,
+			this.x*vector.z - this.z*vector.x,
+			this.x*vector.y - this.y*vector.x
+		);
+	},
 	dist_sq: function(vector) {
 		var dx = this.x - vector.x;
 		var dy = this.y - vector.y;

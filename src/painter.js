@@ -73,9 +73,25 @@ Ptero.painter = (function(){
 		}
 	};
 
+	function transform(pos) {
+		return Ptero.screen.spaceToScreen(pos);
+	}
+
+	function moveTo(ctx,pos) {
+		var p = transform(pos);
+		ctx.moveTo(p.x,p.y);
+	}
+
+	function lineTo(ctx,pos) {
+		var p = transform(pos);
+		ctx.lineTo(p.x,p.y);
+	}
+
 	return {
 		drawImageFrame: drawImageFrame,
 		drawImage: drawImage,
 		drawBorder: drawBorder,
+		moveTo: moveTo,
+		lineTo: lineTo,
 	};
 })();

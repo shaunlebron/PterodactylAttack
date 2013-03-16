@@ -34,10 +34,10 @@ Ptero.Billboard.prototype = {
 			x: x,
 			y: y,
 			z: z,
-			tl: {x:x, y:y, z:z},
-			tr: {x:x+w, y:y, z:z},
-			bl: {x:x, y:y+h, z:z},
-			br: {x:x+w, y:y+h, z:z},
+			bl: {x:x, y:y, z:z},
+			br: {x:x+w, y:y, z:z},
+			tl: {x:x, y:y+h, z:z},
+			tr: {x:x+w, y:y+h, z:z},
 		};
 	},
 	getNearRect: function(pos) {

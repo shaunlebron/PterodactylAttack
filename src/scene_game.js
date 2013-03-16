@@ -1,21 +1,25 @@
 
 Ptero.scene_game = (function() {
 	var enemies = [];
-	var numEnemies = 20;
+	var numEnemies = 5;
 
-
-
+	var KEY_SPACE = 32;
+	var KEY_SHIFT = 16;
+	var KEY_A = 65;
 	function onKeyDown(e) {
-		if (e.keyCode == 32) {
+		if (e.keyCode == KEY_SPACE) {
 			Ptero.executive.togglePause();
 		}
-		else if (e.keyCode == 16) {
+		else if (e.keyCode == KEY_A) {
+			Ptero.orb.toggleDrawCones();
+		}
+		else if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.slowmo();
 		}
 	}
 	
 	function onKeyUp(e) {
-		if (e.keyCode == 16) {
+		if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.regmo();
 		}
 	}
@@ -67,6 +71,24 @@ Ptero.scene_game = (function() {
 
 	var pauseAlpha = 0;
 	var pauseTargetAlpha = 0;
+	function drawPause(ctx) {
+		if (Ptero.executive.isPaused()) {
+			pauseTargetAlpha = 1;
+		}
+		else {
+			pauseTargetAlpha = 0;
+		}
+		var img = Ptero.assets.images["pause"];
+		var x = Ptero.screen.getWidth() - img.width;
+		var y = Ptero.screen.getHeight() - img.height;
+		pauseAlpha += (pauseTargetAlpha - pauseAlpha) * 0.3;
+		if (pauseAlpha > 0.001) {
+			ctx.globalAlpha = pauseAlpha;
+			ctx.drawImage(img, x,y);
+			ctx.globalAlpha = 1;
+		}
+	}
+
 	function draw(ctx) {
 		keepExplosionsCached(ctx);
 		Ptero.background.draw(ctx);
@@ -80,19 +102,7 @@ Ptero.scene_game = (function() {
 			ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
 			ctx.fill();
 		}
-		if (Ptero.executive.isPaused()) {
-			pauseTargetAlpha = 1;
-		}
-		else {
-			pauseTargetAlpha = 0;
-		}
-		var img = Ptero.assets.images["pause"];
-		var x = Ptero.screen.getWidth() - img.width;
-		var y = Ptero.screen.getHeight() - img.height;
-		pauseAlpha += (pauseTargetAlpha - pauseAlpha) * 0.3;
-		ctx.globalAlpha = pauseAlpha;
-		ctx.drawImage(img, x,y);
-		ctx.globalAlpha = 1;
+		drawPause(ctx);
 	};
 
 	return {

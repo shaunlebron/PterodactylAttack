@@ -91,5 +91,6 @@ Ptero.Enemy.prototype = {
 			this.babySprite.draw(ctx, pos);
 		}
 
+		Ptero.orb.drawCone(ctx,this);
 	},
 };

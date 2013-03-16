@@ -97,6 +97,53 @@ Ptero.orb = (function(){
 		charge.update(dt);
 	};
 
+	var shouldDrawCones = false;
+	function drawCone(ctx,target) {
+		if (!shouldDrawCones || !isHittableTarget(target)) {
+			return;
+		}
+		var billboard = target.getBillboard();
+		var pos = target.getPosition();
+		var rect = billboard.getSpaceRect(pos);
+		var corners = [rect.tl, rect.tr, rect.bl, rect.br];
+
+		var painter = Ptero.painter;
+		var alpha = 0.3;
+		ctx.fillStyle = target.isGoingToDie ? "rgba(255,0,0,"+alpha+")" : "rgba(255,255,255,"+alpha+")";
+		ctx.strokeStyle = "rgba(0,0,0,"+alpha+")";
+
+		var frustum = Ptero.screen.getFrustum();
+
+
+		var lc,rc;
+		var i;
+		var lAngle, rAngle;
+		var minAngle = Infinity, maxAngle = -Infinity;
+		var center_aim = getAimVector(frustum.projectToNear(pos));
+		for (i=0; i<4; i++) {
+			var corner_aim = getAimVector(frustum.projectToNear(corners[i]));
+			var angle = corner_aim.angle(center_aim) * sign(corner_aim.cross(center_aim).z);
+			if (angle < minAngle) {
+				minAngle = angle;
+				lc = corners[i];
+			}
+			if (angle > maxAngle) {
+				maxAngle = angle;
+				rc = corners[i];
+			}
+		}
+
+		ctx.beginPath();
+		painter.moveTo(ctx, origin);
+		painter.lineTo(ctx, lc);
+		painter.lineTo(ctx, rect.tl);
+		painter.lineTo(ctx, rect.tr);
+		painter.lineTo(ctx, rc);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+	}
+
 	function draw(ctx) {
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToScreen(origin);
@@ -130,33 +177,49 @@ Ptero.orb = (function(){
 
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
+
+		// Determine which target to aim at.
 		var target_info = chooseTargetFromAimVector(aim_vector);
+		var isHit = target_info.hit;
+		var target = target_info.target;
 		//setShotTarget(target);
 
-		// create bullet
-		var bullet, bulletCone;
-		if (!target) {
+		var bullet,bulletCone;
+
+		if (target) {
+
+			// Get ideal bullet that would hit the enemy.
+			var homingBullet = createHomingBullet(target);
+
+			// Advance bullet to the time of collision to get the collision position.
+			homingBullet.update(homingBullet.collideTime);
+
+			// Do not register a hit if the collision position is behind the orb.
+			if (homingBullet.pos.z <= 0) {
+				isHit = false;
+			}
+
+			// Craft a cone to the point of ideal collision.
+			bulletCone = getBulletConeAtPos(homingBullet.pos);
+
+			// Create a bullet path along the cone with the given aiming vector.
+			bullet = createBulletFromCone(bulletCone, aim_vector);
+
+			// Only set the bullet to collide if the target is not already going to be hit.
+			if (isHit && !target.isGoingToDie) {
+				bullet.collideTime = homingBullet.collideTime;
+				bullet.collideTarget = target;
+				target.isGoingToDie = true;
+			}
+		}
+		else {
+			// Create a default bullet path not aimed a specific target.
 			bulletCone = getDefaultBulletCone(aim_vector);
 			bullet = createBulletFromCone(bulletCone, aim_vector);
 		}
-		else {
-			var aim2dAngle = get2dAimAngle(target.getPosition(), aim_vector);
-			if (!target.isGoingToDie && aim2dAngle < max2dHitAngle) {
-				bullet = createHomingBullet(target);
-				target.isGoingToDie = true;
-			}
-			else {
-				bulletCone = getTargetBulletCone(target);
-				bullet = createBulletFromCone(bulletCone, aim_vector);
-			}
-		}
 
-		if (bullet) {
-			Ptero.bulletpool.add(bullet);
-		}
-		else {
-			console.error("unable to create bullet");
-		}
+		// Add the new bullet to our bullet collection.
+		Ptero.bulletpool.add(bullet);
 	};
 
 	// Returns the angle between the target projected on the screen and the aim vector.
@@ -178,7 +241,7 @@ Ptero.orb = (function(){
 		if (a < 0) {
 			return -1;
 		}
-		else (a > 0) {
+		else if (a > 0) {
 			return 1;
 		}
 		return 0;
@@ -186,14 +249,16 @@ Ptero.orb = (function(){
 
 	function isAimInsideCorners(aim, corners) {
 		var i,corner;
-		var proj;
+		var corner_proj;
+		var corner_aim;
 		var cross,prev_cross;
 		var angle;
 		for (i=0; i<4; i++) {
 			corner = corners[i];
-			proj = Ptero.screen.getFrustum().projectToNear(corner);
-			cross = proj.x * aim.y - aim.x * proj.y;
-			angle = get2dAimAngle(corner, aim);
+			corner_proj = Ptero.screen.getFrustum().projectToNear(corner);
+			corner_aim = getAimVector(corner_proj);
+			cross = corner_aim.cross(aim).z;
+			angle = get2dAimAngle(corner_aim, aim);
 
 			// Fail if corners are behind the aiming vector's reach.
 			if (angle > Math.PI/2) {
@@ -208,6 +273,10 @@ Ptero.orb = (function(){
 			prev_cross = cross;
 		}
 	};
+
+	function isHittableTarget(target) {
+		return target.isHittable() && Ptero.screen.getFrustum().isInside(target.getPosition());
+	}
 
 	// Choose which target to shoot with the given aiming vector.
 	function chooseTargetFromAimVector(aim_vector) {
@@ -224,15 +293,10 @@ Ptero.orb = (function(){
 		var frustum = Ptero.screen.getFrustum();
 		var z;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
-			if (!targets[i].isHittable()) {
+			if (!isHittableTarget(targets[i])) {
 				continue;
 			}
-
-			// skip if not visible
 			var target_pos = targets[i].getPosition();
-			if (!frustum.isInside(target_pos)) {
-				continue;
-			}
 
 			// Skip if this target is further away than an existing closer hit.
 			z = target_pos.z;
@@ -264,14 +328,11 @@ Ptero.orb = (function(){
 				target: closest_hit_target,
 			};
 		}
-		else if (closest_miss_target) {
+		else {
 			return {
 				hit: false,
 				target: closest_miss_target,
 			};
-		}
-		else {
-			return null;
 		}
 	};
 
@@ -330,11 +391,10 @@ Ptero.orb = (function(){
 		return bullet;
 	};
 
-	function getTargetBulletCone(target) {
-		var target_pos = target.getPosition();
-		var z = target_pos.z;
-		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
-		var r = target_proj.dist(origin);
+	function getBulletConeAtPos(pos) {
+		var z = pos.z;
+		var proj = Ptero.screen.getFrustum().projectToNear(pos);
+		var r = proj.dist(origin);
 		return {r:r, z:z};
 	};
 
@@ -412,6 +472,9 @@ Ptero.orb = (function(){
 	return {
 		init: init,
 		draw: draw,
+		setDrawCones: function(on) { shouldDrawCones = on; },
+		toggleDrawCones: function() { shouldDrawCones = !shouldDrawCones; },
+		drawCone: drawCone,
 		setTargets: setTargets,
 		setOrigin: setOrigin,
 		setNextOrigin: setNextOrigin,
