@@ -351,7 +351,7 @@ Ptero.orb = (function(){
 
 		// Create time window and step size to search for a collision.
 		var t;
-		var maxT = bullet.lifeTime; // only search this many seconds ahead.
+		var maxT = 1; // only search this many seconds ahead.
 		var dt = 1/100; // search in increments of dt.
 
 		// Determine the threshold for a valid collision.
