@@ -510,12 +510,21 @@ Ptero.Billboard.prototype = {
 		var frustum = Ptero.screen.getFrustum();
 		var scale = this.scale * Ptero.background.getScale();
 		scale /= Ptero.screen.getScreenToSpaceRatio();
+		var w = this.w * scale;
+		var h = this.h * scale;
+		var x = pos.x - this.centerX*scale;
+		var y = pos.y - this.centerY*scale;
+		var z = pos.z;
 		return {
-			w: this.w * scale,
-			h: this.h * scale,
-			x: pos.x - this.centerX*scale,
-			y: pos.y - this.centerY*scale,
-			z: pos.z,
+			w: w,
+			h: h,
+			x: x,
+			y: y,
+			z: z,
+			bl: {x:x, y:y, z:z},
+			br: {x:x+w, y:y, z:z},
+			tl: {x:x, y:y+h, z:z},
+			tr: {x:x+w, y:y+h, z:z},
 		};
 	},
 	getNearRect: function(pos) {
@@ -664,10 +673,26 @@ Ptero.painter = (function(){
 		}
 	};
 
+	function transform(pos) {
+		return Ptero.screen.spaceToScreen(pos);
+	}
+
+	function moveTo(ctx,pos) {
+		var p = transform(pos);
+		ctx.moveTo(p.x,p.y);
+	}
+
+	function lineTo(ctx,pos) {
+		var p = transform(pos);
+		ctx.lineTo(p.x,p.y);
+	}
+
 	return {
 		drawImageFrame: drawImageFrame,
 		drawImage: drawImage,
 		drawBorder: drawBorder,
+		moveTo: moveTo,
+		lineTo: lineTo,
 	};
 })();
 
@@ -1440,11 +1465,11 @@ Ptero.Enemy.prototype = {
 	getPosition: function getPosition() {
 		return this.path.pos;
 	},
-	getCollisionRadius: function getCollisionRadius() {
-		return Ptero.sizeFactor * 2;
-	},
 	getFuturePosition: function getFuturePosition(time) {
 		return this.path.seek(time);
+	},
+	getBillboard: function() {
+		return this.babySprite.getBillboard();
 	},
 	onHit: function onHit() {
 		// update score
@@ -1503,6 +1528,7 @@ Ptero.Enemy.prototype = {
 			this.babySprite.draw(ctx, pos);
 		}
 
+		Ptero.orb.drawCone(ctx,this);
 	},
 };
 // Viewing Frustum for 3D projection.
@@ -1699,6 +1725,53 @@ Ptero.orb = (function(){
 		charge.update(dt);
 	};
 
+	var shouldDrawCones = false;
+	function drawCone(ctx,target) {
+		if (!shouldDrawCones || !isHittableTarget(target)) {
+			return;
+		}
+		var billboard = target.getBillboard();
+		var pos = target.getPosition();
+		var rect = billboard.getSpaceRect(pos);
+		var corners = [rect.tl, rect.tr, rect.bl, rect.br];
+
+		var painter = Ptero.painter;
+		var alpha = 0.3;
+		ctx.fillStyle = target.isGoingToDie ? "rgba(255,0,0,"+alpha+")" : "rgba(255,255,255,"+alpha+")";
+		ctx.strokeStyle = "rgba(0,0,0,"+alpha+")";
+
+		var frustum = Ptero.screen.getFrustum();
+
+
+		var lc,rc;
+		var i;
+		var lAngle, rAngle;
+		var minAngle = Infinity, maxAngle = -Infinity;
+		var center_aim = getAimVector(frustum.projectToNear(pos));
+		for (i=0; i<4; i++) {
+			var corner_aim = getAimVector(frustum.projectToNear(corners[i]));
+			var angle = corner_aim.angle(center_aim) * sign(corner_aim.cross(center_aim).z);
+			if (angle < minAngle) {
+				minAngle = angle;
+				lc = corners[i];
+			}
+			if (angle > maxAngle) {
+				maxAngle = angle;
+				rc = corners[i];
+			}
+		}
+
+		ctx.beginPath();
+		painter.moveTo(ctx, origin);
+		painter.lineTo(ctx, lc);
+		painter.lineTo(ctx, rect.tl);
+		painter.lineTo(ctx, rect.tr);
+		painter.lineTo(ctx, rc);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+	}
+
 	function draw(ctx) {
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToScreen(origin);
@@ -1732,33 +1805,49 @@ Ptero.orb = (function(){
 
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
-		var target = chooseTargetFromAimVector(aim_vector);
+
+		// Determine which target to aim at.
+		var target_info = chooseTargetFromAimVector(aim_vector);
+		var isHit = target_info.hit;
+		var target = target_info.target;
 		//setShotTarget(target);
 
-		// create bullet
-		var bullet, bulletCone;
-		if (!target) {
+		var bullet,bulletCone;
+
+		if (target) {
+
+			// Get ideal bullet that would hit the enemy.
+			var homingBullet = createHomingBullet(target);
+
+			// Advance bullet to the time of collision to get the collision position.
+			homingBullet.update(homingBullet.collideTime);
+
+			// Do not register a hit if the collision position is behind the orb.
+			if (homingBullet.pos.z <= 0) {
+				isHit = false;
+			}
+
+			// Craft a cone to the point of ideal collision.
+			bulletCone = getBulletConeAtPos(homingBullet.pos);
+
+			// Create a bullet path along the cone with the given aiming vector.
+			bullet = createBulletFromCone(bulletCone, aim_vector);
+
+			// Only set the bullet to collide if the target is not already going to be hit.
+			if (isHit && !target.isGoingToDie) {
+				bullet.collideTime = homingBullet.collideTime;
+				bullet.collideTarget = target;
+				target.isGoingToDie = true;
+			}
+		}
+		else {
+			// Create a default bullet path not aimed a specific target.
 			bulletCone = getDefaultBulletCone(aim_vector);
 			bullet = createBulletFromCone(bulletCone, aim_vector);
 		}
-		else {
-			var aim2dAngle = get2dAimAngle(target.getPosition(), aim_vector);
-			if (!target.isGoingToDie && aim2dAngle < max2dHitAngle) {
-				bullet = createHomingBullet(target);
-				target.isGoingToDie = true;
-			}
-			else {
-				bulletCone = getTargetBulletCone(target);
-				bullet = createBulletFromCone(bulletCone, aim_vector);
-			}
-		}
 
-		if (bullet) {
-			Ptero.bulletpool.add(bullet);
-		}
-		else {
-			console.error("unable to create bullet");
-		}
+		// Add the new bullet to our bullet collection.
+		Ptero.bulletpool.add(bullet);
 	};
 
 	// Returns the angle between the target projected on the screen and the aim vector.
@@ -1776,36 +1865,103 @@ Ptero.orb = (function(){
 		return target_angle;
 	};
 
+	function sign(a) {
+		if (a < 0) {
+			return -1;
+		}
+		else if (a > 0) {
+			return 1;
+		}
+		return 0;
+	};
+
+	function isAimInsideCorners(aim, corners) {
+		var i,corner;
+		var corner_proj;
+		var corner_aim;
+		var cross,prev_cross;
+		var angle;
+		for (i=0; i<4; i++) {
+			corner = corners[i];
+			corner_proj = Ptero.screen.getFrustum().projectToNear(corner);
+			corner_aim = getAimVector(corner_proj);
+			cross = corner_aim.cross(aim).z;
+			angle = get2dAimAngle(corner_aim, aim);
+
+			// Fail if corners are behind the aiming vector's reach.
+			if (angle > Math.PI/2) {
+				return false;
+			}
+
+			// Succeed if the corners are on two sides of the aiming vector.
+			if (prev_cross != undefined && sign(cross) != sign(prev_cross)) {
+				return true;
+			}
+
+			prev_cross = cross;
+		}
+	};
+
+	function isHittableTarget(target) {
+		return target.isHittable() && Ptero.screen.getFrustum().isInside(target.getPosition());
+	}
+
 	// Choose which target to shoot with the given aiming vector.
 	function chooseTargetFromAimVector(aim_vector) {
 
 		// find visible cube nearest to our line of trajectory
-		var maxAim2dAngle = 15*Math.PI/180;
-		var closestZ = Infinity;
-		var chosen_target = null;
+		var closest_miss_angle = 15*Math.PI/180;
+		var closest_miss_z = Infinity;
+		var closest_miss_target = null;
+
+		var closest_hit_target = null;
+		var closest_hit_z = Infinity;
+
 		var i,len;
 		var frustum = Ptero.screen.getFrustum();
+		var z;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
-			if (!targets[i].isHittable()) {
+			if (!isHittableTarget(targets[i])) {
 				continue;
 			}
-
-			// skip if not visible
 			var target_pos = targets[i].getPosition();
-			if (!frustum.isInside(target_pos)) {
+
+			// Skip if this target is further away than an existing closer hit.
+			z = target_pos.z;
+			if (z > closest_hit_z) {
 				continue;
 			}
 
-			var target2dAngle = get2dAimAngle(target_pos, aim_vector);
+			var target_billboard = targets[i].getBillboard();
+			var target_rect = target_billboard.getSpaceRect(target_pos);
+			var corners = [target_rect.tl, target_rect.tr, target_rect.bl, target_rect.br];
 
-			// update closest
-			if (target2dAngle < maxAim2dAngle && target_pos.z < closestZ) {
-				closestZ = target_pos.z;
-				maxAim2dAngle = target2dAngle;
-				chosen_target = targets[i];
+			if (isAimInsideCorners(aim_vector,corners)) {
+				closest_hit_z = z;
+				closest_hit_target = targets[i];
+			}
+			else {
+				var target2dAngle = get2dAimAngle(target_pos, aim_vector);
+				// update closest
+				if (target2dAngle < closest_miss_angle && z < closest_miss_z) {
+					closest_miss_z = z;
+					closest_miss_angle = target2dAngle;
+					closest_miss_target = targets[i];
+				}
 			}
 		}
-		return chosen_target;
+		if (closest_hit_target) {
+			return {
+				hit: true,
+				target: closest_hit_target,
+			};
+		}
+		else {
+			return {
+				hit: false,
+				target: closest_miss_target,
+			};
+		}
 	};
 
 	function getBulletSpeed() {
@@ -1863,11 +2019,10 @@ Ptero.orb = (function(){
 		return bullet;
 	};
 
-	function getTargetBulletCone(target) {
-		var target_pos = target.getPosition();
-		var z = target_pos.z;
-		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
-		var r = target_proj.dist(origin);
+	function getBulletConeAtPos(pos) {
+		var z = pos.z;
+		var proj = Ptero.screen.getFrustum().projectToNear(pos);
+		var r = proj.dist(origin);
 		return {r:r, z:z};
 	};
 
@@ -1945,6 +2100,9 @@ Ptero.orb = (function(){
 	return {
 		init: init,
 		draw: draw,
+		setDrawCones: function(on) { shouldDrawCones = on; },
+		toggleDrawCones: function() { shouldDrawCones = !shouldDrawCones; },
+		drawCone: drawCone,
 		setTargets: setTargets,
 		setOrigin: setOrigin,
 		setNextOrigin: setNextOrigin,
@@ -2132,21 +2290,25 @@ Ptero.FadeScene.prototype = {
 
 Ptero.scene_game = (function() {
 	var enemies = [];
-	var numEnemies = 20;
+	var numEnemies = 5;
 
-
-
+	var KEY_SPACE = 32;
+	var KEY_SHIFT = 16;
+	var KEY_A = 65;
 	function onKeyDown(e) {
-		if (e.keyCode == 32) {
+		if (e.keyCode == KEY_SPACE) {
 			Ptero.executive.togglePause();
 		}
-		else if (e.keyCode == 16) {
+		else if (e.keyCode == KEY_A) {
+			Ptero.orb.toggleDrawCones();
+		}
+		else if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.slowmo();
 		}
 	}
 	
 	function onKeyUp(e) {
-		if (e.keyCode == 16) {
+		if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.regmo();
 		}
 	}
@@ -2187,9 +2349,37 @@ Ptero.scene_game = (function() {
 		Ptero.deferredSprites.finalize();
 	};
 
+	function keepExplosionsCached(ctx) {
+		// This seems to prevents the sporadic drawing of explosions from creating hiccups in the framerate.
+		// This method works by trying to keep the textures loaded in whatever internal cache the Chrome browser uses for drawing textures.
+		// We try to draw it in the smallest surface area possible.
+		var s = 10;
+		ctx.drawImage(Ptero.assets.images["boom1"],0,0,s,s);
+		ctx.drawImage(Ptero.assets.images["boom2"],0,0,s,s);
+	}
+
 	var pauseAlpha = 0;
 	var pauseTargetAlpha = 0;
+	function drawPause(ctx) {
+		if (Ptero.executive.isPaused()) {
+			pauseTargetAlpha = 1;
+		}
+		else {
+			pauseTargetAlpha = 0;
+		}
+		var img = Ptero.assets.images["pause"];
+		var x = Ptero.screen.getWidth() - img.width;
+		var y = Ptero.screen.getHeight() - img.height;
+		pauseAlpha += (pauseTargetAlpha - pauseAlpha) * 0.3;
+		if (pauseAlpha > 0.001) {
+			ctx.globalAlpha = pauseAlpha;
+			ctx.drawImage(img, x,y);
+			ctx.globalAlpha = 1;
+		}
+	}
+
 	function draw(ctx) {
+		keepExplosionsCached(ctx);
 		Ptero.background.draw(ctx);
 		Ptero.deferredSprites.draw(ctx);
 		Ptero.orb.draw(ctx);
@@ -2201,19 +2391,7 @@ Ptero.scene_game = (function() {
 			ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
 			ctx.fill();
 		}
-		if (Ptero.executive.isPaused()) {
-			pauseTargetAlpha = 1;
-		}
-		else {
-			pauseTargetAlpha = 0;
-		}
-		var img = Ptero.assets.images["pause"];
-		var x = Ptero.screen.getWidth() - img.width;
-		var y = Ptero.screen.getHeight() - img.height;
-		pauseAlpha += (pauseTargetAlpha - pauseAlpha) * 0.3;
-		ctx.globalAlpha = pauseAlpha;
-		ctx.drawImage(img, x,y);
-		ctx.globalAlpha = 1;
+		drawPause(ctx);
 	};
 
 	return {
@@ -2413,6 +2591,13 @@ Ptero.Vector.prototype = {
 			this.x * vector.x +
 			this.y * vector.y +
 			this.z * vector.z);
+	},
+	cross: function(vector) {
+		return new Ptero.Vector(
+			this.y*vector.z - this.z*vector.y,
+			this.x*vector.z - this.z*vector.x,
+			this.x*vector.y - this.y*vector.x
+		);
 	},
 	dist_sq: function(vector) {
 		var dx = this.x - vector.x;
