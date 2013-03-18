@@ -38,6 +38,30 @@ Ptero.SpriteSheet.prototype = {
 	},
 };
 
+Ptero.Sprite = function(img,dict) {
+	this.img = img;
+
+	if (dict.centerX == undefined) dict.centerX = 0.5;
+	if (dict.centerY == undefined) dict.centerY = 0.5;
+
+	this.centerX = img.width * dict.centerX;
+	this.centerY = img.height * dict.centerY;
+};
+
+Ptero.Sprite.prototype = {
+	draw: function(ctx,pos) {
+		Ptero.painter.drawImage(
+			ctx,
+			this.img,
+			pos,
+			this.billboard
+		);
+	},
+	drawBorder: function(ctx,pos,color,handle) {
+		Ptero.painter.drawBorder(ctx,pos,color,this.billboard,handle);
+	},
+};
+
 Ptero.AnimSprite = function(sheet) {
 	this.sheet = sheet;
 

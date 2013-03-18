@@ -28,6 +28,7 @@ def create_zip(in_names,out_name):
 	archive = zipfile.ZipFile(out_name,'w')
 	def addFile(filename):
 		archive.write(filename)
+		print "   " + filename
 	def addDir(dirname):
 		for dirpath,subdirs,files in os.walk(dirname):
 			for f in files:
@@ -40,14 +41,14 @@ def create_zip(in_names,out_name):
 	archive.close()
 
 if __name__ == "__main__":
-	print "Creating cocoon.js ...",
+	print "Creating cocoon.js ..."
 	includes = get_all_js_includes("index.html")
 	for i in includes:
 		print "   " + i
 	cat(includes, 'cocoon.js')
 	print "done."
 
-	print "Creating cocoon.zip ...",
+	print "Creating cocoon.zip ..."
 	create_zip(['cocoon.js','img','audio'], 'cocoon.zip')
 	print "done."
 

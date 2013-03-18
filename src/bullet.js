@@ -6,7 +6,7 @@ Ptero.Bullet = function() {
 	this.time = 0;
 	this.collideTime = null;
 	this.collideTarget = null;
-	this.sprite = new Ptero.AnimSprite(Ptero.assets.sheets.bullet);
+	this.sprite = Ptero.assets.sprites.bullet;
 };
 
 Ptero.Bullet.prototype = {

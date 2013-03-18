@@ -1,35 +1,53 @@
 
 Ptero.assets = (function(){
 
-	var imageSources = {
-		"desert": "img/Final_Desert.jpg",
-		"baby": "img/baby_sheet.png",
-		"boom1": "img/boom1_sheet.png",
-		"boom2": "img/boom2_sheet.png",
-		"boom3": "img/boom3_sheet.png",
-		"bullet": "img/bullet_sheet.png",
-		"pause": "img/pause.png",
-		"logo": "img/LogoVivid.png",
-	};
-
-	var imageScales = {
-		"baby": 2.0,
-		//"boom1": 2.0/1000*2720,
-		//"boom2": 2.0/1000*3500,
-		"boom1": 2.0,
-		"boom2": 2.0,
-		"boom3": 4.0,
-		"pause": 1.0,
-		"logo": 0.8,
+	var imageInfo = {
+		"desert": {
+			src: "img/Final_Desert.jpg",
+			scale: 1.0,
+		},
+		"baby": {
+			src: "img/baby.png",
+			metadata: true,
+			scale: 2.0,
+		},
+		"boom1": {
+			src: "img/boom1.png",
+			metadata: true,
+			scale: 2.0,
+		},
+		"boom2": {
+			src: "img/boom2.png",
+			metadata: true,
+			scale: 2.0,
+		},
+		"boom3": {
+			src: "img/boom3.png",
+			metadata: true,
+			scale: 4.0,
+		},
+		"bullet": {
+			src: "img/bullet.png",
+			scale: 1.0,
+		},
+		"pause": {
+			src: "img/pause.png",
+			scale: 1.0,
+		},
+		"logo": {
+			src: "img/LogoVivid.png",
+			scale: 0.8,
+		},
 	};
 
 	var images = {};
+	var sprites = {};
 	var sheets = {};
 	var billboards = {};
 
 	function makeBillboards() {
-		var x,y,w,h,scale,sheet,img,board;
-		for (name in imageSources) {
+		var x,y,w,h,sheet,sprite,img,board;
+		for (name in imageInfo) {
 			sheet = img = null;
 			if (sheets.hasOwnProperty(name)) {
 				sheet = sheets[name];
@@ -40,39 +58,61 @@ Ptero.assets = (function(){
 			}
 			else if (images.hasOwnProperty(name)) {
 				img = images[name];
+				sprite = sprites[name];
+				x = sprite.centerX;
+				y = sprite.centerY;
 				w = img.width;
 				h = img.height;
-				x = w/2;
-				y = h/2;
 			}
 			else {
 				continue;
 			}
-			board = new Ptero.Billboard(x,y,w,h,imageScales[name]);
+			board = new Ptero.Billboard(x,y,w,h,imageInfo[name].scale);
 			if (sheet) {
 				sheet.billboard = board;
+			}
+			else {
+				sprite.billboard = board;
 			}
 			billboards[name] = board;
 		}
 	};
 
-	function loadSpriteSheets() {
-		var name,req,src;
-		for (name in imageSources) {
-			if (imageSources.hasOwnProperty(name)) {
-				src = imageSources[name];
-				if (! /_sheet/.test(src)) {
-					continue;
-				}
-				src += ".json";
+	function parseMetaData(name, meta) {
+		if (meta.rows != undefined) {
+			console.log("creating sheet",name);
+			sheets[name] = new Ptero.SpriteSheet(images[name], meta);
+		}
+		else {
+			console.log("creating sprite",name);
+			sprites[name] = new Ptero.Sprite(images[name], meta);
+		}
 
-				req = new XMLHttpRequest();
-				req.open('GET', src, false);
-				req.send();
-				if (req.status == 200) {
-					var info = JSON.parse(req.responseText);
-					sheets[name] = new Ptero.SpriteSheet(images[name], info);
+		if (meta.scale != undefined) {
+			if (imageInfo[name].scale != undefined) {
+				imageInfo[name].scale *= meta.scale;
+			}
+			else {
+				imageInfo[name].scale = meta.scale;
+			}
+		}
+	};
+
+	function retrieveMetaData() {
+		var name,req,src,metadata;
+		for (name in imageInfo) {
+			if (imageInfo.hasOwnProperty(name)) {
+				metadata = {};
+				if (imageInfo[name].metadata) {
+					src = imageInfo[name].src + ".json";
+					req = new XMLHttpRequest();
+					req.open('GET', src, false);
+					req.send();
+					if (req.status == 200) {
+						metadata = JSON.parse(req.responseText);
+					}
 				}
+				parseMetaData(name, metadata);
 			}
 		}
 	};
@@ -80,8 +120,8 @@ Ptero.assets = (function(){
 	function load(callback) {
 		var count = 0;
 		var name;
-		for (name in imageSources) {
-			if (imageSources.hasOwnProperty(name)) {
+		for (name in imageInfo) {
+			if (imageInfo.hasOwnProperty(name)) {
 				count++;
 			}
 		}
@@ -89,17 +129,17 @@ Ptero.assets = (function(){
 		var handleLoad = function() {
 			count--;
 			if (count == 0) {
-				loadSpriteSheets();
+				retrieveMetaData();
 				makeBillboards();
 				callback && callback();
 			}
 		};
 
 		var img;
-		for (name in imageSources) {
-			if (imageSources.hasOwnProperty(name)) {
+		for (name in imageInfo) {
+			if (imageInfo.hasOwnProperty(name)) {
 				img = new Image();
-				img.src = imageSources[name];
+				img.src = imageInfo[name].src;
 				img.onload = handleLoad;
 				images[name] = img;
 			}
@@ -109,6 +149,7 @@ Ptero.assets = (function(){
 	return {
 		load: load,
 		images: images,
+		sprites: sprites,
 		sheets: sheets,
 		billboards: billboards,
 	};

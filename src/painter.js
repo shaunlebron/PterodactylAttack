@@ -12,13 +12,15 @@ Ptero.painter = (function(){
 		var y = dy + dh/2;
 		var angle = pos.angle;
 		if (angle) {
+			ctx.save();
 			ctx.translate(x,y);
 			ctx.rotate(angle);
 			dx -= x;
 			dy -= y;
 			ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);
-			ctx.rotate(-angle);
-			ctx.translate(-x,-y);
+			//ctx.rotate(-angle);
+			//ctx.translate(-x,-y);
+			ctx.restore();
 		}
 		else {
 			ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);
