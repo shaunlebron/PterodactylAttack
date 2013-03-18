@@ -14,7 +14,6 @@ def getCroppableRegions(filename):
 				r,g,b,a = row[x*4:(x+1)*4]
 				yield x,y,i,r,g,b,a
 
-
 	def xytoi(x,y):
 		if x < 0 or y < 0 or x >= w or y >= h:
 			return None
@@ -37,7 +36,7 @@ def getCroppableRegions(filename):
 					return region
 				else:
 					index = index2
-			print "   index",index,"goes to",region["index"]
+			#print "   index",index,"goes to",region["index"]
 			return region
 		except KeyError:
 			return None
@@ -84,14 +83,14 @@ def getCroppableRegions(filename):
 
 		def mergeRegions(rs):
 			r0 = rs[0]
-			print "merging to",r0["index"]
+			#print "merging to",r0["index"]
 			for r in rs[1:]:
 				r0["minx"] = min(r0["minx"], r["minx"])
 				r0["maxx"] = max(r0["maxx"], r["maxx"])
 				r0["miny"] = min(r0["miny"], r["miny"])
 				r0["maxy"] = max(r0["maxy"], r["maxy"])
 				regionLookup[r["index"]] = r0
-				print "removing region index",r["index"]
+				#print "removing region index",r["index"]
 				regions.remove(r)
 			return r0
 
@@ -99,14 +98,14 @@ def getCroppableRegions(filename):
 		return mergeRegions(adj_regions)
 
 	def onSolidPixel(x,y,i):
-		print x,y,i
+		#print x,y,i
 		region = findAdjacentRegion(x,y)
 		if region:
-			print "   appending region to",region["index"]
+			#print "   appending region to",region["index"]
 			addPixelToRegion(x,y,i,region)
 		else:
 			region = makeNewRegion(x,y,i)
-			print "   new region",region["index"]
+			#print "   new region",region["index"]
 
 	for x,y,i,r,g,b,a in iterPixels():
 		if a > 0:
