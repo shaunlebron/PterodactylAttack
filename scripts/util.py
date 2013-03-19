@@ -1,6 +1,8 @@
 import png
 import sys
 import subprocess
+import os
+import glob
 
 def getCroppableRegions(filename):
 	reader = png.Reader(filename=filename)
@@ -114,7 +116,7 @@ def getCroppableRegions(filename):
 
 	return regions
 
-def getCroppableRegionsForImages(filenames):
+def getCroppableRegionsFromImages(filenames):
 	imageRegions = []
 	for filename in filenames:
 		imageRegions.append((filename,getCroppableRegions(filename)))
@@ -122,28 +124,32 @@ def getCroppableRegionsForImages(filenames):
 
 if __name__ == "__main__":
 
-	imagename = "../img/boom1.png"
+	imagenames = ["img/grass%02d.png" % i for i in range(1)]
 	
-	regions = getCroppableRegions(imagename)
-	print "regions = ["
-	for r in regions:
-		print r,","
-	print "];"
+	imageRegions = getCroppableRegionsFromImages(imagenames)
 
-	for i,r in enumerate(regions):
-		x = r["minx"]
-		y = r["miny"]
-		w = r["maxx"]-x+1
-		h = r["maxy"]-y+1
-		subprocess.call([
-			"convert",
-			imagename,
-			"-crop",
-			"%dx%d+%d+%d" % (w,h,x,y),
-			"+repage",
-			"regions/%03d.png" % i])
+	for f in glob.glob("regions/*"):
+		os.remove(f)
 
-	subprocess.call(["sprites.sh", "regions"])
+	for imagename,regions in imageRegions:
+		for i,r in enumerate(regions):
+			x = r["minx"]
+			y = r["miny"]
+			w = r["maxx"]-x+1
+			h = r["maxy"]-y+1
+			base = os.path.basename(imagename)
+			base = os.path.splitext(base)[0]
+			region_name = "%s_%03d.png" % (base,i)
+			print "cropping region",region_name
+			subprocess.call([
+				"convert",
+				imagename,
+				"-crop",
+				"%dx%d+%d+%d" % (w,h,x,y),
+				"+repage",
+				"regions/%s" % region_name])
+
+	subprocess.call(["./sprites.sh", "regions"])
 
 	# TODO: read sprites.txt for image positions
 	#		line = <image_name> x y
