@@ -1,5 +1,6 @@
 import png
 import sys
+import subprocess
 
 def getCroppableRegions(filename):
 	reader = png.Reader(filename=filename)
@@ -113,14 +114,37 @@ def getCroppableRegions(filename):
 
 	return regions
 
-def getAnimatedRegions(filenames):
-	pass
+def getCroppableRegionsForImages(filenames):
+	imageRegions = []
+	for filename in filenames:
+		imageRegions.append((filename,getCroppableRegions(filename)))
+	return imageRegions
 
 if __name__ == "__main__":
+
+	imagename = "../img/boom1.png"
 	
-	#regions = getCroppableRegions("../img/grass00.png")
-	regions = getCroppableRegions("../img/boom1.png")
+	regions = getCroppableRegions(imagename)
 	print "regions = ["
 	for r in regions:
 		print r,","
 	print "];"
+
+	for i,r in enumerate(regions):
+		x = r["minx"]
+		y = r["miny"]
+		w = r["maxx"]-x+1
+		h = r["maxy"]-y+1
+		subprocess.call([
+			"convert",
+			imagename,
+			"-crop",
+			"%dx%d+%d+%d" % (w,h,x,y),
+			"+repage",
+			"regions/%03d.png" % i])
+
+	subprocess.call(["sprites.sh", "regions"])
+
+	# TODO: read sprites.txt for image positions
+	#		line = <image_name> x y
+	# TODO: output final metadata (see 'notes')
