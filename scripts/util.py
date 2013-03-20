@@ -122,6 +122,129 @@ def getCroppableRegionsFromImages(filenames):
 		imageRegions.append((filename,getCroppableRegions(filename)))
 	return imageRegions
 
+class RectanglePacker:
+
+	def __init__(self,w,h):
+		self.rows = 1
+		self.cols = 1
+		self.w = w
+		self.h = h
+		self.isFilled = [[False]] # row major order
+		self.rowHeights = [h]
+		self.colWidths = [w]
+
+	def insert(self,w,h):
+		"""
+		output: x,y top left coord
+		"""
+		result = self.findCell(w,h)
+		if result:
+			x,y,r,c,r0,c0,w0,h0 = result
+			fillCells(r,c,r0,c0,w0,h0)
+			return x,y
+		return None
+
+	def findCell(self,w,h):
+		"""
+		output:
+			x,y = top-left coord
+			r,c = top-left cell
+			r0,c0 = bottom-right cell
+			w0,h0 = size in bottom-right cell
+		"""
+		r,c = 0,0
+		x = 0
+		while x + w <= self.w:
+			y = 0
+			while y + h <= self.h:
+				r0,c0,w0,h0 = self.tryFit(r,c,w,h)
+				if w0 > 0:
+					return (x,y,r,c,r0,c0,w0,h0)
+				while r <= r0:
+					y += self.rowHeights[r]
+					r += 1
+			x += self.colWidths[c]
+			c += 1
+		return None
+
+	def tryFit(self,r,c,w,h):
+		"""
+		precondition: must be guaranteed not to overflow
+		output: (r0,c0,w0,h0)
+			if success, position and size of bottom-right filled cell
+			if failure, position of blocking cell, and zero-size
+		"""
+		while True:
+			while True:
+				if self.isFilled[r][c]:
+					return (r,c,0,0)
+				if w <= self.colWidths[c]:
+					break
+				w -= self.colWidths[c]
+				c += 1
+			if h <= self.rowHeights[r]:
+				break
+			h -= self.rowHeights[r]
+			r += 1
+		return (r,c,w,h)
+
+
+	def fillCells(self,r,c,r0,c0,w0,h0):
+
+		# Fill all internal cells
+		for _r in xrange(r,r0):
+			for _c in xrange(c,c0):
+				self.isFilled[_r][_c] = True
+
+		# Split column if width not filled.
+		if w0 < self.colWidths[c0]:
+			self.splitCol(c0,w0)
+
+		# Split row if height not filled.
+		if h0 < self.rowHeights[r0]:
+			self.splitRow(r0,h0)
+
+		# Fill the edge column cells.
+		for _r in xrange(r,r0+1):
+			self.isFilled[_r][c0] = True
+
+		# Fill the edge row cells.
+		for _c in xrange(c,c0+1):
+			self.isFilled[r0][_c] = True
+
+	def splitCol(self,i,w):
+		# Duplicate the ith cell in each row.
+		for row in self.isFilled:
+			row.insert(i+1, row[i])
+
+		# Split the width between the two columns.
+		self.colWidths.insert(i+1, self.colWidths[i]-w)
+		self.colWidths[i] = w
+
+		# Increment column count.
+		self.cols += 1
+
+	def splitRow(self,i,h):
+		# Duplicate the ith row.
+		row = self.isFilled[i]
+		self.isFilled.insert(i+1,row[:])
+
+		# Split the height between the two rows.
+		self.rowHeights.insert(i+1, self.rowHeights[i]-h)
+		self.rowHeights[i] = h
+
+		# Increment row count.
+		self.rows += 1
+
+def packRegions(regions):
+	"""
+	input: list of regions with (name,w,h) properties
+	output: 
+	"""
+
+	cells = Cells()
+
+
 if __name__ == "__main__":
 
 	imagenames = ["img/grass%02d.png" % i for i in range(1)]
