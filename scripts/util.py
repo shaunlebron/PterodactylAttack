@@ -122,6 +122,9 @@ def getCroppableRegionsFromImages(filenames):
 		imageRegions.append((filename,getCroppableRegions(filename)))
 	return imageRegions
 
+# Packing algorithm from:
+#	http://www.codeproject.com/Articles/210979/Fast-optimizing-rectangle-packing-algorithm-for-bu
+
 class RectanglePacker:
 
 	def __init__(self,w,h):
