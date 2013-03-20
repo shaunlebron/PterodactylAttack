@@ -152,19 +152,29 @@ class RectanglePacker:
 			r0,c0 = bottom-right cell
 			w0,h0 = size in bottom-right cell
 		"""
-		r,c = 0,0
-		x = 0
-		while x + w <= self.w:
-			y = 0
-			while y + h <= self.h:
+		def iterCol():
+			x,c = 0,0
+			while x+w <= self.w:
+				yield x,c
+				x += self.colWidths[c]
+				c += 1
+		def iterRow():
+			y,r = 0,0
+			while y+h <= self.h:
+				yield y,r
+				y += self.rowHeights[r]
+				r += 1
+
+		for x,c in iterCol():
+			rowIter = iterRow()
+			for y,r in rowIter:
 				r0,c0,w0,h0 = self.tryFit(r,c,w,h)
 				if w0 > 0:
 					return (x,y,r,c,r0,c0,w0,h0)
 				while r <= r0:
 					y += self.rowHeights[r]
 					r += 1
-			x += self.colWidths[c]
-			c += 1
+					rowIter.next()
 		return None
 
 	def tryFit(self,r,c,w,h):
@@ -174,20 +184,25 @@ class RectanglePacker:
 			if success, position and size of bottom-right filled cell
 			if failure, position of blocking cell, and zero-size
 		"""
-		while True:
-			while True:
-				if self.isFilled[r][c]:
-					return (r,c,0,0)
-				if w <= self.colWidths[c]:
-					break
-				w -= self.colWidths[c]
-				c += 1
-			if h <= self.rowHeights[r]:
-				break
-			h -= self.rowHeights[r]
-			r += 1
-		return (r,c,w,h)
 
+		# Determine the furthest right column and the width in that column
+		c0, w0 = c,w
+		while w0 > self.colWidths[c0]:
+			w0 -= self.colWidths[c0]
+			c0 += 1
+
+		# Determine the furthest bottom row and the height in that row
+		r0, h0 = r,h
+		while h0 > self.rowHeights[r0]:
+			h0 -= self.rowHeights[r0]
+			r0 += 1
+
+		for _r in xrange(r,r0+1):
+			for _c in xrange(c,c0+1):
+				if self.isFilled[_r][_c]:
+					return (_r,_c,0,0)
+
+		return (r0,c0,w0,h0)
 
 	def fillCells(self,r,c,r0,c0,w0,h0):
 
@@ -242,7 +257,7 @@ def packRegions(regions):
 	output: 
 	"""
 
-	cells = Cells()
+	packer = RectanglePacker(w,h)
 
 
 if __name__ == "__main__":
