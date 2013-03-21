@@ -4,7 +4,169 @@ import subprocess
 import os
 import glob
 
-def getCroppableRegions(filename):
+class IslandBounds:
+	def __init__(self,x,y,_id):
+		self._id = _id
+		self.minx = x
+		self.maxx = x
+		self.miny = y
+		self.maxy = y
+
+	def getWidth(self):
+		return self.maxx - self.minx + 1;
+
+	def getHeight(self):
+		return self.maxy - self.miny + 1;
+
+	def addPixel(self,x,y):
+		self.minx = min(x,self.minx)
+		self.maxx = max(x,self.maxx)
+		self.miny = min(y,self.miny)
+		self.maxy = max(y,self.maxy)
+
+	def addIsland(self,other):
+		self.minx = min(self.minx, other.minx)
+		self.maxx = max(self.maxx, other.maxx)
+		self.miny = min(self.miny, other.miny)
+		self.maxy = max(self.maxy, other.maxy)
+
+	def doesContain(self,other):
+		return (
+			self.minx <= other.minx and other.maxx <= self.maxx and
+			self.miny <= other.miny and other.maxy <= self.maxy)
+
+	def isDisjointFrom(self,other):
+		return (
+			self.maxx < other.minx or other.maxx < self.minx or
+			self.maxy < other.miny or other.maxy < self.miny)
+
+	def intersects(self,other):
+		return not self.isDisjointFrom(other)
+
+class IslandFinderFunction:
+
+	def reset(self):
+		# number of islands created so far (used for island IDs)
+		self.islandCount = 0
+
+		# list of IslandBound objects
+		self.islands = []
+
+		# map from island ID to parent IslandBound object
+		self.islandIdToParent = {}
+
+		# map from pixel to island ID
+		self.pixelToIslandId = {}
+
+	def xytoi(self,x,y):
+		if x < 0 or y < 0 or x >= self.w or y >= self.h:
+			return None
+		return x + y*self.w
+
+	def getIslandOwner(self,_id):
+		"""
+		Since we merge islands, this function tells us which island has resumed ownership over the given island ID.
+		input: island ID
+		output: IslandBound object
+		"""
+		while True:
+			parentIsland = self.islandIdToParent[_id]
+			if _id == parentIsland._id:
+				return parentIsland
+			_id = parentIsland._id
+
+	def getIslandFromPixel(self,x,y):
+		"""
+		Returns the owner island containing the given pixel.
+		intput: pixel x,y
+		output: IslandBound object
+		"""
+		i = self.xytoi(x,y)
+		try:
+			_id = self.pixelToIslandId[i]
+			return self.getIslandOwner(_id)
+		except KeyError:
+			return None
+
+	def addPixelToIsland(self,x,y,i,island):
+		island.addPixel(x,y)
+		self.pixelToIslandId[i] = island._id
+
+	def makeNewIsland(self,x,y,i):
+		_id = self.islandCount
+		island = IslandBounds(x,y,_id)
+		self.islands.append(island)
+		self.islandIdToParent[_id] = island
+		self.pixelToIslandId[i] = _id
+		self.islandCount += 1
+		return island
+
+	def mergeIslands(self,islands):
+		owner = islands[0]
+		for island in islands[1:]:
+			self.islandIdToParent[island._id] = owner
+			self.islands.remove(island)
+		return owner
+
+	def getAdjacentIslands(self,x,y):
+		"""
+		We want to merge the islands belonging to the adjacent pixels(*)
+		around the current pixel(X):
+
+		.......
+		..***..
+		..*X...
+		.......
+
+		These are the only pixels we are checking due to our row-major search order.
+
+		input: xy pixel
+		output: generator for iterating the islands
+		"""
+		for x0,y0 in ((x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y)):
+			island = self.getIslandFromPixel(x0,y0)
+			if island:
+				yield island
+
+	def mergeAdjacentIslands(self,x,y):
+
+		islandsToMerge = []
+		for island in iterIslandMergeCandidates():
+			if not island in islandsToMerge:
+				islandsToMerge.append(island)
+
+		numToMerge = len(islandsToMerge)
+		if numToMerge == 0:
+			return None
+		elif numToMerge == 1:
+			return islandsToMerge[0]
+		else:
+			return self.mergeIslands(islandsToMerge)
+
+	def __call__(self,w,h,pixelIter):
+		"""
+		input: pixelIter: row-major order iterator returning (x,y,i,isSolid)
+		"""
+		self.w = w
+		self.h = h
+		self.reset()
+
+		for x,y,i,isSolid in pixelIter():
+			if not isSolid:
+				continue
+			island = self.findAdjacentRegion(x,y)
+			if island:
+				self.addPixelToIsland(x,y,i,island)
+			else:
+				self.makeNewIsland(x,y,i)
+		return self.islands
+
+# I'm using the class above as a singleton to hold
+# the intermediate states and helper functions for
+# this main function for finding islands.
+findIslands = IslandFinderFunction()
+
+def pngHelper(filename):
 	reader = png.Reader(filename=filename)
 	w,h,iterator,meta = reader.asRGBA()
 	def iterPixels():
@@ -16,111 +178,15 @@ def getCroppableRegions(filename):
 				i += 1
 				r,g,b,a = row[x*4:(x+1)*4]
 				yield x,y,i,r,g,b,a
+	return w,h,iterPixels
 
-	def xytoi(x,y):
-		if x < 0 or y < 0 or x >= w or y >= h:
-			return None
-		return x + y*w
-
-	regionCount = {
-		"count": 0,
-	}
-	regions = []
-	regionLookup = {}
-	regionIndexFromPixel = {}
-	def getRegionFromPixel(x,y):
-		i = xytoi(x,y)
-		try:
-			index = regionIndexFromPixel[i]
-			while True:
-				region = regionLookup[index]
-				index2 = region["index"]
-				if index2 == index:
-					return region
-				else:
-					index = index2
-			#print "   index",index,"goes to",region["index"]
-			return region
-		except KeyError:
-			return None
-
-	def addPixelToRegion(x,y,i,region):
-		region["minx"] = min(x,region["minx"])
-		region["maxx"] = max(x,region["maxx"])
-		region["maxy"] = max(y,region["maxy"])
-		regionIndexFromPixel[i] = region["index"]
-
-	def makeNewRegion(x,y,i):
-		index = regionCount["count"]
-		region = {
-			"minx": x,
-			"maxx": x,
-			"miny": y,
-			"maxy": y,
-			"index":index
-			}
-		regions.append(region)
-		regionLookup[index] = region
-		regionIndexFromPixel[i] = index
-		regionCount["count"] += 1
-		return region
-
-	def findAdjacentRegion(x,y):
-		adj_regions = []
-
-		def iterAdjRegions():
-			for x0,y0 in ((x-1,y-1), (x,y-1), (x+1,y-1), (x-1,y)):
-				region = getRegionFromPixel(x0,y0)
-				if region:
-					yield region
-
-		for region in iterAdjRegions():
-			if not region in adj_regions:
-				adj_regions.append(region)
-
-		if not adj_regions:
-			return None
-
-		if len(adj_regions) == 1:
-			return adj_regions[0]
-
-		def mergeRegions(rs):
-			r0 = rs[0]
-			#print "merging to",r0["index"]
-			for r in rs[1:]:
-				r0["minx"] = min(r0["minx"], r["minx"])
-				r0["maxx"] = max(r0["maxx"], r["maxx"])
-				r0["miny"] = min(r0["miny"], r["miny"])
-				r0["maxy"] = max(r0["maxy"], r["maxy"])
-				regionLookup[r["index"]] = r0
-				#print "removing region index",r["index"]
-				regions.remove(r)
-			return r0
-
-		#print "merging %s" % ",".join(str(x) for x in adj_indexes)
-		return mergeRegions(adj_regions)
-
-	def onSolidPixel(x,y,i):
-		#print x,y,i
-		region = findAdjacentRegion(x,y)
-		if region:
-			#print "   appending region to",region["index"]
-			addPixelToRegion(x,y,i,region)
-		else:
-			region = makeNewRegion(x,y,i)
-			#print "   new region",region["index"]
-
-	for x,y,i,r,g,b,a in iterPixels():
-		if a > 0:
-			onSolidPixel(x,y,i)
-
-	return regions
-
-def getCroppableRegionsFromImages(filenames):
-	imageRegions = []
-	for filename in filenames:
-		imageRegions.append((filename,getCroppableRegions(filename)))
-	return imageRegions
+def getIslandsInPng(filename):
+	w,h,pngIter = pngHelper(filename)
+	def pixelIter():
+		for x,y,i,r,g,b,a in pngIter():
+			isSolid = (a > 0)
+			yield x,y,i,isSolid
+	return findIslands(w,h,pixelIter)
 
 # Packing algorithm from:
 #	http://www.codeproject.com/Articles/210979/Fast-optimizing-rectangle-packing-algorithm-for-bu
@@ -175,7 +241,6 @@ class RectanglePacker:
 				if w0 > 0:
 					return (x,y,r,c,r0,c0,w0,h0)
 				while r <= r0:
-					y += self.rowHeights[r]
 					r += 1
 					rowIter.next()
 		return None
@@ -259,6 +324,11 @@ def packRegions(regions):
 	input: list of regions with (name,w,h) properties
 	output: 
 	"""
+
+	w,h = 0,0
+	for r in regions:
+		h = max(h, r.getHeight())
+		w += r.getWidth()
 
 	packer = RectanglePacker(w,h)
 
