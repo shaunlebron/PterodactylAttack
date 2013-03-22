@@ -20,7 +20,7 @@ class RectanglePacker:
 		result = self.findCell(w,h)
 		if result:
 			x,y,r,c,r0,c0,w0,h0 = result
-			fillCells(r,c,r0,c0,w0,h0)
+			self.fillCells(r,c,r0,c0,w0,h0)
 			return x,y
 		return None
 
@@ -51,9 +51,12 @@ class RectanglePacker:
 				r0,c0,w0,h0 = self.tryFit(r,c,w,h)
 				if w0 > 0:
 					return (x,y,r,c,r0,c0,w0,h0)
-				while r <= r0:
-					r += 1
-					rowIter.next()
+				else:
+					print "rect at row %d col %d of size %dx%d blocked at row %d col %d" % (r,c,w,h,r0,c0)
+					while r < r0:
+						print r,r0
+						r += 1
+						rowIter.next()
 		return None
 
 	def tryFit(self,r,c,w,h):
