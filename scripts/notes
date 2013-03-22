@@ -38,3 +38,4 @@ CREATE ENGINE TEXTURE METADATA
 		i. list of regions
 			* image name
 			* region index
+convert -strip -size "${w}x${h}" xc:"rgba(0,0,0,0)" `awk '{print $1" -geometry +"$2"+"$3" -composite"}' sprites.txt` sprites.png

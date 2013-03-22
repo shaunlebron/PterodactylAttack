@@ -1,4 +1,8 @@
 class IslandBounds:
+	"""
+	An "island" is a contiguous shape on an image. 
+	This class defines the axis-aligned bounding box around such an island.
+	"""
 
 	def __init__(self,_id=0,**kwargs):
 		self._id = _id
@@ -71,6 +75,10 @@ class IslandBounds:
 		return merged_area - separate_area
 
 class IslandFinderFunction:
+	"""
+	An "island" is a contiguous shape on an image. 
+	This is a function class for identify all the islands from a single image.
+	"""
 
 	def reset(self):
 		# number of islands created so far (used for island IDs)
