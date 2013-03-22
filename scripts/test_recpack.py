@@ -52,21 +52,25 @@ class TestRectanglePacker(unittest.TestCase):
 				print "    "+"-"*((w+len(xs))*2-1)
 
 			# Print column numbers
-			i = 0
+			col = 0
 			print
 			print "     ",
 			for x in xrange(w):
 				if x in xs:
-					print "%d"%i,
-					i += 1
+					print "%d"%col,
+					col += 1
 				print " ",
 			print
 
 			i = 0
+			row = 0
 			for y in xrange(h):
 				if y in ys:
 					hr()
-				print "%3d" % y,
+					print "%3d" % row,
+					row += 1
+				else:
+					print "   ",
 				for x in xrange(w):
 					if x in xs:
 						print "|",
