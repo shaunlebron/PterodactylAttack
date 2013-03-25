@@ -193,6 +193,40 @@ class IslandFinderFunction:
 				self.makeNewIsland(x,y,i)
 		return self.islands
 
+	def minimimalAreaMerge(self):
+		"""
+		Merge any two of the created islands if the bounding box around both has
+		less area than the sum of their separate bounding boxes.
+		"""
+
+		def shouldMerge(a,b):
+			return a.deltaAreaFromMerge(b) < 0
+			
+		done = False
+		while not done:
+			done = True
+			groups = []
+			islandIndexToGroup = {}
+			numIslands = len(self.islands)
+			for i in xrange(numIslands):
+				a = self.islands[i]
+				for j in xrange(i+1,numIslands):
+					b = self.islands[j]
+					if shouldMerge(a,b):
+						if i in islandIndexToGroup:
+							group = islandIndexToGroup[i]
+						elif j in islandIndexToGroup:
+							group = islandIndexToGroup[j]
+						else:
+							group = set()
+							groups.append(group)
+						islandIndexToGroup[i] = islandIndexToGroup[j] = group
+						group.add(i)
+						group.add(j)
+						done = False
+			for group in groups:
+				self.mergeIslands(list(group))
+
 # I'm using the class above as a singleton to hold
 # the intermediate states and helper functions for
 # this main function for finding islands.
