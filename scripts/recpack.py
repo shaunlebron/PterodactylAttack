@@ -13,6 +13,34 @@ class RectanglePacker:
 		self.rowHeights = [h]
 		self.colWidths = [w]
 
+	def getEnclosingHeight(self):
+		"""
+		Get the height of the enclosing rectangle.
+		"""
+		def isLastFilledRowOnEdge:
+			return any(self.isFilled[-1])
+
+		if isLastFilledRowOnEdge():
+			return self.h
+		else:
+			return self.h - self.rowHeights[-1]
+
+	def getEnclosingWidth(self):
+		"""
+		Get the width of the enclosing rectangle.
+		"""
+		def isLastFilledColOnEdge:
+			for cols in self.isFilled:
+				if cols[-1]:
+					return True
+			return False
+
+		if isLastFilledColOnEdge():
+			return self.w
+		else:
+			return self.w - self.colWidths[-1]
+				
+
 	def insert(self,w,h):
 		"""
 		output: x,y top left coord
@@ -133,3 +161,91 @@ class RectanglePacker:
 
 		# Increment row count.
 		self.rows += 1
+
+def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
+	"""
+	Find the rectangle of least area to pack the given rectangles.
+	Optionally, set the max width and height of the enclosing rectangle.
+	input: recs (list of rectangle objects with "name", "w", and "h" properties)
+	output: width and height of enclosing rectangle, and dictionary from rectangle name -> position
+	"""
+	
+	def trySize(w,h):
+		"""
+		Helper function to try a given enclosing rectangle size.
+		input: dimensions of enclosing rectangle
+		output: partition positions, enclosing area, and packer object
+		"""
+		pos = {}
+		packer = RectanglePacker(w, h)
+		for r in recs:
+			result = packer.insert(r.w, r.h)
+			if not result:
+				return None
+			pos[r.name] = result
+
+		encW = packer.getEnclosingWidth()
+		encH = packer.getEnclosingHeight()
+		area = encW * encH
+
+		return pos,area,packer
+	
+	# Get info about the given rectangles.
+	totalArea = sum(r.w * r.h for r in recs)
+	sumW = sum(r.w for r in recs)
+	sumH = sum(r.h for r in recs)
+	maxW = max(r.w for r in recs)
+	maxH = max(r.h for r in recs)
+
+	# Set defaults for the max width and height of the enclosing rectangle.
+	if globalMaxHeight is None:
+		globalMaxHeight = sumH
+	if globalMaxWidth is None:
+		globalMaxWidth = sumW
+
+	# Try initial size
+	w = globalMaxWidth
+	h = maxH
+	result = trySize(w,h)
+	if not result:
+		return None
+
+	# Set the initial optimum results
+	optPos,optArea = result
+	optW, optH = w,h
+
+	def nextSize(w,h):
+		"""
+		Helper function to proceed to the next valid size.
+		"""
+		while True:
+			while w*h < totalArea:
+				h += 1
+			if w*h <= optArea:
+				break
+			while w*h > optArea:
+				w -= 1
+		return w,h
+
+	# Skip to the enclosing width and decrease by 1.
+	w = packer.getEnclosingWidth()-1
+	w,h = nextSize(w,h)
+
+	while w >= maxW and h <= globalMaxHeight:
+		result = trySize(w,h)
+		if result:
+			pos,area = result
+			if area == optArea:
+				pass
+			elif area < optArea:
+				optArea = area
+				optPos = pos
+				optW = w
+				optH = h
+			w -= 1
+		else:
+			h += 1
+
+		w,h = nextSize(w,h)
+
+	return optW, optH, optPos
