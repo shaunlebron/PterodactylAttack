@@ -129,5 +129,35 @@ class TestIslandFinder(unittest.TestCase):
 		expectedStrs = set(map(str,expectedIslands))
 		self.assertSetEqual(actualStrs, expectedStrs)
 
+	def test_merge(self):
+		w,h = 13,7
+		space = (
+			# 0 1 2 3 4 5 6 7 8 9 0 1 2
+			" . . . . . . # # # . . . . " + # 0
+			" . . # # . . . # # . . . . " + # 1
+			" . . # # # # . . . . . . . " + # 2
+			" . . # . . . . . . . . . . " + # 3
+			" . . # . # # # . . . . . . " + # 4
+			" . . # . # # # . . . . . . " + # 5
+			" . . . . . . . . . . . . . " + # 6
+			"").split()
+
+		def pixelIter():
+			"""
+			A row-major order iterator of our test-space.
+			"""
+			x,y,i = 0,0,0
+			for i,c in enumerate(space):
+				x = i % w
+				y = i / w
+				isSolid = (c=='#')
+				yield x,y,i,isSolid
+
+		actualIslands = findIslands(w,h,pixelIter)
+		print len(actualIslands)
+
+		mergedIslands = findIslands.minimalAreaMerge()
+		print len(mergedIslands)
+
 if __name__ == "__main__":
 	unittest.main()

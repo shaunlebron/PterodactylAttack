@@ -71,7 +71,9 @@ class IslandBounds:
 
 	def getAreaDeltaFromMerge(self, other):
 		separate_area = self.getArea() + other.getArea()
-		merged_area = self.copy().addIsland(other).getArea()
+		merge = self.copy()
+		merge.addIsland(other)
+		merged_area = merge.getArea()
 		return merged_area - separate_area
 
 class IslandFinderFunction:
@@ -193,14 +195,14 @@ class IslandFinderFunction:
 				self.makeNewIsland(x,y,i)
 		return self.islands
 
-	def minimimalAreaMerge(self):
+	def minimalAreaMerge(self):
 		"""
 		Merge any two of the created islands if the bounding box around both has
 		less area than the sum of their separate bounding boxes.
 		"""
 
 		def shouldMerge(a,b):
-			return a.deltaAreaFromMerge(b) < 0
+			return a.getAreaDeltaFromMerge(b) < 0
 			
 		done = False
 		while not done:
@@ -225,7 +227,9 @@ class IslandFinderFunction:
 						group.add(j)
 						done = False
 			for group in groups:
-				self.mergeIslands(list(group))
+				self.mergeIslands([self.islands[i] for i in group])
+
+		return self.islands
 
 # I'm using the class above as a singleton to hold
 # the intermediate states and helper functions for
