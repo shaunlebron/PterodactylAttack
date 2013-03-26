@@ -1,4 +1,6 @@
+import random
 import unittest
+import termcolor
 
 from recpack import *
 
@@ -15,7 +17,11 @@ class RecPackDbgCanvas:
 			for x0 in xrange(x,x+rect.w):
 				if (0 <= x0 and x0 < self.w and
 					0 <= y0 and y0 < self.h):
-					self.canvas[x0+y0*self.w] = rect.name
+					try:
+						text = termcolor.colored(rect.name, rect.color)
+					except AttributeError:
+						text = rect.name
+					self.canvas[x0+y0*self.w] = text
 				else:
 					raise ValueError("invalid xy range %d, %d" % (x0,y0))
 
@@ -91,14 +97,15 @@ class RecPackDbgCanvas:
 			print "|"
 		hr()
 
+class Rect:
+	def __init__(self,name,w,h):
+		self.name = name
+		self.w = w
+		self.h = h
+
 class TestRectanglePacker(unittest.TestCase):
 
 	def test_first(self):
-		class Rect:
-			def __init__(self,name,w,h):
-				self.name = name
-				self.w = w
-				self.h = h
 
 		a = Rect('a',3,2)
 		b = Rect('b',5,6)
@@ -123,6 +130,48 @@ class TestRectanglePacker(unittest.TestCase):
 			else:
 				raise Exception("unable to place %s", r.name)
 			canvas.display()
+
+	def test_optimal(self):
+
+		a = Rect('a',3,2)
+		b = Rect('b',5,6)
+		c = Rect('c',6,3)
+		d = Rect('d',3,2)
+		e = Rect('e',1,1)
+		f = Rect('f',5,1)
+		g = Rect('g',6,4)
+		h = Rect('h',2,3)
+		rects = [a,b,c,d,e,f,g,h]
+		rect_dict = dict((r.name,r) for r in rects)
+
+		w,h,pos,packer = getOptimalRecPack(rects)
+
+		canvas = RecPackDbgCanvas(packer)
+
+		for name,(x,y) in pos.items():
+			canvas.insert(rect_dict[name], x, y)
+		canvas.display()
+
+	def test_optimal_random(self):
+
+		rects = []
+		letters = "a b c d e f g".split()
+		colors = "red green yellow blue magenta cyan white".split()
+		for name,color in zip(letters,colors):
+			w = random.randint(1,11)
+			h = random.randint(1,11)
+			r = Rect(name,w,h)
+			r.color = color
+			rects.append(r)
+		rect_dict = dict((r.name,r) for r in rects)
+
+		w,h,pos,packer = getOptimalRecPack(rects)
+
+		canvas = RecPackDbgCanvas(packer)
+
+		for name,(x,y) in pos.items():
+			canvas.insert(rect_dict[name], x, y)
+		canvas.display()
 
 if __name__ == "__main__":
 	unittest.main()

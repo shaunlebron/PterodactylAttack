@@ -17,7 +17,7 @@ class RectanglePacker:
 		"""
 		Get the height of the enclosing rectangle.
 		"""
-		def isLastFilledRowOnEdge:
+		def isLastFilledRowOnEdge():
 			return any(self.isFilled[-1])
 
 		if isLastFilledRowOnEdge():
@@ -29,7 +29,7 @@ class RectanglePacker:
 		"""
 		Get the width of the enclosing rectangle.
 		"""
-		def isLastFilledColOnEdge:
+		def isLastFilledColOnEdge():
 			for cols in self.isFilled:
 				if cols[-1]:
 					return True
@@ -169,6 +169,9 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 	input: recs (list of rectangle objects with "name", "w", and "h" properties)
 	output: width and height of enclosing rectangle, and dictionary from rectangle name -> position
 	"""
+
+	# Sorted by decreasing height.
+	recs = sorted(recs, key=lambda r:r.h, reverse=True)
 	
 	def trySize(w,h):
 		"""
@@ -188,7 +191,7 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 		encH = packer.getEnclosingHeight()
 		area = encW * encH
 
-		return pos,area,packer
+		return encW,encH,pos,area,packer
 	
 	# Get info about the given rectangles.
 	totalArea = sum(r.w * r.h for r in recs)
@@ -211,8 +214,7 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 		return None
 
 	# Set the initial optimum results
-	optPos,optArea = result
-	optW, optH = w,h
+	optW, optH, optPos,optArea,optPacker = result
 
 	def nextSize(w,h):
 		"""
@@ -228,24 +230,25 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 		return w,h
 
 	# Skip to the enclosing width and decrease by 1.
-	w = packer.getEnclosingWidth()-1
+	w -= 1
 	w,h = nextSize(w,h)
 
 	while w >= maxW and h <= globalMaxHeight:
 		result = trySize(w,h)
 		if result:
-			pos,area = result
+			optW,optH,pos,area,packer = result
 			if area == optArea:
 				pass
 			elif area < optArea:
-				optArea = area
-				optPos = pos
 				optW = w
 				optH = h
+				optPos = pos
+				optArea = area
+				optPacker = packer
 			w -= 1
 		else:
 			h += 1
 
 		w,h = nextSize(w,h)
 
-	return optW, optH, optPos
+	return optW, optH, optPos, optPacker
