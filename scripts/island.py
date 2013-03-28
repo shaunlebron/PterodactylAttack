@@ -13,6 +13,15 @@ class IslandBounds:
 	def __str__(self):
 		return "x=(%d, %d) y=(%d, %d)" % (self.minx,self.maxx, self.miny,self.maxy)
 
+	def toJsonStr(self):
+		s = '{'
+		s += '"minx": %d,' % self.minx
+		s += '"maxx": %d,' % self.maxx
+		s += '"miny": %d,' % self.miny
+		s += '"maxy": %d' % self.maxy
+		s += '}'
+		return s
+
 	def isEquivalentTo(self, other):
 		return (
 			self.minx == other.minx and
@@ -202,32 +211,21 @@ class IslandFinderFunction:
 		"""
 
 		def shouldMerge(a,b):
-			return a.getAreaDeltaFromMerge(b) < 0
-			
-		done = False
-		while not done:
-			done = True
-			groups = []
-			islandIndexToGroup = {}
+			delta_area = a.getAreaDeltaFromMerge(b)
+			return delta_area < 1024
+
+		def tryMerge():
 			numIslands = len(self.islands)
 			for i in xrange(numIslands):
 				a = self.islands[i]
 				for j in xrange(i+1,numIslands):
 					b = self.islands[j]
 					if shouldMerge(a,b):
-						if i in islandIndexToGroup:
-							group = islandIndexToGroup[i]
-						elif j in islandIndexToGroup:
-							group = islandIndexToGroup[j]
-						else:
-							group = set()
-							groups.append(group)
-						islandIndexToGroup[i] = islandIndexToGroup[j] = group
-						group.add(i)
-						group.add(j)
-						done = False
-			for group in groups:
-				self.mergeIslands([self.islands[i] for i in group])
+						self.mergeIslands([a,b])
+						return True
+			return False
+			
+		while tryMerge(): pass
 
 		return self.islands
 

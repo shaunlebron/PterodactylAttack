@@ -3,6 +3,7 @@ import sys
 import subprocess
 import os
 import glob
+import json
 
 from recpack import *
 from island import *
@@ -27,7 +28,8 @@ def getIslandsInPng(filename):
 		for x,y,i,r,g,b,a in pngIter():
 			isSolid = (a > 0)
 			yield x,y,i,isSolid
-	return findIslands(w,h,pixelIter)
+	findIslands(w,h,pixelIter)
+	return findIslands.minimalAreaMerge()
 
 def packRegions(regions):
 	"""
@@ -42,16 +44,21 @@ def packRegions(regions):
 
 	packer = RectanglePacker(w,h)
 
-
 if __name__ == "__main__":
 
-	imagenames = ["img/grass%02d.png" % i for i in range(1)]
-	
-	imageRegions = getCroppableRegionsFromImages(imagenames)
+	islands = getIslandsInPng("../img/boom1.png")
+	for i,island in enumerate(islands):
+		island.name = str(i)
+		island.w = island.maxx - island.minx + 1
+		island.h = island.maxy - island.miny + 1
+		print island.toJsonStr()+","
+
+	w,h,pos,packer = getOptimalRecPack(islands)
+
+	"""
 
 	for f in glob.glob("regions/*"):
 		os.remove(f)
-
 	for imagename,regions in imageRegions:
 		for i,r in enumerate(regions):
 			x = r["minx"]
@@ -69,8 +76,7 @@ if __name__ == "__main__":
 				"%dx%d+%d+%d" % (w,h,x,y),
 				"+repage",
 				"regions/%s" % region_name])
-
-	subprocess.call(["./sprites.sh", "regions"])
+	"""
 
 	# TODO: read sprites.txt for image positions
 	#		line = <image_name> x y
