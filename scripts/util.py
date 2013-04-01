@@ -1,9 +1,25 @@
+#!/usr/bin/env python
+
 import png
 import sys
 import subprocess
 import os
 import glob
 import json
+import numpy
+
+usage_str = """
+
+%s image [images...] output_image
+
+Try to pack the objects in the given images into a single image.
+Create a metadata file that provides the following for each found object:
+	* size
+	* position in the packed image
+	* filename of the original image
+	* position in the original image
+
+""" % (os.path.basename(__file__))
 
 from recpack import *
 from island import *
@@ -28,56 +44,57 @@ def getIslandsInPng(filename):
 		for x,y,i,r,g,b,a in pngIter():
 			isSolid = (a > 0)
 			yield x,y,i,isSolid
+	findIslands = IslandFinderFunction()
 	findIslands(w,h,pixelIter)
-	return findIslands.minimalAreaMerge()
+	findIslands.minimalAreaMerge()
+	return findIslands
 
-def packRegions(regions):
-	"""
-	input: list of regions with (name,w,h) properties
-	output: 
-	"""
+def packImages(filenames):
 
-	w,h = 0,0
-	for r in regions:
-		h = max(h, r.getHeight())
-		w += r.getWidth()
+	all_islands = []
+	filename_islands = {}
+	for filename in filenames:
+		finder = getIslandsInPng(filename)
+		filename_islands[filename] = finder
+		all_islands.extend(finder.islands)
+		for i,island in enumerate(finder.islands):
+			island.name = "%s_%03d" % (filename, i)
+			island.w = island.maxx - island.minx + 1
+			island.h = island.maxy - island.miny + 1
 
-	packer = RectanglePacker(w,h)
+	w,h,pos,packer = getOptimalRecPack(all_islands)
+	#image = numpy.array(
+
+	regions = {}
+	for filename in filenames:
+		regions[filename] = []
+		for island in filename_islands[filename]:
+			p = pos[island.name]
+			r = {
+				"w": island.w,
+				"h": island.h,
+				"x": p[0],
+				"y": p[1],
+				"origX": island.minx,
+				"origY": island.miny,
+				"origCenterX": island.minx + w/2,
+				"origCenterY": island.miny + h/2,
+			}
+			regions[filename].append(r)
+
+	output = {
+		"regions": regions
+	}
 
 if __name__ == "__main__":
+	
+	args = sys.argv[1:]
+	if len(args) <= 1:
+		print usage_str
+		sys.exit(1)
 
-	islands = getIslandsInPng("../img/boom1.png")
-	for i,island in enumerate(islands):
-		island.name = str(i)
-		island.w = island.maxx - island.minx + 1
-		island.h = island.maxy - island.miny + 1
-		print island.toJsonStr()+","
+	filenames = args[:-1]
+	output = args[-1]
+	
+	packImages(filenames,output)
 
-	w,h,pos,packer = getOptimalRecPack(islands)
-
-	"""
-
-	for f in glob.glob("regions/*"):
-		os.remove(f)
-	for imagename,regions in imageRegions:
-		for i,r in enumerate(regions):
-			x = r["minx"]
-			y = r["miny"]
-			w = r["maxx"]-x+1
-			h = r["maxy"]-y+1
-			base = os.path.basename(imagename)
-			base = os.path.splitext(base)[0]
-			region_name = "%s_%03d.png" % (base,i)
-			print "cropping region",region_name
-			subprocess.call([
-				"convert",
-				imagename,
-				"-crop",
-				"%dx%d+%d+%d" % (w,h,x,y),
-				"+repage",
-				"regions/%s" % region_name])
-	"""
-
-	# TODO: read sprites.txt for image positions
-	#		line = <image_name> x y
-	# TODO: output final metadata (see 'notes')

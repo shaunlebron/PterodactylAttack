@@ -229,6 +229,13 @@ class IslandFinderFunction:
 
 		return self.islands
 
+	def iterIslandPixels(self,island):
+		for y in xrange(island.miny, island.maxy+1):
+			for x in xrange(island.minx, island.maxx+1):
+				p = self.getIslandFromPixel(x,y)
+				if p == island:
+					yield x,y
+
 # I'm using the class above as a singleton to hold
 # the intermediate states and helper functions for
 # this main function for finding islands.
