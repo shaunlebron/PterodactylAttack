@@ -29,15 +29,31 @@
 	}
 	#controls {
 		position: fixed;
-		top: 0;
-		left: 0;
-		color: #FFF;
+		top: -2px;
+		left: -2px;
+		color: #999;
+		z-index: 5;
+		background-color: rgba(0,0,0,0.8);
+		padding: 1em;
+		transition: width height 1s;
+		border-radius: 10px;
+	}
+	a:link, a:hover, a:active, a:visited {
+		text-decoration: none;
+		color: #CCC;
+	}
+	#controls a{
+		text-decoration: none;
 	}
 	#controls li {
 		list-style-type: none;
 	}
 	#controls ul {
-		padding-left:1em;
+		margin:0;
+		padding:0;
+	}
+	#controls-list {
+		display: none;
 	}
 	</style>
 
@@ -45,11 +61,27 @@
 
 <body>
 	<div id="controls">
-		<ul>
-		<li><strong>A</strong> - toggle aim spotlights</li>
-		<li><strong>F</strong> - toggle framerate display</li>
-		<li><strong>SPACE</strong> - toggle pause</li>
-		<li><strong>SHIFT</strong> - hold for slow motion</li>
+		<script>
+			function toggleHelp() {
+				var list = document.getElementById("controls-list");
+				var symbol = document.getElementById("toggleSymbol");
+				if (list.style.display == "block") {
+					list.style.display = "none";
+					toggleSymbol.innerHTML = "[+]";
+				}
+				else {
+					list.style.display = "block";
+					toggleSymbol.innerHTML = "[-]";
+				}
+			}
+		</script>
+		<a href="#" onclick="toggleHelp()">Help <span id="toggleSymbol">[+]</span></a>
+		<ul id="controls-list">
+			<li><strong>A</strong> - toggle aim spotlights</li>
+			<li><strong>F</strong> - toggle framerate display</li>
+			<li><strong>SPACE</strong> - toggle pause</li>
+			<li><strong>SHIFT</strong> - hold for slow motion</li>
+		</ul>
 	</div>
 
 	<script src="lib/requestAnimationFrame.js"></script>
