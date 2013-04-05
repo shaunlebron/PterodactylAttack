@@ -50,11 +50,9 @@ def getIslandsInPng(filename):
 	pixels = {}
 	def pixelIter():
 		for x,y,i,r,g,b,a in pngIter():
-			pixels[(x,y)] = {
-				"color": (r,g,b,a),
-				"island": None
-			}
 			isSolid = (a > 0)
+			if isSolid:
+				pixels[(x,y)] = { "color": (r,g,b,a) }
 			yield x,y,i,isSolid
 	findIslands(w,h,pixelIter)
 	findIslands.minimalAreaMerge()
@@ -62,23 +60,31 @@ def getIslandsInPng(filename):
 		pixels[(x,y)]["island"] = findIslands.getIslandFromPixel(x,y)
 	return findIslands.islands, pixels
 
-def packImages(filenames,packed_image_name):
+def packImages(input_images,output_image):
+	"""
+	Take a list of input images, find their islands (contiguous regions)
+	then pack all islands into a given output image with an associated
+	meta file stating the position and original image of each island.
+	"""
 
 	# Get all islands
+	print "Locating islands..."
 	all_islands = []
 	filename_islands = {}
 	filename_pixels = {}
-	for filename in filenames:
+	for filename in input_images:
+		print "  "+filename
 		islands,pixels = getIslandsInPng(filename)
 		filename_islands[filename] = islands
 		filename_pixels[filename] = pixels
-		all_islands.extend(finder.islands)
+		all_islands.extend(islands)
 		for i,island in enumerate(islands):
 			island.name = "%s_%03d" % (filename, i)
 			island.w = island.maxx - island.minx + 1
 			island.h = island.maxy - island.miny + 1
 
 	# Calculate packed image size and placements.
+	print "Calculating packed partitions..."
 	w,h,pos,packer = getOptimalRecPack(all_islands)
 
 	# Create image of size (w,h)
@@ -87,27 +93,31 @@ def packImages(filenames,packed_image_name):
 		packed_image[y,x] = color
 
 	# Draw islands to packed image
-	for filename in filenames:
+	print "Drawing islands to packed buffer..."
+	for filename in input_images:
 		islands = filename_islands[filename]
 		pixels = filename_pixels[filename]
 		for (x,y),pixel in pixels.items():
 			island = pixel["island"]
-			p = pos[island.name]
+			px,py = pos[island.name]
 			setPixel(
-				x - island.minx + p.x,
-				y - island.miny + p.y,
+				x - island.minx + px,
+				y - island.miny + py,
 				pixel["color"])
 
 	# Write packed image.
+	print "Writing packed image..."
 	pngWriter = png.Writer(size=(w,h),alpha=True)
-	with open(packed_image_name,"w") as f:
-		pngWriter.write(f, packed_image.reshape((-1)))
+	with open(output_image,"w") as f:
+		#pngWriter.write(f, packed_image.reshape((-1)))
+		pngWriter.write(f, numpy.reshape(packed_image, (-1, w*4)))
 
 	# Create meta data for packed image.
+	print "Writing packed meta data file..."
 	regions = {}
-	for filename in filenames:
+	for filename in input_images:
 		regions[filename] = []
-		for island in filename_islands[filename].islands:
+		for island in filename_islands[filename]:
 			p = pos[island.name]
 			r = {
 				"w": island.w,
@@ -125,18 +135,18 @@ def packImages(filenames,packed_image_name):
 	}
 
 	# Write meta data.
-	with open(packed_image_name+".json","w") as f:
-		json.dump(f, output)
+	with open(output_image+".json","w") as f:
+		json.dump(output, f, indent=4, sort_keys=True)
 
 if __name__ == "__main__":
 	
 	args = sys.argv[1:]
-	if len(args) <= 1:
+	if len(args) < 2:
 		print usage_str
 		sys.exit(1)
 
-	filenames = args[:-1]
-	output = args[-1]
+	input_images = args[:-1]
+	output_image = args[-1]
 	
-	packImages(filenames,output)
+	packImages(input_images,output_image)
 

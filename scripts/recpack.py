@@ -179,7 +179,7 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 		input: dimensions of enclosing rectangle
 		output: partition positions, enclosing area, and packer object
 		"""
-		print "trying size %dx%d..." % (w,h)
+		#print "trying size %dx%d..." % (w,h)
 		pos = {}
 		packer = RectanglePacker(w, h)
 		for r in recs:
@@ -192,7 +192,7 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 		encH = packer.getEnclosingHeight()
 		area = encW * encH
 
-		print "success."
+		#print "success."
 		return encW,encH,pos,area,packer
 	
 	# Get info about the given rectangles.
@@ -256,7 +256,7 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 				optPos = pos
 				optArea = area
 				optPacker = packer
-				printResult(optW,optH,optPos)
+				#printResult(optW,optH,optPos)
 			w -= 1
 		else:
 			h += 1
