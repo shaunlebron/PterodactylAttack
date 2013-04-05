@@ -85,7 +85,12 @@ def packImages(input_images,output_image):
 
 	# Calculate packed image size and placements.
 	print "Calculating packed partitions..."
-	w,h,pos,packer = getOptimalRecPack(all_islands)
+	result = getOptimalRecPack(all_islands, globalMaxWidth=2048, globalMaxHeight=2048)
+	if result:
+		w,h,pos,packer = result
+	else:
+		print "could not pack"
+		sys.exit(1)
 
 	# Create image of size (w,h)
 	packed_image = numpy.zeros((h,w,4),dtype=numpy.int)
