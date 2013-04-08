@@ -2,14 +2,14 @@
 Ptero.Enemy = function(makeNewPath) {
 	this.makeNewPath = makeNewPath;
 
-	this.babySprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+	this.babySprite = new Ptero.AnimSprite(Ptero.assets.tables.baby);
 	this.babySprite.shuffleTime();
 
-	this.boom1Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom1);
+	this.boom1Sprite = new Ptero.AnimSprite(Ptero.assets.tables.boom1);
 	this.boom1Sprite.setRepeat(false);
-	this.boom2Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom2);
+	this.boom2Sprite = new Ptero.AnimSprite(Ptero.assets.tables.boom2);
 	this.boom2Sprite.setRepeat(false);
-	this.boom3Sprite = new Ptero.AnimSprite(Ptero.assets.sheets.boom3);
+	this.boom3Sprite = new Ptero.AnimSprite(Ptero.assets.tables.boom3);
 	this.boom3Sprite.setRepeat(false);
 	this.randomizeBoom();
 

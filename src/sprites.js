@@ -1,5 +1,5 @@
 
-Ptero.SpriteSheet = function(img,dict) {
+Ptero.SpriteTable = function(img,dict) {
 	this.img = img;
 
 	this.rows = dict.rows;
@@ -17,7 +17,7 @@ Ptero.SpriteSheet = function(img,dict) {
 	this.tileCenterY = this.tileHeight * dict.centerY;
 };
 
-Ptero.SpriteSheet.prototype = {
+Ptero.SpriteTable.prototype = {
 	draw: function(ctx,pos,frame) {
 		var row = Math.floor(frame / this.cols);
 		var col = frame % this.cols;
@@ -62,11 +62,11 @@ Ptero.Sprite.prototype = {
 	},
 };
 
-Ptero.AnimSprite = function(sheet) {
-	this.sheet = sheet;
+Ptero.AnimSprite = function(table) {
+	this.table = table;
 
-	this.frameDuration = 1/this.sheet.fps;
-	this.totalDuration = this.frameDuration * sheet.frames;
+	this.frameDuration = 1/this.table.fps;
+	this.totalDuration = this.frameDuration * table.frames;
 	this.time = 0;
 	this.frame = 0;
 
@@ -118,13 +118,13 @@ Ptero.AnimSprite.prototype = {
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
 	draw: function(ctx,pos) {
-		this.sheet.draw(ctx,pos,this.frame);
+		this.table.draw(ctx,pos,this.frame);
 	},
 	drawBorder: function(ctx,pos,color,handle) {
-		this.sheet.drawBorder(ctx,pos,color,handle);
+		this.table.drawBorder(ctx,pos,color,handle);
 	},
 	getBillboard: function() {
-		return this.sheet.billboard;
+		return this.table.billboard;
 	},
 };
 

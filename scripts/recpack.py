@@ -242,7 +242,6 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 			print '    "%s": {"x":%d, "y":%d},' % (r.name, p[0], p[1])
 		print "};"
 
-	# Skip to the enclosing width and decrease by 1.
 	step = 10
 	w -= step
 	w,h = nextSize(w,h)

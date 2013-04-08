@@ -6,6 +6,11 @@ Ptero.assets = (function(){
 			src: "img/Final_Desert.jpg",
 			scale: 1.0,
 		},
+		"grass": {
+			src: "img/grass.png",
+			metadata: true,
+			scale: 1.0,
+		},
 		"baby": {
 			src: "img/baby.png",
 			metadata: true,
@@ -42,21 +47,22 @@ Ptero.assets = (function(){
 
 	var images = {};
 	var sprites = {};
-	var sheets = {};
+	var tables = {};
+	var mosaics = {};
 	var billboards = {};
 
 	function makeBillboards() {
-		var x,y,w,h,sheet,sprite,img,board;
+		var x,y,w,h,table,sprite,img,board;
 		for (name in imageInfo) {
-			sheet = img = null;
-			if (sheets.hasOwnProperty(name)) {
-				sheet = sheets[name];
-				x = sheet.tileCenterX;
-				y = sheet.tileCenterY;
-				w = sheet.tileWidth;
-				h = sheet.tileHeight;
+			table = img = null;
+			if (tables.hasOwnProperty(name)) {
+				table = tables[name];
+				x = table.tileCenterX;
+				y = table.tileCenterY;
+				w = table.tileWidth;
+				h = table.tileHeight;
 			}
-			else if (images.hasOwnProperty(name)) {
+			else if (sprites.hasOwnProperty(name)) {
 				img = images[name];
 				sprite = sprites[name];
 				x = sprite.centerX;
@@ -68,8 +74,8 @@ Ptero.assets = (function(){
 				continue;
 			}
 			board = new Ptero.Billboard(x,y,w,h,imageInfo[name].scale);
-			if (sheet) {
-				sheet.billboard = board;
+			if (table) {
+				table.billboard = board;
 			}
 			else {
 				sprite.billboard = board;
@@ -80,8 +86,12 @@ Ptero.assets = (function(){
 
 	function parseMetaData(name, meta) {
 		if (meta.rows != undefined) {
-			console.log("creating sheet",name);
-			sheets[name] = new Ptero.SpriteSheet(images[name], meta);
+			console.log("creating table",name);
+			tables[name] = new Ptero.SpriteTable(images[name], meta);
+		}
+		else if (meta.mosaic != undefined) {
+			console.log("creating mosaic",name);
+			//mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
 		}
 		else {
 			console.log("creating sprite",name);
@@ -150,7 +160,8 @@ Ptero.assets = (function(){
 		load: load,
 		images: images,
 		sprites: sprites,
-		sheets: sheets,
+		tables: tables,
+		mosaics: mosaics,
 		billboards: billboards,
 	};
 })();

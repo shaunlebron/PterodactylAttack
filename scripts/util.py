@@ -58,7 +58,7 @@ def getIslandsInPng(filename):
 	findIslands.minimalAreaMerge()
 	for x,y in pixels:
 		pixels[(x,y)]["island"] = findIslands.getIslandFromPixel(x,y)
-	return findIslands.islands, pixels
+	return w,h,findIslands.islands, pixels
 
 def packImages(input_images,output_image):
 	"""
@@ -72,9 +72,14 @@ def packImages(input_images,output_image):
 	all_islands = []
 	filename_islands = {}
 	filename_pixels = {}
+	filename_size = {}
 	for filename in input_images:
 		print "  "+filename
-		islands,pixels = getIslandsInPng(filename)
+		w,h,islands,pixels = getIslandsInPng(filename)
+		filename_size[filename] = {
+			"width": w,
+			"height": h,
+		}
 		filename_islands[filename] = islands
 		filename_pixels[filename] = pixels
 		all_islands.extend(islands)
@@ -119,12 +124,16 @@ def packImages(input_images,output_image):
 
 	# Create meta data for packed image.
 	print "Writing packed meta data file..."
-	regions = {}
+	mosaic = {}
 	for filename in input_images:
-		regions[filename] = []
+		tiles = []
+		mosaic[filename] = {
+			"origSize": filename_size[filename],
+			"tiles": tiles,
+		}
 		for island in filename_islands[filename]:
 			p = pos[island.name]
-			r = {
+			tiles.append({
 				"w": island.w,
 				"h": island.h,
 				"x": p[0],
@@ -133,14 +142,11 @@ def packImages(input_images,output_image):
 				"origY": island.miny,
 				"origCenterX": island.minx + w/2,
 				"origCenterY": island.miny + h/2,
-			}
-			regions[filename].append(r)
-	output = {
-		"regions": regions
-	}
+			})
 
 	# Write meta data.
 	with open(output_image+".json","w") as f:
+		output = { "mosaic": mosaic }
 		json.dump(output, f, indent=4, sort_keys=True)
 
 if __name__ == "__main__":
