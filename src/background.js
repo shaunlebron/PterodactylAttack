@@ -23,6 +23,13 @@ Ptero.background = (function(){
 			var dx = Ptero.screen.getWidth()/2 - dw/2;
 			var dy = Ptero.screen.getHeight()/2 - dh/2;
 			ctx.drawImage(image, sx,sy,sw,sh, dx,dy,dw,dh);
+
+			var pos = {
+				x: 0,
+				y: 0,
+				z: Ptero.screen.getFrustum().near,
+			};
+			Ptero.assets.mosaics["grass"].draw(ctx,pos,"../img/grass00.png");
 		},
 	};
 })();

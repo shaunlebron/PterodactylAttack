@@ -38,6 +38,74 @@ Ptero.SpriteTable.prototype = {
 	},
 };
 
+Ptero.SpriteMosaic = function(img,dict) {
+	this.img = img;
+	this.frames = dict.mosaic;
+
+	// one billboard for each frame
+	this.billboards = {};
+
+	// get image names
+	this.frame_names = []
+	var frame;
+	for (key in this.frames) {
+		if (this.frames.hasOwnProperty(key)) {
+
+			this.frame_names.push(key);
+
+			frame = this.frames[key];
+
+			// create billboard for this frame
+			var w = frame.origSize.width;
+			var h = frame.origSize.height;
+			var centerX = w * (frame.centerX == undefined ? 0.5 : frame.centerX);
+			var centerY = h * (frame.centerY == undefined ? 0.5 : frame.centerY);
+			var scale = 1;
+			this.billboards[key] = new Ptero.Billboard(centerX,centerY,w,h,scale);
+		}
+	}
+	this.frame_names.sort()
+
+	this.numFrames = this.frame_names.length;
+	this.fps = dict.fps || 10;
+
+	// initialize billboard state
+	this.billboard = this.billboards[this.frame_names[0]];
+};
+
+Ptero.SpriteMosaic.prototype = {
+	draw: function(ctx,pos,frame_name) {
+
+		// set appropriate billboard
+		this.billboard = this.billboards[frame_name];
+
+		var frame = this.frames[frame_name];
+		var size = frame.origSize;
+
+		var tiles = frame.tiles;
+		var i,numTiles = tiles.length;
+		var sx,sy,w,h,dx,dy;
+		var tile;
+		for (i=0; i<numTiles; i++) {
+			tile = tiles[i];
+
+			sx = tile.x;
+			sy = tile.y;
+			w = tile.w;
+			h = tile.h;
+			dx = tile.origX;
+			dy = tile.origY;
+
+			Ptero.painter.drawImageFrameToSubRegion( ctx,
+				this.img,
+				pos,
+				sx,sy,w,h,
+				this.billboard,
+				dx,dy);
+		}
+	},
+};
+
 Ptero.Sprite = function(img,dict) {
 	this.img = img;
 

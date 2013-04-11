@@ -91,7 +91,7 @@ Ptero.assets = (function(){
 		}
 		else if (meta.mosaic != undefined) {
 			console.log("creating mosaic",name);
-			//mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
+			mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
 		}
 		else {
 			console.log("creating sprite",name);

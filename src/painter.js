@@ -2,6 +2,19 @@
 // Drawing functions that take 3d frustum coordinates.
 Ptero.painter = (function(){
 
+	function drawImageFrameToSubRegion(ctx,image,pos,sx,sy,sw,sh,billboard,rx,ry) {
+		var rect = billboard.getScreenRect(pos);
+		var dx = rect.x;
+		var dy = rect.y;
+		var dw = rect.w;
+		var dh = rect.h;
+		var x = dx + rx/billboard.w*dw;
+		var y = dy + ry/billboard.h*dh;
+		var w = sw/billboard.w*dw;
+		var h = sh/billboard.h*dh;
+		ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h);
+	};
+
 	function drawImageFrame(ctx,image,pos,sx,sy,sw,sh,billboard) {
 		var rect = billboard.getScreenRect(pos);
 		var dx = rect.x;
@@ -18,8 +31,6 @@ Ptero.painter = (function(){
 			dx -= x;
 			dy -= y;
 			ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);
-			//ctx.rotate(-angle);
-			//ctx.translate(-x,-y);
 			ctx.restore();
 		}
 		else {
@@ -90,6 +101,7 @@ Ptero.painter = (function(){
 	}
 
 	return {
+		drawImageFrameToSubRegion: drawImageFrameToSubRegion,
 		drawImageFrame: drawImageFrame,
 		drawImage: drawImage,
 		drawBorder: drawBorder,
