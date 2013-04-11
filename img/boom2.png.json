@@ -2,5 +2,6 @@
 	"rows": 4,
 	"cols": 5,
 	"frames": 20,
-	"fps": 20
+	"fps": 20,
+	"scale": 4.0
 }

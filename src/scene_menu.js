@@ -1,11 +1,11 @@
 
 Ptero.scene_menu = (function(){
 
-	var titleImg;
-	var titleBoard;
+	var titleSprite;
+
 	function init() {
-		titleImg = Ptero.assets.images['logo'];
-		titleBoard = Ptero.assets.billboards['logo'];
+		titleSprite = Ptero.assets.sprites["logo"];
+
 		Ptero.background.setImage(Ptero.assets.images.desert);
 		Ptero.input.addTouchHandler(touchHandler);
 		var song = Ptero.audio.getThemeSong();
@@ -33,7 +33,7 @@ Ptero.scene_menu = (function(){
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
 		var frustum = Ptero.screen.getFrustum();
-		Ptero.painter.drawImage(ctx,titleImg,{x:0,y:frustum.nearTop/3,z:frustum.near},titleBoard);
+		titleSprite.draw(ctx,{x:0,y:frustum.nearTop/3,z:frustum.near});
 	}
 
 	return {

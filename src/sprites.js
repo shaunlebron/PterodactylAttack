@@ -1,4 +1,34 @@
 
+Ptero.Sprite = function(img,dict) {
+	this.img = img;
+
+	if (dict.centerX == undefined) dict.centerX = 0.5;
+	if (dict.centerY == undefined) dict.centerY = 0.5;
+
+	var centerX = img.width * dict.centerX;
+	var centerY = img.height * dict.centerY;
+	this.billboard = new Ptero.Billboard(
+		centerX,
+		centerY,
+		img.width,
+		img.height,
+		(dict.scale || 1));
+};
+
+Ptero.Sprite.prototype = {
+	draw: function(ctx,pos) {
+		Ptero.painter.drawImage(
+			ctx,
+			this.img,
+			pos,
+			this.billboard
+		);
+	},
+	drawBorder: function(ctx,pos,color,handle) {
+		Ptero.painter.drawBorder(ctx,pos,color,this.billboard,handle);
+	},
+};
+
 Ptero.SpriteTable = function(img,dict) {
 	this.img = img;
 
@@ -12,9 +42,14 @@ Ptero.SpriteTable = function(img,dict) {
 
 	if (dict.centerX == undefined) dict.centerX = 0.5;
 	if (dict.centerY == undefined) dict.centerY = 0.5;
-
-	this.tileCenterX = this.tileWidth * dict.centerX;
-	this.tileCenterY = this.tileHeight * dict.centerY;
+	var tileCenterX = this.tileWidth * dict.centerX;
+	var tileCenterY = this.tileHeight * dict.centerY;
+	this.billboard = new Ptero.Billboard(
+		tileCenterX,
+		tileCenterY,
+		this.tileWidth,
+		this.tileHeight,
+		(dict.scale || 1));
 };
 
 Ptero.SpriteTable.prototype = {
@@ -103,30 +138,6 @@ Ptero.SpriteMosaic.prototype = {
 				this.billboard,
 				dx,dy);
 		}
-	},
-};
-
-Ptero.Sprite = function(img,dict) {
-	this.img = img;
-
-	if (dict.centerX == undefined) dict.centerX = 0.5;
-	if (dict.centerY == undefined) dict.centerY = 0.5;
-
-	this.centerX = img.width * dict.centerX;
-	this.centerY = img.height * dict.centerY;
-};
-
-Ptero.Sprite.prototype = {
-	draw: function(ctx,pos) {
-		Ptero.painter.drawImage(
-			ctx,
-			this.img,
-			pos,
-			this.billboard
-		);
-	},
-	drawBorder: function(ctx,pos,color,handle) {
-		Ptero.painter.drawBorder(ctx,pos,color,this.billboard,handle);
 	},
 };
 

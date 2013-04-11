@@ -4,5 +4,6 @@
 	"frames": 15,
 	"fps": 30,
 	"centerX": 0.5,
-	"centerY": 0.5
+	"centerY": 0.5,
+	"scale": 4.0
 }

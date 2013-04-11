@@ -29,7 +29,7 @@ Ptero.background = (function(){
 				y: 0,
 				z: Ptero.screen.getFrustum().near,
 			};
-			Ptero.assets.mosaics["grass"].draw(ctx,pos,"../img/grass00.png");
+			Ptero.assets.mosaics["grass"].draw(ctx,pos,"grass00.png");
 		},
 	};
 })();
