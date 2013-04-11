@@ -35,7 +35,7 @@ Ptero.Crater.enemy_model = new function() {
 		var i,len=that.points.length;
 		for (i=0; i<len; i++) {
 			that.times[i] = that.points[i].t;
-			sprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+			sprite = new Ptero.AnimSprite(Ptero.assets.tables.baby);
 			sprite.shuffleTime();
 			that.nodeSprites[i] = sprite;
 		}
@@ -57,7 +57,7 @@ Ptero.Crater.enemy_model = new function() {
 				z:far - i/(numPoints-1)*dist,
 				angle: 0,
 			};
-			sprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+			sprite = new Ptero.AnimSprite(Ptero.assets.tables.baby);
 			sprite.shuffleTime();
 			that.nodeSprites[i] = sprite;
 		}
@@ -98,7 +98,7 @@ Ptero.Crater.enemy_model = new function() {
 		that.times.push(that.times[len-1] + 1.0);
 		p.t = that.times[len];
 		that.points.push(p);
-		var sprite = new Ptero.AnimSprite(Ptero.assets.sheets.baby);
+		var sprite = new Ptero.AnimSprite(Ptero.assets.tables.baby);
 		sprite.shuffleTime();
 		that.nodeSprites.push(sprite);
 
