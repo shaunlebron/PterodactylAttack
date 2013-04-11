@@ -141,11 +141,18 @@ Ptero.SpriteMosaic.prototype = {
 	},
 };
 
-Ptero.AnimSprite = function(table) {
-	this.table = table;
+Ptero.AnimSprite = function(dict) {
+	if (dict.table) {
+		this.table = dict.table;
+		this.frameDuration = 1/this.table.fps;
+		this.totalDuration = this.frameDuration * this.table.frames;
+	}
+	else if (dict.mosaic) {
+		this.mosaic = dict.mosaic;
+		this.frameDuration = 1/this.mosaic.fps;
+		this.totalDuration = this.frameDuration * this.mosaic.numFrames;
+	}
 
-	this.frameDuration = 1/this.table.fps;
-	this.totalDuration = this.frameDuration * table.frames;
 	this.time = 0;
 	this.frame = 0;
 
@@ -197,13 +204,25 @@ Ptero.AnimSprite.prototype = {
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
 	draw: function(ctx,pos) {
-		this.table.draw(ctx,pos,this.frame);
+		if (this.table) {
+			this.table.draw(ctx,pos,this.frame);
+		}
+		else if (this.mosaic) {
+			this.mosaic.draw(ctx,pos,this.mosaic.frame_names[this.frame]);
+		}
 	},
 	drawBorder: function(ctx,pos,color,handle) {
-		this.table.drawBorder(ctx,pos,color,handle);
+		if (this.table) {
+			this.table.drawBorder(ctx,pos,color,handle);
+		}
 	},
 	getBillboard: function() {
-		return this.table.billboard;
+		if (this.table) {
+			return this.table.billboard;
+		}
+		else if (this.mosaic) {
+			return this.mosaic.billboard;
+		}
 	},
 };
 

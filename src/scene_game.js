@@ -42,6 +42,7 @@ Ptero.scene_game = (function() {
 	};
 
 	function update(dt) {
+		Ptero.background.update(dt);
 		Ptero.deferredSprites.clear();
 		var i;
 		for (i=0; i<numEnemies; i++) {

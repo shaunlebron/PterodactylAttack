@@ -2,6 +2,7 @@
 Ptero.background = (function(){
 
 	var image;
+	var grassAnim;
 	var scale;
 
 	return {
@@ -12,6 +13,10 @@ Ptero.background = (function(){
 			var scaleH = Ptero.screen.getHeight() / image.height;
 			var scaleW = Ptero.screen.getWidth() / image.width;
 			scale = (aspect > Ptero.screen.getAspect()) ? scaleH : scaleW;
+			grassAnim = new Ptero.AnimSprite({mosaic: Ptero.assets.mosaics.grass});
+		},
+		update: function(dt) {
+			grassAnim.update(dt);
 		},
 		draw: function draw(ctx) {
 			var sx = 0;
@@ -29,7 +34,7 @@ Ptero.background = (function(){
 				y: 0,
 				z: Ptero.screen.getFrustum().near,
 			};
-			Ptero.assets.mosaics["grass"].draw(ctx,pos,"grass00.png");
+			grassAnim.draw(ctx,pos);
 		},
 	};
 })();

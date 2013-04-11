@@ -28,6 +28,7 @@ Ptero.scene_menu = (function(){
 	};
 
 	function update(dt) {
+		Ptero.background.update(dt);
 	}
 
 	function draw(ctx) {

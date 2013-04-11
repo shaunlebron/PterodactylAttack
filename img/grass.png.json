@@ -1,4 +1,5 @@
 {
+	"fps":20,
     "mosaic": {
         "grass00.png": {
             "origSize": {
