@@ -59,6 +59,8 @@ Ptero.Billboard.prototype = {
 		var scale = this.scale * Ptero.background.getScale();
 		scale = scale / pos.z * frustum.near;
 		return {
+			centerX: screenPos.x,
+			centerY: screenPos.y,
 			w: this.w * scale,
 			h: this.h * scale,
 			x: screenPos.x - this.centerX*scale,

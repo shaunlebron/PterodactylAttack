@@ -12,7 +12,21 @@ Ptero.painter = (function(){
 		var y = dy + ry/billboard.h*dh;
 		var w = sw/billboard.w*dw;
 		var h = sh/billboard.h*dh;
-		ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h);
+		var angle = pos.angle;
+		if (angle) {
+			var cx = rect.centerX;
+			var cy = rect.centerY;
+			ctx.save();
+			ctx.translate(cx,cy);
+			ctx.rotate(angle);
+			x -= cx;
+			y -= cy;
+			ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h);
+			ctx.restore();
+		}
+		else {
+			ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h);
+		}
 	};
 
 	function drawImageFrame(ctx,image,pos,sx,sy,sw,sh,billboard) {
@@ -21,8 +35,8 @@ Ptero.painter = (function(){
 		var dy = rect.y;
 		var dw = rect.w;
 		var dh = rect.h;
-		var x = dx + dw/2;
-		var y = dy + dh/2;
+		var x = rect.centerX;
+		var y = rect.centerY;
 		var angle = pos.angle;
 		if (angle) {
 			ctx.save();
@@ -52,10 +66,11 @@ Ptero.painter = (function(){
 		var dy = rect.y;
 		var dw = rect.w;
 		var dh = rect.h;
-		var x = dx + dw/2;
-		var y = dy + dh/2;
+		var x = rect.centerX;
+		var y = rect.centerY;
 		var angle = pos.angle;
 		if (angle) {
+			ctx.save();
 			ctx.translate(x,y);
 			ctx.rotate(angle);
 			dx -= x;
@@ -81,8 +96,7 @@ Ptero.painter = (function(){
 		}
 
 		if (angle) {
-			ctx.rotate(-angle);
-			ctx.translate(-x,-y);
+			ctx.restore();
 		}
 	};
 
