@@ -6,6 +6,7 @@ Ptero.Crater.scene_crater = (function() {
 	};
 
 	function update(dt) {
+		Ptero.background.update(dt);
 		Ptero.deferredSprites.clear();
 		Ptero.Crater.enemy_model.update(dt);
 		Ptero.deferredSprites.finalize();

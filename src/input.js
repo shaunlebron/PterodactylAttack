@@ -120,10 +120,13 @@ Ptero.input = (function(){
 		}
 		document.addEventListener('keydown', function(e) {
 			if (e.keyCode == 13) { // enter key
-				toggleFullScreen(document.body);
+				toggleFullScreen(document.getElementsByTagName("html")[0]);
 			}
-			else if (e.keyCode == 70) {
+			else if (e.keyCode == 70) { // f
 				Ptero.executive.toggleFps();
+			}
+			else if (e.keyCode == 66) { // b
+				Ptero.painter.toggleDebugOutline();
 			}
 		},false);
 	};

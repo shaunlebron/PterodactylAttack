@@ -53,7 +53,7 @@ window.onload = function() {
 		console.log("initing input");
 		Ptero.input.init();
 		console.log("setting scene");
-		Ptero.setScene(Ptero.scene_fact);
+		Ptero.setScene(Ptero.scene_menu);
 		console.log("starting exec");
 		Ptero.executive.start();
 	});

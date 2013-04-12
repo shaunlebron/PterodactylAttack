@@ -37,6 +37,7 @@
 		padding: 1em;
 		transition: width height 1s;
 		border-radius: 10px;
+		cursor: pointer;
 	}
 	a:link, a:hover, a:active, a:visited {
 		text-decoration: none;
@@ -55,33 +56,60 @@
 	#controls-list {
 		display: none;
 	}
+	#controls table td {
+		padding:5px;
+		color: #777;
+	}
+	#controls table tr td:first-child {
+		font-weight: bold;
+		text-align: right;
+		color: #FFF;
+	}
 	</style>
 
 </head>
 
-<body>
+<body onclick="showHelp(false)">
 	<div id="controls">
 		<script>
-			function toggleHelp() {
+			var isShowingHelp = false;
+			function showHelp(on) {
 				var list = document.getElementById("controls-list");
 				var symbol = document.getElementById("toggleSymbol");
-				if (list.style.display == "block") {
-					list.style.display = "none";
-					toggleSymbol.innerHTML = "[+]";
+				var div = document.getElementById("controls");
+				isShowingHelp = on;
+				if (isShowingHelp) {
+					list.style.display = "block";
+					toggleSymbol.innerHTML = "";
+					div.style.cursor = "default";
 				}
 				else {
-					list.style.display = "block";
-					toggleSymbol.innerHTML = "[-]";
+					list.style.display = "none";
+					toggleSymbol.innerHTML = "[+]";
+					div.style.cursor = "pointer";
 				}
 			}
+			function toggleHelp() {
+				showHelp(!isShowingHelp);
+			}
+			document.getElementById("controls").addEventListener("click", function(evt) {
+				if (!isShowingHelp) {
+					toggleHelp();
+				}
+				evt.stopPropagation();
+			});
 		</script>
-		<a href="#" onclick="toggleHelp()">Help <span id="toggleSymbol">[+]</span></a>
-		<ul id="controls-list">
-			<li><strong>A</strong> - toggle aim spotlights</li>
-			<li><strong>F</strong> - toggle framerate display</li>
-			<li><strong>SPACE</strong> - toggle pause</li>
-			<li><strong>SHIFT</strong> - hold for slow motion</li>
-		</ul>
+		<div>Help <span id="toggleSymbol">[+]</span></div>
+		<div id="controls-list">
+			<table>
+				<tr><td>A</td><td>toggle aim spotlights</td></tr>
+				<tr><td>B</td><td>toggle sprite borders</td></tr>
+				<tr><td>F</td><td>toggle framerate display</td></tr>
+				<tr><td>SPACE</td><td>toggle pause</td></tr>
+				<tr><td>SHIFT</td><td>hold for slow motion</td></tr>
+				<tr><td>ENTER</td><td>fullscreen</td></tr>
+			</table>
+		</div>
 	</div>
 
 	<script src="lib/requestAnimationFrame.js"></script>

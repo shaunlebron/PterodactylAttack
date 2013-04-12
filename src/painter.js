@@ -2,6 +2,21 @@
 // Drawing functions that take 3d frustum coordinates.
 Ptero.painter = (function(){
 
+	var shouldDrawDebugOutline = false;
+	function drawDebugOutline(ctx,x,y,w,h) {
+		if (shouldDrawDebugOutline) {
+			ctx.strokeStyle = "#F00";
+			ctx.lineWidth = 2;
+			ctx.strokeRect(x,y,w,h);
+		}
+	}
+	function setDebugOutline(on) {
+		shouldDrawDebugOutline = on;
+	}
+	function toggleDebugOutline() {
+		shouldDrawDebugOutline = !shouldDrawDebugOutline;
+	}
+
 	function drawImageFrameToSubRegion(ctx,image,pos,sx,sy,sw,sh,billboard,rx,ry) {
 		var rect = billboard.getScreenRect(pos);
 		var dx = rect.x;
@@ -22,10 +37,12 @@ Ptero.painter = (function(){
 			x -= cx;
 			y -= cy;
 			ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h);
+			drawDebugOutline(ctx,x,y,w,h);
 			ctx.restore();
 		}
 		else {
 			ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h);
+			drawDebugOutline(ctx,x,y,w,h);
 		}
 	};
 
@@ -45,10 +62,12 @@ Ptero.painter = (function(){
 			dx -= x;
 			dy -= y;
 			ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);
+			drawDebugOutline(ctx,dx,dy,dw,dh);
 			ctx.restore();
 		}
 		else {
 			ctx.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh);
+			drawDebugOutline(ctx,dx,dy,dw,dh);
 		}
 	};
 
@@ -121,5 +140,7 @@ Ptero.painter = (function(){
 		drawBorder: drawBorder,
 		moveTo: moveTo,
 		lineTo: lineTo,
+		setDebugOutline: setDebugOutline,
+		toggleDebugOutline: toggleDebugOutline,
 	};
 })();
