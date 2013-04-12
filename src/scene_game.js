@@ -68,6 +68,7 @@ Ptero.scene_game = (function() {
 		var s = 10;
 		ctx.drawImage(Ptero.assets.images["boom1"],0,0,s,s);
 		ctx.drawImage(Ptero.assets.images["boom2"],0,0,s,s);
+		ctx.drawImage(Ptero.assets.images["boom3"],0,0,s,s);
 	}
 
 	var pauseAlpha = 0;

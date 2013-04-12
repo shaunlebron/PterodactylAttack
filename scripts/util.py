@@ -127,7 +127,8 @@ def packImages(input_images,output_image):
 	mosaic = {}
 	for filename in input_images:
 		tiles = []
-		mosaic[filename] = {
+		key = os.path.basename(filename)
+		mosaic[key] = {
 			"origSize": filename_size[filename],
 			"tiles": tiles,
 		}
@@ -140,8 +141,6 @@ def packImages(input_images,output_image):
 				"y": p[1],
 				"origX": island.minx,
 				"origY": island.miny,
-				"origCenterX": island.minx + w/2,
-				"origCenterY": island.miny + h/2,
 			})
 
 	# Write meta data.

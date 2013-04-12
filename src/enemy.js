@@ -5,12 +5,18 @@ Ptero.Enemy = function(makeNewPath) {
 	this.babySprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
 	this.babySprite.shuffleTime();
 
-	this.boom1Sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.boom1});
+	this.boom1Sprite = new Ptero.AnimSprite({mosaic:Ptero.assets.mosaics.boom1});
 	this.boom1Sprite.setRepeat(false);
-	this.boom2Sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.boom2});
+	this.boom2Sprite = new Ptero.AnimSprite({mosaic:Ptero.assets.mosaics.boom2});
 	this.boom2Sprite.setRepeat(false);
-	this.boom3Sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.boom3});
+	this.boom3Sprite = new Ptero.AnimSprite({mosaic:Ptero.assets.mosaics.boom3});
 	this.boom3Sprite.setRepeat(false);
+
+	this.boomSprites = [
+		this.boom1Sprite,
+		this.boom2Sprite,
+		this.boom3Sprite,
+	];
 	this.randomizeBoom();
 
 	this.resetPosition();
@@ -18,8 +24,9 @@ Ptero.Enemy = function(makeNewPath) {
 
 Ptero.Enemy.prototype = {
 	randomizeBoom: function randomizeBoom() {
-		//this.boomSprite = this.boom3Sprite;
-		this.boomSprite = (Math.random() < 0.5 ? this.boom1Sprite : this.boom2Sprite);
+		var numBooms = this.boomSprites.length;
+		var i = Math.floor(Math.random()*numBooms);
+		this.boomSprite = this.boomSprites[i];
 		this.boomSprite.restart();
 	},
 	isHittable: function isHittable() {

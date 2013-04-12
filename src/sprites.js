@@ -95,7 +95,7 @@ Ptero.SpriteMosaic = function(img,dict) {
 			var h = frame.origSize.height;
 			var centerX = w * (frame.centerX == undefined ? 0.5 : frame.centerX);
 			var centerY = h * (frame.centerY == undefined ? 0.5 : frame.centerY);
-			var scale = 1;
+			var scale = (dict.scale || 1);
 			this.billboards[key] = new Ptero.Billboard(centerX,centerY,w,h,scale);
 		}
 	}
