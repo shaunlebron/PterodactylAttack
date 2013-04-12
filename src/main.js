@@ -17,31 +17,25 @@ window.onload = function() {
 			document.body.appendChild(canvas);
 		}
 		else {
-			document.body.style.backgroundColor = "#222";
-
-			var container = document.createElement('div');
-			document.body.appendChild(container);
-			container.appendChild(canvas);
-			container.id = "canvas-container";
+			canvas.style.borderRadius = "3px";
+			document.body.appendChild(canvas);
+			var iphone = document.getElementById("iphone");
 
 			var w = 720;
 			var h = w/16*9;
 			Ptero.screen.setStartSize(w,h);
 
-			var border_size = 50;
-			Ptero.screen.setBorderSize(border_size);
-			container.style.borderWidth = border_size+"px";
-			container.style.width = w + "px";
-			container.style.height = h + "px";
-
 			function center() {
 				var screenW = document.body.clientWidth;
 				var screenH = document.body.clientHeight;
-				container.style.position = "relative";
-				x = Math.max(-border_size,(screenW/2 - w/2 - border_size));
-				y = Math.max(-border_size,(screenH/2 - h/2 - border_size));
-				container.style.left = x+"px";
-				container.style.top = y+"px";
+				canvas.style.position = "relative";
+				x = Math.max(0,(screenW/2 - w/2));
+				y = Math.max(0,(screenH/2 - h/2));
+				canvas.style.left = x+"px";
+				canvas.style.top = y+"px";
+				iphone.style.left = (x-132)+"px";
+				iphone.style.top = (y-35)+"px";
+				iphone.style.display = "inline";
 			}
 			center();
 			window.addEventListener("resize", center,false);
