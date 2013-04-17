@@ -71,7 +71,7 @@ Ptero.Vector.prototype = {
 		this.z /= d;
 		return this;
 	},
-	angle: function(vector) {
+	angleTo: function(vector) {
 		return Math.abs(Math.acos(this.dot(vector)));
 	},
 };

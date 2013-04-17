@@ -38,6 +38,16 @@ Ptero.bulletpool = (function(){
 		}
 	};
 
+	function draw(ctx) {
+		var i,b;
+		for (i=0; i<max_bullets; i++) {
+			b = bullets[i];
+			if (b) {
+				b.draw(ctx);
+			}
+		}
+	}
+
 	function deferBullets() {
 		var i,b;
 		for (i=0; i<max_bullets; i++) {
@@ -64,7 +74,9 @@ Ptero.bulletpool = (function(){
 	return {
 		add: add,
 		update: update,
+		draw: draw,
 		deferBullets: deferBullets,
 		clear: clear,
+		bullets: bullets,
 	};
 })();

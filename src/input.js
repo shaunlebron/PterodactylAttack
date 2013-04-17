@@ -78,6 +78,7 @@ Ptero.input = (function(){
 				if (evt.touches && evt.touches.length > 0) {
 					x = evt.touches[0].pageX;
 					y = evt.touches[0].pageY;
+					evt.preventDefault();
 				}
 				else {
 					x = evt.pageX;

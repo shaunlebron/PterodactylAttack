@@ -16,7 +16,6 @@ Ptero.Bullet.prototype = {
 		this.time += dt;
 	},
 	draw: function draw(ctx) {
-		var p = Ptero.screen.spaceToScreen(this.pos);
 		this.sprite.draw(ctx, this.pos);
 	},
 };

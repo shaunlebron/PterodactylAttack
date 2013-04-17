@@ -122,7 +122,7 @@ Ptero.orb = (function(){
 		var center_aim = getAimVector(frustum.projectToNear(pos));
 		for (i=0; i<4; i++) {
 			var corner_aim = getAimVector(frustum.projectToNear(corners[i]));
-			var angle = corner_aim.angle(center_aim) * sign(corner_aim.cross(center_aim).z);
+			var angle = corner_aim.angleTo(center_aim) * sign(corner_aim.cross(center_aim).z);
 			if (angle < minAngle) {
 				minAngle = angle;
 				lc = corners[i];
@@ -226,14 +226,14 @@ Ptero.orb = (function(){
 	function get2dAimAngle(target_pos, aim_vector) {
 		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
 		var target_vec = getAimVector(target_proj);
-		var target_angle = target_vec.angle(aim_vector);
+		var target_angle = target_vec.angleTo(aim_vector);
 		return target_angle;
 	};
 
 	// Returns the angle between the target and the aim vector.
 	function get3dAimAngle(target_pos, aim_vector) {
 		var target_vec = getAimVector(target_pos);
-		var target_angle = target_vec.angle(aim_vector);
+		var target_angle = target_vec.angleTo(aim_vector);
 		return target_angle;
 	};
 
