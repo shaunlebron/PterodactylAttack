@@ -57,6 +57,7 @@ Ptero.Enemy.prototype = {
 		}
 		this.isHit = false;
 		this.isGoingToDie = false;
+		this.selected = false;
 	},
 	update: function update(dt) {
 		var millis = dt*1000;
@@ -96,6 +97,9 @@ Ptero.Enemy.prototype = {
 		}
 		else {
 			this.babySprite.draw(ctx, pos);
+			if (this.selected) {
+				this.babySprite.drawBorder(ctx, pos, "#0FF");
+			}
 		}
 
 		Ptero.orb.drawCone(ctx,this);

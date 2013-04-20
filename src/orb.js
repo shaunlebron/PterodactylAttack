@@ -422,28 +422,80 @@ Ptero.orb = (function(){
 		return bullet;
 	};
 
+	function toggleTargetAt(screenX, screenY) {
+		var i,len,target;
+		var closest_index = null;
+		var closest_dist = Infinity;
+		var targetScreenPos, targetPos;
+		var dx,dy,dist;
+		for (i=0,len=targets.length; targets && i<len; ++i) {
+			target = targets[i];
+			if (!isHittableTarget(target)) {
+				continue;
+			}
+			targetPos = target.getPosition();
+			targetScreenPos = Ptero.screen.spaceToScreen(targetPos);
+			dx = screenX-targetScreenPos.x;
+			dy = screenY-targetScreenPos.y;
+			dist = dx*dx + dy*dy;
+			if (dist < closest_dist && target.getBillboard().isInsideScreenRect(screenX,screenY,targetPos)) {
+				closest_dist = dist;
+				closest_index = i;
+			}
+		}
+
+		if (closest_index != null) {
+			target = targets[closest_index];
+			target.selected = !target.selected;
+		}
+	};
+	function selectTargetAt(screenX, screenY) {
+		var i,len,target;
+		for (i=0,len=targets.length; targets && i<len; ++i) {
+			target = targets[i];
+			if (!isHittableTarget(target)) {
+				continue;
+			}
+			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
+				if (!target.selected) {
+					target.selected = true;
+				}
+			}
+		}
+	};
+
 	// Create touch controls.
 	var touchHandler = (function(){
-
+		var startIn = false;
 		// Determine if the given point is in the orb's touch surface.
-		function isInside(point) {
+		function isInside(nearPoint) {
 			var r = getSpaceRadius();
-			return point.dist_sq(origin) <= r*r;
+			return nearPoint.dist_sq(origin) <= r*r;
 		};
 
 		// Start the charge if touch starts inside the orb.
-		function start(point) {
-			if (isInside(point)) {
+		function start(nearPoint,screenPoint) {
+			if (isInside(nearPoint)) {
 				charge.start();
-				startOrigin = point;
+				startOrigin = nearPoint;
+				startIn = true;
+			}
+			else {
+				startIn = false;
+				toggleTargetAt(screenPoint.x, screenPoint.y);
 			}
 		};
 
 		// Shoot a bullet when the touch point exits the orb.
-		function move(point) {
-			if (charge.isOn() && !isInside(point)) {
-				charge.reset();
-				shoot(getAimVector(point));
+		function move(nearPoint,screenPoint) {
+			if (charge.isOn()) {
+				if (!isInside(nearPoint)) {
+					charge.reset();
+					shoot(getAimVector(nearPoint));
+				}
+			}
+			else if (!startIn) {
+				selectTargetAt(screenPoint.x, screenPoint.y);
 			}
 		};
 
@@ -460,8 +512,9 @@ Ptero.orb = (function(){
 		// Convert the incoming xy coords from screen to space.
 		function wrapFunc(f) {
 			return function screenToSpaceWrapper(x,y) {
-				var point = Ptero.screen.screenToSpace({x:x,y:y});
-				f(point);
+				var screenPoint = {x:x,y:y};
+				var nearPoint = Ptero.screen.screenToSpace({x:x,y:y});
+				f(nearPoint,screenPoint);
 			};
 		};
 		return {

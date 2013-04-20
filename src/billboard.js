@@ -70,6 +70,7 @@ Ptero.Billboard.prototype = {
 
 	getRelativeCursor: function(x,y,pos) {
 		var rect = this.getScreenRect(pos);
+		// TODO: use center pos for this billboard instead of assuming we're in the perfect center.
 		var midx = rect.x + rect.w/2;
 		var midy = rect.y + rect.h/2;
 		x -= midx;
