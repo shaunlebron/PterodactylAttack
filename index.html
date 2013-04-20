@@ -20,6 +20,9 @@
 	}
 	body {
 		background-color:#eeeeee;
+		background-image:url('img/iphone_b.png');
+		background-repeat:no-repeat;
+		background-position: -2000px -2000px; /* hide it before it's snapped into correct position */
 		margin:0;
 		height: 100%;
 	}
@@ -61,16 +64,6 @@
 		font-weight: bold;
 		text-align: right;
 		color: #FFF;
-	}
-	img#iphone {
-		display: none;
-		position: absolute;
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-khtml-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
 	}
 	</style>
 
@@ -149,8 +142,6 @@
 
 	<script src="src/audio.js"></script>
 	<script src="src/main.js"></script>
-
-	<img id='iphone' src="img/iphone_b.png">
 
 </body>
 

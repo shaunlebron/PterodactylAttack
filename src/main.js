@@ -19,11 +19,11 @@ window.onload = function() {
 		else {
 			canvas.style.borderRadius = "3px";
 			document.body.appendChild(canvas);
-			var iphone = document.getElementById("iphone");
 
 			var w = 720;
 			var h = w/16*9;
 			Ptero.screen.setStartSize(w,h);
+			var body = document.getElementsByTagName("body")[0];
 
 			function center() {
 				var screenW = document.body.clientWidth;
@@ -33,9 +33,7 @@ window.onload = function() {
 				y = Math.max(0,(screenH/2 - h/2));
 				canvas.style.left = x+"px";
 				canvas.style.top = y+"px";
-				iphone.style.left = (x-132)+"px";
-				iphone.style.top = (y-35)+"px";
-				iphone.style.display = "inline";
+				body.style.backgroundPosition = (x-132)+"px " + (y-35)+"px";
 			}
 			center();
 			window.addEventListener("resize", center,false);
