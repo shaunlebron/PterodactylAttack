@@ -281,7 +281,19 @@ Ptero.orb = (function(){
 	};
 
 	function isHittableTarget(target) {
-		return target.isHittable() && Ptero.screen.getFrustum().isInside(target.getPosition());
+		var billboard = target.getBillboard();
+		var pos = target.getPosition();
+		var rect = billboard.getSpaceRect(pos);
+		var frustum = Ptero.screen.getFrustum();
+		if (target.isHittable()) {
+			return (
+				frustum.isInside(rect.bl) ||
+				frustum.isInside(rect.br) ||
+				frustum.isInside(rect.tl) ||
+				frustum.isInside(rect.tr)
+			);
+		}
+		return false;
 	}
 
 	// Choose which target to shoot with the given aiming vector.
@@ -449,6 +461,13 @@ Ptero.orb = (function(){
 			target.selected = !target.selected;
 		}
 	};
+	function deselectAllTargets() {
+		var i,len,target;
+		for (i=0,len=targets.length; targets && i<len; ++i) {
+			target = targets[i];
+			target.selected = false;
+		}
+	}
 	function selectTargetAt(screenX, screenY) {
 		var i,len,target;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
@@ -499,14 +518,22 @@ Ptero.orb = (function(){
 			}
 		};
 
-		// Stop charging if touch point is released or canceled.
-		function end() {
+		function endAndCancel(nearPoint) {
 			charge.reset();
 			startOrigin = null;
+			if (isInside(nearPoint)) {
+				if (startIn) {
+					deselectAllTargets();
+				}
+			}
 		};
-		function cancel() {
-			charge.reset();
-			startOrigin = null;
+
+		// Stop charging if touch point is released or canceled.
+		function end(nearPoint) {
+			endAndCancel(nearPoint);
+		};
+		function cancel(nearPoint) {
+			endAndCancel(nearPoint);
 		};
 
 		// Convert the incoming xy coords from screen to space.
