@@ -64,6 +64,7 @@ Ptero.orb = (function(){
 	var origin;
 	var next_origin;
 	var setOrigin,setNextOrigin;
+	var startOrigin;
 	function convertFracToAbs(xfrac, yfrac) {
 		var frustum = Ptero.screen.getFrustum();
 		return new Ptero.Vector(
@@ -77,7 +78,6 @@ Ptero.orb = (function(){
 	function setOrigin(xfrac, yfrac) {
 		origin = convertFracToAbs(xfrac,yfrac);
 	};
-
 
 	// the orb's targets.
 	var targets;
@@ -99,9 +99,13 @@ Ptero.orb = (function(){
 
 	var shouldDrawCones = false;
 	function drawCone(ctx,target) {
-		if (!shouldDrawCones || !isHittableTarget(target)) {
+		// Note: We are only drawing these cones if the we are charging (i.e. touch started from within the circle)
+		//  This is indicated by a non-null value in "startOrigin".
+
+		if (!startOrigin || !shouldDrawCones || !isHittableTarget(target)) {
 			return;
 		}
+
 		var billboard = target.getBillboard();
 		var pos = target.getPosition();
 		var rect = billboard.getSpaceRect(pos);
@@ -109,11 +113,13 @@ Ptero.orb = (function(){
 
 		var painter = Ptero.painter;
 		var alpha = 0.3;
+
+		// Note: We are not drawing the red cone region because the start origin is no longer a static point.
+		//   As soon as we release, the startOrigin is no longer valid, making no opportunity to draw the red cone.
 		ctx.fillStyle = target.isGoingToDie ? "rgba(255,0,0,"+alpha+")" : "rgba(255,255,255,"+alpha+")";
 		ctx.strokeStyle = "rgba(0,0,0,"+alpha+")";
 
 		var frustum = Ptero.screen.getFrustum();
-
 
 		var lc,rc;
 		var i;
@@ -134,7 +140,7 @@ Ptero.orb = (function(){
 		}
 
 		ctx.beginPath();
-		painter.moveTo(ctx, origin);
+		painter.moveTo(ctx, startOrigin);
 		painter.lineTo(ctx, lc);
 		painter.lineTo(ctx, rect.tl);
 		painter.lineTo(ctx, rect.tr);
@@ -155,9 +161,9 @@ Ptero.orb = (function(){
 		charge.draw(ctx,p);
 	};
 
-	// Get a unit vector pointing from the origin to the given point in space.
+	// Get a unit vector pointing from the startOrigin to the given point in space.
 	function getAimVector(point) {
-		return point.copy().sub(origin).normalize();
+		return point.copy().sub(startOrigin).normalize();
 	};
 
 	// Highlights specific targets for debugging. (currently the lock-on target).
@@ -366,7 +372,7 @@ Ptero.orb = (function(){
 
 			// Aim bullet at target and advance to time t.
 			bullet.time = 0;
-			bullet.pos.set(origin);
+			bullet.pos.set(startOrigin);
 			bullet.dir.set(getAimVector(target_pos));
 			bullet.update(t);
 
@@ -386,7 +392,7 @@ Ptero.orb = (function(){
 
 		// Reset bullet position and time.
 		bullet.time = 0;
-		bullet.pos.set(origin);
+		bullet.pos.set(startOrigin);
 
 		return bullet;
 	};
@@ -394,7 +400,7 @@ Ptero.orb = (function(){
 	function getBulletConeAtPos(pos) {
 		var z = pos.z;
 		var proj = Ptero.screen.getFrustum().projectToNear(pos);
-		var r = proj.dist(origin);
+		var r = proj.dist(startOrigin);
 		return {r:r, z:z};
 	};
 
@@ -406,12 +412,12 @@ Ptero.orb = (function(){
 	function createBulletFromCone(cone, aim_vector) {
 		var frustum = Ptero.screen.getFrustum();
 		var vector = aim_vector.copy().mul(cone.r);
-		vector.add(origin);
-		vector.set(frustum.projectToZ(vector,cone.z)).sub(origin).normalize();
+		vector.add(startOrigin);
+		vector.set(frustum.projectToZ(vector,cone.z)).sub(startOrigin).normalize();
 
 		var bullet = new Ptero.Bullet;
 		bullet.speed = getBulletSpeed();
-		bullet.pos.set(origin);
+		bullet.pos.set(startOrigin);
 		bullet.dir.set(vector);
 		return bullet;
 	};
@@ -429,6 +435,7 @@ Ptero.orb = (function(){
 		function start(point) {
 			if (isInside(point)) {
 				charge.start();
+				startOrigin = point;
 			}
 		};
 
@@ -443,9 +450,11 @@ Ptero.orb = (function(){
 		// Stop charging if touch point is released or canceled.
 		function end() {
 			charge.reset();
+			startOrigin = null;
 		};
 		function cancel() {
 			charge.reset();
+			startOrigin = null;
 		};
 
 		// Convert the incoming xy coords from screen to space.
