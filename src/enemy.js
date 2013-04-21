@@ -57,7 +57,9 @@ Ptero.Enemy.prototype = {
 		}
 		this.isHit = false;
 		this.isGoingToDie = false;
-		this.selected = false;
+		if (this.selected) {
+			Ptero.orb.deselectTarget(this);
+		}
 	},
 	update: function update(dt) {
 		var millis = dt*1000;

@@ -181,6 +181,17 @@ Ptero.orb = (function(){
 	// Player will only hit a target if their aim is within this angle.
 	var max2dHitAngle = 5 * Math.PI/180;
 
+	function shootHoming(aim_vector) {
+		var target = selectedTargets[0];
+		deselectTarget(target);
+
+		// Get ideal bullet that would hit the enemy.
+		var bullet = createHomingBullet(target);
+
+		// Add the new bullet to our bullet collection.
+		Ptero.bulletpool.add(bullet);
+	}
+
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
 
@@ -434,6 +445,22 @@ Ptero.orb = (function(){
 		return bullet;
 	};
 
+	var selectedTargets = [];
+	function selectTarget(target) {
+		target.selected = true;
+		selectedTargets.push(target);
+	}
+	function deselectTarget(target) {
+		target.selected = false;
+
+		// remove target from list
+		for (i=0,len=selectedTargets.length; targets && i<len; ++i) {
+			if (selectedTargets[i] == target) {
+				selectedTargets.splice(i,1);
+				break;
+			}
+		}
+	};
 	function toggleTargetAt(screenX, screenY) {
 		var i,len,target;
 		var closest_index = null;
@@ -458,7 +485,12 @@ Ptero.orb = (function(){
 
 		if (closest_index != null) {
 			target = targets[closest_index];
-			target.selected = !target.selected;
+			if (target.selected) {
+				deselectTarget(target);
+			}
+			else {
+				selectTarget(target);
+			}
 		}
 	};
 	function deselectAllTargets() {
@@ -467,6 +499,7 @@ Ptero.orb = (function(){
 			target = targets[i];
 			target.selected = false;
 		}
+		selectedTargets.length = 0;
 	}
 	function selectTargetAt(screenX, screenY) {
 		var i,len,target;
@@ -477,7 +510,7 @@ Ptero.orb = (function(){
 			}
 			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
 				if (!target.selected) {
-					target.selected = true;
+					selectTarget(target);
 				}
 			}
 		}
@@ -510,7 +543,12 @@ Ptero.orb = (function(){
 			if (charge.isOn()) {
 				if (!isInside(nearPoint)) {
 					charge.reset();
-					shoot(getAimVector(nearPoint));
+					if (selectedTargets[0]) {
+						shootHoming(getAimVector(nearPoint));
+					}
+					else {
+						shoot(getAimVector(nearPoint));
+					}
 				}
 			}
 			else if (!startIn) {
@@ -570,5 +608,6 @@ Ptero.orb = (function(){
 		update: update,
 		enableTouch: enableTouch,
 		disableTouch: disableTouch,
+		deselectTarget: deselectTarget,
 	};
 })();
