@@ -59,6 +59,7 @@ Ptero.scene_game = (function() {
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
 		Ptero.deferredSprites.finalize();
+		Ptero.score.update(dt);
 	};
 
 	function keepExplosionsCached(ctx) {
@@ -105,6 +106,7 @@ Ptero.scene_game = (function() {
 			ctx.fill();
 		}
 		drawPause(ctx);
+		Ptero.score.draw(ctx);
 	};
 
 	return {

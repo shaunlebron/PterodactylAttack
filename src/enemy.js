@@ -48,6 +48,7 @@ Ptero.Enemy.prototype = {
 	},
 	onHit: function onHit() {
 		// update score
+		Ptero.score.addPoints(100);
 		// scene.score += 100 + scene.getStreakBonus();
 		// scene.streakCount++;
 
