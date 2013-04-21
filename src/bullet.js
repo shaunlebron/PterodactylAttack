@@ -18,4 +18,33 @@ Ptero.Bullet.prototype = {
 	draw: function draw(ctx) {
 		this.sprite.draw(ctx, this.pos);
 	},
+	isDone: function() {
+		return (
+			this.time > this.lifeTime ||
+			this.collideTarget && this.time > this.collideTime
+		);
+	},
+	getPosition: function() {
+		return this.pos;
+	},
+};
+
+Ptero.PathBullet = function(path) {
+	this.path = path;
+	this.sprite = Ptero.assets.sprites.bullet;
+};
+
+Ptero.PathBullet.prototype = {
+	update: function(dt) {
+		this.path.step(dt);
+	},
+	draw: function(ctx) {
+		this.sprite.draw(ctx, this.path.pos);
+	},
+	isDone: function() {
+		return this.path.isDone();
+	},
+	getPosition: function() {
+		return this.path.pos;
+	},
 };

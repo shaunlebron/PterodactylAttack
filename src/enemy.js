@@ -20,6 +20,8 @@ Ptero.Enemy = function(makeNewPath) {
 	this.randomizeBoom();
 
 	this.resetPosition();
+
+	this.life = 0;
 };
 
 Ptero.Enemy.prototype = {
@@ -37,6 +39,9 @@ Ptero.Enemy.prototype = {
 	},
 	getFuturePosition: function getFuturePosition(time) {
 		return this.path.seek(time);
+	},
+	getTimeLeftInPath: function() {
+		return this.path.totalTime - this.path.time;
 	},
 	getBillboard: function() {
 		return this.babySprite.getBillboard();
@@ -60,6 +65,7 @@ Ptero.Enemy.prototype = {
 		if (this.selected) {
 			Ptero.orb.deselectTarget(this);
 		}
+		this.life++;
 	},
 	update: function update(dt) {
 		var millis = dt*1000;

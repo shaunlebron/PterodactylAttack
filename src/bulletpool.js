@@ -28,11 +28,10 @@ Ptero.bulletpool = (function(){
 				continue;
 			}
 			b.update(dt);
-			if (b.collideTarget && b.time > b.collideTime) {
-				b.collideTarget.onHit && b.collideTarget.onHit();
-				bullets[i] = null;
-			}
-			else if (b.time > b.lifeTime) {
+			if (b.isDone()) {
+				if (b.collideTarget && b.collideTarget.onHit) {
+					b.collideTarget.onHit();
+				}
 				bullets[i] = null;
 			}
 		}
@@ -59,7 +58,7 @@ Ptero.bulletpool = (function(){
 							b.draw(ctx);
 						};
 					})(b),
-					b.pos.z);
+					b.getPosition().z);
 			}
 		}
 	};

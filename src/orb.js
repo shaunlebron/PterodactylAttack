@@ -178,15 +178,32 @@ Ptero.orb = (function(){
 		}
 	};
 
-	// Player will only hit a target if their aim is within this angle.
-	var max2dHitAngle = 5 * Math.PI/180;
-
 	function shootHoming(aim_vector) {
 		var target = selectedTargets[0];
 		deselectTarget(target);
 
-		// Get ideal bullet that would hit the enemy.
-		var bullet = createHomingBullet(target);
+		var time = 1;
+		var endPos = target.getFuturePosition(time);
+
+		var midPos = {
+			x: 0,
+			y: 0,
+			z: (endPos.z - startOrigin.z)/2 + startOrigin.z,
+		};
+
+		var bullet = new Ptero.PathBullet(
+			new Ptero.Path(
+				new Ptero.makeHermiteInterpForObjs(
+					[startOrigin,midPos,endPos],
+					['x','y','z'],
+					[time/2,time/2]
+				)
+			)
+		);
+
+		if (time < target.getTimeLeftInPath()) {
+			bullet.collideTarget = target;
+		}
 
 		// Add the new bullet to our bullet collection.
 		Ptero.bulletpool.add(bullet);
