@@ -1,4 +1,3 @@
-
 Ptero.Sprite = function(img,dict) {
 	this.img = img;
 

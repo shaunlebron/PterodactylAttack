@@ -24,9 +24,27 @@ Ptero.scene_game = (function() {
 		}
 	}
 
+	var pauseBtn,playBtn;
 	function init() {
+		pauseBtn = Ptero.makeButton(
+			Ptero.assets.sprites["pause"],"right","bottom",10,10,
+			function() {
+				Ptero.executive.togglePause();
+				pauseBtn.disable();
+				playBtn.enable();
+			}
+		);
+		pauseBtn.enable();
+		playBtn = Ptero.makeButton(
+			Ptero.assets.sprites["play"],"center","center",0,0,
+			function() {
+				Ptero.executive.togglePause();
+				playBtn.disable();
+				pauseBtn.enable();
+			}
+		);
 
-		Ptero.background.setImage(Ptero.assets.images.desert);
+		Ptero.background.setImage(Ptero.assets.images.desert, Ptero.assets.images["bg_frosted"]);
 
 		var i;
 		for (i=0; i<numEnemies; i++) {
@@ -72,41 +90,27 @@ Ptero.scene_game = (function() {
 		ctx.drawImage(Ptero.assets.images["boom3"],0,0,s,s);
 	}
 
-	var pauseAlpha = 0;
-	var pauseTargetAlpha = 0;
-	function drawPause(ctx) {
-		if (Ptero.executive.isPaused()) {
-			pauseTargetAlpha = 1;
+	function draw(ctx) {
+		if (!Ptero.executive.isPaused()) {
+			keepExplosionsCached(ctx);
+			Ptero.background.draw(ctx);
+			Ptero.deferredSprites.draw(ctx);
+			Ptero.orb.draw(ctx);
+			var point;
+			if (Ptero.input.isTouched()) {
+				point = Ptero.input.getPoint();
+				ctx.fillStyle = "rgba(255,255,255,0.2)";
+				ctx.beginPath();
+				ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
+				ctx.fill();
+			}
+			pauseBtn.draw(ctx);
+			Ptero.score.draw(ctx);
 		}
 		else {
-			pauseTargetAlpha = 0;
+			Ptero.background.draw(ctx);
+			playBtn.draw(ctx);
 		}
-		var img = Ptero.assets.images["pause"];
-		var x = Ptero.screen.getWidth() - img.width;
-		var y = Ptero.screen.getHeight() - img.height;
-		pauseAlpha += (pauseTargetAlpha - pauseAlpha) * 0.3;
-		if (pauseAlpha > 0.001) {
-			ctx.globalAlpha = pauseAlpha;
-			ctx.drawImage(img, x,y);
-			ctx.globalAlpha = 1;
-		}
-	}
-
-	function draw(ctx) {
-		keepExplosionsCached(ctx);
-		Ptero.background.draw(ctx);
-		Ptero.deferredSprites.draw(ctx);
-		Ptero.orb.draw(ctx);
-		var point;
-		if (Ptero.input.isTouched()) {
-			point = Ptero.input.getPoint();
-			ctx.fillStyle = "rgba(255,255,255,0.2)";
-			ctx.beginPath();
-			ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
-			ctx.fill();
-		}
-		drawPause(ctx);
-		Ptero.score.draw(ctx);
 	};
 
 	return {

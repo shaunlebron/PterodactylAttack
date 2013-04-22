@@ -1,14 +1,15 @@
 
 Ptero.background = (function(){
 
-	var image;
+	var image,imageBlur;
 	var grassAnim;
 	var scale;
 
 	return {
 		getScale: function getScale() { return scale; },
-		setImage: function setImage(img) {
+		setImage: function setImage(img,imgBlur) {
 			image = img;
+			imageBlur = imgBlur;
 			var aspect = image.width / image.height;
 			var scaleH = Ptero.screen.getHeight() / image.height;
 			var scaleW = Ptero.screen.getWidth() / image.width;
@@ -27,14 +28,19 @@ Ptero.background = (function(){
 			var dh = sh * scale;
 			var dx = Ptero.screen.getWidth()/2 - dw/2;
 			var dy = Ptero.screen.getHeight()/2 - dh/2;
-			ctx.drawImage(image, sx,sy,sw,sh, dx,dy,dw,dh);
 
-			var pos = {
-				x: 0,
-				y: 0,
-				z: Ptero.screen.getFrustum().near,
-			};
-			grassAnim.draw(ctx,pos);
+			if (Ptero.executive.isPaused()) {
+				ctx.drawImage(imageBlur,sx,sy,sw,sh, dx,dy,dw,dh);
+			}
+			else {
+				ctx.drawImage(image, sx,sy,sw,sh, dx,dy,dw,dh);
+				var pos = {
+					x: 0,
+					y: 0,
+					z: Ptero.screen.getFrustum().near,
+				};
+				grassAnim.draw(ctx,pos);
+			}
 		},
 	};
 })();

@@ -53,6 +53,13 @@ Ptero.Billboard.prototype = {
 			z: frustum.near,
 		};
 	},
+	getScreenSize: function() {
+		var scale = this.scale * Ptero.background.getScale();
+		return {
+			w: this.w * scale,
+			h: this.h * scale,
+		};
+	},
 	getScreenRect: function(pos) {
 		var frustum = Ptero.screen.getFrustum();
 		var screenPos = Ptero.screen.spaceToScreen(pos);

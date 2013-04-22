@@ -2,10 +2,7 @@
 Ptero.score = (function(){
 
 	var total = 0;
-
-	var pointQueue = [
-	];
-
+	var pointQueue = [];
 	var pointDuration = 2.0;
 
 	return {
@@ -34,10 +31,13 @@ Ptero.score = (function(){
 			ctx.font = size + "px monospace";
 			ctx.textAlign = "right";
 			ctx.textBaseline = "top";
-			ctx.fillStyle = "#FFF";
 			var x = size*4;
 			var y = 10;
-			ctx.fillText(total,x,10);
+			var r = 2;
+			ctx.fillStyle = "#000";
+			ctx.fillText(total,x+r,y+r);
+			ctx.fillStyle = "#FFF";
+			ctx.fillText(total,x,y);
 
 			y += size*1.125;
 			size = Math.floor(size*0.65);

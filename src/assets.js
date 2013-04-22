@@ -2,13 +2,15 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
-		"desert": "img/desert.jpg",
+		"desert": "img/desert.png",
+		"bg_frosted": "img/bg_frosted.png",
 		"grass": "img/grass.png",
 		"baby": "img/baby.png",
 		"boom1": "img/boom1.png",
 		"boom2": "img/boom2.png",
 		"boom3": "img/boom3.png",
 		"bullet": "img/bullet.png",
+		"play": "img/play.png",
 		"pause": "img/pause.png",
 		"logo": "img/logo.png",
 	};
