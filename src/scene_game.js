@@ -26,7 +26,7 @@ Ptero.scene_game = (function() {
 
 	var pauseBtn,playBtn;
 	function init() {
-		pauseBtn = Ptero.makeButton(
+		pauseBtn = Ptero.makeSpriteButton(
 			Ptero.assets.sprites["pause"],"right","bottom",10,10,
 			function() {
 				Ptero.executive.togglePause();
@@ -35,7 +35,7 @@ Ptero.scene_game = (function() {
 			}
 		);
 		pauseBtn.enable();
-		playBtn = Ptero.makeButton(
+		playBtn = Ptero.makeSpriteButton(
 			Ptero.assets.sprites["play"],"center","center",0,0,
 			function() {
 				Ptero.executive.togglePause();
