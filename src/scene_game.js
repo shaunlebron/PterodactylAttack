@@ -24,29 +24,47 @@ Ptero.scene_game = (function() {
 		}
 	}
 
-	var pauseBtn,playBtn;
+	var pauseBtn,playBtn,timerDisplay;
+	function cleanup() {
+		pauseBtn.disable();
+		Ptero.orb.disableTouch();
+		Ptero.bulletpool.clear();
+		Ptero.deferredSprites.clear();
+	}
+
 	function init() {
-		pauseBtn = Ptero.makeSpriteButton(
-			Ptero.assets.sprites["pause"],"right","bottom",10,10,
-			function() {
+		Ptero.score.reset();
+
+		pauseBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites["pause"],
+			anchor: {x:"right",y:"bottom"},
+			margin: 10,
+			onclick: function() {
 				Ptero.executive.togglePause();
 				pauseBtn.disable();
 				playBtn.enable();
-			}
-		);
+				Ptero.orb.disableTouch();
+			},
+		});
 		pauseBtn.enable();
-		playBtn = Ptero.makeSpriteButton(
-			Ptero.assets.sprites["play"],"center","center",0,0,
-			function() {
+
+		playBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites["play"],
+			anchor: {x:"center",y:"center"},
+			onclick: function() {
 				Ptero.executive.togglePause();
 				playBtn.disable();
 				pauseBtn.enable();
+				Ptero.orb.enableTouch();
 			}
-		);
+		});
+
+		timerDisplay = new Ptero.TimerDisplay(20);
 
 		Ptero.background.setImage(Ptero.assets.images.desert, Ptero.assets.images["bg_frosted"]);
 
 		var i;
+		enemies.length = 0;
 		for (i=0; i<numEnemies; i++) {
 			enemies.push(new Ptero.Enemy(Ptero.makeHermiteEnemyPath));
 		}
@@ -78,21 +96,16 @@ Ptero.scene_game = (function() {
 		Ptero.bulletpool.deferBullets();
 		Ptero.deferredSprites.finalize();
 		Ptero.score.update(dt);
-	};
 
-	function keepExplosionsCached(ctx) {
-		// This seems to prevents the sporadic drawing of explosions from creating hiccups in the framerate.
-		// This method works by trying to keep the textures loaded in whatever internal cache the Chrome browser uses for drawing textures.
-		// We try to draw it in the smallest surface area possible.
-		var s = 10;
-		ctx.drawImage(Ptero.assets.images["boom1"],0,0,s,s);
-		ctx.drawImage(Ptero.assets.images["boom2"],0,0,s,s);
-		ctx.drawImage(Ptero.assets.images["boom3"],0,0,s,s);
-	}
+		timerDisplay.update(dt);
+		if (timerDisplay.isDone()) {
+			Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+		}
+	};
 
 	function draw(ctx) {
 		if (!Ptero.executive.isPaused()) {
-			keepExplosionsCached(ctx);
+			Ptero.assets.keepExplosionsCached(ctx);
 			Ptero.background.draw(ctx);
 			Ptero.deferredSprites.draw(ctx);
 			Ptero.orb.draw(ctx);
@@ -106,6 +119,7 @@ Ptero.scene_game = (function() {
 			}
 			pauseBtn.draw(ctx);
 			Ptero.score.draw(ctx);
+			timerDisplay.draw(ctx);
 		}
 		else {
 			Ptero.background.draw(ctx);
@@ -117,5 +131,6 @@ Ptero.scene_game = (function() {
 		init: init,
 		update: update,
 		draw: draw,
+		cleanup:cleanup,
 	};
 })();

@@ -3,6 +3,9 @@
 Ptero.painter = (function(){
 
 	var shouldDrawDebugOutline = false;
+	function isDebugOutline() {
+		return shouldDrawDebugOutline;
+	}
 	function drawDebugOutline(ctx,x,y,w,h) {
 		if (shouldDrawDebugOutline) {
 			ctx.strokeStyle = "#F00";
@@ -142,5 +145,6 @@ Ptero.painter = (function(){
 		lineTo: lineTo,
 		setDebugOutline: setDebugOutline,
 		toggleDebugOutline: toggleDebugOutline,
+		isDebugOutline: isDebugOutline,
 	};
 })();

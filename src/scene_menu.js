@@ -3,6 +3,10 @@ Ptero.scene_menu = (function(){
 
 	var titleSprite;
 
+	function cleanup() {
+		Ptero.input.removeTouchHandler(touchHandler);
+	}
+
 	function init() {
 		titleSprite = Ptero.assets.sprites["logo"];
 
@@ -16,8 +20,7 @@ Ptero.scene_menu = (function(){
 
 	var touchHandler = {
 		start: function(x,y) {
-			Ptero.input.removeTouchHandler(touchHandler);
-			Ptero.fadeToScene(Ptero.scene_game, 1.0);
+			Ptero.fadeToScene(Ptero.scene_game, 0.25);
 		},
 		move: function(x,y) {
 		},
@@ -41,6 +44,7 @@ Ptero.scene_menu = (function(){
 		init: init,
 		update: update,
 		draw: draw,
+		cleanup:cleanup,
 	};
 
 })();

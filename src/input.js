@@ -26,7 +26,9 @@ Ptero.input = (function(){
 		var len = touchHandlers.length;
 		var i;
 		for (i=0; i<len; i++) {
-			callback(touchHandlers[i],i);
+			if (touchHandlers[i]) {
+				callback(touchHandlers[i],i);
+			}
 		};
 	};
 

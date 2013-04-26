@@ -2,7 +2,10 @@
 Ptero.FadeScene = function(scene1, scene2, timeToFade) {
 	this.scene1 = scene1;
 	this.scene2 = scene2;
+
+	this.scene1.cleanup && this.scene1.cleanup();
 	this.scene2.init();
+
 	this.interp = Ptero.makeInterp('linear',[1,0],[timeToFade]);
 	this.time = 0;
 };

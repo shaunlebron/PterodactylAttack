@@ -1,6 +1,17 @@
 Ptero.setScene = function(scene) {
+	if (Ptero.scene && Ptero.scene.cleanup) {
+		Ptero.scene.cleanup();
+	}
 	Ptero.scene = scene;
 	scene.init();
+};
+
+Ptero.resumeScene = function(scene) {
+	if (Ptero.scene && Ptero.scene.cleanup) {
+		Ptero.scene.cleanup();
+	}
+	Ptero.scene = scene;
+	scene.resume();
 };
 
 Ptero.fadeToScene = function(scene, timeToFade) {

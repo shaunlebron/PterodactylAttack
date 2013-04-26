@@ -1,41 +1,51 @@
 
-Ptero.makeSpriteButton = function(sprite,xAnchor,yAnchor,xPad,yPad,onclick) {
-	var size = sprite.billboard.getScreenSize();
-	var w = size.w;
-	var h = size.h;
-	var screenPos = Ptero.hud.getAnchoredScreenPos(xAnchor, yAnchor, w,h, xPad, yPad);
-	screenPos.x += w/2;
-	screenPos.y += h/2;
-	var spacePos = Ptero.screen.screenToSpace(screenPos);
-	return new Ptero.SpriteButton(sprite,spacePos,onclick);
-}
+Ptero.Button = function(a) {
 
-Ptero.makeTextButton = function(text,w,h,font,color,align,xAnchor,yAnchor,xPad,yPad,onclick) {
+	// get billboard or build a new one from the given size
+	this.billboard = a.billboard || (
+		new Ptero.Billboard(a.width/2, a.height/2, a.width, a.height, 1)
+	);
 
-	var billboard = new Ptero.Billboard(w/2,h/2,w,h,1);
-	var size = billboard.getScreenSize();
-	w = size.w;
-	h = size.h;
+	var hudPos = a.hudPos && Ptero.screen.screenToSpace({
+			x: a.hudPos.x * Ptero.screen.getWidth(),
+			y: a.hudPos.y * Ptero.screen.getHeight(),
+	});
 
-	var screenPos = Ptero.hud.getAnchoredScreenPos(xAnchor, yAnchor, w,h, xPad,yPad);
-	screenPos.x += w/2;
-	screenPos.y += h/2;
-	var spacePos = Ptero.screen.screenToSpace(screenPos);
-	return new Ptero.TextButton(font,color,text,align,billboard,spacePos,onclick);
-}
+	// get position or calculate it from the given anchor and margin.
+	this.pos = a.pos || hudPos || (function(){
+		var size = this.billboard.getScreenSize();
+		var w = size.w;
+		var h = size.h;
 
-Ptero.Button = function(billboard,pos,onclick) {
-	this.pos = pos;
-	this.onclick = onclick;
-	this.billboard = billboard;
+		// make sure margin has x and y components
+		var margin = a.margin || 0;
+		if (typeof margin == "number") {
+			margin = { x: margin, y: margin };
+		}
 
+		// get screen position of topleft corner
+		var screenPos = Ptero.hud.getAnchoredScreenPos(
+			a.anchor.x, a.anchor.y,
+			w, h,
+			margin.x, margin.y);
+
+		// get screen position of midpoint
+		screenPos.x += w/2;
+		screenPos.y += h/2;
+
+		// return space position
+		return Ptero.screen.screenToSpace(screenPos);
+	}).call(this);
+	this.onclick = a.onclick;
+
+	// Create touch handler
 	var that = this;
-	function isInside(x,y) {
-		return billboard.isInsideScreenRect(x,y,that.pos);
-	}
 	this.touchHandler = (function(){
 		var startInside = false;
 		var lastX,lastY;
+		function isInside(x,y) {
+			return that.billboard.isInsideScreenRect(x,y,that.pos);
+		}
 		return {
 			start: function(x,y) {
 				startInside = isInside(x,y);
@@ -48,7 +58,7 @@ Ptero.Button = function(billboard,pos,onclick) {
 			},
 			end: function(x,y) {
 				if (startInside && isInside(lastX,lastY)) {
-					that.onclick();
+					that.onclick && that.onclick();
 				}
 			},
 			cancel: function(x,y) {
@@ -65,9 +75,10 @@ Ptero.Button.prototype = {
 	},
 };
 
-Ptero.SpriteButton = function(sprite,pos,onclick) {
-	Ptero.Button.call(this,sprite.billboard,pos,onclick);
-	this.sprite = sprite;
+Ptero.SpriteButton = function(a) {
+	this.sprite = a.sprite;
+	a.billboard = a.sprite.billboard;
+	Ptero.Button.call(this,a);
 };
 Ptero.SpriteButton.prototype = newChildObject(Ptero.Button.prototype, {
 	draw: function(ctx) {
@@ -75,39 +86,67 @@ Ptero.SpriteButton.prototype = newChildObject(Ptero.Button.prototype, {
 	},
 });
 
-Ptero.TextButton = function(font,color,text,align,billboard,pos,onclick) {
-	Ptero.Button.call(this,billboard,pos,onclick);
-	this.font = font;
-	this.color = color;
-	this.text = text;
-	this.align = align;
-	this.billboard = billboard;
-	this.pos = pos;
+Ptero.TextButton = function(a) {
+
+	// get font size and css font string
+	this.fontSize = a.fontSize || Ptero.hud.getBaseTextSize();
+	this.font = this.fontSize + "px " + a.font;
+
+	// get other font related vars
+	this.textColor = a.textColor;
+	this.text = a.text;
+	this.textAlign = a.textAlign;
+	this.pad = (function(){
+		var pad = a.pad || 0;
+		if (typeof pad == "number") {
+			pad = { x:pad, y:pad };
+		}
+		return pad;
+	})();
+
+	// calculate width and height if fitting around text
+	a.fitText && (function(){
+		var ctx = Ptero.screen.getCtx();
+		var h = this.fontSize*1.25;
+
+		ctx.font = this.font;
+		a.width = ctx.measureText(a.text).width + 2*this.pad.x;
+
+		//a.width = a.text.length * h;
+		a.height = h + 2*this.pad.y;
+	}).call(this);
+
+	Ptero.Button.call(this,a);
 }
 Ptero.TextButton.prototype = newChildObject(Ptero.Button.prototype, {
 	draw: function(ctx) {
 		ctx.font = this.font;
 		ctx.textBaseline = "middle";
-		ctx.textAlign = this.align;
+		ctx.textAlign = this.textAlign;
 
 		var rect = this.billboard.getScreenRect(this.pos);
-		ctx.strokeStyle = this.color;
-		ctx.strokeRect(rect.x,rect.y,rect.w,rect.h);
+		if (Ptero.painter.isDebugOutline()) {
+			ctx.strokeStyle = "#0F0";
+			ctx.strokeRect(rect.x,rect.y,rect.w,rect.h);
+		}
 		var y = rect.centerY;
-		var r = 2;
-		var pad = 10;
+
+		// get x position
 		var x;
-		switch(this.align) {
-			case "left": x = rect.x+pad; break;
-			case "right": x = rect.x+rect.w-pad; break;
+		switch(this.textAlign) {
+			case "left": x = rect.x+this.pad.x; break;
+			case "right": x = rect.x+rect.w-this.pad.x; break;
 			case "center": x = rect.centerX; break;
-			default: throw("unrecognized text alignment "+this.align);
+			default: throw("unrecognized text alignment "+this.textAlign);
 		}
 
+		// draw shadow first
+		var r = 2;
 		ctx.fillStyle = "#000";
 		ctx.fillText(this.text, x+r,y+r);
 
-		ctx.fillStyle = this.color;
+		// draw text
+		ctx.fillStyle = this.textColor;
 		ctx.fillText(this.text, x,y);
 	},
 });

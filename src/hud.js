@@ -23,8 +23,15 @@ Ptero.hud = (function(){
 		};
 	}
 
+	function getBaseTextSize() {
+		var h = Ptero.screen.getHeight();
+		var size = Math.floor(h/10);
+		return size;
+	}
+
 	return {
 		getAnchoredScreenPos: getAnchoredScreenPos,
+		getBaseTextSize: getBaseTextSize,
 	};
 
 })();

@@ -6,6 +6,10 @@ Ptero.score = (function(){
 	var pointDuration = 2.0;
 
 	return {
+		reset: function() {
+			pointQueue.length = 0;
+			total = 0;
+		},
 		update: function(dt) {
 			var i,len=pointQueue.length;
 
@@ -26,8 +30,7 @@ Ptero.score = (function(){
 			}
 		},
 		draw: function(ctx) {
-			var h = Ptero.screen.getHeight();
-			var size = Math.floor(h/10);
+			var size = Ptero.hud.getBaseTextSize();
 			ctx.font = size + "px monospace";
 			ctx.textAlign = "right";
 			ctx.textBaseline = "top";
@@ -59,6 +62,9 @@ Ptero.score = (function(){
 		},
 		setTotal: function(value) {
 			total = value;
+		},
+		getTotal: function() {
+			return total;
 		},
 	};
 })();

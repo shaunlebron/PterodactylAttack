@@ -27,6 +27,9 @@ Ptero.Timer.prototype = {
 	getElapsedMillis: function getElapsedMillis() {
 		return this.stopWatch.elapsedMillis;
 	},
+	getMillisLeft: function() {
+		return Math.max(0,this.millisLimit - this.getElapsedMillis());
+	},
 	reset: function reset() {
 		this.stopWatch.reset();
 	},
