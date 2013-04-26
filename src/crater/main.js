@@ -12,7 +12,8 @@ window.onload = function() {
 		console.log("initing input");
 		Ptero.input.init();
 		console.log("initing enemy model");
-		Ptero.Crater.enemy_model.init();
+		Ptero.Crater.enemy_model_list = new Ptero.Crater.EnemyModelList();
+		Ptero.Crater.enemy_model_list.createNew();
 		console.log("setting scene");
 		Ptero.setScene(Ptero.Crater.panes);
 		console.log("starting exec");

@@ -30,6 +30,7 @@
 	<script src="lib/jquery/jquery-1.9.1.min.js"></script>
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/requestAnimationFrame.js"></script>
+	<script src="lib/bootbox.min.js"></script>
 
 	<script src="src/ptero.js"></script>
 	<script src="src/interp.js"></script>
@@ -63,20 +64,28 @@
 	<script src="src/crater/TimePane.js"></script>
 	<script src="src/crater/enemy_model.js"></script>
 
-
+	<style>
+	.nav-tabs > li .close {
+	    margin: 2px 0 0 10px;
+	}
+	</style>
 
 </head>
 
 <body>
 
-<h3 style="display:inline">Crater</h3>
+<h3>Crater</h3>
 
-<form class="pull-right" style="margin-top:5px;margin-bottom:10px">
-<button class="btn btn-success" type="button" onclick="Ptero.Crater.enemy_model.addPoint()"><i class="icon-plus icon-white"></i> Add Point</button>
-<button class="btn btn-danger" type="button" onclick="Ptero.Crater.enemy_model.removeSelectedPoint()"><i class="icon-minus icon-white"></i> Remove Point</button>
-</form>
-
-<canvas id='canvas'></canvas>
+<div class="tabbable">
+	<ul id="pathtabs" class="nav nav-tabs"></ul>
+	<div class="tab-content">
+		<canvas id='canvas'></canvas>
+		<form class="pull-right" style="margin-top:0px;margin-bottom:10px">
+			<button class="btn btn-success" type="button" onclick="Ptero.Crater.enemy_model.addPoint()"><i class="icon-plus icon-white"></i> Add Point</button>
+			<button class="btn btn-danger" type="button" onclick="Ptero.Crater.enemy_model.removeSelectedPoint()"><i class="icon-minus icon-white"></i> Remove Point</button>
+		</form>
+	</div>
+</div>
 
 <footer>
 <strong>crater</strong>: <em>v.</em> to fail and crash violently from a great height.
