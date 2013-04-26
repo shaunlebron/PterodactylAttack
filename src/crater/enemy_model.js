@@ -74,7 +74,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 			else {
 				str += '<li><a href="#" onclick="Ptero.Crater.enemy_model_list.selectIndex(' + e.index + ')">';
 			}
-			str += '<button class="close" type="button" onclick="Ptero.Crater.enemy_model_list.promptRemoveIndex(' +e.index+ ')"><i class="icon-remove"></i></button>Path ' + e.index + '</a></li>';
+			str += '<button class="close" type="button" onclick="Ptero.Crater.enemy_model_list.promptRemoveIndex(' +e.index+ ')">&times;</button>Path ' + e.index + '</a></li>';
 		}
 		str += '<li><a href="#" onclick="Ptero.Crater.enemy_model_list.createNew()"><i class="icon-plus"></i></li>';
 		return str;
