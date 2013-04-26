@@ -209,26 +209,29 @@ Ptero.Crater.LivePane.prototype = {
 
 	/* DRAWING FUNCTIONS */
 
-	drawNodes: function(ctx) {
-		var nodes = Ptero.Crater.enemy_model.points;
+	drawModel: function(ctx, model) {
+	},
+
+	drawModelNodes: function(ctx, model) {
+		var nodes = model.points;
 		var i,len = nodes.length;
-		var selectedIndex = Ptero.Crater.enemy_model.selectedIndex;
+		var selectedIndex = model.selectedIndex;
 		for (i=0; i<len; i++) {
 			if (selectedIndex != i) {
 				this.fillCircle(ctx, nodes[i], this.nodeRadius, "#555",2);
 			}
 		}
-		var selectedPoint = Ptero.Crater.enemy_model.getSelectedPoint();
+		var selectedPoint = model.getSelectedPoint();
 		if (selectedPoint) {
 			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
 		}
 		else {
-			this.fillCircle(ctx, Ptero.Crater.enemy_model.enemy.getPosition(), this.nodeRadius, "#00F",2);
+			this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#00F",2);
 		}
 	},
 
-	drawPath: function(ctx) {
-		var interp = Ptero.Crater.enemy_model.interp;
+	drawModelPath: function(ctx, model) {
+		var interp = model.interp;
 		var totalTime = interp.totalTime;
 		var numPoints = 70;
 		var step = totalTime/numPoints;
@@ -246,8 +249,23 @@ Ptero.Crater.LivePane.prototype = {
 	draw: function(ctx) {
 		this.scene.draw(ctx);
 		if (Ptero.Crater.enemy_model.getSelectedPoint()) {
-			this.drawPath(ctx);
-			this.drawNodes(ctx);
+			var models = Ptero.Crater.enemy_model_list.models;
+			var i,len=models.length;
+			var e;
+			if (len > 1) {
+				ctx.globalAlpha = 0.35;
+				for (i=0; i<len; i++) {
+					var e = models[i];
+					if (e != Ptero.Crater.enemy_model) {
+						this.drawModelPath(ctx, e);
+						this.drawModelNodes(ctx, e);
+					}
+				}
+				ctx.globalAlpha = 1;
+			}
+			e = Ptero.Crater.enemy_model;
+			this.drawModelPath(ctx, e);
+			this.drawModelNodes(ctx, e);
 		}
 	},
 

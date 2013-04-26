@@ -8,7 +8,15 @@ Ptero.Crater.scene_crater = (function() {
 	function update(dt) {
 		Ptero.background.update(dt);
 		Ptero.deferredSprites.clear();
-		Ptero.Crater.enemy_model.update(dt);
+
+		var models = Ptero.Crater.enemy_model_list.models;
+		var i,len=models.length;
+		var e;
+		for (i=0; i<len; i++) {
+			var e = models[i];
+			e.update(dt);
+		}
+
 		Ptero.deferredSprites.finalize();
 	};
 

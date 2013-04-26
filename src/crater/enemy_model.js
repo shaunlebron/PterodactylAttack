@@ -204,12 +204,20 @@ Ptero.Crater.EnemyModel.prototype = {
 	},
 
 	update: function(dt) {
+		var isActive = this == Ptero.Crater.enemy_model;
 		if (this.selectedIndex == null) {
 			this.enemy.update(dt);
+			var that = this;
 			Ptero.deferredSprites.defer(
 				(function(e){
 					return function(ctx) {
+						if (!isActive) {
+							ctx.globalAlpha = 0.35;
+						}
 						e.draw(ctx);
+						if (!isActive) {
+							ctx.globalAlpha = 1;
+						}
 					};
 				})(this.enemy),
 				this.enemy.getPosition().z);
@@ -222,15 +230,21 @@ Ptero.Crater.EnemyModel.prototype = {
 				Ptero.deferredSprites.defer(
 					(function(sprite,pos,isSelected) {
 						return function(ctx){
+							if (!isActive) {
+								ctx.globalAlpha = 0.35;
+							}
 							if (isSelected) {
 								sprite.draw(ctx,pos);
 								sprite.drawBorder(ctx,pos,"#F00",true);
 							}
 							else {
 								var backupAlpha = ctx.globalAlpha;
-								ctx.globalAlpha = 0.7;
+								ctx.globalAlpha *= 0.7;
 								sprite.draw(ctx,pos);
 								ctx.globalAlpha = backupAlpha;
+							}
+							if (!isActive) {
+								ctx.globalAlpha = 1;
 							}
 						};
 					})(this.nodeSprites[i],this.points[i],this.selectedIndex == i),
