@@ -19,6 +19,10 @@ Ptero.Path.prototype = {
 
 		return v;
 	},
+	setTime: function(t) {
+		this.time = 0;
+		this.step(t);
+	},
 
 	step: function step(dt) {
 		this.time += dt;

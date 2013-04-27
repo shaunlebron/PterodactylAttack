@@ -1,9 +1,25 @@
 Ptero.Crater.EnemyModelList = function() {
 	this.models = [];
+
+	// running count of the number of paths created.
+	// used as unique ids to newly created paths
 	this.index = 0;
+
+	this.time = 0;
+	this.maxTime = 0;
+	this.selectedTime = undefined;
+
+	this.isEditing = false;
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
+	refreshMaxTime: function() {
+		var i,len=this.models.length;
+		var e;
+		for (i=0; i<len; i++) {
+			e = this.models[i];
+		}
+	},
 	createNew: function() {
 		this.index++;
 		var e = new Ptero.Crater.EnemyModel(this.index);
@@ -81,6 +97,21 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	refreshTabs: function() {
 		$("#pathtabs").html(this.getTabsString());
+		// TODO: recalculate max times
+	},
+	update: function(dt) {
+
+		if (this.isEditing) {
+			this.time += dt;
+			this.time %= this.maxTime;
+		}
+
+		var i,len=this.models.length;
+		var e;
+		for (i=0; i<len; i++) {
+			var e = this.models[i];
+			e.update(dt);
+		}
 	},
 };
 
@@ -123,7 +154,8 @@ Ptero.Crater.EnemyModel.prototype = {
 	},
 	initPath: function() {
 		this.interp = this.makeInterp();
-		this.enemy.path = new Ptero.Path(this.interp, true);
+		//this.enemy.path = new Ptero.Path(this.interp, true);
+		this.enemy.path = new Ptero.Path(this.interp);
 	},
 	refreshPath: function() {
 		this.initPath();
@@ -204,9 +236,15 @@ Ptero.Crater.EnemyModel.prototype = {
 	},
 
 	update: function(dt) {
-		var isActive = this == Ptero.Crater.enemy_model;
-		if (this.selectedIndex == null) {
-			this.enemy.update(dt);
+		var isActive = (this == Ptero.Crater.enemy_model);
+
+		// REPLAY MODE
+		if (!Ptero.Crater.enemy_model_list.isEditing) {
+			//this.enemy.update(dt);
+
+			this.enemy.path.setTime(Ptero.Crater.enemy_model_list.time);
+			this.enemy.babySprite.update(dt);
+
 			var that = this;
 			Ptero.deferredSprites.defer(
 				(function(e){
@@ -222,50 +260,71 @@ Ptero.Crater.EnemyModel.prototype = {
 				})(this.enemy),
 				this.enemy.getPosition().z);
 		}
+
+		// EDIT MODE
 		else {
-			for (i=0; i<this.nodeSprites.length; i++) {
-				if (this.selectedIndex == i) {
-					this.nodeSprites[i].update(dt);
+
+			// DRAW ALL NODES WHEN ACTIVE
+			if (isActive) {
+				for (i=0; i<this.nodeSprites.length; i++) {
+					if (this.selectedIndex == i) {
+						this.nodeSprites[i].update(dt);
+					}
+					Ptero.deferredSprites.defer(
+						(function(sprite,pos,isSelected) {
+							return function(ctx){
+								if (isSelected) {
+									sprite.draw(ctx,pos);
+									sprite.drawBorder(ctx,pos,"#F00",true);
+								}
+								else {
+									var backupAlpha = ctx.globalAlpha;
+									ctx.globalAlpha *= 0.7;
+									sprite.draw(ctx,pos);
+									ctx.globalAlpha = backupAlpha;
+								}
+							};
+						})(this.nodeSprites[i],this.points[i],this.selectedIndex == i),
+						this.points[i].z);
 				}
+			}
+
+			// WHEN NOT ACTIVE, DRAW SPRITE AT CURRENT TIME
+			else {
+				this.enemy.path.setTime(Ptero.Crater.enemy_model_list.time);
+				this.enemy.babySprite.update(dt);
+
+				var that = this;
 				Ptero.deferredSprites.defer(
-					(function(sprite,pos,isSelected) {
-						return function(ctx){
-							if (!isActive) {
-								ctx.globalAlpha = 0.35;
-							}
-							if (isSelected) {
-								sprite.draw(ctx,pos);
-								sprite.drawBorder(ctx,pos,"#F00",true);
-							}
-							else {
-								var backupAlpha = ctx.globalAlpha;
-								ctx.globalAlpha *= 0.7;
-								sprite.draw(ctx,pos);
-								ctx.globalAlpha = backupAlpha;
-							}
-							if (!isActive) {
-								ctx.globalAlpha = 1;
-							}
+					(function(e){
+						return function(ctx) {
+							ctx.globalAlpha = 0.35;
+							e.draw(ctx);
+							ctx.globalAlpha = 1;
 						};
-					})(this.nodeSprites[i],this.points[i],this.selectedIndex == i),
-					this.points[i].z);
+					})(this.enemy),
+					this.enemy.getPosition().z);
 			}
 		}
 	},
-	draw: function(ctx) {
-		if (this.selectedIndex != null) {
-			ctx.fillStyle = "rgba(255,255,255,0.8)";
-			ctx.fillRect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
-		}
-	},
 	selectPoint: function(index) {
-		// If we have deselected a point, then make sure the animation
-		// starts at said point.
+
+		// If we have just deselected a point...
 		if (index == undefined && this.selectedIndex != undefined) {
-			this.enemy.path.time = this.points[this.selectedIndex].t;
+
+			// just aesthetics: match the replay sprite with the editing node sprite
 			this.enemy.babySprite.time = this.nodeSprites[this.selectedIndex].time;
 		}
+
 		this.selectedIndex = index;
+
+		// Set editing mode depending on whether we are selecting or deselecting.
+		Ptero.Crater.enemy_model_list.isEditing = (index != undefined);
+
+		// Set the current time at the selected node.
+		if (index != undefined) {
+			Ptero.Crater.enemy_model_list.time = this.points[this.selectedIndex].t;
+		}
 	},
 
 	getSelectedPoint: function() {
@@ -276,219 +335,3 @@ Ptero.Crater.EnemyModel.prototype = {
 		return this.nodeSprites[this.selectedIndex];
 	},
 };
-
-/*
-Ptero.Crater.enemy_model = new function() {
-
-	var that = this;
-
-	this.enemy = null;
-	this.points = [];
-	this.delta_times = [];
-	this.times = [];
-
-	this.nodeSprites = [];
-
-	this.refreshPath = function() {
-		//that.interp = that.makeInterp();
-		//that.enemy.path.interp = that.interp;
-		that.initPath();
-	};
-
-	this.initPath = function() {
-		that.interp = that.makeInterp();
-		that.enemy.path = new Ptero.Path(that.interp, true);
-	};
-
-	this.makeInterp = function() {
-		return Ptero.makeHermiteInterpForObjs(
-			that.points,
-			['x','y','z','angle'],
-			that.delta_times
-		);
-	};
-
-	this.makeDrunkPath = function() {
-		that.points = [{x:0, y:1.568, z:4.968, angle:0, t:0}, {x:0.4657957308104658, y:0.45696529386929846, z:3.6986666666666674, angle:3.0323682713097586, t:1}, {x:0.9421658595279333, y:0.013190245579409409, z:2.4613333333333336, angle:-2.041096203558521, t:2}, {x:-0.7880350551730984, y:-0.049967165404555786, z:1.192, angle:3.036493463448331, t:3}]
-		
-		var i,len=that.points.length;
-		for (i=0; i<len; i++) {
-			that.times[i] = that.points[i].t;
-			sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-			sprite.shuffleTime();
-			that.nodeSprites[i] = sprite;
-		}
-		that.refreshTimes();
-		that.refreshPath();
-	};
-
-	this.makeDefaultPath = function(numPoints) {
-		var frustum = Ptero.screen.getFrustum();
-		var near = frustum.near;
-		var far = frustum.far;
-		var dist = far-near;
-		var i;
-		var sprite;
-		for (i=0; i<numPoints; i++) {
-			that.points[i] = {
-				x:0,
-				y:0,
-				z:far - i/(numPoints-1)*dist,
-				angle: 0,
-			};
-			sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-			sprite.shuffleTime();
-			that.nodeSprites[i] = sprite;
-		}
-		var t = 0;
-		for (i=0; i<numPoints; i++) {
-			that.times[i] = t;
-			t += 3.0;
-		}
-		that.refreshTimes();
-		that.initPath();
-	};
-
-	this.removePoint = function(index) {
-		var len = that.points.length;
-
-		if (index == 0 || !(index > 0 && index < len) || len <= 2) {
-			return;
-		}
-
-		that.points.splice(index,1);
-		that.times.splice(index,1);
-		that.nodeSprites.splice(index,1);
-
-		that.selectPoint(index-1);
-
-		that.refreshTimes();
-		that.refreshPath();
-	};
-
-	this.removeSelectedPoint = function() {
-		that.removePoint(that.selectedIndex);
-	};
-
-	this.addPoint = function() {
-		var len = that.points.length;
-		var p = Ptero.screen.getFrustum().getRandomPoint();
-		p.angle = 0;
-		that.times.push(that.times[len-1] + 1.0);
-		p.t = that.times[len];
-		that.points.push(p);
-		var sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-		sprite.shuffleTime();
-		that.nodeSprites.push(sprite);
-
-		that.selectPoint(len);
-
-		that.refreshTimes();
-		that.refreshPath();
-	};
-
-	// Reorder points and compute delta times.
-	this.refreshTimes = function() {
-		var prevSelectedPoint = that.getSelectedPoint();
-
-		// We need to sort the points by time, so we attach a 't' variable as a sort key.
-		var i,len = that.points.length;
-		for (i=0; i<len; i++) {
-			that.points[i].t = that.times[i];
-		}
-		that.points.sort(function(a,b) { return a.t - b.t; });
-
-		// also sort the times.
-		that.times.sort();
-
-		// compute the delta times in the newly sorted list.
-		that.delta_times = [];
-		for (i=1; i<len; i++) {
-			that.delta_times[i-1] = that.times[i] - that.times[i-1];
-		}
-
-		// The selected point may have a different index upon resorting, so find out where it went.
-		var selectedPoint = that.getSelectedPoint();
-		if (selectedPoint != prevSelectedPoint) {
-			for (i=0; i<len;i++) {
-				if (that.points[i] == prevSelectedPoint) {
-					that.selectedIndex = i;
-					break;
-				}
-			}
-		}
-	};
-
-	this.init = function() {
-		that.enemy = new Ptero.Enemy();
-		if (window.location.hash == "#drunk") {
-			that.makeDrunkPath();
-		}
-		else {
-			that.makeDefaultPath(2);
-		}
-	};
-
-	this.update = function(dt) {
-		if (that.selectedindex == null) {
-			that.enemy.update(dt);
-			ptero.deferredsprites.defer(
-				(function(e){
-					return function(ctx) {
-						e.draw(ctx);
-					};
-				})(that.enemy),
-				that.enemy.getposition().z);
-		}
-		else {
-			for (i=0; i<that.nodesprites.length; i++) {
-				if (that.selectedindex == i) {
-					that.nodesprites[i].update(dt);
-				}
-				ptero.deferredsprites.defer(
-					(function(sprite,pos,isselected) {
-						return function(ctx){
-							if (isselected) {
-								sprite.draw(ctx,pos);
-								sprite.drawborder(ctx,pos,"#f00",true);
-							}
-							else {
-								var backupalpha = ctx.globalalpha;
-								ctx.globalalpha = 0.7;
-								sprite.draw(ctx,pos);
-								ctx.globalalpha = backupalpha;
-							}
-						};
-					})(that.nodesprites[i],that.points[i],that.selectedindex == i),
-					that.points[i].z);
-			}
-		}
-	};
-
-	this.draw = function(ctx) {
-		if (that.selectedIndex != null) {
-			ctx.fillStyle = "rgba(255,255,255,0.8)";
-			ctx.fillRect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
-		}
-	};
-
-	this.selectPoint = function(index) {
-
-		// If we have deselected a point, then make sure the animation
-		// starts at said point.
-		if (index == undefined && that.selectedIndex != undefined) {
-			that.enemy.path.time = that.points[that.selectedIndex].t;
-			that.enemy.babySprite.time = that.nodeSprites[that.selectedIndex].time;
-		}
-		that.selectedIndex = index;
-	};
-
-	this.getSelectedPoint = function() {
-		return that.points[that.selectedIndex];
-	};
-
-	this.getSelectedNodeSprite = function() {
-		return that.nodeSprites[that.selectedIndex];
-	};
-};
-*/

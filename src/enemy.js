@@ -69,10 +69,6 @@ Ptero.Enemy.prototype = {
 		this.life++;
 	},
 	update: function update(dt) {
-		var millis = dt*1000;
-
-		// update position of quad object
-		// quadObject.setPos(path.state.pos);
 
 		if (this.isHit) {
 			// BOOM

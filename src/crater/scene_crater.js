@@ -9,20 +9,17 @@ Ptero.Crater.scene_crater = (function() {
 		Ptero.background.update(dt);
 		Ptero.deferredSprites.clear();
 
-		var models = Ptero.Crater.enemy_model_list.models;
-		var i,len=models.length;
-		var e;
-		for (i=0; i<len; i++) {
-			var e = models[i];
-			e.update(dt);
-		}
+		Ptero.Crater.enemy_model_list.update(dt);
 
 		Ptero.deferredSprites.finalize();
 	};
 
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
-		Ptero.Crater.enemy_model.draw(ctx);
+		if (Ptero.Crater.enemy_model_list.isEditing) {
+			ctx.fillStyle = "rgba(255,255,255,0.8)";
+			ctx.fillRect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
+		}
 		Ptero.deferredSprites.draw(ctx);
 	};
 
