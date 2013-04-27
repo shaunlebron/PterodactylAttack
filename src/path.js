@@ -38,6 +38,6 @@ Ptero.Path.prototype = {
 	},
 
 	isDone: function isDone() {
-		return !this.loop && this.time >= this.totalTime; 
+		return !this.loop && this.time > this.totalTime; 
 	},
 };
