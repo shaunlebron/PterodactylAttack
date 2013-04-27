@@ -91,7 +91,11 @@ Ptero.Crater.TimePane.prototype = {
 			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
 			Ptero.Crater.enemy_model.refreshTimes();
 			Ptero.Crater.enemy_model.refreshPath();
+
+			Ptero.Crater.enemy_model_list.setTime(time);
 		}
+
+		Ptero.Crater.enemy_model_list.refreshMaxTime();
 	},
 
 	mouseStart: function(x,y) {

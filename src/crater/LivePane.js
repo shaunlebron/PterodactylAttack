@@ -248,24 +248,21 @@ Ptero.Crater.LivePane.prototype = {
 
 	draw: function(ctx) {
 		this.scene.draw(ctx);
-		if (Ptero.Crater.enemy_model.getSelectedPoint()) {
+		if (Ptero.Crater.enemy_model_list.isEditing) {
 			var models = Ptero.Crater.enemy_model_list.models;
-			var i,len=models.length;
-			var e;
-			if (len > 1) {
-				ctx.globalAlpha = 0.35;
-				for (i=0; i<len; i++) {
-					var e = models[i];
-					if (e != Ptero.Crater.enemy_model) {
-						this.drawModelPath(ctx, e);
-						this.drawModelNodes(ctx, e);
-					}
+			var i,len = models.length;
+			for (i=0; i<len; i++) {
+				var e = models[i];
+				if (e == Ptero.Crater.enemy_model) {
+					this.drawModelNodes(ctx, e);
+					this.drawModelPath(ctx, e);
 				}
-				ctx.globalAlpha = 1;
+				else {
+					ctx.globalAlpha = 0.5;
+					this.drawModelPath(ctx, e);
+					ctx.globalAlpha = 1;
+				}
 			}
-			e = Ptero.Crater.enemy_model;
-			this.drawModelPath(ctx, e);
-			this.drawModelNodes(ctx, e);
 		}
 	},
 

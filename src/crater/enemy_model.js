@@ -13,11 +13,27 @@ Ptero.Crater.EnemyModelList = function() {
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
-	refreshMaxTime: function() {
+	deselectAll: function() {
+		var i,len=this.models.length;
+		for (i=0; i<len; i++) {
+			this.models[i].selectedIndex = undefined;
+		}
+	},
+	selectSomething: function() {
 		var i,len=this.models.length;
 		var e;
 		for (i=0; i<len; i++) {
 			e = this.models[i];
+			if (e.selectedIndex == undefined) {
+				e.selectedIndex = 0;
+			}
+		}
+	},
+	refreshMaxTime: function() {
+		var i,len=this.models.length;
+		this.maxTime = 0;
+		for (i=0; i<len; i++) {
+			this.maxTime = Math.max(this.maxTime, this.models[i].enemy.path.totalTime);
 		}
 	},
 	createNew: function() {
@@ -25,6 +41,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 		var e = new Ptero.Crater.EnemyModel(this.index);
 		this.models.push(e);
 		this.select(e);
+		this.refreshMaxTime();
 	},
 	promptRemoveIndex: function(index) {
 		var that = this;
@@ -78,6 +95,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 				break;
 			}
 		}
+		this.refreshMaxTime();
 	},
 	getTabsString: function() {
 		var i,e,len=this.models.length;
@@ -101,9 +119,8 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	update: function(dt) {
 
-		if (this.isEditing) {
-			this.time += dt;
-			this.time %= this.maxTime;
+		if (!this.isEditing) {
+			this.setTime((this.time + dt) % this.maxTime);
 		}
 
 		var i,len=this.models.length;
@@ -111,6 +128,13 @@ Ptero.Crater.EnemyModelList.prototype = {
 		for (i=0; i<len; i++) {
 			var e = this.models[i];
 			e.update(dt);
+		}
+	},
+	setTime: function(t) {
+		this.time = t;
+		var i,len=this.models.length;
+		for (i=0; i<len; i++) {
+			this.models[i].enemy.path.setTime(t);
 		}
 	},
 };
@@ -242,23 +266,24 @@ Ptero.Crater.EnemyModel.prototype = {
 		if (!Ptero.Crater.enemy_model_list.isEditing) {
 			//this.enemy.update(dt);
 
-			this.enemy.path.setTime(Ptero.Crater.enemy_model_list.time);
 			this.enemy.babySprite.update(dt);
 
 			var that = this;
-			Ptero.deferredSprites.defer(
-				(function(e){
-					return function(ctx) {
-						if (!isActive) {
-							ctx.globalAlpha = 0.35;
-						}
-						e.draw(ctx);
-						if (!isActive) {
-							ctx.globalAlpha = 1;
-						}
-					};
-				})(this.enemy),
-				this.enemy.getPosition().z);
+			if (!this.enemy.path.isDone()) {
+				Ptero.deferredSprites.defer(
+					(function(e){
+						return function(ctx) {
+							if (!isActive) {
+								ctx.globalAlpha = 0.5;
+							}
+							e.draw(ctx);
+							if (!isActive) {
+								ctx.globalAlpha = 1;
+							}
+						};
+					})(this.enemy),
+					this.enemy.getPosition().z);
+			}
 		}
 
 		// EDIT MODE
@@ -291,7 +316,6 @@ Ptero.Crater.EnemyModel.prototype = {
 
 			// WHEN NOT ACTIVE, DRAW SPRITE AT CURRENT TIME
 			else {
-				this.enemy.path.setTime(Ptero.Crater.enemy_model_list.time);
 				this.enemy.babySprite.update(dt);
 
 				var that = this;
@@ -323,7 +347,11 @@ Ptero.Crater.EnemyModel.prototype = {
 
 		// Set the current time at the selected node.
 		if (index != undefined) {
-			Ptero.Crater.enemy_model_list.time = this.points[this.selectedIndex].t;
+			Ptero.Crater.enemy_model_list.setTime(this.points[this.selectedIndex].t);
+			Ptero.Crater.enemy_model_list.selectSomething();
+		}
+		else {
+			Ptero.Crater.enemy_model_list.deselectAll();
 		}
 	},
 

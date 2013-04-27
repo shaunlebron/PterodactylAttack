@@ -214,11 +214,6 @@ Ptero.Crater.Pane.prototype = {
 		}
 	},
 
-	drawModel: function(ctx, model) {
-		drawModelPath(ctx, model);
-		drawModelNodes(ctx, model);
-	},
-
 	drawModelPath: function(ctx, model) {
 		var interp = model.interp;
 		var totalTime = interp.totalTime;
@@ -236,20 +231,37 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	drawModelNodes: function(ctx, model) {
-		var nodes = model.points;
-		var i,len = nodes.length;
-		var selectedIndex = model.selectedIndex;
-		for (i=0; i<len; i++) {
-			if (selectedIndex != i) {
-				this.fillCircle(ctx, nodes[i], this.nodeRadius, "#555",2);
+		var isActive = (model == Ptero.Crater.enemy_model);
+
+		if (isActive) {
+			// Only draw nodes for active path
+			var nodes = model.points;
+			var i,len = nodes.length;
+			var selectedIndex = model.selectedIndex;
+			for (i=0; i<len; i++) {
+				if (selectedIndex != i) {
+					this.fillCircle(ctx, nodes[i], this.nodeRadius, "#555",2);
+				}
+			}
+
+			// highlight selected point
+			var selectedPoint = model.getSelectedPoint();
+			if (selectedPoint) {
+				this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
+			}
+
+			// draw replay point
+			else {
+				if (!model.enemy.path.isDone()) {
+					this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#00F",2);
+				}
 			}
 		}
-		var selectedPoint = model.getSelectedPoint();
-		if (selectedPoint) {
-			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
-		}
 		else {
-			this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#00F",2);
+			// when not active path, just display the current position
+			if (!model.enemy.path.isDone()) {
+				this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#555",2);
+			}
 		}
 	},
 
