@@ -52,13 +52,16 @@ Ptero.bulletpool = (function(){
 		for (i=0; i<max_bullets; i++) {
 			b = bullets[i];
 			if (b) {
-				Ptero.deferredSprites.defer(
-					(function(b){
-						return function(ctx) {
-							b.draw(ctx);
-						};
-					})(b),
-					b.getPosition().z);
+				var pos = b.getPosition();
+				if (pos) {
+					Ptero.deferredSprites.defer(
+						(function(b){
+							return function(ctx) {
+								b.draw(ctx);
+							};
+						})(b),
+						pos.z);
+				}
 			}
 		}
 	};

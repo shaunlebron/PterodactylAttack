@@ -29,6 +29,12 @@ Ptero.Crater.EnemyModelList.prototype = {
 			}
 		}
 	},
+	refreshOrder: function() {
+		var i,len=this.models.length;
+		for (i=0; i<len; i++) {
+			this.models[i].order = i;
+		}
+	},
 	refreshMaxTime: function() {
 		var i,len=this.models.length;
 		this.maxTime = 0;
@@ -42,6 +48,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 		this.models.push(e);
 		this.select(e);
 		this.refreshMaxTime();
+		this.refreshOrder();
 	},
 	promptRemoveIndex: function(index) {
 		var that = this;
@@ -96,6 +103,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 			}
 		}
 		this.refreshMaxTime();
+		this.refreshOrder();
 	},
 	getTabsString: function() {
 		var i,e,len=this.models.length;

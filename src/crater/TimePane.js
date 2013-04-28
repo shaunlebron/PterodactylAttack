@@ -17,6 +17,19 @@ Ptero.Crater.TimePane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
+	getY: function(model) {
+		var len = Ptero.Crater.enemy_model_list.models.length;
+		var y;
+		if (len == 1) {
+			y = 0;
+		}
+		else {
+			y = model.order / (len-1) - 0.5;
+			y = -y;
+		}
+		return y;
+	},
+
 	screenToTime: function(x,y) {
 		var t = (x - this.timeStartX) / this.timeLenX;
 		t = Math.max(0,t);
@@ -46,6 +59,7 @@ Ptero.Crater.TimePane.prototype = {
 
 		for (i=0; i<len; i++) {
 			pos = this.timeToScreen(times[i]);
+			pos.y = this.transform({t:0,y:this.getY(Ptero.Crater.enemy_model)}).y;
 			dx = pos.x - x;
 			dy = pos.y - y;
 			dist_sq = dx*dx + dy*dy;
@@ -79,27 +93,17 @@ Ptero.Crater.TimePane.prototype = {
 			return;
 		}
 
-		//if (i > 0) {
-			var time = this.screenToTime(
-				x + this.selectedOffsetX,
-				y + this.selectedOffsetY
-			);
+		var time = this.screenToTime(
+			x + this.selectedOffsetX,
+			y + this.selectedOffsetY
+		);
 
-			// I'm not guarding against crazy divide by zero errors right now that may
-			// result from points occupying the exact same pixel.
-			// But I am preventing the time from equaling the first point of t=0.
-			//var threshold = 0.1;
-			//time = Math.max(times[0]+threshold, time);
-			times[i] = time;
+		times[i] = time;
 
-			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
-			Ptero.Crater.enemy_model.refreshTimes();
-			Ptero.Crater.enemy_model.refreshPath();
+		Ptero.Crater.enemy_model.refreshTimes();
+		Ptero.Crater.enemy_model.refreshPath();
 
-			Ptero.Crater.enemy_model_list.setTime(time);
-		//}
-
-		Ptero.Crater.enemy_model_list.refreshMaxTime();
+		Ptero.Crater.enemy_model_list.setTime(time);
 	},
 
 	mouseStart: function(x,y) {
@@ -119,10 +123,11 @@ Ptero.Crater.TimePane.prototype = {
 		// Input: pos.t, pos.y
 		var s = this.timeToScreen(pos.t);
 		var y = pos.y;
-		return {
+		var result = {
 			x: s.x,
 			y: (-y * this.pixelH/2) + this.pixelH/2,
 		};
+		return result;
 	},
 	moveTo: function(ctx,pos) {
 		var p = this.transform(pos);
@@ -169,9 +174,6 @@ Ptero.Crater.TimePane.prototype = {
 	drawAxes: function(ctx) {
 		ctx.strokeStyle = "#BBB";
 		ctx.lineWidth = 1;
-		this.line(ctx,
-			{ t:0, y:0 },
-			{ t:this.maxTime, y:0 });
 
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
@@ -183,49 +185,62 @@ Ptero.Crater.TimePane.prototype = {
 		ctx.textBaseline = 'top';
 		ctx.fillStyle = "#BBB";
 		ctx.font = '0.8em serif';
+		var h = 0.5;
 		for (t=0; t<=this.maxTime; t++) {
 			this.line(ctx,
-				{t:t, y: 0.25},
-				{t:t, y: -0.25});
-			s = this.transform({t:t, y: -0.25});
+				{t:t, y: h},
+				{t:t, y: -h});
+			s = this.transform({t:t, y: -h});
 			ctx.fillText(t, s.x, s.y+5);
 		}
 	},
 
-	drawPath: function(ctx) {
+	drawModelPath: function(ctx, model) {
 		ctx.strokeStyle = "#777";
 		ctx.lineWidth = 2;
+		var y = this.getY(model);
 		this.line(ctx,
-			{t:Ptero.Crater.enemy_model.enemy.path.startTime, y:0},
-			{t:Ptero.Crater.enemy_model.enemy.path.totalTime, y:0});
+			{t:model.enemy.path.startTime, y:y},
+			{t:model.enemy.path.totalTime, y:y});
 	},
 
-	drawNodes: function(ctx) {
-		var times = Ptero.Crater.enemy_model.times;
-		var delta_times = Ptero.Crater.enemy_model.delta_times;
+	drawModelNodes: function(ctx, model) {
+		var isActive = (model == Ptero.Crater.enemy_model);
+		var times = model.times;
+		var delta_times = model.delta_times;
 		var i,len = times.length;
-		var selectedIndex = Ptero.Crater.enemy_model.selectedIndex;
-		ctx.textBaseline = "bottom";
-		ctx.textAlign = "center";
-		for (i=0; i<len; i++) {
-			if (selectedIndex != i) {
-				this.fillCircle(ctx, {t:times[i], y:0}, this.nodeRadius, "#555",2);
-			}
-			if (i > 0) {
-				var pos = this.transform({t:times[i-1]+delta_times[i]/2, y:0.1});
-				ctx.fillText(delta_times[i].toFixed(2)+"s", pos.x, pos.y);
-			}
-		}
-		var selectedPoint = Ptero.Crater.enemy_model.getSelectedPoint();
-		if (selectedPoint) {
+
+		if (isActive) {
+			var selectedIndex = model.selectedIndex;
+			ctx.textBaseline = "bottom";
+			ctx.textAlign = "center";
+			var y = this.getY(model);
 			for (i=0; i<len; i++) {
-				if (selectedIndex == i) {
-					this.fillCircle(ctx, {t:times[i], y:0}, this.nodeRadius, "#F00",2);
+				if (selectedIndex != i) {
+					this.fillCircle(ctx, {t:times[i], y:y}, this.nodeRadius, "#555",2);
 				}
+				if (i > 0 && model == Ptero.Crater.enemy_model) {
+					var pos = this.transform({t:times[i-1]+delta_times[i]/2, y:y+0.1});
+					ctx.fillText(delta_times[i].toFixed(2)+"s", pos.x, pos.y);
+				}
+			}
+			var selectedPoint = model.getSelectedPoint();
+			if (selectedPoint) {
+				for (i=0; i<len; i++) {
+					if (selectedIndex == i) {
+						this.fillCircle(ctx, {t:times[i], y:y}, this.nodeRadius, "#F00",2);
+					}
+				}
+			}
+			else {
+				this.fillCircle(ctx, {t:model.enemy.path.time, y:y}, this.nodeRadius, "#00F",2);
 			}
 		}
 		else {
-			this.fillCircle(ctx, {t:Ptero.Crater.enemy_model.enemy.path.time, y:0}, this.nodeRadius, "#00F",2);
+			if (model.enemy.getPosition()) {
+				var y = this.getY(model);
+				this.fillCircle(ctx, {t:model.enemy.path.time, y:y}, this.nodeRadius, "#555",2);
+			}
 		}
 	},
 
@@ -235,8 +250,25 @@ Ptero.Crater.TimePane.prototype = {
 		ctx.fillStyle = "#EEE";
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawAxes(ctx);
-		this.drawPath(ctx);
-		this.drawNodes(ctx);
+
+		var models = Ptero.Crater.enemy_model_list.models;
+		var i,len=models.length;
+		var e;
+		if (len > 1) {
+			ctx.globalAlpha = 0.35;
+			for (i=0; i<len; i++) {
+				var e = models[i];
+				if (e != Ptero.Crater.enemy_model) {
+					this.drawModelPath(ctx, e);
+					this.drawModelNodes(ctx, e);
+				}
+			}
+			ctx.globalAlpha = 1;
+		}
+
+		e = Ptero.Crater.enemy_model;
+		this.drawModelPath(ctx, e);
+		this.drawModelNodes(ctx, e);
 	},
 	update: function(dt) {
 	},

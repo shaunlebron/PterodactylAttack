@@ -196,7 +196,7 @@ Ptero.orb = (function(){
 				new Ptero.makeHermiteInterpForObjs(
 					[startOrigin,midPos,endPos],
 					['x','y','z'],
-					[time/2,time/2]
+					[0,time/2,time/2]
 				)
 			)
 		);
