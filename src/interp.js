@@ -4,11 +4,11 @@
 	Each point should have a "delta time", the time it takes to get to this
 	point from the last.
 
-	For example, for points (a,b,c), and delta times (t1, t2):
+	For example, for points (a,b,c), and delta times (t0, t1, t2):
 
-		at t=0,     point = a
-		at t=t1,    point = b
-		at t=t1+t2, point = c
+		at t=t0,       point = a
+		at t=t0+t1,    point = b
+		at t=t0+t1+t2, point = c
 
 	We also want an _interpolation_ function to give us a point at any given
 	time in the valid time range:
@@ -42,24 +42,26 @@
 
 	// Get the current time segment from the given current time and delta times.
 	function getTimeSegment(t, deltaTimes) {
+
+		// Any time before the first time is outside range.
+		if (t < deltaTimes[0]) {
+			return null;
+		}
+		t -= deltaTimes[0];
+
 		var i,len=deltaTimes.length;
-		for (i=0; i<len; i++) {
+		for (i=1; i<len; i++) {
 			if (t <= deltaTimes[i]) {
-				break;
+				return {
+					index: i-1,
+					time: t,
+					timeFrac: t/deltaTimes[i],
+				};
 			}
-			else {
-				t -= deltaTimes[i];
-			}
+			t -= deltaTimes[i];
 		}
-		if (i == len) {
-			i = len-1;
-			t = deltaTimes[len-1];
-		}
-		return {
-			index: i,
-			time: t,
-			timeFrac: t/deltaTimes[i],
-		};
+
+		return null;
 	}
 
 	// A collection of easing functions.
@@ -90,11 +92,15 @@
 		var easeFunc = easeFunctions[easeFuncName];
 
 		function interp(t) {
-			t = bound(t, 0, totalTime);
+			//t = bound(t, 0, totalTime);
 			var seg = getTimeSegment(t, deltaTimes);
+			if (!seg) {
+				return null;
+			}
 			var i = seg.index;
 			return easeFunc(values[i], values[i+1], seg.timeFrac);
 		};
+		interp.startTime = deltaTimes[0];
 		interp.totalTime = totalTime;
 
 		return interp;
@@ -126,8 +132,11 @@
 		var easeFunc = easeFunctions[easeFuncName];
 
 		function interp(t) {
-			t = bound(t, 0, totalTime);
+			//t = bound(t, 0, totalTime);
 			var seg = getTimeSegment(t, deltaTimes);
+			if (!seg) {
+				return null;
+			}
 			var i = seg.index;
 		
 			var result = {};
@@ -138,6 +147,7 @@
 			}
 			return result;
 		};
+		interp.startTime = deltaTimes[0];
 		interp.totalTime = totalTime;
 
 		return interp;
@@ -218,18 +228,18 @@
 				if (i==0) {
 					s = getendslope(
 							points[i],   0,
-							points[i+1], deltaTimes[i]);
+							points[i+1], deltaTimes[i+1]);
 				}
 				else if (i==len-1) {
 					s = getendslope(
 							points[i-1], 0,
-							points[i],   deltaTimes[i-1]);
+							points[i],   deltaTimes[i]);
 				}
 				else {
 					s = getmidslope(
 							points[i-1], 0,
-							points[i],   deltaTimes[i-1],
-							points[i+1], deltaTimes[i-1]+deltaTimes[i]);
+							points[i],   deltaTimes[i],
+							points[i+1], deltaTimes[i]+deltaTimes[i+1]);
 				}
 				slopes[i] = s;
 			}
@@ -249,7 +259,7 @@
 			for (i=0; i<len-1; i++) {
 				splinefuncs[i] = cubichermite(
 					points[i],   slopes[i],   0,
-					points[i+1], slopes[i+1], deltaTimes[i]);
+					points[i+1], slopes[i+1], deltaTimes[i+1]);
 			}
 			return splinefuncs;
 		}
@@ -277,10 +287,14 @@
 			var splinefuncs = calcspline(values,deltaTimes,slopes);
 
 			function interp(t) {
-				t = bound(t, 0, totalTime);
+				//t = bound(t, 0, totalTime);
 				var seg = getTimeSegment(t, deltaTimes);
+				if (!seg) {
+					return null;
+				}
 				return splinefuncs[seg.index](seg.time);
 			};
+			interp.startTime = deltaTimes[0];
 			interp.totalTime = totalTime;
 
 			return interp;
@@ -325,8 +339,11 @@
 			}
 
 			function interp(t) {
-				t = bound(t, 0, totalTime);
+				//t = bound(t, 0, totalTime);
 				var seg = getTimeSegment(t, deltaTimes);
+				if (!seg) {
+					return null;
+				}
 				var result = {};
 				var ki,key;
 				for (ki=0; ki<numKeys; ki++) {
@@ -335,6 +352,7 @@
 				}
 				return result;
 			};
+			interp.startTime = deltaTimes[0];
 			interp.totalTime = totalTime;
 
 			return interp;

@@ -34,7 +34,7 @@ Ptero.makeLinearEnemyPath = function() {
 	var interp = Ptero.makeInterpForObjs('linear', 
 		[ startPos, endPos ],
 		['x','y','z'],
-		[time]);
+		[0,time]);
 
 	return new Ptero.Path(interp);
 };
@@ -87,7 +87,7 @@ Ptero.makeHermiteEnemyPath = function() {
 	var interp = Ptero.makeHermiteInterpForObjs(
 		[ startPos, midPos, endPos ],
 		['x','y','z','angle'],
-		[0.5, 0.5]);
+		[0,0.5, 0.5]);
 
 	// approximate distance of the interpolated path
 	var t,dist = 0;
@@ -108,7 +108,7 @@ Ptero.makeHermiteEnemyPath = function() {
 	interp = Ptero.makeHermiteInterpForObjs(
 		[ startPos, midPos, endPos ],
 		['x','y','z','angle'],
-		[time/2, time/2]);
+		[0,time/2, time/2]);
 
 	return new Ptero.Path(interp);
 };

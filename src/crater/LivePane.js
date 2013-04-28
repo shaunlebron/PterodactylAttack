@@ -238,8 +238,14 @@ Ptero.Crater.LivePane.prototype = {
 
 		ctx.beginPath();
 		for (t=0; t<=totalTime-step; t+=1.4*step) {
-			this.moveTo(ctx, interp(t));
-			this.lineTo(ctx, interp(t+step));
+			var pos = interp(t);
+			if (pos) {
+				this.moveTo(ctx, pos);
+			}
+			pos = interp(t+step);
+			if (pos) {
+				this.lineTo(ctx, pos);
+			}
 		}
 		ctx.strokeStyle = "#777";
 		ctx.lineWidth = 2;

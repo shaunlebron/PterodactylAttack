@@ -220,10 +220,17 @@ Ptero.Crater.Pane.prototype = {
 		var numPoints = 70;
 		var step = totalTime/numPoints;
 
+		var pos;
 		ctx.beginPath();
 		for (t=0; t<=totalTime-step; t+=1.4*step) {
-			this.moveTo(ctx, interp(t));
-			this.lineTo(ctx, interp(t+step));
+			pos = interp(t);
+			if (pos) {
+				this.moveTo(ctx, pos);
+			}
+			pos = interp(t+step);
+			if (pos) {
+			this.lineTo(ctx, pos);
+			}
 		}
 		ctx.strokeStyle = "#777";
 		ctx.lineWidth = 2;
@@ -252,15 +259,20 @@ Ptero.Crater.Pane.prototype = {
 
 			// draw replay point
 			else {
-				if (!model.enemy.path.isDone()) {
-					this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#00F",2);
+				var pos = model.enemy.getPosition();
+				if (pos) {
+					this.fillCircle(ctx, pos, this.nodeRadius, "#00F",2);
 				}
 			}
 		}
 		else {
 			// when not active path, just display the current position
-			if (!model.enemy.path.isDone()) {
-				this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#555",2);
+			var pos = model.enemy.getPosition();
+			if (pos) {
+				if (model.enemy.path.isDone()) {
+					console.log(model.enemy.path.time, model.enemy.path.totalTime, model.enemy.path.pos);
+				}
+				this.fillCircle(ctx, pos, this.nodeRadius, "#555",2);
 			}
 		}
 	},

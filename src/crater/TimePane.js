@@ -65,6 +65,7 @@ Ptero.Crater.TimePane.prototype = {
 	},
 
 	selectNode: function(index,offset_x,offset_y) {
+		console.log(index);
 		Ptero.Crater.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
@@ -74,8 +75,11 @@ Ptero.Crater.TimePane.prototype = {
 		var times = Ptero.Crater.enemy_model.times;
 		var delta_times = Ptero.Crater.enemy_model.delta_times;
 		var i = Ptero.Crater.enemy_model.selectedIndex;
+		if (i == undefined) {
+			return;
+		}
 
-		if (i > 0) {
+		//if (i > 0) {
 			var time = this.screenToTime(
 				x + this.selectedOffsetX,
 				y + this.selectedOffsetY
@@ -84,8 +88,8 @@ Ptero.Crater.TimePane.prototype = {
 			// I'm not guarding against crazy divide by zero errors right now that may
 			// result from points occupying the exact same pixel.
 			// But I am preventing the time from equaling the first point of t=0.
-			var threshold = 0.1;
-			time = Math.max(times[0]+threshold, time);
+			//var threshold = 0.1;
+			//time = Math.max(times[0]+threshold, time);
 			times[i] = time;
 
 			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
@@ -93,7 +97,7 @@ Ptero.Crater.TimePane.prototype = {
 			Ptero.Crater.enemy_model.refreshPath();
 
 			Ptero.Crater.enemy_model_list.setTime(time);
-		}
+		//}
 
 		Ptero.Crater.enemy_model_list.refreshMaxTime();
 	},
@@ -192,7 +196,7 @@ Ptero.Crater.TimePane.prototype = {
 		ctx.strokeStyle = "#777";
 		ctx.lineWidth = 2;
 		this.line(ctx,
-			{t:0, y:0},
+			{t:Ptero.Crater.enemy_model.enemy.path.startTime, y:0},
 			{t:Ptero.Crater.enemy_model.enemy.path.totalTime, y:0});
 	},
 
@@ -208,8 +212,8 @@ Ptero.Crater.TimePane.prototype = {
 				this.fillCircle(ctx, {t:times[i], y:0}, this.nodeRadius, "#555",2);
 			}
 			if (i > 0) {
-				var pos = this.transform({t:times[i-1]+delta_times[i-1]/2, y:0.1});
-				ctx.fillText(delta_times[i-1].toFixed(2)+"s", pos.x, pos.y);
+				var pos = this.transform({t:times[i-1]+delta_times[i]/2, y:0.1});
+				ctx.fillText(delta_times[i].toFixed(2)+"s", pos.x, pos.y);
 			}
 		}
 		var selectedPoint = Ptero.Crater.enemy_model.getSelectedPoint();

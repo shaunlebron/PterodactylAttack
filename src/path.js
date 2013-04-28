@@ -1,5 +1,6 @@
 Ptero.Path = function(interp, loop) {
 	this.interp = interp;
+	this.startTime = interp.startTime;
 	this.totalTime = interp.totalTime;
 	this.loop = loop;
 	this.reset();
@@ -14,6 +15,9 @@ Ptero.Path.prototype = {
 		// Turn the interpolated value into a vector object.
 		// Also add the "angle" property to it.
 		var i = this.interp(this.time+dt);
+		if (i == null) {
+			return null;
+		}
 		var v = (new Ptero.Vector).set(i);
 		v.angle = i.angle;
 

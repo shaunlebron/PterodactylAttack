@@ -180,6 +180,7 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.interp = this.makeInterp();
 		//this.enemy.path = new Ptero.Path(this.interp, true);
 		this.enemy.path = new Ptero.Path(this.interp);
+		Ptero.Crater.enemy_model_list.refreshMaxTime();
 	},
 	refreshPath: function() {
 		this.initPath();
@@ -242,9 +243,9 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.times.sort();
 
 		// compute the delta times in the newly sorted list.
-		this.delta_times = [];
+		this.delta_times = [this.times[0]];
 		for (i=1; i<len; i++) {
-			this.delta_times[i-1] = this.times[i] - this.times[i-1];
+			this.delta_times[i] = this.times[i] - this.times[i-1];
 		}
 
 		// The selected point may have a different index upon resorting, so find out where it went.
@@ -269,7 +270,7 @@ Ptero.Crater.EnemyModel.prototype = {
 			this.enemy.babySprite.update(dt);
 
 			var that = this;
-			if (!this.enemy.path.isDone()) {
+			if (this.enemy.getPosition()) {
 				Ptero.deferredSprites.defer(
 					(function(e){
 						return function(ctx) {
@@ -318,16 +319,19 @@ Ptero.Crater.EnemyModel.prototype = {
 			else {
 				this.enemy.babySprite.update(dt);
 
-				var that = this;
-				Ptero.deferredSprites.defer(
-					(function(e){
-						return function(ctx) {
-							ctx.globalAlpha = 0.35;
-							e.draw(ctx);
-							ctx.globalAlpha = 1;
-						};
-					})(this.enemy),
-					this.enemy.getPosition().z);
+				var pos = this.enemy.getPosition();
+				if (pos) {
+					var that = this;
+					Ptero.deferredSprites.defer(
+						(function(e){
+							return function(ctx) {
+								ctx.globalAlpha = 0.35;
+								e.draw(ctx);
+								ctx.globalAlpha = 1;
+							};
+						})(this.enemy),
+						pos.z);
+				}
 			}
 		}
 	},

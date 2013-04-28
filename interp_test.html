@@ -39,11 +39,16 @@ function createData() {
 			x: xs[i],
 			y: ys[i],
 		};
+		times[0] = 0;
 		if (i < len-1) {
-			times[i] = Math.random()*(maxTime-minTime) + minTime;
-			totalTime += times[i];
+			times[i+1] = Math.random()*(maxTime-minTime) + minTime;
+			totalTime += times[i+1];
 		}
 	}
+	console.log(times);
+	console.log(xs);
+	console.log(times.length);
+	console.log(xs.length);
 }
 
 var xinterp_dict, yinterp_dict, interp_dict;
@@ -82,6 +87,9 @@ function drawCanvas(type, ctx, mt, dotColor) {
 	for (i=0; i<=numpts; i++) {
 		t = i/numpts*totalTime;
 		p = interp(t);
+		if (!p) {
+			continue;
+		}
 		x = xinterp(t);
 		y = yinterp(t);
 		if (i > 0) {
@@ -101,6 +109,9 @@ function drawCanvas(type, ctx, mt, dotColor) {
 		x = xinterp(t);
 		y = yinterp(t);
 		p = interp(t);
+		if (!p) {
+			continue;
+		}
 		dot(ctx,p.x,p.y,1.5);
 		//dot(ctx,x,y,1.5);
 	}

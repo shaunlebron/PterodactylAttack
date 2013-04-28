@@ -84,13 +84,16 @@ Ptero.scene_game = (function() {
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
 			// TODO: only defer if visible
-			Ptero.deferredSprites.defer(
-				(function(e) {
-					return function(ctx){
-						e.draw(ctx);
-					};
-				})(enemies[i]),
-				enemies[i].getPosition().z);
+			var pos = enemies[i].getPosition();
+			if (pos) {
+				Ptero.deferredSprites.defer(
+					(function(e) {
+						return function(ctx){
+							e.draw(ctx);
+						};
+					})(enemies[i]),
+					pos.z);
+			}
 		}
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
