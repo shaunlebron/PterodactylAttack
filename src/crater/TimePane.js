@@ -11,6 +11,18 @@ Ptero.Crater.TimePane = function(w,h,maxTime) {
 	this.timeY = this.pixelH / 2;
 
 	this.nodeRadius = 4;
+	this.isDragTogether = false;
+	var that = this;
+	window.addEventListener("keydown", function(e) {
+		if (e.keyCode == 16) {
+			that.isDragTogether = true;
+		}
+	});
+	window.addEventListener("keyup", function(e) {
+		if (e.keyCode == 16) {
+			that.isDragTogether = false;
+		}
+	});
 };
 
 Ptero.Crater.TimePane.prototype = {
@@ -86,6 +98,7 @@ Ptero.Crater.TimePane.prototype = {
 
 	updateNodePosition: function(x,y) {
 		var times = Ptero.Crater.enemy_model.times;
+		var delta_times = Ptero.Crater.enemy_model.delta_times;
 		var i = Ptero.Crater.enemy_model.selectedIndex;
 		if (i == undefined) {
 			return;
@@ -97,6 +110,13 @@ Ptero.Crater.TimePane.prototype = {
 		);
 
 		times[i] = time;
+
+		if (this.isDragTogether) {
+			var j,len = times.length;
+			for (j=i+1; j<len; j++) {
+				times[j] = times[j-1] + delta_times[j];
+			}
+		}
 
 		Ptero.Crater.enemy_model.refreshTimes();
 		Ptero.Crater.enemy_model.refreshPath();
