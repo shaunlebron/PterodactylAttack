@@ -79,7 +79,6 @@ Ptero.Crater.TimePane.prototype = {
 	},
 
 	selectNode: function(index,offset_x,offset_y) {
-		console.log(index);
 		Ptero.Crater.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
@@ -87,7 +86,6 @@ Ptero.Crater.TimePane.prototype = {
 
 	updateNodePosition: function(x,y) {
 		var times = Ptero.Crater.enemy_model.times;
-		var delta_times = Ptero.Crater.enemy_model.delta_times;
 		var i = Ptero.Crater.enemy_model.selectedIndex;
 		if (i == undefined) {
 			return;
@@ -115,7 +113,6 @@ Ptero.Crater.TimePane.prototype = {
 	},
 	mouseEnd: function(x,y) {
 	},
-
 
 	/* PAINTER FUNCTIONS */
 
@@ -172,7 +169,7 @@ Ptero.Crater.TimePane.prototype = {
 	/* DRAWING FUNCTIONS */
 
 	drawAxes: function(ctx) {
-		ctx.strokeStyle = "#BBB";
+		ctx.strokeStyle = "#CCC";
 		ctx.lineWidth = 1;
 
 		ctx.textAlign = 'center';
@@ -193,6 +190,12 @@ Ptero.Crater.TimePane.prototype = {
 			s = this.transform({t:t, y: -h});
 			ctx.fillText(t, s.x, s.y+5);
 		}
+
+		ctx.strokeStyle = Ptero.Crater.enemy_model_list.isEditing ? "#F00" : "#00F";
+		var t = Ptero.Crater.enemy_model_list.time;
+		this.line(ctx,
+			{t:t, y: h},
+			{t:t, y: -h});
 	},
 
 	drawModelPath: function(ctx, model) {
@@ -233,7 +236,10 @@ Ptero.Crater.TimePane.prototype = {
 				}
 			}
 			else {
-				this.fillCircle(ctx, {t:model.enemy.path.time, y:y}, this.nodeRadius, "#00F",2);
+				var pos = model.enemy.getPosition();
+				if (pos) {
+					this.fillCircle(ctx, {t:model.enemy.path.time, y:y}, this.nodeRadius, "#00F",2);
+				}
 			}
 		}
 		else {

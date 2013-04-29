@@ -248,10 +248,11 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.points.sort(function(a,b) { return a.t - b.t; });
 
 		// also sort the times.
-		this.times.sort();
+		this.times.sort(function(a,b) { return a - b; });
 
 		// compute the delta times in the newly sorted list.
-		this.delta_times = [this.times[0]];
+		this.delta_times.length = 0;
+		this.delta_times[0] = this.times[0];
 		for (i=1; i<len; i++) {
 			this.delta_times[i] = this.times[i] - this.times[i-1];
 		}

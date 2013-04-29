@@ -35,7 +35,7 @@ Ptero.Crater.panes = (function() {
 		livePane = new Ptero.Crater.LivePane();
 		livePane.init();
 
-		timePane = new Ptero.Crater.TimePane(2*w, timePaneHeight, 10);
+		timePane = new Ptero.Crater.TimePane(2*w, timePaneHeight, 20);
 
 		// This determines the position of the panes on the screen.
 		panes = [livePane, topPane, rightPane, frontPane];
