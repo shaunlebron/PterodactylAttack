@@ -124,14 +124,41 @@ Ptero.Crater.TimePane.prototype = {
 		Ptero.Crater.enemy_model_list.setTime(time);
 	},
 
+	isSeeking: function() {
+		return Ptero.Crater.enemy_model.selectedIndex == undefined;
+	},
+
+	freezeAt: function(x) {
+		var t = this.screenToTime(x);
+		t = Math.min(t, Ptero.Crater.enemy_model_list.maxTime);
+		Ptero.Crater.enemy_model_list.setTime(t);
+		Ptero.Crater.enemy_model_list.isPaused = true;
+	},
+
+	stopSeek: function() {
+		Ptero.Crater.enemy_model_list.isPaused = false;
+	},
+
 	mouseStart: function(x,y) {
 		var i = this.getNodeInfoFromCursor(x,y);
 		this.selectNode(i.index, i.offset_x, i.offset_y);
+
+		if (this.isSeeking()) {
+			this.freezeAt(x);
+		}
 	},
 	mouseMove: function(x,y) {
-		this.updateNodePosition(x,y);
+		if (this.isSeeking()) {
+			this.freezeAt(x);
+		}
+		else {
+			this.updateNodePosition(x,y);
+		}
 	},
 	mouseEnd: function(x,y) {
+		if (this.isSeeking()) {
+			this.stopSeek();
+		}
 	},
 
 	/* PAINTER FUNCTIONS */

@@ -10,6 +10,7 @@ Ptero.Crater.EnemyModelList = function() {
 	this.selectedTime = undefined;
 
 	this.isEditing = false;
+	this.isPaused = false;
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
@@ -127,7 +128,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	update: function(dt) {
 
-		if (!this.isEditing) {
+		if (!this.isEditing && !this.isPaused) {
 			this.setTime((this.time + dt) % this.maxTime);
 		}
 
