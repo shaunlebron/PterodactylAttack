@@ -1,6 +1,21 @@
 
 Ptero.Crater.loader = (function(){
 
+	function promptReset() {
+		bootbox.confirm('Are you sure you want to discard this wave and start a new one?',
+			function(result) {
+				if (result) {
+					reset();
+				}
+			}
+		);
+	}
+
+	function reset() {
+		Ptero.Crater.enemy_model_list = new Ptero.Crater.EnemyModelList();
+		Ptero.Crater.enemy_model_list.createNew();
+	}
+
 	function getState() {
 		var models = Ptero.Crater.enemy_model_list.models;
 		var i,len = models.length;
@@ -85,5 +100,7 @@ Ptero.Crater.loader = (function(){
 		backup: backup,
 		restore: restore,
 		handleOpenFile: handleOpenFile,
+		reset: reset,
+		promptReset: promptReset,
 	};
 })();

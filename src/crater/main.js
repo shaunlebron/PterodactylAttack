@@ -15,11 +15,11 @@ window.onload = function() {
 		Ptero.Crater.enemy_model_list = new Ptero.Crater.EnemyModelList();
 		var ignoreState = false;
 		if (!ignoreState && Ptero.Crater.loader.restore()) {
-		  console.log("restoring previous state");
+			console.log("restored previous state");
 		}
 		else {
-		  console.log("creating new blank state");
-		  Ptero.Crater.enemy_model_list.createNew();
+			console.log("creating new blank state");
+			Ptero.Crater.loader.reset();
 		}
 		console.log("setting scene");
 		Ptero.setScene(Ptero.Crater.panes);
