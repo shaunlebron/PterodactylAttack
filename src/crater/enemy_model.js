@@ -61,31 +61,37 @@ Ptero.Crater.EnemyModelList.prototype = {
 			}
 		);
 	},
-	selectIndex: function(index) {
+	previewIndex: function(index) {
+		this.active_enemy_model = Ptero.Crater.enemy_model;
+		Ptero.Crater.enemy_model = this.getModelFromIndex(index);
+	},
+	unpreviewIndex: function(index) {
+		if (this.active_enemy_model) {
+			this.select(this.active_enemy_model);
+		}
+		this.active_enemy_model = undefined;
+	},
+	getModelFromIndex: function(index) {
 		var i,len=this.models.length;
 		var e;
 		for (i=0; i<len; i++) {
 			e = this.models[i];
 			if (e.index == index) {
-				this.select(e);
-				break;
+				return e;
 			}
 		}
+		return null;
+	},
+	selectIndex: function(index) {
+		this.select(this.getModelFromIndex(index));
 	},
 	select: function(model) {
+		this.active_enemy_model = model;
 		Ptero.Crater.enemy_model = model;
 		this.refreshTabs();
 	},
 	removeIndex: function(index) {
-		var i,len=this.models.length;
-		var e;
-		for (i=0; i<len; i++) {
-			e = this.models[i];
-			if (e.index == index) {
-				this.remove(e);
-				break;
-			}
-		}
+		this.remove(this.getModelFromIndex(index));
 	},
 	remove: function(model) {
 		var i,len=this.models.length;
@@ -115,7 +121,11 @@ Ptero.Crater.EnemyModelList.prototype = {
 				str += '<li class="active"><a href="#">';
 			}
 			else {
-				str += '<li><a href="#" onclick="Ptero.Crater.enemy_model_list.selectIndex(' + e.index + ')">';
+				str += '<li><a href="#" ';
+				str += 'onclick="Ptero.Crater.enemy_model_list.selectIndex(' + e.index + ')"';
+				str += 'onmouseover="Ptero.Crater.enemy_model_list.previewIndex(' + e.index + ')"';
+				str += 'onmouseout="Ptero.Crater.enemy_model_list.unpreviewIndex(' + e.index + ')"';
+				str += '>';
 			}
 			str += '<button class="close" type="button" onclick="Ptero.Crater.enemy_model_list.promptRemoveIndex(' +e.index+ ')">&times;</button>Path ' + e.index + '</a></li>';
 		}
