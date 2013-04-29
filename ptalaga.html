@@ -55,6 +55,7 @@
 	<script src="src/vector.js"></script>
 
 	<script src="src/crater/main.js"></script>
+	<script src="src/crater/loader.js"></script>
 	<script src="src/crater/screen.js"></script>
 	<script src="src/crater/executive.js"></script>
 	<script src="src/crater/scene_crater.js"></script>
@@ -83,7 +84,7 @@
 	<div class="btn-group">
 		<button class="btn"><i class="icon-file"></i> New</button>
 		<button class="btn"><i class="icon-folder-open"></i> Open</button>
-		<button class="btn"><i class="icon-download-alt"></i> Save</button>
+		<a id="save-button" href="#" class="btn"><i class="icon-download-alt"></i> Save As</a>
 	</div>
 	<div class="btn-group">
 		<button class="btn" onclick="Ptero.Crater.enemy_model.addPoint()"><i class="icon-plus-sign"></i> Add Point</button>

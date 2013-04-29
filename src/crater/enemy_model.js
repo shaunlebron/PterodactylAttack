@@ -43,6 +43,25 @@ Ptero.Crater.EnemyModelList.prototype = {
 			this.maxTime = Math.max(this.maxTime, this.models[i].enemy.path.totalTime);
 		}
 	},
+	setModels: function(models) {
+
+		this.index = 0;
+		var i,len=models.length;
+		for (i=0; i<len; i++) {
+			this.index = Math.max(this.index, models[i].index);
+		}
+
+		this.models = models;
+		this.select(models[0]);
+		this.refreshMaxTime();
+		this.refreshOrder();
+		this.setTime(0);
+
+		this.isEditing = false;
+		this.deselectAll();
+
+		Ptero.Crater.loader.backup();
+	},
 	createNew: function() {
 		this.index++;
 		var e = new Ptero.Crater.EnemyModel(this.index);
@@ -50,6 +69,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 		this.select(e);
 		this.refreshMaxTime();
 		this.refreshOrder();
+		Ptero.Crater.loader.backup();
 	},
 	promptRemoveIndex: function(index) {
 		var that = this;
@@ -111,6 +131,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 		}
 		this.refreshMaxTime();
 		this.refreshOrder();
+		Ptero.Crater.loader.backup();
 	},
 	getTabsString: function() {
 		var i,e,len=this.models.length;
@@ -168,7 +189,33 @@ Ptero.Crater.EnemyModel = function(index) {
 	this.makeDefaultPath(2);
 };
 
+Ptero.Crater.EnemyModel.fromState = function(state) {
+	var model = new Ptero.Crater.EnemyModel(state.index);
+	model.points = state.points;
+
+	var i,len = model.points.length;
+	model.nodeSprites = [];
+	model.times = [];
+	for (i=0; i<len; i++) {
+		model.times[i] = model.points[i].t;
+		var sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
+		sprite.shuffleTime();
+		model.nodeSprites[i] = sprite;
+	}
+
+	model.refreshTimes();
+	model.refreshPath();
+
+	return model;
+};
+
 Ptero.Crater.EnemyModel.prototype = {
+	getState: function() {
+		return {
+			index: this.index,
+			points: this.points,
+		};
+	},
 	makeDefaultPath: function(numPoints) {
 		var frustum = Ptero.screen.getFrustum();
 		var near = frustum.near;
@@ -200,6 +247,8 @@ Ptero.Crater.EnemyModel.prototype = {
 		//this.enemy.path = new Ptero.Path(this.interp, true);
 		this.enemy.path = new Ptero.Path(this.interp);
 		Ptero.Crater.enemy_model_list.refreshMaxTime();
+
+		Ptero.Crater.loader.backup();
 	},
 	refreshPath: function() {
 		this.initPath();
