@@ -80,11 +80,19 @@
 
 <h2>Ptalaga</h2>
 
+<script>
+$(function(){
+	$('body').tooltip({
+		selector: '[rel="tooltip"]'
+	});
+});
+</script>
+
 <div class="btn-toolbar">
 	<div class="btn-group">
 		<button class="btn"><i class="icon-file"></i> New</button>
 		<button class="btn"><i class="icon-folder-open"></i> Open</button>
-		<a id="save-button" href="#" class="btn"><i class="icon-download-alt"></i> Save As</a>
+		<a id="save-button" class="btn" rel="tooltip" data-title="You can Right Click > Save As"><i class="icon-download-alt"></i> Save</a>
 	</div>
 	<div class="btn-group">
 		<button class="btn" onclick="Ptero.Crater.enemy_model.addPoint()"><i class="icon-plus-sign"></i> Add Point</button>

@@ -24,10 +24,14 @@ Ptero.Crater.loader = (function(){
 	}
 
 	function backup() {
+		var state = getState();
+		var stateStr = JSON.stringify(state);
 		if (window.localStorage != undefined) {
-			var state = getState();
-			window.localStorage.ptalagaState = JSON.stringify(state);
+			window.localStorage.ptalagaState = stateStr;
 		}
+		var btn = document.getElementById("save-button");
+		btn.href = "data:application/json;base64," + btoa(stateStr);
+		btn.download = "wave.json";
 	}
 
 	function restore() {
