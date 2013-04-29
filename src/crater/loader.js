@@ -21,6 +21,7 @@ Ptero.Crater.loader = (function(){
 			models.push(Ptero.Crater.EnemyModel.fromState(state.models[i]));
 		}
 		Ptero.Crater.enemy_model_list.setModels(models);
+		backup();
 	}
 
 	function backup() {
@@ -40,7 +41,6 @@ Ptero.Crater.loader = (function(){
 				var state = JSON.parse(window.localStorage.ptalagaState);
 				if (state) {
 					setState(state);
-					backup();
 					return true;
 				}
 			}
@@ -50,16 +50,40 @@ Ptero.Crater.loader = (function(){
 		return false;
 	}
 
-	// open file dialog
-	function openFile() {
+	function openFile(f) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			try {
+				var state = JSON.parse(e.target.result);
+				setState(state);
+			}
+			catch (e) {
+				bootbox.alert("Could not load file '"+f.name+"'");
+			}
+		};
+		reader.readAsText(f);
 	}
 
-	// save file dialog
-	function saveFile() {
+	// open file dialog
+	function handleOpenFile(evt) {
+		evt.stopPropagation();
+		evt.preventDefault();
+
+		var files = evt.target.files;
+		if (files) {
+			openFile(files[0]);
+		}
+		else {
+			files = evt.dataTransfer.files;
+			if (files) {
+				openFile(files[0]);
+			}
+		}
 	}
 
 	return {
 		backup: backup,
 		restore: restore,
+		handleOpenFile: handleOpenFile,
 	};
 })();

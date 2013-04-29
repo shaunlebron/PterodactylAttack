@@ -85,13 +85,28 @@ $(function(){
 	$('body').tooltip({
 		selector: '[rel="tooltip"]'
 	});
+
+	var handleOpenFile = Ptero.Crater.loader.handleOpenFile;
+
+	document.getElementById('open-file').addEventListener('change', handleOpenFile, false);
+
+	function handleDragOver(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'copy';
+	}
+	
+	var dropzone = document.getElementById('canvas');
+	dropzone.addEventListener('dragover', handleDragOver, false);
+	dropzone.addEventListener('drop', handleOpenFile, false);
 });
 </script>
 
+<input style="display:none" type="file" id="open-file" />
 <div class="btn-toolbar">
 	<div class="btn-group">
 		<button class="btn"><i class="icon-file"></i> New</button>
-		<button class="btn"><i class="icon-folder-open"></i> Open</button>
+		<button class="btn" onclick="$('#open-file').click()" rel="tooltip" data-title="You can drag a file into the editor"><i class="icon-folder-open"></i> Open</button>
 		<a id="save-button" class="btn" rel="tooltip" data-title="You can Right Click > Save As"><i class="icon-download-alt"></i> Save</a>
 	</div>
 	<div class="btn-group">
