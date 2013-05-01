@@ -28,7 +28,7 @@ Ptero.screen = (function(){
 		var fov = 30*Math.PI/180;
 		//var near = height/2 / Math.tan(fov/2);
 		var near = 1;
-		var far = near*5;
+		var far = near*20;
 		frustum = new Ptero.Frustum(near,far,fov,aspect);
 
 		Ptero.sizeFactor = frustum.nearTop;
