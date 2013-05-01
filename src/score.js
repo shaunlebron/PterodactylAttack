@@ -38,9 +38,10 @@ Ptero.score = (function(){
 			var y = 10;
 			var r = 2;
 			ctx.fillStyle = "#000";
-			ctx.fillText(total,x+r,y+r);
+			var text = total ? total : "000";
+			ctx.fillText(text,x+r,y+r);
 			ctx.fillStyle = "#FFF";
-			ctx.fillText(total,x,y);
+			ctx.fillText(text,x,y);
 
 			y += size*1.125;
 			size = Math.floor(size*0.65);
