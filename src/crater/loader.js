@@ -41,7 +41,7 @@ Ptero.Crater.loader = (function(){
 
 	function backup() {
 		var state = getState();
-		var stateStr = JSON.stringify(state);
+		var stateStr = JSON.stringify(state,null,'\t');
 		if (window.localStorage != undefined) {
 			window.localStorage.ptalagaState = stateStr;
 		}
