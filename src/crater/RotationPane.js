@@ -9,8 +9,8 @@ Ptero.Crater.RotationPane = function(w,h){
 
 Ptero.Crater.RotationPane.prototype = {
 
-	getPosition: function(i,point) {
-		var x = (2*i+1)*(this.radius+this.pad);
+	getPosition: function() {
+		var x = this.pixelW/2;
 		var y = this.pixelH/2;
 		return { x:x,y:y };
 	},
@@ -50,9 +50,10 @@ Ptero.Crater.RotationPane.prototype = {
 
 		var click_angle, offset_angle;
 
-		for (i=0; i<len; i++) {
-			node = nodes[i];
-			pos = this.getPosition(i,node);
+		var i = Ptero.Crater.enemy_model.selectedIndex;
+		node = Ptero.Crater.enemy_model.getSelectedPoint();
+		if (node) {
+			pos = this.getPosition();
 			offset = this.getAngleOffset(node.angle);
 			dx = pos.x + offset.x - x;
 			dy = pos.y + offset.y - y;
@@ -79,34 +80,40 @@ Ptero.Crater.RotationPane.prototype = {
 		if (point) {
 			if (this.selectedOffsetAngle != undefined) {
 				// rotate
-				var point = enemy_model.getSelectedPoint();
 				var i = enemy_model.selectedIndex;
-				var pos = this.getPosition(i,point);
+				var pos = this.getPosition();
 				var click_angle = this.screenToAngle(x,y,pos.x,pos.y);
 				point.angle = click_angle + this.selectedOffsetAngle;
 			}
 			Ptero.Crater.enemy_model.refreshPath();
 		}
 	},
-	selectNode: function(index,offset_angle) {
-		Ptero.Crater.enemy_model.selectPoint(index);
-		this.selectedOffsetAngle = offset_angle;
-	},
 	mouseStart: function(x,y) {
 		var i = this.getNodeInfoFromCursor(x,y);
-		this.selectNode(i.index, i.offset_angle);
+		Ptero.Crater.enemy_model.selectPoint(i.index);
+		this.selectedOffsetAngle = i.offset_angle;
 	},
 	mouseMove: function(x,y) {
 		this.updateNodePosition(x,y);
 	},
 	mouseEnd: function(x,y) {
 	},
-	drawNode: function(ctx,i,point) {
+	drawNode: function(ctx,point) {
 
 		// get center of circle
-		var pos = this.getPosition(i, point);
+		var pos = this.getPosition();
 		var x = pos.x;
 		var y = pos.y;
+
+		if (!point) {
+			// draw light perimeter
+			ctx.lineWidth = 2;
+			ctx.beginPath();
+			ctx.arc(x,y,this.radius,0,2*Math.PI);
+			ctx.strokeStyle = "#555";
+			ctx.stroke();
+			return;
+		}
 
 		// determine the start and end angles for the angle region
 		var startAngle, endAngle;
@@ -119,15 +126,7 @@ Ptero.Crater.RotationPane.prototype = {
 			endAngle = point.angle-Math.PI/2;
 		}
 
-		var lightColor, darkColor;
-		if (i == Ptero.Crater.enemy_model.selectedIndex) {
-			lightColor = "#FAA";
-			darkColor = "#F00";
-		}
-		else {
-			lightColor = "#DDD";
-			darkColor = "#999";
-		}
+		var isSelected = point == Ptero.Crater.enemy_model.getSelectedPoint();
 
 		// draw the angle region
 		ctx.beginPath();
@@ -135,7 +134,7 @@ Ptero.Crater.RotationPane.prototype = {
 		ctx.lineTo(x,y);
 		ctx.closePath();
 		ctx.lineWidth = 2;
-		ctx.strokeStyle = ctx.fillStyle = lightColor;
+		ctx.strokeStyle = ctx.fillStyle = isSelected ? "#FAA" : "#AAF";
 		ctx.fill();
 		ctx.stroke();
 
@@ -143,21 +142,21 @@ Ptero.Crater.RotationPane.prototype = {
 		ctx.lineWidth = 2;
 		ctx.beginPath();
 		ctx.arc(x,y,this.radius,0,2*Math.PI);
-		ctx.strokeStyle = lightColor;
+		ctx.strokeStyle = "#555";
 		ctx.stroke();
 
 		// draw dark perimeter around region
 		ctx.beginPath();
 		ctx.arc(x,y,this.radius,startAngle,endAngle);
-		ctx.strokeStyle = darkColor;
+		ctx.strokeStyle = "#333";
 		ctx.lineWidth = 2;
-		ctx.stroke();
+		//ctx.stroke();
 
 		// draw angle node
 		var rpos = this.getAngleOffset(point.angle);
 		ctx.beginPath();
 		ctx.arc(x+rpos.x, y+rpos.y, this.nodeRadius, 0, Math.PI*2);
-		ctx.fillStyle = darkColor;
+		ctx.fillStyle = isSelected ? "#F00" : "#00F";
 		ctx.fill();
 
 		// draw degree label
@@ -175,7 +174,7 @@ Ptero.Crater.RotationPane.prototype = {
 			// I have no idea why I have to divide the width by 2 here.
 			tx += ctx.measureText("\u00B0").width/2;
 		}
-		ctx.fillStyle = darkColor;
+		ctx.fillStyle = "#333";
 		ctx.fillText(text,tx,ty);
 	},
 	draw: function(ctx) {
@@ -183,10 +182,13 @@ Ptero.Crater.RotationPane.prototype = {
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 
 		var e = Ptero.Crater.enemy_model;
-		var len = e.points.length;
-		var i;
-		for (i=0; i<len; i++) {
-			this.drawNode(ctx,i,e.points[i]);
+		var point = e.getSelectedPoint();
+		if (point) {
+			this.drawNode(ctx,point);
+		}
+		else {
+			point = Ptero.Crater.enemy_model.enemy.getPosition();
+			this.drawNode(ctx,point);
 		}
 	},
 };
