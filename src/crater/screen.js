@@ -7,9 +7,10 @@ Ptero.Crater.screen = (function(){
 	var paneHeight = paneWidth/16*9;
 
 	var timePaneHeight = 80;
+	var rotPaneHeight = 100;
 
 	var width =  paneWidth*2;
-	var height = paneHeight*2 + timePaneHeight;
+	var height = paneHeight*2 + timePaneHeight + rotPaneHeight;
 
 	function init(_canvas) {
 		canvas = _canvas;
@@ -26,5 +27,6 @@ Ptero.Crater.screen = (function(){
 		getPaneWidth: function() { return paneWidth; },
 		getPaneHeight: function() { return paneHeight; },
 		getTimePaneHeight: function() { return timePaneHeight; },
+		getRotPaneHeight: function() { return rotPaneHeight; },
 	};
 })();

@@ -1,7 +1,7 @@
 
 Ptero.Crater.panes = (function() {
 
-	var topPane, frontPane, rightPane, livePane, timePane;
+	var topPane, frontPane, rightPane, livePane, timePane, rotPane;
 	var panes;
 
 	var paneWidth,paneHeight,timePaneHeight;
@@ -12,6 +12,7 @@ Ptero.Crater.panes = (function() {
 		paneWidth = w;
 		paneHeight = h;
 		timePaneHeight = Ptero.Crater.screen.getTimePaneHeight();
+		rotPaneHeight = Ptero.Crater.screen.getRotPaneHeight();
 
 		var frustum = Ptero.screen.getFrustum();
 
@@ -36,6 +37,7 @@ Ptero.Crater.panes = (function() {
 		livePane.init();
 
 		timePane = new Ptero.Crater.TimePane(2*w, timePaneHeight, 20);
+		rotPane = new Ptero.Crater.RotationPane(2*w, rotPaneHeight);
 
 		// This determines the position of the panes on the screen.
 		panes = [livePane, topPane, rightPane, frontPane];
@@ -45,7 +47,12 @@ Ptero.Crater.panes = (function() {
 
 	function getPaneFromXY(x,y) {
 		if (y > 2*paneHeight) {
-			return timePane;
+			if (y > 2*paneHeight + rotPaneHeight) {
+				return timePane;
+			}
+			else {
+				return rotPane;
+			}
 		}
 		var row = Math.floor(y/paneHeight);
 		var col = Math.floor(x/paneWidth);
@@ -67,9 +74,17 @@ Ptero.Crater.panes = (function() {
 		if (pane == timePane) {
 			return {
 				x: 0,
-				y: 2*h,
+				y: 2*h + rotPaneHeight,
 				w: timePane.pixelW,
 				h: timePane.pixelH,
+			};
+		}
+		else if (pane == rotPane) {
+			return {
+				x: 0,
+				y: 2*h,
+				w: rotPane.pixelW,
+				h: rotPane.pixelH,
 			};
 		}
 
@@ -141,6 +156,7 @@ Ptero.Crater.panes = (function() {
 			drawPane(panes[i]);
 		}
 		drawPane(timePane);
+		drawPane(rotPane);
 
 		// Draw pane borders.
 		ctx.strokeStyle = "#FFF";
@@ -152,6 +168,8 @@ Ptero.Crater.panes = (function() {
 		ctx.lineTo(2*w,h);
 		ctx.moveTo(0,2*h);
 		ctx.lineTo(2*w,2*h);
+		ctx.moveTo(0,2*h+rotPaneHeight);
+		ctx.lineTo(2*w,2*h+rotPaneHeight);
 		ctx.stroke();
 
 	};
