@@ -263,7 +263,7 @@ Ptero.Crater.LivePane.prototype = {
 					this.drawModelNodes(ctx, e);
 					this.drawModelPath(ctx, e);
 				}
-				else {
+				else if (e.visible) {
 					ctx.globalAlpha = 0.5;
 					this.drawModelPath(ctx, e);
 					ctx.globalAlpha = 1;

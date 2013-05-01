@@ -25,6 +25,10 @@
 	}
 	canvas {
 	}
+
+	input.tabcheck {
+		margin: 0px 4px 0 0;
+	}
 	</style>
 
 	<script src="lib/jquery/jquery-1.9.1.min.js"></script>
@@ -73,6 +77,7 @@
 	    margin: -4px 0 0 5px;
 	}
 
+	/* Uncomment this to bring toolbar next to title
 	#title {
 		float: left;
 		display: inline;
@@ -86,6 +91,7 @@
 	#container {
 		clear:both;
 	}
+	*/
 	</style>
 
 </head>
@@ -153,6 +159,10 @@ $(function(){
 			class="btn"
 			onclick="Ptero.Crater.enemy_model_list.duplicatePath()"
 			><i class="icon-asterisk"></i> Duplicate Path</button>
+		<button
+			class="btn"
+			onclick="Ptero.Crater.enemy_model_list.toggleAllVisibility()"
+			><i class="icon-check"></i> Toggle All Visibility</button>
 	</div>
 </div>
 

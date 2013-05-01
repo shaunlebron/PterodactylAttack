@@ -144,6 +144,29 @@ Ptero.Crater.EnemyModelList.prototype = {
 		this.refreshOrder();
 		Ptero.Crater.loader.backup();
 	},
+	toggleAllVisibility: function() {
+		var i,len=this.models.length;
+		var e;
+		var allchecked = true;
+		for (i=0; i<len; i++) {
+			e = this.models[i];
+			if (!e.visible) {
+				allchecked = false;
+				break;
+			}
+		}
+
+		var checked = !allchecked;
+		for (i=0; i<len; i++) {
+			e = this.models[i];
+			e.visible = checked;
+		}
+		this.refreshTabs();
+	},
+	toggleVisibilityIndex: function(index) {
+		var e = this.getModelFromIndex(index);
+		e.visible = !e.visible;
+	},
 	getTabsString: function() {
 		var i,e,len=this.models.length;
 		var str = "";
@@ -159,7 +182,18 @@ Ptero.Crater.EnemyModelList.prototype = {
 				str += 'onmouseout="Ptero.Crater.enemy_model_list.unpreviewIndex(' + e.index + ')"';
 				str += '>';
 			}
-			str += '<button class="close" type="button" onclick="Ptero.Crater.enemy_model_list.promptRemoveIndex(' +e.index+ ')">&times;</button>Path ' + e.index + '</a></li>';
+			str += '<input ';
+			str += 'class="tabcheck" ';
+			str += 'type="checkbox" ';
+			if (e.visible) {
+				str += 'checked ';
+			}
+			str += 'onchange="Ptero.Crater.enemy_model_list.toggleVisibilityIndex('+e.index+')" ';
+			str += '></input>';
+
+			str += '<button class="close" type="button" ';
+			str += 'onclick="Ptero.Crater.enemy_model_list.promptRemoveIndex(' +e.index+ ')"';
+			str += '>&times;</button>Path ' + e.index + '</a></li>';
 		}
 		str += '<li><a href="#" onclick="Ptero.Crater.enemy_model_list.createNew()"><i class="icon-plus"></i></li>';
 		return str;
@@ -191,6 +225,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 };
 
 Ptero.Crater.EnemyModel = function(index) {
+	this.visible = true;
 	this.index = index;
 	this.enemy = new Ptero.Enemy();
 	this.points = [];
@@ -345,25 +380,26 @@ Ptero.Crater.EnemyModel.prototype = {
 
 		// REPLAY MODE
 		if (!Ptero.Crater.enemy_model_list.isEditing) {
-			//this.enemy.update(dt);
 
-			this.enemy.babySprite.update(dt);
+			if (isActive || this.visible) {
+				this.enemy.babySprite.update(dt);
 
-			var that = this;
-			if (this.enemy.getPosition()) {
-				Ptero.deferredSprites.defer(
-					(function(e){
-						return function(ctx) {
-							if (!isActive) {
-								ctx.globalAlpha = 0.5;
-							}
-							e.draw(ctx);
-							if (!isActive) {
-								ctx.globalAlpha = 1;
-							}
-						};
-					})(this.enemy),
-					this.enemy.getPosition().z);
+				var that = this;
+				if (this.enemy.getPosition()) {
+					Ptero.deferredSprites.defer(
+						(function(e){
+							return function(ctx) {
+								if (!isActive) {
+									ctx.globalAlpha = 0.5;
+								}
+								e.draw(ctx);
+								if (!isActive) {
+									ctx.globalAlpha = 1;
+								}
+							};
+						})(this.enemy),
+						this.enemy.getPosition().z);
+				}
 			}
 		}
 
@@ -396,7 +432,7 @@ Ptero.Crater.EnemyModel.prototype = {
 			}
 
 			// WHEN NOT ACTIVE, DRAW SPRITE AT CURRENT TIME
-			else {
+			else if (this.visible) {
 				this.enemy.babySprite.update(dt);
 
 				var pos = this.enemy.getPosition();

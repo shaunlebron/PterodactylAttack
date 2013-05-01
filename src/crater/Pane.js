@@ -360,7 +360,7 @@ Ptero.Crater.Pane.prototype = {
 			ctx.globalAlpha = 0.35;
 			for (i=0; i<len; i++) {
 				var e = models[i];
-				if (e != Ptero.Crater.enemy_model) {
+				if (e != Ptero.Crater.enemy_model && e.visible) {
 					this.drawModelPath(ctx, e);
 					this.drawModelNodes(ctx, e);
 				}
