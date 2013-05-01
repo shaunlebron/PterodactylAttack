@@ -72,13 +72,27 @@
 	.nav-pills > li .close {
 	    margin: -4px 0 0 5px;
 	}
+
+	#title {
+		float: left;
+		display: inline;
+	}
+
+	#toolbar {
+		float: left;
+		margin: 15px 0 0 15px;
+	}
+	
+	#container {
+		clear:both;
+	}
 	</style>
 
 </head>
 
 <body>
 
-<h2>Ptalaga</h2>
+<h2 id="title">Ptalaga</h2>
 
 <script>
 $(function(){
@@ -103,19 +117,40 @@ $(function(){
 </script>
 
 <input style="display:none" type="file" id="open-file" />
-<div class="btn-toolbar">
+<div class="btn-toolbar" id="toolbar">
 	<div class="btn-group">
-		<button class="btn" onclick="Ptero.Crater.loader.promptReset()"><i class="icon-file"></i> New</button>
-		<button class="btn" onclick="$('#open-file').click()" rel="tooltip" data-title="You can drag a file into the editor"><i class="icon-folder-open"></i> Open</button>
-		<a id="save-button" class="btn" rel="tooltip" data-title="You can Right Click > Save As"><i class="icon-download-alt"></i> Save</a>
+		<button
+			class="btn"
+			onclick="Ptero.Crater.loader.promptReset()"
+			><i class="icon-file"></i> New</button>
+		<button
+			class="btn"
+			onclick="$('#open-file').click()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="You can drag a file into the editor"
+			><i class="icon-folder-open"></i> Open</button>
+		<a
+			id="save-button"
+			class="btn"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="You can Right Click > Save As"
+			><i class="icon-download-alt"></i> Save</a>
 	</div>
 	<div class="btn-group">
-		<button class="btn" onclick="Ptero.Crater.enemy_model.addPoint()"><i class="icon-plus-sign"></i> Add Point</button>
-		<button class="btn" onclick="Ptero.Crater.enemy_model.removeSelectedPoint()"><i class="icon-minus-sign"></i> Remove Point</button>
+		<button
+			class="btn"
+			onclick="Ptero.Crater.enemy_model.addPoint()"
+			><i class="icon-plus-sign"></i> Add Point</button>
+		<button
+			class="btn"
+			onclick="Ptero.Crater.enemy_model.removeSelectedPoint()"
+			><i class="icon-minus-sign"></i> Remove Point</button>
 	</div>
 </div>
 
-<div class="tabbable tabs-right">
+<div id="container" class="tabbable tabs-right">
 	<ul id="pathtabs" class="nav nav-tabs"></ul>
 	<div class="tab-content">
 		<canvas id='canvas'></canvas>
