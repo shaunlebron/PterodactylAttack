@@ -62,6 +62,17 @@ Ptero.Crater.EnemyModelList.prototype = {
 
 		Ptero.Crater.loader.backup();
 	},
+	duplicatePath: function() {
+		this.index++;
+		var state = Ptero.Crater.enemy_model.getState();
+		var e = Ptero.Crater.EnemyModel.fromState(state);
+		e.index = this.index;
+		this.models.push(e);
+		this.select(e);
+		this.refreshMaxTime();
+		this.refreshOrder();
+		Ptero.Crater.loader.backup();
+	},
 	createNew: function() {
 		this.index++;
 		var e = new Ptero.Crater.EnemyModel(this.index);
