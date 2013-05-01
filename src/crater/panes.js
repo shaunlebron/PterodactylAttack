@@ -4,15 +4,16 @@ Ptero.Crater.panes = (function() {
 	var topPane, frontPane, rightPane, livePane, timePane, rotPane;
 	var panes;
 
-	var paneWidth,paneHeight,timePaneHeight;
+	var paneWidth,paneHeight,timePaneHeight,timePaneWidth,rotPaneWidth,rotPaneHeight;
 
 	function init() {
 		var w = Ptero.Crater.screen.getPaneWidth();
 		var h = Ptero.Crater.screen.getPaneHeight();
 		paneWidth = w;
 		paneHeight = h;
-		timePaneHeight = Ptero.Crater.screen.getTimePaneHeight();
-		rotPaneHeight = Ptero.Crater.screen.getRotPaneHeight();
+		rotPaneHeight = timePaneHeight = Ptero.Crater.screen.getTimePaneHeight();
+		rotPaneWidth = 100;
+		timePaneWidth = 2*w - rotPaneWidth;
 
 		var frustum = Ptero.screen.getFrustum();
 
@@ -36,8 +37,8 @@ Ptero.Crater.panes = (function() {
 		livePane = new Ptero.Crater.LivePane();
 		livePane.init();
 
-		timePane = new Ptero.Crater.TimePane(2*w, timePaneHeight, 20);
-		rotPane = new Ptero.Crater.RotationPane(2*w, rotPaneHeight);
+		rotPane = new Ptero.Crater.RotationPane(rotPaneWidth, rotPaneHeight);
+		timePane = new Ptero.Crater.TimePane(timePaneWidth, timePaneHeight, 20);
 
 		// This determines the position of the panes on the screen.
 		panes = [livePane, topPane, rightPane, frontPane];
@@ -47,7 +48,7 @@ Ptero.Crater.panes = (function() {
 
 	function getPaneFromXY(x,y) {
 		if (y > 2*paneHeight) {
-			if (y > 2*paneHeight + rotPaneHeight) {
+			if (x > rotPaneWidth) {
 				return timePane;
 			}
 			else {
@@ -73,8 +74,8 @@ Ptero.Crater.panes = (function() {
 
 		if (pane == timePane) {
 			return {
-				x: 0,
-				y: 2*h + rotPaneHeight,
+				x: rotPaneWidth,
+				y: 2*h,
 				w: timePane.pixelW,
 				h: timePane.pixelH,
 			};
@@ -168,8 +169,8 @@ Ptero.Crater.panes = (function() {
 		ctx.lineTo(2*w,h);
 		ctx.moveTo(0,2*h);
 		ctx.lineTo(2*w,2*h);
-		ctx.moveTo(0,2*h+rotPaneHeight);
-		ctx.lineTo(2*w,2*h+rotPaneHeight);
+		ctx.moveTo(rotPaneWidth,2*h);
+		ctx.lineTo(rotPaneWidth,2*h+rotPaneHeight);
 		ctx.stroke();
 
 	};
