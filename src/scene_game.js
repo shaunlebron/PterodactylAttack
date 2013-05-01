@@ -59,7 +59,7 @@ Ptero.scene_game = (function() {
 			}
 		});
 
-		timerDisplay = new Ptero.TimerDisplay(20);
+		timerDisplay = new Ptero.TimerDisplay(60);
 
 		Ptero.background.setImage(Ptero.assets.images.desert, Ptero.assets.images["bg_frosted"]);
 
