@@ -225,6 +225,7 @@ Ptero.Crater.TimePane.prototype = {
 		ctx.fillStyle = "#777";
 		var s = this.timeToScreen(0);
 		ctx.fillText('time (s)', s.x/2, s.y);
+		ctx.fillText(Ptero.Crater.enemy_model.enemy.path.time.toFixed(2), s.x/2, s.y+20);
 
 		ctx.textBaseline = 'top';
 		ctx.fillStyle = "#BBB";
