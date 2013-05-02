@@ -68,6 +68,7 @@ Ptero.Crater.LivePane.prototype = {
 			return dx*dx + dy*dy;
 		}
 		
+		/*
 		if (enemy_model.selectedIndex != undefined) {
 			var point = enemy_model.getSelectedPoint();
 			if (enemy_model.enemy.babySprite.getBillboard().isOverRotationHandle(x,y,point)) {
@@ -79,6 +80,7 @@ Ptero.Crater.LivePane.prototype = {
 				};
 			}
 		}
+		*/
 
 		// First, see if any of the knots are clicked.
 		var min_dist_sq = 100;

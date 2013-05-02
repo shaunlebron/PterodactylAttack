@@ -430,7 +430,7 @@ Ptero.Crater.EnemyModel.prototype = {
 							return function(ctx){
 								if (isSelected) {
 									sprite.draw(ctx,pos);
-									sprite.drawBorder(ctx,pos,"#F00",true);
+									sprite.drawBorder(ctx,pos,"#F00");
 								}
 								else {
 									var backupAlpha = ctx.globalAlpha;
