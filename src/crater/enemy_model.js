@@ -257,9 +257,22 @@ Ptero.Crater.EnemyModel.fromState = function(state) {
 
 Ptero.Crater.EnemyModel.prototype = {
 	getState: function() {
+		var points = [];
+		var i,len = this.points.length;
+		var p;
+		for (i=0; i<len; i++) {
+			p = this.points[i];
+			points.push({
+				t: p.t,
+				x: p.x,
+				y: p.y,
+				z: p.z,
+				angle: p.angle,
+			});
+		}
 		return {
 			index: this.index,
-			points: this.points,
+			points: points,
 		};
 	},
 	makeDefaultPath: function(numPoints) {
