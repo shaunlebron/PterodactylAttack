@@ -10,6 +10,17 @@ Ptero.Crater.Pane = function (w,h,axes,title) {
 
 	this.title = title;
 	this.nodeRadius = 4;
+	var that = this;
+	window.addEventListener("keydown", function(e) {
+		if (e.keyCode == 16) {
+			that.isDragTogether = true;
+		}
+	});
+	window.addEventListener("keyup", function(e) {
+		if (e.keyCode == 16) {
+			that.isDragTogether = false;
+		}
+	});
 };
 
 Ptero.Crater.Pane.prototype = {
@@ -33,23 +44,27 @@ Ptero.Crater.Pane.prototype = {
 			scale = this.pixelH / brange;
 		}
 
-		var amid = amin + arange/2;
-		var bmid = bmin + brange/2;
-		this.zoom(scale, amid,bmid);
+		var apos = amin + arange/2;
+		var bpos = bmin + brange/2;
+		this.zoom(scale, apos, bpos);
 	},
 
-	// Zoom the window to the given scale at the given center point.
-	zoom: function(scale, amid,bmid) {
+	// Zoom the window to the given scale.
+	// Also, bring the point (apos,bpos) to the pixel (apixel, bpixel)
+	zoom: function(scale, apos, bpos, apixel, bpixel) {
+
+		this.apixel = (apixel==undefined) ? this.pixelW/2 : apixel;
+		this.bpixel = (bpixel==undefined) ? this.pixelH/2 : bpixel;
 	
 		// Use the previously set center point if not specified.
-		this.amid = (amid==undefined) ? this.amid : amid;
-		this.bmid = (bmid==undefined) ? this.bmid : bmid;
+		this.apos = (apos==undefined) ? this.apos : apos;
+		this.bpos = (bpos==undefined) ? this.bpos : bpos;
 
 		this.scale = scale;
 
 		// Calculate the position of the topleft pixel.
-		var aleft = this.amid - this.pixelW / this.scale / 2;
-		var btop = this.bmid + this.pixelH / this.scale / 2;
+		var aleft = this.apos - this.apixel / this.scale;
+		var btop = this.bpos + this.bpixel / this.scale;
 
 		// Set pixel offset of the origin from the topleft pixel.
 		this.origin = {
@@ -335,14 +350,34 @@ Ptero.Crater.Pane.prototype = {
 		}
 	},
 
+	setFocusPoint: function(x,y) {
+		var pos = this.screenToSpace(x,y);
+		this.apos = pos[this.axes[0]];
+		this.bpos = pos[this.axes[1]];
+	},
+
 	mouseStart: function(x,y) {
 		var i = this.getNodeInfoFromCursor(x,y);
 		this.selectNode(i.index, i.offset_x, i.offset_y);
+		this.isPanning = (i.index == undefined && this.isDragTogether);
+		if (this.isPanning) {
+			this.setFocusPoint(x,y);
+		}
 	},
 	mouseMove: function(x,y) {
 		this.updateNodePosition(x,y);
+		if (this.isPanning) {
+			this.zoom(this.scale, this.apos, this.bpos, x, y);
+		}
 	},
 	mouseEnd: function(x,y) {
+		this.isPanning = false;
+	},
+	mouseScroll: function(x,y,delta,deltaX,deltaY) {
+		this.setFocusPoint(x,y);
+		var scale = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
+		this.scale *= scale;
+		this.zoom(this.scale, this.apos, this.bpos, x, y);
 	},
 
 	/* MAIN FUNCTIONS */

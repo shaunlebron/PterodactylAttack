@@ -129,11 +129,19 @@ Ptero.Crater.panes = (function() {
 				pane = null;
 			}
 		}
+		function scroll(x,y,delta,deltaX,deltaY) {
+			var pane = getPaneFromXY(x,y);
+			if (pane) {
+				var pos = getXYRelativeToPane(x,y,pane);
+				pane.mouseScroll && pane.mouseScroll(pos.x, pos.y, delta,deltaX,deltaY);
+			}
+		}
 		Ptero.input.addTouchHandler({
 			start: start,
 			move: move,
 			end: end,
 			cancel: end,
+			scroll: scroll,
 		});
 	};
 
