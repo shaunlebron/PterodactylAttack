@@ -52,8 +52,10 @@ if __name__ == "__main__":
 	create_zip(['cocoon.js','img','audio'], 'cocoon.zip')
 	print "done."
 
+	"""
 	print "Copying to android device ..."
 	try:
 		subprocess.call(["adb","push","cocoon.zip","/sdcard/"])
 	except:
 		print "	ERROR: couldn't copy to android device"
+	"""
