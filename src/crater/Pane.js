@@ -375,7 +375,10 @@ Ptero.Crater.Pane.prototype = {
 	},
 	mouseScroll: function(x,y,delta,deltaX,deltaY) {
 		this.setFocusPoint(x,y);
+
+		// from: http://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
 		var scale = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
+
 		this.scale *= scale;
 		this.zoom(this.scale, this.apos, this.bpos, x, y);
 	},
