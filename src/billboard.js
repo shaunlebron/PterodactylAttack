@@ -120,4 +120,11 @@ Ptero.Billboard.prototype = {
 		var dist_sq = dx*dx+dy*dy;
 		return dist_sq <= 64;
 	},
+
+	transform: function(ctx,pos) {
+		var screenRect = this.getScreenRect(pos);
+		ctx.translate(screenRect.x, screenRect.y);
+		var scale = screenRect.w / this.w;
+		ctx.scale(scale, scale);
+	},
 };

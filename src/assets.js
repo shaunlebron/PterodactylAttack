@@ -13,6 +13,7 @@ Ptero.assets = (function(){
 		"play": "img/play.png",
 		"pause": "img/pause.png",
 		"logo": "img/logo.png",
+		"missile": "img/missile.png",
 	};
 
 	var images = {};

@@ -183,11 +183,15 @@ Ptero.orb = (function(){
 		deselectTarget(target);
 		target.lockedon = true;
 
-		var time = 1;
+		var time = 1.5;
 		var endPos = target.getFuturePosition(time);
+		if (!endPos) {
+			target.lockedon = false;
+			return;
+		}
 
 		bulletCone = getBulletConeAtPos(target.getPosition());
-		var midBullet = createBulletFromCone(bulletCone, aim_vector);
+		var midBullet = createBulletFromCone(bulletCone, aim_vector, getBulletSpeed()/2);
 		var midTime = 0.2;
 		midBullet.update(midTime);
 		var midPos = midBullet.getPosition();
@@ -434,14 +438,14 @@ Ptero.orb = (function(){
 		return {r: frustum.nearTop, z: frustum.near * 3};
 	};
 
-	function createBulletFromCone(cone, aim_vector) {
+	function createBulletFromCone(cone, aim_vector, speed) {
 		var frustum = Ptero.screen.getFrustum();
 		var vector = aim_vector.copy().mul(cone.r);
 		vector.add(startOrigin);
 		vector.set(frustum.projectToZ(vector,cone.z)).sub(startOrigin).normalize();
 
 		var bullet = new Ptero.Bullet;
-		bullet.speed = getBulletSpeed();
+		bullet.speed = speed || getBulletSpeed();
 		bullet.pos.set(startOrigin);
 		bullet.dir.set(vector);
 		return bullet;

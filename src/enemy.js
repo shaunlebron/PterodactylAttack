@@ -134,7 +134,7 @@ Ptero.Enemy.prototype = {
 				this.babySprite.drawBorder(ctx, pos, "#0FF");
 			}
 			if (this.lockedon) {
-				this.babySprite.drawBorder(ctx, pos, "#F00");
+				this.babySprite.drawBorder(ctx, pos, "#F0F");
 			}
 		}
 
