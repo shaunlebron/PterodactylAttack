@@ -53,21 +53,24 @@ Ptero.assets = (function(){
 		}
 	};
 
-	function load(callback) {
+	function load(onDone,onProgress) {
 		var count = 0;
+		var totalCount = 0;
 		var name;
+		onProgress && onProgress(0);
 		for (name in imageSources) {
 			if (imageSources.hasOwnProperty(name)) {
-				count++;
+				totalCount++;
 			}
 		}
 
 		var handleLoad = function() {
-			count--;
-			if (count == 0) {
+			count++;
+			if (count == totalCount) {
 				retrieveMetaData();
-				callback && callback();
+				onDone && onDone();
 			}
+			onProgress && onProgress(count/totalCount);
 		};
 
 		var img;
