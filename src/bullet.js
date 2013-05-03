@@ -10,7 +10,7 @@ Ptero.Bullet = function() {
 };
 
 Ptero.Bullet.prototype = {
-	lifeTime: 5, // seconds
+	lifeTime: 3, // seconds
 	update: function update(dt) {
 		this.pos.add(this.dir.copy().mul(this.speed*dt));
 		this.time += dt;

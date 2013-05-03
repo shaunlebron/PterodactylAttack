@@ -47,6 +47,7 @@ Ptero.Enemy.prototype = {
 		if (!this.isHittable()) {
 			return;
 		}
+		this.lockedon = false;
 
 		// update score
 		Ptero.score.addPoints(100);
@@ -66,6 +67,7 @@ Ptero.Enemy.prototype = {
 		this.isGoingToDie = false;
 		if (this.selected) {
 			Ptero.orb.deselectTarget(this);
+			this.lockedon = false;
 		}
 		this.life++;
 	},
@@ -101,8 +103,13 @@ Ptero.Enemy.prototype = {
 			this.resetPosition();
 		}
 		else {
-			if (this.selected && !this.isHittable()) {
-				Ptero.orb.deselectTarget(this);
+
+			// Deselect target if it has gone offscreen
+			if (!this.isHittable()) {
+				if (this.selected) {
+					Ptero.orb.deselectTarget(this);
+				}
+				this.lockedon = false;
 			}
 
 			// FLYING TOWARD SCREEN
@@ -125,6 +132,9 @@ Ptero.Enemy.prototype = {
 			this.babySprite.draw(ctx, pos);
 			if (this.selected) {
 				this.babySprite.drawBorder(ctx, pos, "#0FF");
+			}
+			if (this.lockedon) {
+				this.babySprite.drawBorder(ctx, pos, "#F00");
 			}
 		}
 

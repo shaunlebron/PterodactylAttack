@@ -27,6 +27,9 @@ Ptero.bulletpool = (function(){
 			if (!b) {
 				continue;
 			}
+			if (b.collideTarget && !b.collideTarget.isHittable()) {
+				b.collideTarget = undefined;
+			}
 			b.update(dt);
 			if (b.isDone()) {
 				if (b.collideTarget && b.collideTarget.onHit) {

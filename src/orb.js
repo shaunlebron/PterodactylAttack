@@ -181,6 +181,7 @@ Ptero.orb = (function(){
 	function shootHoming(aim_vector) {
 		var target = selectedTargets[0];
 		deselectTarget(target);
+		target.lockedon = true;
 
 		var time = 1;
 		var endPos = target.getFuturePosition(time);
@@ -506,7 +507,7 @@ Ptero.orb = (function(){
 		var i,len,target;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
 			target = targets[i];
-			if (!target.isHittable()) {
+			if (target.lockedon || !target.isHittable()) {
 				continue;
 			}
 			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
