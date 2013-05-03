@@ -185,18 +185,18 @@ Ptero.orb = (function(){
 		var time = 1;
 		var endPos = target.getFuturePosition(time);
 
-		var midPos = {
-			x: 0,
-			y: 0,
-			z: (endPos.z - startOrigin.z)/2 + startOrigin.z,
-		};
+		bulletCone = getBulletConeAtPos(target.getPosition());
+		var midBullet = createBulletFromCone(bulletCone, aim_vector);
+		var midTime = 0.2;
+		midBullet.update(midTime);
+		var midPos = midBullet.getPosition();
 
 		var bullet = new Ptero.PathBullet(
 			new Ptero.Path(
 				new Ptero.makeHermiteInterpForObjs(
 					[startOrigin,midPos,endPos],
 					['x','y','z'],
-					[0,time/2,time/2]
+					[0,midTime,time-midTime]
 				)
 			)
 		);

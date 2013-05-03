@@ -46,7 +46,7 @@ Ptero.makeHermiteEnemyPath = function() {
 	var frustum = Ptero.screen.getFrustum();
 	var size = Ptero.sizeFactor;
 	var near = frustum.near;
-	var far = frustum.far;
+	var far = frustum.near * 8;
 
 	var xrange = aspect*size*2;
 	var yrange = size;
