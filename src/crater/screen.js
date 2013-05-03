@@ -23,6 +23,8 @@ Ptero.Crater.screen = (function(){
 
 	return {
 		init: init,
+		getWidth: function() { return width; },
+		getHeight: function() { return height; },
 		getPaneWidth: function() { return paneWidth; },
 		getPaneHeight: function() { return paneHeight; },
 		getTimePaneHeight: function() { return timePaneHeight; },
