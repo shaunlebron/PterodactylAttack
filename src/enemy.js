@@ -44,7 +44,10 @@ Ptero.Enemy.prototype = {
 		return this.babySprite.getBillboard();
 	},
 	onHit: function onHit() {
-		if 
+		if (!this.isHittable()) {
+			return;
+		}
+
 		// update score
 		Ptero.score.addPoints(100);
 		// scene.score += 100 + scene.getStreakBonus();
@@ -98,6 +101,10 @@ Ptero.Enemy.prototype = {
 			this.resetPosition();
 		}
 		else {
+			if (this.selected && !this.isHittable()) {
+				Ptero.orb.deselectTarget(this);
+			}
+
 			// FLYING TOWARD SCREEN
 			// update position
 			this.path.step(dt);
