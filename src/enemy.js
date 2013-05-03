@@ -31,9 +31,6 @@ Ptero.Enemy.prototype = {
 		this.boomSprite = this.boomSprites[i];
 		this.boomSprite.restart();
 	},
-	isHittable: function isHittable() {
-		return !this.path.isDone() && !this.isHit; // only hittable if not already hit
-	},
 	getPosition: function getPosition() {
 		return this.path.pos;
 	},
@@ -47,6 +44,7 @@ Ptero.Enemy.prototype = {
 		return this.babySprite.getBillboard();
 	},
 	onHit: function onHit() {
+		if 
 		// update score
 		Ptero.score.addPoints(100);
 		// scene.score += 100 + scene.getStreakBonus();
@@ -67,6 +65,22 @@ Ptero.Enemy.prototype = {
 			Ptero.orb.deselectTarget(this);
 		}
 		this.life++;
+	},
+	isHittable: function() {
+		if (this.path.isDone() || this.isHit) {
+			return false;
+		}
+
+		var billboard = this.getBillboard();
+		var pos = this.getPosition();
+		var rect = billboard.getSpaceRect(pos);
+		var frustum = Ptero.screen.getFrustum();
+		return (
+			frustum.isInside(rect.bl) ||
+			frustum.isInside(rect.br) ||
+			frustum.isInside(rect.tl) ||
+			frustum.isInside(rect.tr)
+		);
 	},
 	update: function update(dt) {
 

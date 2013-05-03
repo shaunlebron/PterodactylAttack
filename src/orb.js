@@ -102,7 +102,7 @@ Ptero.orb = (function(){
 		// Note: We are only drawing these cones if the we are charging (i.e. touch started from within the circle)
 		//  This is indicated by a non-null value in "startOrigin".
 
-		if (!startOrigin || !shouldDrawCones || !isHittableTarget(target)) {
+		if (!startOrigin || !shouldDrawCones || !target.isHittable()) {
 			return;
 		}
 
@@ -308,22 +308,6 @@ Ptero.orb = (function(){
 		}
 	};
 
-	function isHittableTarget(target) {
-		var billboard = target.getBillboard();
-		var pos = target.getPosition();
-		var rect = billboard.getSpaceRect(pos);
-		var frustum = Ptero.screen.getFrustum();
-		if (target.isHittable()) {
-			return (
-				frustum.isInside(rect.bl) ||
-				frustum.isInside(rect.br) ||
-				frustum.isInside(rect.tl) ||
-				frustum.isInside(rect.tr)
-			);
-		}
-		return false;
-	}
-
 	// Choose which target to shoot with the given aiming vector.
 	function chooseTargetFromAimVector(aim_vector) {
 
@@ -339,7 +323,7 @@ Ptero.orb = (function(){
 		var frustum = Ptero.screen.getFrustum();
 		var z;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
-			if (!isHittableTarget(targets[i])) {
+			if (!targets[i].isHittable()) {
 				continue;
 			}
 			var target_pos = targets[i].getPosition();
@@ -486,7 +470,7 @@ Ptero.orb = (function(){
 		var dx,dy,dist;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
 			target = targets[i];
-			if (!isHittableTarget(target)) {
+			if (!target.isHittable()) {
 				continue;
 			}
 			targetPos = target.getPosition();
@@ -522,7 +506,7 @@ Ptero.orb = (function(){
 		var i,len,target;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
 			target = targets[i];
-			if (!isHittableTarget(target)) {
+			if (!target.isHittable()) {
 				continue;
 			}
 			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
