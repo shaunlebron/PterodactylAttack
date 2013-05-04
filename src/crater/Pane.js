@@ -357,17 +357,21 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	mouseStart: function(x,y) {
-		var i = this.getNodeInfoFromCursor(x,y);
-		this.selectNode(i.index, i.offset_x, i.offset_y);
-		this.isPanning = (i.index == undefined && this.isDragTogether);
-		if (this.isPanning) {
+		if (this.isDragTogether) {
+			this.isPanning = true;
 			this.setFocusPoint(x,y);
+		}
+		else {
+			var i = this.getNodeInfoFromCursor(x,y);
+			this.selectNode(i.index, i.offset_x, i.offset_y);
 		}
 	},
 	mouseMove: function(x,y) {
-		this.updateNodePosition(x,y);
 		if (this.isPanning) {
 			this.zoom(this.scale, this.apos, this.bpos, x, y);
+		}
+		else {
+			this.updateNodePosition(x,y);
 		}
 	},
 	mouseEnd: function(x,y) {
