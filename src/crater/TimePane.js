@@ -8,6 +8,9 @@ Ptero.Crater.TimePane = function(w,h,maxTime) {
 	this.timeStartX = 100;
 	this.timeEndX = this.pixelW - 50;
 	this.timeLenX = this.timeEndX - this.timeStartX;
+	this.scale = this.timeLenX / maxTime;
+	this.zoom(this.scale, 0, this.timeStartX);
+
 	this.timeY = this.pixelH / 2;
 
 	this.nodeRadius = 4;
@@ -17,15 +20,29 @@ Ptero.Crater.TimePane = function(w,h,maxTime) {
 		if (e.keyCode == 16) {
 			that.isDragTogether = true;
 		}
+		if (e.keyCode == 18) {
+			that.isZoomPanKey = true;
+		}
 	});
 	window.addEventListener("keyup", function(e) {
 		if (e.keyCode == 16) {
 			that.isDragTogether = false;
 		}
+		if (e.keyCode == 18) {
+			that.isZoomPanKey = false;
+		}
 	});
 };
 
 Ptero.Crater.TimePane.prototype = {
+
+	zoom: function(scale, pos, pixel) {
+		this.scale = Math.max(5, scale);
+		this.pos = pos;
+		var p = Math.max(this.timeStartX, pixel);
+		p = Math.min(this.timeEndX, p);
+		this.origin = Math.max(0, pos - (p - this.timeStartX) / this.scale);
+	},
 
 	/* COORDINATE FUNCTIONS */
 
@@ -43,16 +60,16 @@ Ptero.Crater.TimePane.prototype = {
 	},
 
 	screenToTime: function(x,y) {
-		var t = (x - this.timeStartX) / this.timeLenX;
-		t = Math.max(0,t);
-		t = Math.min(1,t);
-		t *= this.maxTime;
+		x = Math.max(this.timeStartX, x);
+		x = Math.min(this.timeEndX, x);
+		x -= this.timeStartX;
+		var t = x / this.scale + this.origin;
 		return t;
 	},
 
 	timeToScreen: function(t) {
 		return {
-			x: t/this.maxTime*this.timeLenX + this.timeStartX,
+			x: (t-this.origin) * this.scale + this.timeStartX,
 			y: this.timeY,
 		};
 	},
@@ -130,6 +147,7 @@ Ptero.Crater.TimePane.prototype = {
 
 	freezeAt: function(x) {
 		var t = this.screenToTime(x);
+		t = Math.max(0, t);
 		t = Math.min(t, Ptero.Crater.enemy_model_list.maxTime);
 		Ptero.Crater.enemy_model_list.setTime(t);
 		Ptero.Crater.enemy_model_list.isPaused = true;
@@ -139,25 +157,53 @@ Ptero.Crater.TimePane.prototype = {
 		Ptero.Crater.enemy_model_list.isPaused = false;
 	},
 
-	mouseStart: function(x,y) {
-		var i = this.getNodeInfoFromCursor(x,y);
-		this.selectNode(i.index, i.offset_x, i.offset_y);
+	setFocusPoint: function(x) {
+		this.pos = this.screenToTime(x);
+	},
 
-		if (this.isSeeking()) {
-			this.freezeAt(x);
+	mouseStart: function(x,y) {
+		if (this.isZoomPanKey) {
+			this.isPanning = true;
+			this.setFocusPoint(x);
+		}
+		else {
+			this.isPanning = false;
+			var i = this.getNodeInfoFromCursor(x,y);
+			this.selectNode(i.index, i.offset_x, i.offset_y);
+
+			if (this.isSeeking()) {
+				this.freezeAt(x);
+			}
 		}
 	},
 	mouseMove: function(x,y) {
-		if (this.isSeeking()) {
-			this.freezeAt(x);
+		if (this.isPanning) {
+			this.zoom(this.scale, this.pos, x);
 		}
 		else {
-			this.updateNodePosition(x,y);
+			if (this.isSeeking()) {
+				this.freezeAt(x);
+			}
+			else {
+				this.updateNodePosition(x,y);
+			}
 		}
 	},
 	mouseEnd: function(x,y) {
+		this.isPanning = false;
 		if (this.isSeeking()) {
 			this.stopSeek();
+		}
+	},
+	mouseScroll: function(x,y,delta,deltaX,deltaY) {
+		if (this.isZoomPanKey) {
+			this.setFocusPoint(x);
+
+			// from: http://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
+			var scale = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
+
+			this.scale *= scale;
+			this.zoom(this.scale, this.pos, x);
 		}
 	},
 
@@ -223,15 +269,24 @@ Ptero.Crater.TimePane.prototype = {
 		ctx.textBaseline = 'middle';
 		ctx.font = '1em serif';
 		ctx.fillStyle = "#777";
-		var s = this.timeToScreen(0);
+		var s = {
+			x: this.timeStartX,
+			y: this.pixelH/2,
+		};
 		ctx.fillText('time (s)', s.x/2, s.y);
 		ctx.fillText(Ptero.Crater.enemy_model.enemy.path.time.toFixed(2), s.x/2, s.y+20);
+
+		ctx.save();
+		ctx.beginPath();
+		ctx.rect(this.timeStartX-this.nodeRadius, 0, this.timeLenX+2*this.nodeRadius, this.pixelH);
+		ctx.clip();
 
 		ctx.textBaseline = 'top';
 		ctx.fillStyle = "#BBB";
 		ctx.font = '0.8em serif';
 		var h = 0.5;
-		for (t=0; t<=this.maxTime; t++) {
+		var startT = Math.ceil(this.origin);
+		for (t=startT; t<=startT+this.timeLenX/this.scale; t++) {
 			this.line(ctx,
 				{t:t, y: h},
 				{t:t, y: -h});
@@ -244,6 +299,7 @@ Ptero.Crater.TimePane.prototype = {
 		this.line(ctx,
 			{t:t, y: h},
 			{t:t, y: -h});
+
 	},
 
 	drawModelPath: function(ctx, model) {
@@ -323,6 +379,9 @@ Ptero.Crater.TimePane.prototype = {
 		e = Ptero.Crater.enemy_model;
 		this.drawModelPath(ctx, e);
 		this.drawModelNodes(ctx, e);
+
+		// remove clipping
+		ctx.restore();
 	},
 	update: function(dt) {
 	},

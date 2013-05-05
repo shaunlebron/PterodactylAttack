@@ -12,13 +12,13 @@ Ptero.Crater.Pane = function (w,h,axes,title) {
 	this.nodeRadius = 4;
 	var that = this;
 	window.addEventListener("keydown", function(e) {
-		if (e.keyCode == 16) {
-			that.isDragTogether = true;
+		if (e.keyCode == 18) {
+			that.isZoomPanKey = true;
 		}
 	});
 	window.addEventListener("keyup", function(e) {
-		if (e.keyCode == 16) {
-			that.isDragTogether = false;
+		if (e.keyCode == 18) {
+			that.isZoomPanKey = false;
 		}
 	});
 };
@@ -60,7 +60,12 @@ Ptero.Crater.Pane.prototype = {
 		this.apos = (apos==undefined) ? this.apos : apos;
 		this.bpos = (bpos==undefined) ? this.bpos : bpos;
 
-		this.scale = scale;
+		if (this.minScale) {
+			this.scale = Math.max(this.minScale, scale);
+		}
+		else {
+			this.scale = scale;
+		}
 
 		// Calculate the position of the topleft pixel.
 		var aleft = this.apos - this.apixel / this.scale;
@@ -357,7 +362,7 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	mouseStart: function(x,y) {
-		if (this.isDragTogether) {
+		if (this.isZoomPanKey) {
 			this.isPanning = true;
 			this.setFocusPoint(x,y);
 		}
@@ -378,13 +383,15 @@ Ptero.Crater.Pane.prototype = {
 		this.isPanning = false;
 	},
 	mouseScroll: function(x,y,delta,deltaX,deltaY) {
-		this.setFocusPoint(x,y);
+		if (this.isZoomPanKey) {
+			this.setFocusPoint(x,y);
 
-		// from: http://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
-		var scale = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
+			// from: http://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
+			var scale = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
 
-		this.scale *= scale;
-		this.zoom(this.scale, this.apos, this.bpos, x, y);
+			this.scale *= scale;
+			this.zoom(this.scale, this.apos, this.bpos, x, y);
+		}
 	},
 
 	/* MAIN FUNCTIONS */

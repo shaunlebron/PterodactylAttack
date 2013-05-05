@@ -29,6 +29,7 @@ Ptero.Crater.panes = (function() {
 		
 		// Make all pane scales consistent.
 		var scale = Math.min(topPane.scale, frontPane.scale, rightPane.scale);
+		topPane.minScale = frontPane.minScale = rightPane.minScale = scale;
 		topPane.zoom(scale);
 		frontPane.zoom(scale);
 		rightPane.zoom(scale);
