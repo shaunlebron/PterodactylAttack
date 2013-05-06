@@ -419,6 +419,26 @@ Ptero.Crater.Pane.prototype = {
 		e = Ptero.Crater.enemy_model;
 		this.drawModelPath(ctx, e);
 		this.drawModelNodes(ctx, e);
+
+		if (this.axes[0] == 'x' && this.axes[1] == 'z') {
+			var p = Ptero.painter;
+			var f = Ptero.screen.getFrustum();
+			ctx.fillStyle = "rgba(0,0,0,0.5)";
+			ctx.beginPath();
+			this.moveTo(ctx, { x: f.nearLeft, y: f.nearTop, z: f.near });
+			this.lineTo(ctx, { x: f.nearLeftA, y: f.nearTop, z: f.near });
+			this.lineTo(ctx, { x: f.farLeftA, y: f.farTop, z: f.far });
+			this.lineTo(ctx, { x: f.farLeft, y: f.farTop, z: f.far });
+			ctx.closePath();
+			ctx.fill();
+			ctx.beginPath();
+			this.moveTo(ctx, { x: f.nearRight, y: f.nearTop, z: f.near });
+			this.lineTo(ctx, { x: f.nearRightA, y: f.nearTop, z: f.near });
+			this.lineTo(ctx, { x: f.farRightA, y: f.farTop, z: f.far });
+			this.lineTo(ctx, { x: f.farRight, y: f.farTop, z: f.far });
+			ctx.closePath();
+			ctx.fill();
+		}
 	},
 	update: function(dt) {
 	},
