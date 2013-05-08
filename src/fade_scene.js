@@ -18,8 +18,12 @@ Ptero.FadeScene.prototype = {
 		}
 	},
 	draw: function(ctx) {
+		var alpha = this.interp(this.time);
+		if (alpha == undefined) {
+			return;
+		}
 		this.scene2.draw(ctx);
-		ctx.globalAlpha = this.interp(this.time);
+		ctx.globalAlpha = alpha;
 		this.scene1.draw(ctx);
 		ctx.globalAlpha = 1;
 	},

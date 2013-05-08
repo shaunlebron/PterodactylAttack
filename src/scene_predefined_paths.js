@@ -1,7 +1,7 @@
 
-Ptero.scene_game = (function() {
+Ptero.scene_predefined_paths = (function() {
 	var enemies = [];
-	var numEnemies = 5;
+	var numEnemies;
 
 	var KEY_SPACE = 32;
 	var KEY_SHIFT = 16;
@@ -32,6 +32,50 @@ Ptero.scene_game = (function() {
 		Ptero.deferredSprites.clear();
 	}
 
+	function setLevel(level) {
+		enemies.length = 0;
+
+		var waves = level;
+		var numWaves = waves.length;
+		var i,wave,t;
+		var j,points;
+		var maxTime = 0;
+		var models, numModels;
+
+		// iterate each wave
+		for (i=0; i<numWaves; i++) {
+
+			// get starting time of this wave
+			t = waves[i].t;
+
+			// get this wave (group of enemies)
+			models = waves[i].wave.models;
+			numModels = models.length;
+
+			// iterate each enemy in wave
+			for (j=0; j<numModels; j++) {
+
+				// get control points for this enemy
+				points = models[j].points;
+
+				// create enemy
+				var e = Ptero.Enemy.fromState(models[j], t);
+
+				// add enemy to this scene's enemies
+				enemies.push(e);
+
+				// consolidate max time
+				maxTime = Math.max(maxTime, e.path.totalTime);
+			}
+		}
+
+		// create a timer to countdown to the last moment
+		timerDisplay = new Ptero.TimerDisplay(maxTime);
+		console.log(maxTime);
+
+		numEnemies = enemies.length;
+	}
+
 	function init() {
 		Ptero.score.reset();
 
@@ -59,16 +103,10 @@ Ptero.scene_game = (function() {
 			}
 		});
 
-		timerDisplay = new Ptero.TimerDisplay(60);
 
 		Ptero.background.setImage(Ptero.assets.images.desert, Ptero.assets.images["bg_frosted"]);
 
-		var i;
-		enemies.length = 0;
-		for (i=0; i<numEnemies; i++) {
-			enemies.push(new Ptero.Enemy(Ptero.makeHermiteEnemyPath));
-		}
-
+		setLevel(Ptero.assets.levels["level1"]);
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
@@ -83,7 +121,6 @@ Ptero.scene_game = (function() {
 		var i;
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
-			// TODO: only defer if visible
 			var pos = enemies[i].getPosition();
 			if (pos) {
 				Ptero.deferredSprites.defer(

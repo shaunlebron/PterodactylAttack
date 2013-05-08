@@ -59,8 +59,6 @@ Ptero.Crater.EnemyModelList.prototype = {
 
 		this.isEditing = false;
 		this.deselectAll();
-
-		Ptero.Crater.loader.backup();
 	},
 	duplicatePath: function() {
 		this.index++;

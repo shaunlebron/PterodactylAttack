@@ -229,6 +229,9 @@ Ptero.orb = (function(){
 
 			// Get ideal bullet that would hit the enemy.
 			var homingBullet = createHomingBullet(target);
+			if (!homingBullet) {
+				return;
+			}
 
 			// Advance bullet to the time of collision to get the collision position.
 			homingBullet.update(homingBullet.collideTime);
@@ -398,6 +401,9 @@ Ptero.orb = (function(){
 		{
 			// Get the target position at time t.
 			target_pos = target.getFuturePosition(t);
+			if (!target_pos) {
+				continue;
+			}
 
 			// Aim bullet at target and advance to time t.
 			bullet.time = 0;
@@ -414,6 +420,10 @@ Ptero.orb = (function(){
 				bullet.collideDir = bullet.dir.copy();
 				minDist = dist;
 			}
+		}
+
+		if (minDist == Infinity) {
+			return null;
 		}
 
 		// Aim bullet at point of closest distance.

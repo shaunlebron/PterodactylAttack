@@ -16,10 +16,15 @@ Ptero.assets = (function(){
 		"missile": "img/missile.png",
 	};
 
+	var levelSources = {
+		"level1": "levels/level1.json",
+	};
+
 	var images = {};
 	var sprites = {};
 	var tables = {};
 	var mosaics = {};
+	var levels = {};
 
 	function parseMetaData(name, meta) {
 		if (meta.rows != undefined) {
@@ -63,6 +68,11 @@ Ptero.assets = (function(){
 				totalCount++;
 			}
 		}
+		for (name in levelSources) {
+			if (levelSources.hasOwnProperty(name)) {
+				totalCount++;
+			}
+		}
 
 		var handleLoad = function() {
 			count++;
@@ -80,6 +90,21 @@ Ptero.assets = (function(){
 				img.src = imageSources[name];
 				img.onload = handleLoad;
 				images[name] = img;
+			}
+		}
+		for (name in levelSources) {
+			if (levelSources.hasOwnProperty(name)) {
+				var src = levelSources[name];
+				var req = new XMLHttpRequest();
+				req.onload = function() {
+					if (req.status == 200) {
+						levels[name] = JSON.parse(req.responseText);
+						console.log("got level:",name);
+					}
+					handleLoad();
+				}
+				req.open('GET', src, true);
+				req.send();
 			}
 		}
 	};
@@ -100,6 +125,7 @@ Ptero.assets = (function(){
 		sprites: sprites,
 		tables: tables,
 		mosaics: mosaics,
+		levels: levels,
 		keepExplosionsCached: keepExplosionsCached,
 	};
 })();

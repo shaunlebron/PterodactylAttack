@@ -1,0 +1,126 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Pterodactyl Attack - Fourier</title>
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+	<style>
+	body {
+		margin-right: auto;
+		margin-left: auto;
+		width: 925px;
+	}
+
+	button {
+		font-size: 1.2em;
+	}
+	canvas {
+	}
+
+	input.tabcheck {
+		margin: 0px 6px 0 -5px;
+	}
+	</style>
+
+	<script src="lib/jquery/jquery-1.9.1.min.js"></script>
+	<script src="lib/jquery.mousewheel.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="lib/requestAnimationFrame.js"></script>
+	<script src="lib/bootbox.min.js"></script>
+
+	<script src="src/ptero.js"></script>
+	<script src="src/interp.js"></script>
+	<script src="src/assets.js"></script>
+	<script src="src/billboard.js"></script>
+	<script src="src/painter.js"></script>
+	<script src="src/background.js"></script>
+	<script src="src/executive.js"></script>
+	<script src="src/screen.js"></script>
+	<script src="src/input.js"></script>
+	<script src="src/sprites.js"></script>
+
+	<script src="src/bullet.js"></script>
+	<script src="src/bulletpool.js"></script>
+	<script src="src/enemy.js"></script>
+	<script src="src/frustum.js"></script>
+	<script src="src/orb.js"></script>
+	<script src="src/path.js"></script>
+	<script src="src/paths.js"></script>
+	<script src="src/scene_game.js"></script>
+	<script src="src/time.js"></script>
+	<script src="src/vector.js"></script>
+
+	<script src="src/fourier/main.js"></script>
+	<script src="src/fourier/screen.js"></script>
+	<script src="src/fourier/executive.js"></script>
+	<script src="src/fourier/scene_fourier.js"></script>
+	<script src="src/fourier/panes.js"></script>
+	<script src="src/fourier/LivePane.js"></script>
+	<script src="src/fourier/TimePane.js"></script>
+
+	<style>
+	/*
+	http://jquerygrip.blogspot.com/2013/02/creating-new-tabsclosing-tabshowing.html
+	*/
+	.nav-pills > li .close {
+	    margin: -4px 0 0 5px;
+	}
+
+	#title {
+		float: left;
+		display: inline;
+	}
+
+	#toolbar {
+		float: left;
+		margin: 15px 0 0 15px;
+	}
+	
+	#container {
+		clear:both;
+	}
+	</style>
+
+</head>
+
+<body>
+
+<h2 id="title">Fourier</h2>
+
+<script>
+$(function(){
+	$('body').tooltip({
+		selector: '[rel="tooltip"]'
+	});
+
+	var handleOpenFile = Ptero.Crater.loader.handleOpenFile;
+
+	document.getElementById('open-file').addEventListener('change', handleOpenFile, false);
+
+	function handleDragOver(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'copy';
+	}
+	
+	var dropzone = document.getElementById('canvas');
+	dropzone.addEventListener('dragover', handleDragOver, false);
+	dropzone.addEventListener('drop', handleOpenFile, false);
+});
+</script>
+
+<input style="display:none" type="file" id="open-file" />
+
+<div id="container" class="tabbable tabs-right">
+	<ul id="pathtabs" class="nav nav-tabs"></ul>
+	<div class="tab-content">
+		<canvas id='canvas'></canvas>
+	</div>
+</div>
+
+</body>
+
+</html>

@@ -3,6 +3,14 @@ Ptero.scene_gameover = (function(){
 
 	var scoreBtn,playBtn,quitBtn;
 
+	var replayScene;
+	function getReplayScene() {
+		return replayScene;
+	}
+	function setReplayScene(s) {
+		replayScene = s;
+	}
+
 	function cleanup() {
 		playBtn.disable();
 		quitBtn.disable();
@@ -29,7 +37,7 @@ Ptero.scene_gameover = (function(){
 			width: 400,
 			height: 200,
 			onclick: function() {
-				Ptero.fadeToScene(Ptero.scene_game,0.5);
+				Ptero.fadeToScene(getReplayScene(),0.5);
 			},
 		});
 		playBtn.enable();
@@ -65,5 +73,6 @@ Ptero.scene_gameover = (function(){
 		draw:draw,
 		update:update,
 		cleanup: cleanup,
+		setReplayScene: setReplayScene,
 	};
 })();

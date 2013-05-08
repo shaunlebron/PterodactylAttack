@@ -1,6 +1,9 @@
 
 Ptero.Enemy = function(makeNewPath) {
 	this.makeNewPath = makeNewPath;
+	if (makeNewPath) {
+		this.path = makeNewPath();
+	}
 
 	this.babySprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
 	this.babySprite.shuffleTime();
@@ -19,9 +22,31 @@ Ptero.Enemy = function(makeNewPath) {
 	];
 	this.randomizeBoom();
 
-	this.resetPosition();
+	this.init();
 
 	this.life = 0;
+};
+
+Ptero.Enemy.fromState = function(state, startTime) {
+
+	startTime = startTime || 0;
+
+	var enemy = new Ptero.Enemy();
+
+	var points = state.points;
+	var delta_times = [points[0].t + startTime];
+
+	var i,len=points.length;
+	for (i=1; i<len; i++) {
+		delta_times.push(points[i].t - points[i-1].t);
+	}
+	enemy.path = new Ptero.Path(
+		Ptero.makeHermiteInterpForObjs(
+			points,
+			['x','y','z','angle'],
+			delta_times));
+
+	return enemy;
 };
 
 Ptero.Enemy.prototype = {
@@ -58,21 +83,29 @@ Ptero.Enemy.prototype = {
 		this.isHit = true;
 		var that = this;
 	},
-	resetPosition: function resetPosition() {
-		this.randomizeBoom();
-		if (this.makeNewPath) {
-			this.path = this.makeNewPath();
-		}
+	init: function() {
 		this.isHit = false;
 		this.isGoingToDie = false;
+		this.isDead = false;
+		this.randomizeBoom();
+	},
+	die: function() {
+		if (this.makeNewPath) {
+			this.path = this.makeNewPath();
+			this.life++;
+			this.init();
+		}
+		else {
+			this.isDead = true;
+		}
+
 		if (this.selected) {
 			Ptero.orb.deselectTarget(this);
 			this.lockedon = false;
 		}
-		this.life++;
 	},
 	isHittable: function() {
-		if (this.path.isDone() || this.isHit) {
+		if (!this.path.isPresent() || this.isHit) {
 			return false;
 		}
 
@@ -89,18 +122,21 @@ Ptero.Enemy.prototype = {
 	},
 	update: function update(dt) {
 
-		if (this.isHit) {
+		if (this.isDead) {
+			return;
+		}
+		else if (this.isHit) {
 			// BOOM
 			this.boomSprite.update(dt);
 			if (this.boomSprite.isDone()) {
-				this.resetPosition();
+				this.die();
 			}
 		}
 		else if (this.path.isDone()) {
 			// HIT SCREEN
 
 			navigator.vibrate && navigator.vibrate(200);
-			this.resetPosition();
+			this.die();
 		}
 		else {
 

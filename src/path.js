@@ -6,7 +6,6 @@ Ptero.Path = function(interp, loop) {
 	this.reset();
 };
 
-
 Ptero.Path.prototype = {
 
 	// return a predicted state that is dt seconds in the future
@@ -43,5 +42,9 @@ Ptero.Path.prototype = {
 
 	isDone: function isDone() {
 		return !this.loop && this.time > this.totalTime; 
+	},
+
+	isPresent: function() {
+		return this.pos != null;
 	},
 };
