@@ -272,11 +272,14 @@ Ptero.Fourier.Wave.prototype = {
 			var pos = this.enemies[i].getPosition();
 			if (pos) {
 				Ptero.deferredSprites.defer(
-					(function(e) {
+					(function(e,isSelected) {
 						return function(ctx){
 							e.draw(ctx);
+							if (isSelected) {
+								e.drawBorder(ctx,"#F00");
+							}
 						};
-					})(this.enemies[i]),
+					})(this.enemies[i], this.isSelected && this == Ptero.Fourier.wave),
 					pos.z);
 			}
 		}

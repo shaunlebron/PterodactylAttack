@@ -29,12 +29,18 @@ Ptero.Fourier.loader = (function(){
 
 			var files = evt.target.files;
 			if (files) {
-				reader(files[0]);
+				var i,len=files.length;
+				for (i=0; i<len; i++) {
+					reader(files[i]);
+				}
 			}
 			else {
 				files = evt.dataTransfer.files;
 				if (files) {
-					reader(files[0]);
+					var i,len=files.length;
+					for (i=0; i<len; i++) {
+						reader(files[i]);
+					}
 				}
 			}
 		};

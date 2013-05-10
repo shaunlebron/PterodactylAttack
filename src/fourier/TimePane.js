@@ -73,7 +73,7 @@ Ptero.Fourier.TimePane.prototype = {
 			return null;
 		}
 
-		var min_dist_sq = 100;
+		var min_dist = 10;
 
 		var pos;
 		var dx,dy,dist_sq;
@@ -81,32 +81,31 @@ Ptero.Fourier.TimePane.prototype = {
 
 		var pos = this.timeToScreen(wave.startTime);
 		pos.y = this.transform({t:0,y:this.getY(wave)}).y;
-		dx = pos.x - x;
-		dy = pos.y - y;
-		dist_sq = dx*dx + dy*dy;
-		if (dist_sq < min_dist_sq) {
-			return {
-				offset_x: dx,
-				offset_y: dy,
-			};
-		}
-		else {
+		if (Math.abs(pos.y - y) > min_dist ||
+			x < pos.x - min_dist) {
 			return null;
 		}
+
+		pos = this.timeToScreen(wave.maxTime);
+		if (pos.x + min_dist < x) {
+			return null;
+		}
+
+		return {
+			offset_time: this.screenToTime(x) - wave.startTime,
+		};
 
 	},
 
 	selectNode: function(node) {
 		if (node) {
 			Ptero.Fourier.wave.select();
-			this.selectedOffsetX = node.offset_x;
-			this.selectedOffsetY = node.offset_y;
-			Ptero.Fourier.wave_list.setTime(Ptero.Fourier.wave.startTime);
+			this.selectedOffsetTime = node.offset_time;
+			Ptero.Fourier.wave_list.setTime(Ptero.Fourier.wave.startTime+node.offset_time);
 		}
 		else {
 			Ptero.Fourier.wave.deselect();
-			this.selectedOffsetX = null;
-			this.selectedOffsetY = null;
+			this.selectedOffsetTime = null;
 		}
 	},
 
@@ -115,13 +114,10 @@ Ptero.Fourier.TimePane.prototype = {
 			return;
 		}
 
-		var time = this.screenToTime(
-			x + this.selectedOffsetX,
-			y + this.selectedOffsetY
-		);
+		var time = this.screenToTime(x) - this.selectedOffsetTime;
+		time = Math.max(0, time);
 
 		Ptero.Fourier.wave.setStartTime(time);
-		Ptero.Fourier.wave_list.setTime(time);
 	},
 
 
@@ -168,12 +164,11 @@ Ptero.Fourier.TimePane.prototype = {
 			this.zoom(this.scale, this.pos, x);
 		}
 		else {
-			if (this.isSeeking()) {
-				this.freezeAt(x);
-			}
-			else {
-				this.updateNodePosition(x,y);
-			}
+			this.updateNodePosition(x,y);
+			this.freezeAt(x);
+
+			// make sure all enemies are alive and visible
+			Ptero.Fourier.wave_list.resetWaves();
 		}
 	},
 	mouseEnd: function(x,y) {
@@ -290,15 +285,14 @@ Ptero.Fourier.TimePane.prototype = {
 	},
 
 	drawWave: function(ctx, wave) {
-		ctx.strokeStyle = "#FFF";
-		ctx.lineWidth = 2;
+		var isActive = (wave == Ptero.Fourier.wave && wave.isSelected);
+		ctx.strokeStyle = isActive ? "#F00" : "#FFF";
+		ctx.lineWidth = (Ptero.Fourier.wave == wave) ? 4 : 2;
 		var y = this.getY(wave);
+		ctx.lineCap = "round";
 		this.line(ctx,
 			{t:wave.startTime, y:y},
 			{t:wave.maxTime, y:y});
-		if (wave == Ptero.Fourier.wave) {
-			this.fillCircle(ctx, {t:wave.startTime, y:y}, this.nodeRadius, wave.isSelected ? "#F00" : "#FFF");
-		}
 	},
 
 	/* MAIN FUNCTIONS */

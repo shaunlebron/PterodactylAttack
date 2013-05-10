@@ -159,6 +159,10 @@ Ptero.Enemy.prototype = {
 			this.babySprite.update(dt);
 		}
 	},
+	drawBorder: function(ctx, color) {
+		var pos = this.path.pos;
+		this.babySprite.drawBorder(ctx, pos, color);
+	},
 	draw: function draw(ctx) {
 		var pos = this.path.pos;
 
