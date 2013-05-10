@@ -47,7 +47,7 @@ Ptero.Fourier.WaveList.prototype = {
 		this.maxTime = 0;
 		for (i=0; i<len; i++) {
 			var w = this.waves[i];
-			this.maxTime = Math.max(this.maxTime, w.startTime + w.timeLength);
+			this.maxTime = Math.max(this.maxTime, w.maxTime);
 		}
 	},
 	setWaves: function(waves) {
@@ -210,28 +210,39 @@ Ptero.Fourier.WaveList.prototype = {
 // Wave is a list of enemies.
 Ptero.Fourier.Wave = function() {
 	this.startTime = 0;
-	this.timeLength = 0;
+	this.maxTime = 0;
 
 	this.isSelected = false;
 	this.enemies = [];
+	this.enemy_models = null;
 };
 
 Ptero.Fourier.Wave.fromState = function(state) {
 	var wave = new Ptero.Fourier.Wave();
-	var models = state.models;
-	wave.enemies.length = 0;
-
-	var i,len=models.length;
-	for (i=0; i<len; i++) {
-		var e = Ptero.Enemy.fromState(models[i],0);
-		e.isRemote = true;
-		wave.enemies.push(e);
-		wave.timeLength = Math.max(wave.timeLength, e.path.totalTime);
-	}
+	wave.enemy_models = state.models;
+	wave.setStartTime(0);
 	return wave;
 };
 
 Ptero.Fourier.Wave.prototype = {
+
+	setStartTime: function(t) {
+		this.startTime = t;
+		this.refreshPaths();
+	},
+	refreshPaths: function() {
+		this.enemies.length = 0;
+		var models = this.enemy_models;
+		this.maxTime = 0;
+		var i,len=models.length;
+		for (i=0; i<len; i++) {
+			var e = Ptero.Enemy.fromState(models[i],this.startTime);
+			e.isRemote = true;
+			this.enemies.push(e);
+			this.maxTime = Math.max(this.maxTime, e.path.totalTime);
+		}
+		Ptero.Fourier.wave_list.refreshMaxTime();
+	},
 	select: function() {
 		this.isSelected = true;
 		Ptero.Fourier.wave_list.isEditing = true;

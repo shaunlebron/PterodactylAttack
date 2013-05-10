@@ -39,6 +39,19 @@ Ptero.Fourier.TimePane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
+	getY: function(wave) {
+		var len = Ptero.Fourier.wave_list.waves.length;
+		var y;
+		if (len == 1) {
+			y = 0;
+		}
+		else {
+			y = wave.order / (len-1) - 0.5;
+			y = -y;
+		}
+		return y;
+	},
+
 	screenToTime: function(x,y) {
 		x = Math.max(this.timeStartX, x);
 		x = Math.min(this.timeEndX, x);
@@ -54,13 +67,70 @@ Ptero.Fourier.TimePane.prototype = {
 		};
 	},
 
+	getNodeInfoFromCursor: function(x,y) {
+		var wave = Ptero.Fourier.wave;
+		if (!wave) {
+			return null;
+		}
+
+		var min_dist_sq = 100;
+
+		var pos;
+		var dx,dy,dist_sq;
+		var offset_x, offset_y;
+
+		var pos = this.timeToScreen(wave.startTime);
+		pos.y = this.transform({t:0,y:this.getY(wave)}).y;
+		dx = pos.x - x;
+		dy = pos.y - y;
+		dist_sq = dx*dx + dy*dy;
+		if (dist_sq < min_dist_sq) {
+			return {
+				offset_x: dx,
+				offset_y: dy,
+			};
+		}
+		else {
+			return null;
+		}
+
+	},
+
+	selectNode: function(node) {
+		if (node) {
+			Ptero.Fourier.wave.select();
+			this.selectedOffsetX = node.offset_x;
+			this.selectedOffsetY = node.offset_y;
+			Ptero.Fourier.wave_list.setTime(Ptero.Fourier.wave.startTime);
+		}
+		else {
+			Ptero.Fourier.wave.deselect();
+			this.selectedOffsetX = null;
+			this.selectedOffsetY = null;
+		}
+	},
+
+	updateNodePosition: function(x,y) {
+		if (!Ptero.Fourier.wave.isSelected) {
+			return;
+		}
+
+		var time = this.screenToTime(
+			x + this.selectedOffsetX,
+			y + this.selectedOffsetY
+		);
+
+		Ptero.Fourier.wave.setStartTime(time);
+		Ptero.Fourier.wave_list.setTime(time);
+	},
+
+
 	setFocusPoint: function(x) {
 		this.pos = this.screenToTime(x);
 	},
 
 	isSeeking: function() {
-		return true;
-		//return !Ptero.Fourier.wave.isSelected;
+		return !Ptero.Fourier.wave.isSelected;
 	},
 	stopSeek: function() {
 		Ptero.Fourier.wave_list.isPaused = false;
@@ -73,7 +143,6 @@ Ptero.Fourier.TimePane.prototype = {
 		t = Math.min(t, Ptero.Fourier.wave_list.maxTime);
 		Ptero.Fourier.wave_list.setTime(t);
 		Ptero.Fourier.wave_list.isPaused = true;
-		Ptero.Fourier.wave_list.resetWaves();
 	},
 
 	mouseStart: function(x,y) {
@@ -83,12 +152,15 @@ Ptero.Fourier.TimePane.prototype = {
 		}
 		else {
 			this.isPanning = false;
-			//var i = this.getNodeInfoFromCursor(x,y);
-			//this.selectNode(i.index, i.offset_x, i.offset_y);
+			var node = this.getNodeInfoFromCursor(x,y);
+			this.selectNode(node);
 
 			if (this.isSeeking()) {
 				this.freezeAt(x);
 			}
+
+			// make sure all enemies are alive and visible
+			Ptero.Fourier.wave_list.resetWaves();
 		}
 	},
 	mouseMove: function(x,y) {
@@ -100,7 +172,7 @@ Ptero.Fourier.TimePane.prototype = {
 				this.freezeAt(x);
 			}
 			else {
-				//this.updateNodePosition(x,y);
+				this.updateNodePosition(x,y);
 			}
 		}
 	},
@@ -217,12 +289,43 @@ Ptero.Fourier.TimePane.prototype = {
 
 	},
 
+	drawWave: function(ctx, wave) {
+		ctx.strokeStyle = "#FFF";
+		ctx.lineWidth = 2;
+		var y = this.getY(wave);
+		this.line(ctx,
+			{t:wave.startTime, y:y},
+			{t:wave.maxTime, y:y});
+		if (wave == Ptero.Fourier.wave) {
+			this.fillCircle(ctx, {t:wave.startTime, y:y}, this.nodeRadius, wave.isSelected ? "#F00" : "#FFF");
+		}
+	},
+
 	/* MAIN FUNCTIONS */
 
 	draw: function(ctx) {
 		ctx.fillStyle = "#222";
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawAxes(ctx);
+
+		var waves = Ptero.Fourier.wave_list.waves;
+		var i,len=waves.length;
+		var e;
+		if (len > 1) {
+			ctx.globalAlpha = 0.35;
+			for (i=0; i<len; i++) {
+				var e = waves[i];
+				if (e != Ptero.Fourier.wave) {
+					this.drawWave(ctx, e);
+				}
+			}
+			ctx.globalAlpha = 1;
+		}
+
+		e = Ptero.Fourier.wave;
+		if (e) {
+			this.drawWave(ctx, e);
+		}
 
 		// remove clipping
 		ctx.restore();
