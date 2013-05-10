@@ -14,20 +14,13 @@ Ptero.Fourier.TimePane = function(w,h,maxTime) {
 	this.timeY = this.pixelH / 2;
 
 	this.nodeRadius = 4;
-	this.isDragTogether = false;
 	var that = this;
 	window.addEventListener("keydown", function(e) {
-		if (e.keyCode == 16) {
-			that.isDragTogether = true;
-		}
 		if (e.keyCode == 18) {
 			that.isZoomPanKey = true;
 		}
 	});
 	window.addEventListener("keyup", function(e) {
-		if (e.keyCode == 16) {
-			that.isDragTogether = false;
-		}
 		if (e.keyCode == 18) {
 			that.isZoomPanKey = false;
 		}
@@ -65,6 +58,24 @@ Ptero.Fourier.TimePane.prototype = {
 		this.pos = this.screenToTime(x);
 	},
 
+	isSeeking: function() {
+		return true;
+		//return !Ptero.Fourier.wave.isSelected;
+	},
+	stopSeek: function() {
+		Ptero.Fourier.wave_list.isPaused = false;
+	},
+
+
+	freezeAt: function(x) {
+		var t = this.screenToTime(x);
+		t = Math.max(0, t);
+		t = Math.min(t, Ptero.Fourier.wave_list.maxTime);
+		Ptero.Fourier.wave_list.setTime(t);
+		Ptero.Fourier.wave_list.isPaused = true;
+		Ptero.Fourier.wave_list.resetWaves();
+	},
+
 	mouseStart: function(x,y) {
 		if (this.isZoomPanKey) {
 			this.isPanning = true;
@@ -72,6 +83,9 @@ Ptero.Fourier.TimePane.prototype = {
 		}
 		else {
 			this.isPanning = false;
+			//var i = this.getNodeInfoFromCursor(x,y);
+			//this.selectNode(i.index, i.offset_x, i.offset_y);
+
 			if (this.isSeeking()) {
 				this.freezeAt(x);
 			}
@@ -80,6 +94,14 @@ Ptero.Fourier.TimePane.prototype = {
 	mouseMove: function(x,y) {
 		if (this.isPanning) {
 			this.zoom(this.scale, this.pos, x);
+		}
+		else {
+			if (this.isSeeking()) {
+				this.freezeAt(x);
+			}
+			else {
+				//this.updateNodePosition(x,y);
+			}
 		}
 	},
 	mouseEnd: function(x,y) {
@@ -191,7 +213,7 @@ Ptero.Fourier.TimePane.prototype = {
 	/* MAIN FUNCTIONS */
 
 	draw: function(ctx) {
-		ctx.fillStyle = "#EEE";
+		ctx.fillStyle = "#222";
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawAxes(ctx);
 

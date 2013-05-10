@@ -125,6 +125,7 @@ Ptero.Enemy.prototype = {
 		if (this.isDead) {
 			return;
 		}
+
 		else if (this.isHit) {
 			// BOOM
 			this.boomSprite.update(dt);
@@ -150,7 +151,9 @@ Ptero.Enemy.prototype = {
 
 			// FLYING TOWARD SCREEN
 			// update position
-			this.path.step(dt);
+			if (!this.isRemote) {
+				this.path.step(dt);
+			}
 
 			// update animation
 			this.babySprite.update(dt);

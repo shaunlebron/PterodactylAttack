@@ -198,7 +198,6 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	refreshTabs: function() {
 		$("#pathtabs").html(this.getTabsString());
-		// TODO: recalculate max times
 	},
 	update: function(dt) {
 

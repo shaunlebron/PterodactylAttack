@@ -6,7 +6,7 @@ Ptero.Fourier.screen = (function(){
 	var paneWidth = 800;
 	var paneHeight = paneWidth/16*9;
 
-	var timePaneHeight = 400;
+	var timePaneHeight = 100;
 
 	var width =  paneWidth;
 	var height = paneHeight + timePaneHeight;

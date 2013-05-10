@@ -5,7 +5,12 @@
 <head>
 	<meta charset="utf-8">
 	<title>Pterodactyl Attack - Fourier</title>
-	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<!--
+	<link href="lib/bootstrap/css/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="lib/bootstrap/css/darkstrap-v0.9.0.css" rel="stylesheet" media="screen">
+	<link href="lib/bootstrap/css/bootstrap-slate.css" rel="stylesheet" media="screen">
+	-->             
+	<link href="lib/bootstrap/css/bootstrap-cyborg.css" rel="stylesheet" media="screen">
 
 	<style>
 	body {
@@ -54,6 +59,8 @@
 	<script src="src/vector.js"></script>
 
 	<script src="src/fourier/main.js"></script>
+	<script src="src/fourier/loader.js"></script>
+	<script src="src/fourier/wave.js"></script>
 	<script src="src/fourier/screen.js"></script>
 	<script src="src/fourier/executive.js"></script>
 	<script src="src/fourier/scene_fourier.js"></script>
@@ -96,26 +103,26 @@ $(function(){
 		selector: '[rel="tooltip"]'
 	});
 
-	var handleOpenFile = Ptero.Crater.loader.handleOpenFile;
+	var importWaveHandler = Ptero.Fourier.loader.importWaveHandler;
 
-	document.getElementById('open-file').addEventListener('change', handleOpenFile, false);
+	document.getElementById('import-wave-file').addEventListener('change', importWaveHandler, false);
 
-	function handleDragOver(e) {
-		e.stopPropagation();
-		e.preventDefault();
-		e.dataTransfer.dropEffect = 'copy';
-	}
-	
-	var dropzone = document.getElementById('canvas');
-	dropzone.addEventListener('dragover', handleDragOver, false);
-	dropzone.addEventListener('drop', handleOpenFile, false);
+	//function handleDragOver(e) {
+	//	e.stopPropagation();
+	//	e.preventDefault();
+	//	e.dataTransfer.dropEffect = 'copy';
+	//}
+	//
+	//var dropzone = document.getElementById('canvas');
+	//dropzone.addEventListener('dragover', handleDragOver, false);
+	//dropzone.addEventListener('drop', handleOpenFile, false);
 });
 </script>
 
-<input style="display:none" type="file" id="open-file" />
+<input style="display:none" type="file" id="import-wave-file" />
 
 <div id="container" class="tabbable tabs-right">
-	<ul id="pathtabs" class="nav nav-tabs"></ul>
+	<ul id="wavetabs" class="nav nav-tabs"></ul>
 	<div class="tab-content">
 		<canvas id='canvas'></canvas>
 	</div>
