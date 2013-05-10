@@ -256,6 +256,7 @@ Ptero.Fourier.TimePane.prototype = {
 			y: this.pixelH/2,
 		};
 		ctx.fillText('time (s)', s.x/2, s.y);
+		ctx.fillText(Ptero.Fourier.wave_list.time.toFixed(2), s.x/2, s.y+20);
 
 		ctx.save();
 		ctx.beginPath();

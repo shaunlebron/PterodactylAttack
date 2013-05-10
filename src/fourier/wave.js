@@ -132,15 +132,13 @@ Ptero.Fourier.WaveList.prototype = {
 			e = this.waves[i];
 			if (e == wave) {
 				this.waves.splice(i,1);
-				if (len > 1) {
-					this.select(this.waves[0]);
-				}
+				this.select(this.waves[0]);
 				break;
 			}
 		}
 		this.refreshMaxTime();
 		this.refreshOrder();
-		Ptero.Fourier.loader.backup();
+		//Ptero.Fourier.loader.backup();
 	},
 	getTabsString: function() {
 		var i,e,len=this.waves.length;
