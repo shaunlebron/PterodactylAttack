@@ -208,6 +208,13 @@ Ptero.Fourier.TimePane.prototype = {
 			ctx.fillText(t, s.x, s.y+5);
 		}
 
+		ctx.strokeStyle = Ptero.Fourier.wave_list.isEditing ? "#F00" : "#0FF";
+		ctx.lineWidth = 2;
+		var t = Ptero.Fourier.wave_list.time;
+		this.line(ctx,
+			{t:t, y: h},
+			{t:t, y: -h});
+
 	},
 
 	/* MAIN FUNCTIONS */
