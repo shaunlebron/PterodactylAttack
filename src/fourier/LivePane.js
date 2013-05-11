@@ -8,7 +8,6 @@ Ptero.Fourier.LivePane.prototype = {
 	draw: function(ctx) {
 		this.scene.draw(ctx);
 
-		/*
 		var p = Ptero.painter;
 		var f = Ptero.screen.getFrustum();
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
@@ -26,7 +25,6 @@ Ptero.Fourier.LivePane.prototype = {
 		p.lineTo(ctx, { x: f.nearRight, y: f.nearBottom, z: f.near });
 		ctx.closePath();
 		ctx.fill();
-		*/
 	},
 
 	update: function(dt) {

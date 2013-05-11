@@ -21,7 +21,7 @@ Ptero.Fourier.screen = (function(){
 		Ptero.screen.init(canvas);
 		canvas.width = width;
 		canvas.height = height;
-		//setAspect(16,9);
+		setAspect(16,9);
 	};
 
 	function setAspect(w,h) {

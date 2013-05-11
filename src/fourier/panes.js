@@ -121,12 +121,14 @@ Ptero.Fourier.panes = (function() {
 		drawPane(timePane);
 
 		// Draw pane borders.
+		/*
 		ctx.strokeStyle = "#FFF";
 		ctx.lineWidth = 2;
 		ctx.beginPath();
 		ctx.moveTo(0,h);
 		ctx.lineTo(w,h);
 		ctx.stroke();
+		*/
 	};
 
 	function update(dt) {
