@@ -66,6 +66,16 @@ Ptero.Fourier.loader = (function(){
 		return false;
 	}
 
+	function promptReset() {
+		bootbox.confirm('Are you sure you want to discard this level and start a new one?',
+			function(result) {
+				if (result) {
+					reset();
+				}
+			}
+		);
+	}
+
 	function reset() {
 		var wave_list = new Ptero.Fourier.WaveList();
 		Ptero.Fourier.wave_list = wave_list;
@@ -128,6 +138,7 @@ Ptero.Fourier.loader = (function(){
 		importWaveHandler: importWaveHandler,
 		restore: restore,
 		backup: backup,
+		promptReset: promptReset,
 		reset: reset,
 	};
 })();

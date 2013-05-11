@@ -121,6 +121,18 @@ $(function(){
 
 <input style="display:none" type="file" id="import-wave-file" multiple />
 
+<div class="btn-toolbar" id="toolbar">
+	<div class="btn-group">
+		<button
+			class="btn"
+			onclick="Ptero.Fourier.loader.promptReset()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="New"
+			><i class="icon-file"></i></button>
+	</div>
+</div>
+
 <div id="container" class="tabbable tabs-right">
 	<ul id="wavetabs" class="nav nav-tabs"></ul>
 	<div class="tab-content">
