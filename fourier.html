@@ -104,8 +104,10 @@ $(function(){
 	});
 
 	var importWaveHandler = Ptero.Fourier.loader.importWaveHandler;
-
 	document.getElementById('import-wave-file').addEventListener('change', importWaveHandler, false);
+
+	var openLevelHandler = Ptero.Fourier.loader.openLevelHandler;
+	document.getElementById('open-file').addEventListener('change', openLevelHandler, false);
 
 	//function handleDragOver(e) {
 	//	e.stopPropagation();
@@ -119,6 +121,7 @@ $(function(){
 });
 </script>
 
+<input style="display:none" type="file" id="open-file" />
 <input style="display:none" type="file" id="import-wave-file" multiple />
 
 <div class="btn-toolbar" id="toolbar">
@@ -129,7 +132,21 @@ $(function(){
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="New"
-			><i class="icon-file"></i></button>
+			><i class="icon-white icon-file"></i></button>
+		<button
+			class="btn"
+			onclick="$('#open-file').click()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Open"
+			><i class="icon-white icon-folder-open"></i></button>
+		<a
+			id="save-button"
+			class="btn"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Save"
+			><i class="icon-white icon-download-alt"></i></a>
 	</div>
 </div>
 

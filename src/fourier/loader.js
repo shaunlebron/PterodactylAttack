@@ -53,7 +53,11 @@ Ptero.Fourier.loader = (function(){
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////
-	// IMPORT WAVE
+	// OPEN/IMPORT handlers
+
+	var openLevelHandler = createOpenJSONFileHandler(function(json){
+		setState(json);
+	});
 
 	var importWaveHandler = createOpenJSONFileHandler(function(json){
 		Ptero.Fourier.wave_list.addWaveFromState(json);
@@ -112,11 +116,9 @@ Ptero.Fourier.loader = (function(){
 		if (window.localStorage != undefined) {
 			window.localStorage.fourierState = stateStr;
 		}
-		/*
 		var btn = document.getElementById("save-button");
 		btn.href = "data:application/json;base64," + btoa(stateStr);
-		btn.download = "wave.json";
-		*/
+		btn.download = "level.json";
 	}
 
 	function restore() {
@@ -135,6 +137,7 @@ Ptero.Fourier.loader = (function(){
 	}
 
 	return {
+		openLevelHandler: openLevelHandler,
 		importWaveHandler: importWaveHandler,
 		restore: restore,
 		backup: backup,
