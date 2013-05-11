@@ -75,7 +75,7 @@ Ptero.Fourier.WaveList.prototype = {
 		this.select(e);
 		this.refreshMaxTime();
 		this.refreshOrder();
-		//Ptero.Fourier.loader.backup();
+		Ptero.Fourier.loader.backup();
 	},
 	duplicateWave: function() {
 		// duplicate the current active wave
@@ -133,12 +133,15 @@ Ptero.Fourier.WaveList.prototype = {
 			if (e == wave) {
 				this.waves.splice(i,1);
 				this.select(this.waves[0]);
+				if (len == 1) {
+					Ptero.Fourier.loader.reset();
+				}
 				break;
 			}
 		}
 		this.refreshMaxTime();
 		this.refreshOrder();
-		//Ptero.Fourier.loader.backup();
+		Ptero.Fourier.loader.backup();
 	},
 	getTabsString: function() {
 		var i,e,len=this.waves.length;
@@ -218,12 +221,19 @@ Ptero.Fourier.Wave = function() {
 Ptero.Fourier.Wave.fromState = function(state) {
 	var wave = new Ptero.Fourier.Wave();
 	wave.enemy_models = state.models;
-	wave.setStartTime(0);
+	wave.setStartTime(state.startTime || 0);
+	wave.index = state.index;
 	return wave;
 };
 
 Ptero.Fourier.Wave.prototype = {
-
+	getState: function() {
+		return {
+			index: this.index,
+			startTime: this.startTime,
+			models: this.enemy_models,
+		};
+	},
 	setStartTime: function(t) {
 		this.startTime = t;
 		this.refreshPaths();
@@ -240,6 +250,7 @@ Ptero.Fourier.Wave.prototype = {
 			this.maxTime = Math.max(this.maxTime, e.path.totalTime);
 		}
 		Ptero.Fourier.wave_list.refreshMaxTime();
+		Ptero.Fourier.loader.backup();
 	},
 	select: function() {
 		this.isSelected = true;

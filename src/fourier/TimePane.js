@@ -244,7 +244,7 @@ Ptero.Fourier.TimePane.prototype = {
 	/* DRAWING FUNCTIONS */
 
 	drawAxes: function(ctx) {
-		ctx.strokeStyle = "#CCC";
+		ctx.strokeStyle = "#444";
 		ctx.lineWidth = 1;
 
 		ctx.textAlign = 'center';
