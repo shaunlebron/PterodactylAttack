@@ -34,4 +34,13 @@ Ptero.Fourier.LivePane.prototype = {
 	init: function() {
 		this.scene.init();
 	},
+
+	mouseStart: function(x,y) {
+	},
+
+	mouseMove: function(x,y) {
+	},
+
+	mouseEnd: function(x,y) {
+	},
 };

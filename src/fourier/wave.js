@@ -16,6 +16,18 @@ Ptero.Fourier.WaveList = function() {
 
 Ptero.Fourier.WaveList.prototype = {
 
+	refreshOrbTargets: function() {
+		var enemies = [];
+		var i,len=this.waves.length;
+		for (i=0; i<len; i++) {
+			var j,jlen=this.waves[i].enemies.length;
+			for (j=0; j<jlen; j++) {
+				enemies.push(this.waves[i].enemies[j]);
+			}
+		}
+		Ptero.orb.setTargets(enemies);
+	},
+
 	// take all tabs out of edit mode
 	deselectAll: function() {
 		var i,len=this.waves.length;
@@ -66,6 +78,8 @@ Ptero.Fourier.WaveList.prototype = {
 
 		this.isEditing = false;
 		this.deselectAll();
+
+		this.refreshOrbTargets();
 	},
 	addWaveFromState: function(state) {
 		this.index++;
@@ -76,6 +90,7 @@ Ptero.Fourier.WaveList.prototype = {
 		this.refreshMaxTime();
 		this.refreshOrder();
 		Ptero.Fourier.loader.backup();
+		Ptero.Fourier.wave_list.refreshOrbTargets();
 	},
 	duplicateWave: function() {
 		// duplicate the current active wave
@@ -142,6 +157,7 @@ Ptero.Fourier.WaveList.prototype = {
 		this.refreshMaxTime();
 		this.refreshOrder();
 		Ptero.Fourier.loader.backup();
+		Ptero.Fourier.wave_list.refreshOrbTargets();
 	},
 	getTabsString: function() {
 		var i,e,len=this.waves.length;
@@ -251,6 +267,7 @@ Ptero.Fourier.Wave.prototype = {
 		}
 		Ptero.Fourier.wave_list.refreshMaxTime();
 		Ptero.Fourier.loader.backup();
+		Ptero.Fourier.wave_list.refreshOrbTargets();
 	},
 	select: function() {
 		this.isSelected = true;
@@ -264,8 +281,12 @@ Ptero.Fourier.Wave.prototype = {
 	},
 	setTime: function(t) {
 		var i,len=this.enemies.length;
+		var e;
 		for (i=0; i<len; i++) {
-			this.enemies[i].path.setTime(t);
+			e = this.enemies[i];
+			if (!e.isHit) {
+				e.path.setTime(t);
+			}
 		}
 	},
 	reset: function() {

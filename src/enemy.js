@@ -75,7 +75,9 @@ Ptero.Enemy.prototype = {
 		this.lockedon = false;
 
 		// update score
-		Ptero.score.addPoints(100);
+		if (Ptero.score) {
+			Ptero.score.addPoints(100);
+		}
 		// scene.score += 100 + scene.getStreakBonus();
 		// scene.streakCount++;
 
