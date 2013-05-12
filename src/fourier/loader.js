@@ -64,6 +64,33 @@ Ptero.Fourier.loader = (function(){
 	});
 
 	////////////////////////////////////////////////////////////////////////////////////
+	// PULL/PUSH SERVER
+
+	function pullLevel() {
+		$.ajax({
+			url:'http://ptero.hygoon.com/levels/fourier-level',
+			type:'GET',
+		}).done(function(data) {
+			console.log('done');
+		}).fail(function(data) {
+			console.log(data);
+		});
+	}
+
+	function pushLevel() {
+		var data = JSON.stringify(getState());
+		$.ajax({
+			url: 'http://ptero.hygoon.com/levels/fourier-level',
+			type: 'POST',
+			data: data,
+		}).done(function(data) {
+			console.log('success: '+data);
+		}).fail(function(data) {
+			console.log(data);
+		});
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////
 	// STATE MGMT
 
 	function restore() {
@@ -143,5 +170,7 @@ Ptero.Fourier.loader = (function(){
 		backup: backup,
 		promptReset: promptReset,
 		reset: reset,
+		pushLevel: pushLevel,
+		pullLevel: pullLevel,
 	};
 })();
