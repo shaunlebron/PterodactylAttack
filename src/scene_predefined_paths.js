@@ -106,7 +106,7 @@ Ptero.scene_predefined_paths = (function() {
 
 		Ptero.background.setImage(Ptero.assets.images.desert, Ptero.assets.images["bg_frosted"]);
 
-		setLevel(Ptero.assets.levels["level1"]);
+		setLevel(Ptero.assets.levels["fourier"]);
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);

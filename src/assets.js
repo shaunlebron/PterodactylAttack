@@ -18,6 +18,7 @@ Ptero.assets = (function(){
 
 	var levelSources = {
 		"level1": "levels/level1.json",
+		"fourier": "levels/fourier-level",
 	};
 
 	var images = {};
