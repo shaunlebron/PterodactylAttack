@@ -97,24 +97,33 @@ Ptero.input = (function(){
 				evt.preventDefault();
 			};
 		};
-		$('#canvas').mousewheel(function(evt,delta,deltaX,deltaY) {
-			var canvasPos = Ptero.screen.getCanvasPos();
-			var p = {x:canvasPos.x, y:canvasPos.y};
-			var x,y;
-			if (evt.touches && evt.touches.length > 0) {
-				x = evt.touches[0].pageX;
-				y = evt.touches[0].pageY;
-			}
-			else {
-				x = evt.pageX;
-				y = evt.pageY;
-			}
-			p.x = x - p.x;
-			p.y = y - p.y;
+		var isJQueryLoaded;
+		try {
+			isJQueryLoaded = jQuery;
+		}
+		catch (e) {
+			isJQueryLoaded = false;
+		}
+		if (isJQueryLoaded) {
+			$('#canvas').mousewheel(function(evt,delta,deltaX,deltaY) {
+				var canvasPos = Ptero.screen.getCanvasPos();
+				var p = {x:canvasPos.x, y:canvasPos.y};
+				var x,y;
+				if (evt.touches && evt.touches.length > 0) {
+					x = evt.touches[0].pageX;
+					y = evt.touches[0].pageY;
+				}
+				else {
+					x = evt.pageX;
+					y = evt.pageY;
+				}
+				p.x = x - p.x;
+				p.y = y - p.y;
 
-			evt.preventDefault();
-			scroll(p.x,p.y,delta,deltaX,deltaY);
-		});
+				evt.preventDefault();
+				scroll(p.x,p.y,delta,deltaX,deltaY);
+			});
+		}
 		canvas.addEventListener('mousedown',	wrapFunc(touchStart));
 		canvas.addEventListener('mousemove',	wrapFunc(touchMove));
 		canvas.addEventListener('mouseup',		wrapFunc(touchEnd));
