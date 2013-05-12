@@ -68,25 +68,31 @@ Ptero.Fourier.loader = (function(){
 
 	function pullLevel() {
 		$.ajax({
-			url:'http://ptero.hygoon.com/levels/fourier-level',
+			url:'levels/fourier-level',
 			type:'GET',
 		}).done(function(data) {
-			console.log('done');
+			try {
+				setState(JSON.parse(data));
+				bootbox.alert("Successfully pulled level from server");
+			}
+			catch (e) {
+				bootbox.alert("Could not pull level from server");
+			}
 		}).fail(function(data) {
-			console.log(data);
+				bootbox.alert("Could not pull level from server");
 		});
 	}
 
 	function pushLevel() {
 		var data = JSON.stringify(getState());
 		$.ajax({
-			url: 'http://ptero.hygoon.com/levels/fourier-level',
+			url: 'levels/fourier-level',
 			type: 'POST',
 			data: data,
 		}).done(function(data) {
-			console.log('success: '+data);
+			bootbox.alert("Successfully pushed level to server");
 		}).fail(function(data) {
-			console.log(data);
+			bootbox.alert("Failed to push level to server");
 		});
 	}
 
