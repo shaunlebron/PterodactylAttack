@@ -28,12 +28,7 @@ app.post('/levels/:level', function (req,res) {
             }
             else {
 				cp.exec('./build.py', function(err) {
-					if (error !== null) {
-						res.status(400).send("failed to build zip with level: "+err);
-					}
-					else {
-						res.send("wrote file and built zip");
-					}
+					res.send("wrote file and built zip");
 				});
             }
         });
