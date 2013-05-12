@@ -20,8 +20,8 @@ Ptero.scene_menu = (function(){
 
 	var touchHandler = {
 		start: function(x,y) {
-			//Ptero.fadeToScene(Ptero.scene_predefined_paths, 0.25);
-			Ptero.fadeToScene(Ptero.scene_game, 0.25);
+			Ptero.fadeToScene(Ptero.scene_predefined_paths, 0.25);
+			//Ptero.fadeToScene(Ptero.scene_game, 0.25);
 		},
 		move: function(x,y) {
 		},

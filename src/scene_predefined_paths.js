@@ -35,7 +35,7 @@ Ptero.scene_predefined_paths = (function() {
 	function setLevel(level) {
 		enemies.length = 0;
 
-		var waves = level;
+		var waves = level.waves;
 		var numWaves = waves.length;
 		var i,wave,t;
 		var j,points;
@@ -49,7 +49,7 @@ Ptero.scene_predefined_paths = (function() {
 			t = waves[i].t;
 
 			// get this wave (group of enemies)
-			models = waves[i].wave.models;
+			models = waves[i].models;
 			numModels = models.length;
 
 			// iterate each enemy in wave
