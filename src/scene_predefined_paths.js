@@ -46,7 +46,7 @@ Ptero.scene_predefined_paths = (function() {
 		for (i=0; i<numWaves; i++) {
 
 			// get starting time of this wave
-			t = waves[i].t;
+			t = waves[i].startTime;
 
 			// get this wave (group of enemies)
 			models = waves[i].models;
