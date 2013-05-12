@@ -92,7 +92,7 @@ Ptero.Fourier.loader = (function(){
 		}).done(function(data) {
 			bootbox.alert("Successfully pushed level to server");
 		}).fail(function(data) {
-			bootbox.alert("Failed to push level to server");
+			bootbox.alert("Failed to push level to server: "+data);
 		});
 	}
 
