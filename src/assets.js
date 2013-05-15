@@ -97,6 +97,7 @@ Ptero.assets = (function(){
 			if (levelSources.hasOwnProperty(name)) {
 				var src = levelSources[name];
 				var req = new XMLHttpRequest();
+				/*
 				req.onload = (function(name){
 					return function() {
 						if (req.status == 200) {
@@ -106,8 +107,17 @@ Ptero.assets = (function(){
 						handleLoad();
 					}
 				})(name);
-				req.open('GET', src, true);
+				*/
+				req.open('GET', src, false);
 				req.send();
+				if (req.status == 200) {
+					levels[name] = JSON.parse(req.responseText);
+					console.log("got level: "+ name);
+				}
+				else {
+					console.error("could not load: "+ name);
+				}
+				handleLoad();
 			}
 		}
 	};
