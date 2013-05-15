@@ -2,6 +2,7 @@
 Ptero.scene_menu = (function(){
 
 	var titleSprite;
+	var song;
 
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
@@ -12,16 +13,14 @@ Ptero.scene_menu = (function(){
 
 		Ptero.background.setImage(Ptero.assets.images.desert);
 		Ptero.input.addTouchHandler(touchHandler);
-		var song = Ptero.audio.getThemeSong();
-		if (song) {
-			song.play();
-		}
+		song = Ptero.audio.getTitleSong();
+		song.play();
 	}
 
 	var touchHandler = {
 		start: function(x,y) {
+			song.stop();
 			Ptero.fadeToScene(Ptero.scene_predefined_paths, 0.25);
-			//Ptero.fadeToScene(Ptero.scene_game, 0.25);
 		},
 		move: function(x,y) {
 		},
