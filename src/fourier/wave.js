@@ -177,7 +177,7 @@ Ptero.Fourier.WaveList.prototype = {
 
 			str += '<button class="close" type="button" ';
 			str += 'onclick="Ptero.Fourier.wave_list.promptRemoveIndex(' +e.index+ ')"';
-			str += '>&times;</button>Wave ' + e.index + '</a></li>';
+			str += '>&times;</button><span contenteditable=true>Wave ' + e.index + '<span></a></li>';
 		}
 		str += '<li><a href="#" onclick="$(\'#import-wave-file\').click()"><i class="icon-white icon-plus"></i> Import</li>';
 		return str;
