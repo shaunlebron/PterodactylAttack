@@ -13,6 +13,8 @@ window.onload = function() {
 		function onDone() {
 			console.log("initing input");
 			Ptero.input.init();
+			console.log("initing background");
+			Ptero.background.init();
 			console.log("initing enemy model");
 			Ptero.Crater.enemy_model_list = new Ptero.Crater.EnemyModelList();
 			var ignoreState = false;

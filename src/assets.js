@@ -3,6 +3,7 @@ Ptero.assets = (function(){
 
 	var imageSources = {
 		"desert": "img/desert.png",
+		"bgLayers": "img/bgLayers.png",
 		"bg_frosted": "img/bg_frosted.png",
 		"grass": "img/grass.png",
 		"baby": "img/baby.png",

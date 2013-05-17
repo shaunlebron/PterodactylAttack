@@ -99,6 +99,7 @@ Ptero.SpriteMosaic = function(img,dict) {
 		}
 	}
 	this.frame_names.sort()
+	console.log(this.frame_names);
 
 	this.numFrames = this.frame_names.length;
 	this.fps = dict.fps || 10;

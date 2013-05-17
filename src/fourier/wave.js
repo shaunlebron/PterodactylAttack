@@ -177,7 +177,7 @@ Ptero.Fourier.WaveList.prototype = {
 
 			str += '<button class="close" type="button" ';
 			str += 'onclick="Ptero.Fourier.wave_list.promptRemoveIndex(' +e.index+ ')"';
-			str += '>&times;</button><span contenteditable=true>Wave ' + e.index + '<span></a></li>';
+			str += '>&times;</button><span id="wave' + e.index +'name" contenteditable=true>Wave ' + e.index + '<span></a></li>';
 		}
 		str += '<li><a href="#" onclick="$(\'#import-wave-file\').click()"><i class="icon-white icon-plus"></i> Import</li>';
 		return str;
@@ -239,16 +239,21 @@ Ptero.Fourier.Wave.fromState = function(state) {
 	wave.enemy_models = state.models;
 	wave.setStartTime(state.startTime || 0);
 	wave.index = state.index;
+	wave.name = state.name || "Wave "+wave.index;
 	return wave;
 };
 
 Ptero.Fourier.Wave.prototype = {
 	getState: function() {
 		return {
+			name: this.getName(),
 			index: this.index,
 			startTime: this.startTime,
 			models: this.enemy_models,
 		};
+	},
+	getName: function() {
+		return $('#wave'+this.index+'name').html();
 	},
 	setStartTime: function(t) {
 		this.startTime = t;

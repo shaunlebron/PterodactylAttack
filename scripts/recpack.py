@@ -212,13 +212,14 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 
 	# Try initial size
 	w = globalMaxWidth
-	h = maxH*2
+	h = globalMaxHeight
 	result = trySize(w,h)
 	if not result:
 		return None
 
 	# Set the initial optimum results
 	optW, optH, optPos,optArea,optPacker = result
+	h = optH
 
 	def nextSize(w,h):
 		"""

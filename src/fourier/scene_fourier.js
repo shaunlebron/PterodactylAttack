@@ -8,7 +8,6 @@ Ptero.Fourier.scene_fourier = (function() {
 	}
 
 	function init() {
-		Ptero.background.setImage(Ptero.assets.images.desert);
 
 		Ptero.orb.init();
 		//Ptero.orb.setTargets(enemies);

@@ -5,7 +5,6 @@ Ptero.stress_scene = (function(){
 
 	var init = function() {
 
-		Ptero.background.setImage(Ptero.assets.images.desert);
 
 		var i;
 		for (i=0; i<numBabies; i++) {

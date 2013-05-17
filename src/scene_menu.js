@@ -11,7 +11,6 @@ Ptero.scene_menu = (function(){
 	function init() {
 		titleSprite = Ptero.assets.sprites["logo"];
 
-		Ptero.background.setImage(Ptero.assets.images.desert);
 		Ptero.input.addTouchHandler(touchHandler);
 		song = Ptero.audio.getTitleSong();
 		song.play();

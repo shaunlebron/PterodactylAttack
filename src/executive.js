@@ -15,7 +15,8 @@ Ptero.resumeScene = function(scene) {
 };
 
 Ptero.fadeToScene = function(scene, timeToFade) {
-	Ptero.scene = new Ptero.FadeScene(Ptero.scene, scene, timeToFade);
+	Ptero.setScene(scene);
+	//Ptero.scene = new Ptero.FadeScene(Ptero.scene, scene, timeToFade);
 };
 
 Ptero.executive = (function(){

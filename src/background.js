@@ -1,45 +1,55 @@
 
 Ptero.background = (function(){
 
-	var image,imageBlur;
+	var bgLayers,bgBlur;
+	var bgFlat;
 	var grassAnim;
 	var scale;
 
 	return {
-		getScale: function getScale() { return scale; },
-		setImage: function setImage(img,imgBlur) {
-			image = img;
-			imageBlur = imgBlur;
-			var aspect = image.width / image.height;
-			var scaleH = Ptero.screen.getHeight() / image.height;
-			var scaleW = Ptero.screen.getWidth() / image.width;
+		init: function() {
+			var w = 1280;
+			var h = 720;
+			var aspect = w/h;
+			var scaleH = Ptero.screen.getHeight() / h;
+			var scaleW = Ptero.screen.getWidth() / w;
 			scale = (aspect > Ptero.screen.getAspect()) ? scaleH : scaleW;
+			bgFlat = Ptero.assets.sprites["desert"];
+			bgLayers = Ptero.assets.mosaics["bgLayers"];
+			bgBlur = Ptero.assets.sprites["bg_frosted"];
 			grassAnim = new Ptero.AnimSprite({mosaic: Ptero.assets.mosaics.grass});
 		},
+
+		getScale: function getScale() { return scale; },
 		update: function(dt) {
 			grassAnim.update(dt);
 		},
 		draw: function draw(ctx) {
-			var sx = 0;
-			var sy = 0;
-			var sw = image.width;
-			var sh = image.height;
-			var dw = sw * scale;
-			var dh = sh * scale;
-			var dx = Ptero.screen.getWidth()/2 - dw/2;
-			var dy = Ptero.screen.getHeight()/2 - dh/2;
+			var pos = {
+				x: 0,
+				y: 0,
+				z: Ptero.screen.getFrustum().near,
+			};
 
-			if (Ptero.executive.isPaused()) {
-				ctx.drawImage(imageBlur,sx,sy,sw,sh, dx,dy,dw,dh);
+			if (Ptero.scene.isFading) {
+				bgFlat.draw(ctx, pos);
 			}
 			else {
-				ctx.drawImage(image, sx,sy,sw,sh, dx,dy,dw,dh);
-				var pos = {
-					x: 0,
-					y: 0,
-					z: Ptero.screen.getFrustum().near,
-				};
-				grassAnim.draw(ctx,pos);
+				if (Ptero.executive.isPaused()) {
+					bgBlur.draw(ctx, pos);
+				}
+				else {
+					bgLayers.draw(ctx, pos,"bg06_0");
+					bgLayers.draw(ctx, pos,"bg06_1");
+					bgLayers.draw(ctx, pos,"bg05");
+					bgLayers.draw(ctx, pos,"bg04");
+					bgLayers.draw(ctx, pos,"bg03");
+					bgLayers.draw(ctx, pos,"bg02");
+					grassAnim.draw(ctx,pos);
+					bgLayers.draw(ctx, pos,"bg01_0");
+					bgLayers.draw(ctx, pos,"bg01_1");
+					bgLayers.draw(ctx, pos,"bg00");
+				}
 			}
 		},
 	};

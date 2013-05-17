@@ -104,7 +104,6 @@ Ptero.scene_predefined_paths = (function() {
 		});
 
 
-		Ptero.background.setImage(Ptero.assets.images.desert, Ptero.assets.images["bg_frosted"]);
 
 		setLevel(Ptero.assets.levels["fourier"]);
 		Ptero.orb.init();

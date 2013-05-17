@@ -2,7 +2,6 @@
 Ptero.Crater.scene_crater = (function() {
 
 	function init() {
-		Ptero.background.setImage(Ptero.assets.images.desert);
 	};
 
 	function update(dt) {
