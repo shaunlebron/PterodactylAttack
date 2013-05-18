@@ -15,8 +15,8 @@ Ptero.Fourier.scene_fourier = (function() {
 	};
 
 	function update(dt) {
-		Ptero.background.update(dt);
 		Ptero.deferredSprites.clear();
+		Ptero.background.update(dt);
 		Ptero.Fourier.wave_list.update(dt);
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
