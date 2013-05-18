@@ -19,6 +19,27 @@ Ptero.Billboard.prototype = {
 		this.centerX = x;
 		this.centerY = y;
 	},
+	getTileSpaceRect: function(pos, sx, sy, sw, sh) {
+		var frustum = Ptero.screen.getFrustum();
+		var scale = this.scale * Ptero.background.getScale();
+		scale /= Ptero.screen.getScreenToSpaceRatio();
+		var w = sw * scale;
+		var h = sh * scale;
+		var x = pos.x - this.centerX*scale + sx*scale;
+		var y = pos.y - this.centerY*scale + (this.h-(sy+sh))*scale;
+		var z = pos.z;
+		return {
+			w: w,
+			h: h,
+			x: x,
+			y: y,
+			z: z,
+			bl: {x:x, y:y, z:z},
+			br: {x:x+w, y:y, z:z},
+			tl: {x:x, y:y+h, z:z},
+			tr: {x:x+w, y:y+h, z:z},
+		};
+	},
 	getSpaceRect: function(pos) {
 		var frustum = Ptero.screen.getFrustum();
 		var scale = this.scale * Ptero.background.getScale();

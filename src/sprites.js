@@ -109,6 +109,17 @@ Ptero.SpriteMosaic = function(img,dict) {
 };
 
 Ptero.SpriteMosaic.prototype = {
+	getFrameSpaceRects: function(pos,frame_name) {
+		var rects = [];
+		var tiles = this.frames[frame_name].tiles;
+		var i, numTiles = tiles.length, tile;
+		for (i=0; i<numTiles; i++) {
+			tile = tiles[i];
+			rects.push(this.billboards[frame_name].getTileSpaceRect(
+				pos, tile.origX, tile.origY, tile.w, tile.h));
+		}
+		return rects;
+	},
 	draw: function(ctx,pos,frame_name) {
 
 		// set appropriate billboard

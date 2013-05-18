@@ -115,8 +115,8 @@ Ptero.scene_predefined_paths = (function() {
 	};
 
 	function update(dt) {
-		Ptero.background.update(dt);
 		Ptero.deferredSprites.clear();
+		Ptero.background.update(dt);
 		var i;
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);

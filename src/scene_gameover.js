@@ -59,13 +59,16 @@ Ptero.scene_gameover = (function(){
 	function draw(ctx) {
 		Ptero.assets.keepExplosionsCached(ctx);
 		Ptero.background.draw(ctx);
+		Ptero.deferredSprites.draw(ctx);
 		scoreBtn.draw(ctx);
 		playBtn.draw(ctx);
 		quitBtn.draw(ctx);
 	}
 
 	function update(dt) {
+		Ptero.deferredSprites.clear();
 		Ptero.background.update(dt);
+		Ptero.deferredSprites.finalize();
 	}
 
 	return {

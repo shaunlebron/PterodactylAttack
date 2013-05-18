@@ -1,0 +1,18 @@
+
+background layers:
+
+* selectable in Top Pane
+* draggable in Top Pane on the Z axis
+* size determined from mosaic tiles
+* drawn using the X ranges of the mosaic tiles
+
+state loading:
+
+* background auto loads layer positions from bgLayers.json file
+* push to server button 
+
+Enemy Model:
+
+* single position
+* selectable in Live and Top panes
+* draggable in Live and Top panes

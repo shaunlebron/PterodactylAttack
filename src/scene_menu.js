@@ -30,11 +30,14 @@ Ptero.scene_menu = (function(){
 	};
 
 	function update(dt) {
+		Ptero.deferredSprites.clear();
 		Ptero.background.update(dt);
+		Ptero.deferredSprites.finalize();
 	}
 
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
+		Ptero.deferredSprites.draw(ctx);
 		var frustum = Ptero.screen.getFrustum();
 		titleSprite.draw(ctx,{x:0,y:frustum.nearTop/3,z:frustum.near});
 	}
