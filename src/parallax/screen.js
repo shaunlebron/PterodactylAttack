@@ -7,7 +7,7 @@ Ptero.Parallax.screen = (function(){
 	var paneHeight = paneWidth/16*9;
 
 	var width =  paneWidth*2;
-	var height = paneHeight;
+	var height = paneHeight*3;
 
 	var aspect;
 
@@ -15,7 +15,7 @@ Ptero.Parallax.screen = (function(){
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		Ptero.screen.setStartSize(paneWidth,paneHeight);
+		Ptero.screen.setStartSize(2*paneWidth,2*paneHeight);
 		Ptero.screen.init(canvas);
 		canvas.width = width;
 		canvas.height = height;

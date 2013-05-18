@@ -6,10 +6,14 @@ Ptero.background = (function(){
 	var grassAnim;
 	var scale;
 	var layerPositions = [];
+	var selectedLayer = null;
 
 	return {
-		getDepths: function() {
-			return layerDepths;
+		setSelectedLayer: function(i) {
+			selectedLayer = i;
+		},
+		getLayerDepth: function(i) {
+			return layerPositions[i].z;
 		},
 		getLayerSpaceRects: function(i) {
 			var pos = layerPositions[i];
@@ -27,13 +31,15 @@ Ptero.background = (function(){
 			layerPositions[i].z = z;
 			var near = Ptero.screen.getFrustum().near;
 			var scale = 1/near*z;
-			console.log(scale);
 			if (i==1) {
 				bgLayers.billboards["bg1_0"].scale = scale;
 				bgLayers.billboards["bg1_1"].scale = scale;
+				bgLayersDesat.billboards["bg1_0"].scale = scale;
+				bgLayersDesat.billboards["bg1_1"].scale = scale;
 			}
 			else {
 				bgLayers.billboards["bg"+i].scale = scale;
+				bgLayersDesat.billboards["bg"+i].scale = scale;
 			}
 		},
 		init: function() {
@@ -45,6 +51,7 @@ Ptero.background = (function(){
 			scale = (aspect > Ptero.screen.getAspect()) ? scaleH : scaleW;
 			bgFlat = Ptero.assets.sprites["desert"];
 			bgLayers = Ptero.assets.mosaics["bgLayers"];
+			bgLayersDesat = Ptero.assets.mosaics["bgLayersDesat"];
 			bgBlur = Ptero.assets.sprites["bg_frosted"];
 			grassAnim = new Ptero.AnimSprite({mosaic: Ptero.assets.mosaics.grass});
 
@@ -66,23 +73,36 @@ Ptero.background = (function(){
 			for (i=0; i<6; i++) {
 				var layer = "bg"+i;
 				var pos = layerPositions[i];
+				var desat = (selectedLayer != null && selectedLayer != i);
 				if (i == 1) {
 					Ptero.deferredSprites.defer(
-						(function(pos){
+						(function(pos,desat){
 							return function(ctx) {
-								bgLayers.draw(ctx, pos,"bg1_1");
-								grassAnim.draw(ctx,{x:0,y:0,z:Ptero.screen.getFrustum().near});
-								bgLayers.draw(ctx, pos,"bg1_0");
+								if (desat) {
+									bgLayersDesat.draw(ctx, pos,"bg1_1");
+									grassAnim.draw(ctx,{x:0,y:0,z:Ptero.screen.getFrustum().near});
+									bgLayersDesat.draw(ctx, pos,"bg1_0");
+								}
+								else {
+									bgLayers.draw(ctx, pos,"bg1_1");
+									grassAnim.draw(ctx,{x:0,y:0,z:Ptero.screen.getFrustum().near});
+									bgLayers.draw(ctx, pos,"bg1_0");
+								}
 							};
-						})(pos), pos.z);
+						})(pos,desat), pos.z);
 				}
 				else {
 					Ptero.deferredSprites.defer(
-						(function(pos,layer){
+						(function(pos,layer,desat){
 							return function(ctx) {
-								bgLayers.draw(ctx, pos, layer);
+								if (desat) {
+									bgLayersDesat.draw(ctx, pos, layer);
+								}
+								else {
+									bgLayers.draw(ctx, pos, layer);
+								}
 							};
-						})(pos,layer), pos.z);
+						})(pos,layer,desat), pos.z);
 				}
 			}
 		},

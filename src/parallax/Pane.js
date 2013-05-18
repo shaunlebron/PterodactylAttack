@@ -165,7 +165,11 @@ Ptero.Parallax.Pane.prototype = {
 	/* DRAWING FUNCTIONS */
 
 	drawAxes: function(ctx) {
-		var colors = {x:"#F00", y:"#00F", z:"#0F0"};
+		var colors = {
+			x:"#F00",
+			y:"#00F",
+		 	z:"#0F0",
+		};
 
 		var margin = 20;
 		var x = margin;
@@ -226,11 +230,12 @@ Ptero.Parallax.Pane.prototype = {
 	drawBgLayer: function(ctx, i) {
 		var rects = Ptero.background.getLayerSpaceRects(i);
 		var i,len=rects.length,rect;
-		ctx.strokeStyle = "#00F";
+		ctx.strokeStyle = (i == Ptero.Parallax.model.selectedLayer) ? "#F00" : "#333";
 		ctx.lineWidth = 2;
 		for (i=0; i<len; i++) {
 			rect = rects[i];
 			this.line(ctx, rect.bl, rect.br);
+			this.line(ctx, rect.bl, rect.tl);
 		}
 	},
 
@@ -255,14 +260,66 @@ Ptero.Parallax.Pane.prototype = {
 		this.bpos = pos[this.axes[1]];
 	},
 
+	getLayerAtPos: function(x,y) {
+		for (i=0; i<6; i++) {
+			var screenPos = this.spaceToScreen(
+				{x:0,y:0,z:Ptero.background.getLayerDepth(i)});
+			if (this.axes[0] == 'z') {
+				if (Math.abs(screenPos.x - x) < this.nodeRadius) {
+					return i;
+				}
+			}
+			else if (this.axes[1] == 'z') {
+				if (Math.abs(screenPos.y - y) < this.nodeRadius) {
+					return i;
+				}
+			}
+		}
+		return null;
+	},
+
+	getNodeInfoFromCursor: function(x,y) {
+		var i = this.getLayerAtPos(x,y);
+		if (i != null) {
+			var z = this.screenToSpace(x,y).z;
+			return {
+				layerIndex: i,
+				offset_z: Ptero.background.getLayerDepth(i) - z,
+			};
+		}
+		else {
+			return {};
+		}
+	},
+
+	selectNode: function(info) {
+		if (info.layerIndex != null) {
+			Ptero.Parallax.model.selectLayer(info.layerIndex);
+			this.selectedOffsetZ = info.offset_z;
+		}
+		else {
+			Ptero.Parallax.model.selectLayer(null);
+		}
+	},
+
+	updateNodePosition: function(x,y) {
+		var layer = Ptero.Parallax.model.selectedLayer;
+		if (layer != null) {
+			var z = this.screenToSpace(x,y).z;
+			Ptero.background.setLayerDepth(
+				layer,
+				z + this.selectedOffsetZ);
+		}
+	},
+
 	mouseStart: function(x,y) {
 		if (this.isZoomPanKey) {
 			this.isPanning = true;
 			this.setFocusPoint(x,y);
 		}
 		else {
-			//var i = this.getNodeInfoFromCursor(x,y);
-			//this.selectNode(i.index, i.offset_x, i.offset_y);
+			var info = this.getNodeInfoFromCursor(x,y);
+			this.selectNode(info);
 		}
 	},
 	mouseMove: function(x,y) {
@@ -270,7 +327,7 @@ Ptero.Parallax.Pane.prototype = {
 			this.zoom(this.scale, this.apos, this.bpos, x, y);
 		}
 		else {
-			//this.updateNodePosition(x,y);
+			this.updateNodePosition(x,y);
 		}
 	},
 	mouseEnd: function(x,y) {
@@ -291,7 +348,8 @@ Ptero.Parallax.Pane.prototype = {
 	/* MAIN FUNCTIONS */
 
 	draw: function(ctx) {
-		ctx.fillStyle = "#EEE";
+		//ctx.fillStyle = "#ffeaba";
+		ctx.fillStyle = "#fff4db";
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawFrustum(ctx);
 		this.drawAxes(ctx);

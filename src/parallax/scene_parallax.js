@@ -8,6 +8,7 @@ Ptero.Parallax.scene_parallax = (function() {
 	function update(dt) {
 		Ptero.deferredSprites.clear();
 		Ptero.background.update(dt);
+		Ptero.Parallax.model.update(dt);
 		Ptero.deferredSprites.finalize();
 	};
 

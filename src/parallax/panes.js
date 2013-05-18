@@ -1,7 +1,7 @@
 
 Ptero.Parallax.panes = (function() {
 
-	var topPane, livePane;
+	var topPane, rightPane, livePane;
 	var panes;
 
 	var paneWidth,paneHeight;
@@ -16,24 +16,34 @@ Ptero.Parallax.panes = (function() {
 
 		// Create the panes for each projection.
 		topPane = new Ptero.Parallax.Pane( w,h, ['x','z'], 'top');
+		rightPane = new Ptero.Parallax.Pane( w,h, ['z','y'], 'right');
 
 		// Set the pane windows to fit the frustum.
 		topPane.fitFrustum(frustum);
+		rightPane.fitFrustum(frustum);
+
+		var scale = Math.min(topPane.scale, rightPane.scale);
+		topPane.minScale = rightPane.minScale = scale;
+		topPane.zoom(scale);
+		rightPane.zoom(scale);
 		
 		// Set the live pane to a scene and initialize it.
 		livePane = new Ptero.Parallax.LivePane();
 		livePane.init();
 
 		// This determines the position of the panes on the screen.
-		panes = [livePane, topPane];
+		panes = [livePane, topPane, rightPane];
 
 		initControls();
 	};
 
 	function getPaneFromXY(x,y) {
-		var row = Math.floor(y/paneHeight);
-		var col = Math.floor(x/paneWidth);
-		return panes[row*2+col];
+		if (y < paneHeight * 2) {
+			return livePane;
+		}
+		else {
+			return (x < paneWidth) ? topPane : rightPane;
+		}
 	};
 
 	function getXYRelativeToPane(x,y,pane) {
@@ -48,22 +58,31 @@ Ptero.Parallax.panes = (function() {
 		var w = paneWidth;
 		var h = paneHeight;
 
-		var i;
-		for (i=0; i<2; i++) {
-			if (pane == panes[i]) {
-				break;
-			}
+		if (pane == livePane) {
+			return {
+				x: 0,
+				y: 0,
+				w: 2*w,
+				h: 2*h,
+			};
+		}
+		else if (pane == topPane) {
+			return {
+				x: 0,
+				y: 2*h,
+				w: w,
+				h: h,
+			};
+		}
+		else if (pane == rightPane) {
+			return {
+				x: w,
+				y: 2*h,
+				w: w,
+				h: h,
+			};
 		}
 
-		var row = Math.floor(i/2);
-		var col = i%2;
-
-		return {
-			x: col*w,
-			y: row*h,
-			w: w,
-			h: h,
-		};
 	};
 
 	function initControls() {
@@ -119,16 +138,24 @@ Ptero.Parallax.panes = (function() {
 			ctx.restore();
 		}
 
-		var i=0, row, col;
-		for (i=0; i<2; i++) {
+		var i,len=panes.length;
+		for (i=0; i<len; i++) {
 			drawPane(panes[i]);
 		}
 
+		ctx.strokeStyle = "#FFF";
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		ctx.moveTo(0,2*h);
+		ctx.lineTo(2*w,2*h);
+		ctx.moveTo(w,2*h);
+		ctx.lineTo(w,3*h);
+		ctx.stroke();
 	};
 
 	function update(dt) {
-		var i;
-		for (i=0; i<2; i++) {
+		var i,len=panes.length;
+		for (i=0; i<len; i++) {
 			panes[i].update(dt);
 		}
 	};
