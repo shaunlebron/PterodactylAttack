@@ -227,6 +227,12 @@ Ptero.Parallax.Pane.prototype = {
 		ctx.fillText(' '+this.title+' ', this.pixelW - margin, margin);
 	},
 
+	drawEnemy: function(ctx) {
+		var pos = Ptero.Parallax.model.enemyPos;
+		var color = (Ptero.Parallax.model.enemySelected) ? "#F00" : "#333";
+		this.fillCircle(ctx, pos, this.nodeRadius, color);
+	},
+
 	drawBgLayer: function(ctx, i) {
 		var rects = Ptero.background.getLayerSpaceRects(i);
 		var i,len=rects.length,rect;
@@ -279,6 +285,19 @@ Ptero.Parallax.Pane.prototype = {
 	},
 
 	getNodeInfoFromCursor: function(x,y) {
+		var pos = this.spaceToScreen(Ptero.Parallax.model.enemyPos);
+		var dx = pos.x - x;
+		var dy = pos.y - y;
+		var dist_sq = dx*dx + dy*dy;
+		var r2 = 100;
+		if (dist_sq < r2) {
+			return {
+				enemy: true,
+				offset_x: dx,
+				offset_y: dy,
+			};
+		}
+
 		var i = this.getLayerAtPos(x,y);
 		if (i != null) {
 			var z = this.screenToSpace(x,y).z;
@@ -297,6 +316,11 @@ Ptero.Parallax.Pane.prototype = {
 			Ptero.Parallax.model.selectLayer(info.layerIndex);
 			this.selectedOffsetZ = info.offset_z;
 		}
+		else if (info.enemy) {
+			Ptero.Parallax.model.selectEnemy();
+			this.selectedOffsetX = info.offset_x;
+			this.selectedOffsetY = info.offset_y;
+		}
 		else {
 			Ptero.Parallax.model.selectLayer(null);
 		}
@@ -309,6 +333,20 @@ Ptero.Parallax.Pane.prototype = {
 			Ptero.background.setLayerDepth(
 				layer,
 				z + this.selectedOffsetZ);
+		}
+		else if (Ptero.Parallax.model.enemySelected) {
+			var point = Ptero.Parallax.model.enemyPos;
+			var pos = this.screenToSpace(
+				x + this.selectedOffsetX,
+				y + this.selectedOffsetY
+			);
+			var a = this.axes[0];
+			var b = this.axes[1];
+			point[a] = pos[a];
+			point[b] = pos[b];
+
+			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
+			point.z = Math.max(0.0001, point.z);
 		}
 	},
 
@@ -358,6 +396,8 @@ Ptero.Parallax.Pane.prototype = {
 		for (i=0; i<len; i++) {
 			this.drawBgLayer(ctx, i);
 		}
+
+		this.drawEnemy(ctx);
 
 		if (this.axes[0] == 'x' && this.axes[1] == 'z') {
 			var p = Ptero.painter;
