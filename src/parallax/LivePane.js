@@ -39,18 +39,13 @@ Ptero.Parallax.LivePane.prototype = {
 
 	// Determine if the given coord is inside the selection rectangle
 	// of the given path knot index. Return an offset object if true.
-	getNodeSelectOffset: function(x,y,index) {
-		if (index == undefined) {
-			return;
-		}
-
-		var enemy_model = Ptero.Parallax.enemy_model;
-		var nodeSprite = enemy_model.nodeSprites[index];
-		var spaceCenter = enemy_model.points[index];
+	getNodeSelectOffset: function(x,y) {
+		var nodeSprite = Ptero.Parallax.model.enemySprite;
+		var spaceCenter = Ptero.Parallax.model.enemyPos;
 		var spaceClick = this.screenToSpace(x,y,spaceCenter.z);
-		if (enemy_model.enemy.babySprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
+		if (nodeSprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
 			return {
-				index: index,
+				enemy: true,
 				offset_x: spaceCenter.x - spaceClick.x,
 				offset_y: spaceCenter.y - spaceClick.y,
 			}
@@ -59,63 +54,16 @@ Ptero.Parallax.LivePane.prototype = {
 
 	getNodeInfoFromCursor: function(x,y) {
 
-		var enemy_model = Ptero.Parallax.enemy_model;
-
 		function getPointDistSq(x0,y0,x1,y1) {
 			var dx,dy,dist_sq;
 			dx = x0-x1;
 			dy = y0-y1;
 			return dx*dx + dy*dy;
 		}
-		
-		/*
-		if (enemy_model.selectedIndex != undefined) {
-			var point = enemy_model.getSelectedPoint();
-			if (enemy_model.enemy.babySprite.getBillboard().isOverRotationHandle(x,y,point)) {
-				var p = Ptero.screen.spaceToScreen(point);
-				var click_angle = this.screenToAngle(x,y,p.x,p.y);
-				return {
-					index: enemy_model.selectedIndex,
-					offset_angle: point.angle - click_angle,
-				};
-			}
-		}
-		*/
-
-		// First, see if any of the knots are clicked.
-		var min_dist_sq = 100;
-		var nodes = Ptero.Parallax.enemy_model.points;
-		var i,len = nodes.length;
-		var node,pos;
-		var closest_index;
-		var offset_x, offset_y;
-		for (i=0; i<len; i++) {
-			node = nodes[i];
-			pos = this.spaceToScreen(node);
-			dist_sq = getPointDistSq(pos.x,pos.y,x,y);
-			if (dist_sq < min_dist_sq) {
-				closest_index = i;
-				min_dist_sq = dist_sq;
-			}
-		}
-
-		var node_offset;
 
 		// If a knot is clicked, return the offset from that knot.
-		if (node_offset = this.getNodeSelectOffset(x,y,closest_index)) {
+		if (node_offset = this.getNodeSelectOffset(x,y)) {
 			return node_offset;
-		}
-
-		// Else, return the offset from the selected node our click is inside a selection rectangle.
-		else if (node_offset = this.getNodeSelectOffset(x,y,enemy_model.selectedIndex)) {
-			return node_offset;
-		}
-
-		// Finally, return the offset from an unselected node rectangle if our click is inside one.
-		for (i=0; i<len; i++) {
-			if (node_offset = this.getNodeSelectOffset(x,y,i)) {
-				return node_offset;
-			}
 		}
 
 		// Return an empty object if we cannot deduce a click selection.
@@ -123,41 +71,31 @@ Ptero.Parallax.LivePane.prototype = {
 		
 	},
 
-	selectNode: function(index,offset_x,offset_y,offset_angle) {
-		Ptero.Parallax.enemy_model.selectPoint(index);
-		this.selectedOffsetX = offset_x;
-		this.selectedOffsetY = offset_y;
-		this.selectedOffsetAngle = offset_angle;
-	},
-
-	updateNodePosition: function(x,y) {
-		var enemy_model = Ptero.Parallax.enemy_model;
-		var point = enemy_model.getSelectedPoint();
-		if (point) {
-			if (this.selectedOffsetAngle != undefined) {
-				// rotate
-				var point = enemy_model.getSelectedPoint();
-				var p = Ptero.screen.spaceToScreen(point);
-				var click_angle = this.screenToAngle(x,y,p.x,p.y);
-				point.angle = click_angle + this.selectedOffsetAngle;
-			}
-			else {
-				// move
-				var spaceClick = this.screenToSpace(x,y,point.z);
-				point.x = spaceClick.x + this.selectedOffsetX;
-				point.y = spaceClick.y + this.selectedOffsetY;
-			}
-			Ptero.Parallax.enemy_model.refreshPath();
+	selectNode: function(info) {
+		if (info.enemy) {
+			Ptero.Parallax.model.selectEnemy();
+			this.selectedOffsetX = info.offset_x;
+			this.selectedOffsetY = info.offset_y;
+		}
+		else {
+			Ptero.Parallax.model.selectLayer(null);
 		}
 	},
 
+	updateNodePosition: function(x,y) {
+		var point = Ptero.Parallax.model.enemyPos;
+		var spaceClick = this.screenToSpace(x,y,point.z);
+		point.x = spaceClick.x + this.selectedOffsetX;
+		point.y = spaceClick.y + this.selectedOffsetY;
+	},
+
 	mouseStart: function(x,y) {
-		//var i = this.getNodeInfoFromCursor(x,y);
-		//this.selectNode(i.index, i.offset_x, i.offset_y, i.offset_angle);
+		var info = this.getNodeInfoFromCursor(x,y);
+		this.selectNode(info);
 	},
 
 	mouseMove: function(x,y) {
-		//this.updateNodePosition(x,y);
+		this.updateNodePosition(x,y);
 	},
 
 	mouseEnd: function(x,y) {
