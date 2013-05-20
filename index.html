@@ -1,155 +1,99 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang='en'>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Pterodactyl Attack</title>
+  <title>Pterodactyl Attack - Hub</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0'>
+	<meta name='apple-mobile-web-app-capable' content='yes'>
+	<meta name='apple-mobile-web-app-status-bar-style' content='black'>
+  <meta name='description' content='Hygoon'>
+  <meta name='author' content='Brantley Essary'>
+	<link href='css/normalize.css' rel='stylesheet'>
+  <link href='css/main.css' rel='stylesheet'>
+	<link href='css/style.css' rel='stylesheet'>
+	
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>
+  <![endif]-->
 
-    <!-- Lock viewport on mobile devices. -->
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
-
-    <!-- Allow page to be saved as web app on iOS. -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-
-    <!-- Hide status bar -->
-    <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-	<style>
-	html {
-		height: 100%;
-	}
-	body {
-		background-color:#eeeeee;
-		background-image:url('img/iphone_b.png');
-		background-repeat:no-repeat;
-		background-position: -2000px -2000px; /* hide it before it's snapped into correct position */
-		margin:0;
-		height: 100%;
-	}
-	#controls {
-		font-family: sans-serif;
-		position: fixed;
-		top: -2px;
-		left: -2px;
-		color: #999;
-		z-index: 5;
-		background-color: rgba(0,0,0,0.8);
-		padding: 1em;
-		transition: width height 1s;
-		border-radius: 10px;
-		cursor: pointer;
-	}
-	a:link, a:hover, a:active, a:visited {
-		text-decoration: none;
-		color: #CCC;
-	}
-	#controls a{
-		text-decoration: none;
-	}
-	#controls li {
-		list-style-type: none;
-	}
-	#controls ul {
-		margin:0;
-		padding:0;
-	}
-	#controls-list {
-		display: none;
-	}
-	#controls table td {
-		padding:5px;
-		color: #777;
-	}
-	#controls table tr td:first-child {
-		font-weight: bold;
-		text-align: right;
-		color: #FFF;
-	}
-	</style>
-
+  <link rel='shortcut icon' href='img/favicon.ico'>
+  <link rel='apple-touch-icon-precomposed' sizes='144x144' href='img/apple-touch-icon-144x144-precomposed.png'>
+  <link rel='apple-touch-icon-precomposed' sizes='114x114' href='img/apple-touch-icon-114x114-precomposed.png'>
+  <link rel='apple-touch-icon-precomposed' sizes='72x72' href='img/apple-touch-icon-72x72-precomposed.png'>
+  <link rel='apple-touch-icon-precomposed' href='img/apple-touch-icon-57x57-precomposed.png'>
+  <style>
+  h1, h2, h3 {
+	padding-left: 10px;
+  }
+  a div {
+	color:#000;
+  }
+  p {
+	padding-left:10px;
+	padding-right:10px;
+	font-size: 1.1em;
+  }
+  </style>
 </head>
-
-<body onclick="showHelp(false)">
-	<div id="controls">
-		<script>
-			var isShowingHelp = false;
-			function showHelp(on) {
-				var list = document.getElementById("controls-list");
-				var symbol = document.getElementById("toggleSymbol");
-				var div = document.getElementById("controls");
-				isShowingHelp = on;
-				if (isShowingHelp) {
-					list.style.display = "block";
-					toggleSymbol.innerHTML = "";
-					div.style.cursor = "default";
-				}
-				else {
-					list.style.display = "none";
-					toggleSymbol.innerHTML = "[+]";
-					div.style.cursor = "pointer";
-				}
-			}
-			function toggleHelp() {
-				showHelp(!isShowingHelp);
-			}
-			document.getElementById("controls").addEventListener("click", function(evt) {
-				if (!isShowingHelp) {
-					toggleHelp();
-				}
-				evt.stopPropagation();
-			});
-		</script>
-		<div>Help <span id="toggleSymbol">[+]</span></div>
-		<div id="controls-list">
-			<table>
-				<tr><td>A</td><td>toggle aim spotlights</td></tr>
-				<tr><td>B</td><td>toggle sprite borders</td></tr>
-				<tr><td>F</td><td>toggle framerate display</td></tr>
-				<tr><td>SPACE</td><td>toggle pause</td></tr>
-				<tr><td>SHIFT</td><td>hold for slow motion</td></tr>
-				<tr><td>ENTER</td><td>fullscreen</td></tr>
-			</table>
+<body>
+	
+	<div class='container'>
+		<div class='row'>
+			<div class='col10' style="text-align:center;background-color:#fff">
+				<h2>Pterodactyl Attack - Developer Hub</h2>
+			</div>
 		</div>
+
+		<div class='row'>
+			<a href="play.html">
+			<div class='col5'>
+				<h2>Play Desktop</h2>
+				<p>
+					Click here to try out the current version of the game in a desktop browser.
+				</p>
+			</div></a>
+			<div class='col5'>
+				<h2>Play Mobile</h2>
+				<p>
+				<ol>
+					<li>Get the CocoonJS app for <a href="https://itunes.apple.com/us/app/cocoonjs-by-ludei/id519623307?mt=8">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.ideateca.cocoonjslauncher&hl=en">Android</a>.</li>
+					<li>Open the app and enter the developer code <strong>E62324F6</strong>.</li>
+					<li>Launch the game from the URL: <a href="http://ptero.hygoon.com/cocoon.zip">http://ptero.hygoon.com/cocoon.zip</a>.
+				</ol>
+				</p>
+			</div>
+		</div>		
+		
+		<div class='row'>
+			<a href="ptalaga.html">
+			<div class='colthird'>
+				<h2>Ptalaga</h2>
+				<p>
+					Create a Pterodactyl wave by composing path trajectories.
+				</p>
+			</div></a>
+
+			<a href="fourier.html">
+			<div class='colthird'>
+				<h2>Fourier</h2>
+				<p>
+					Create a level by composing Pterodactyl waves.
+				</p>
+			</div></a>
+
+			<a href="baklava.html">
+			<div class='colthird'>
+				<h2>Baklava</h2>
+				<p>
+					Determine where each background layer should be positioned in space.
+				</p>
+			</div></a>
+		</div>		
 	</div>
-
-	<script src="lib/requestAnimationFrame.js"></script>
-	<script src="src/inherit.js"></script>
-	<script src="src/ptero.js"></script>
-	<script src="src/interp.js"></script>
-	<script src="src/assets.js"></script>
-	<script src="src/billboard.js"></script>
-	<script src="src/painter.js"></script>
-	<script src="src/background.js"></script>
-	<script src="src/executive.js"></script>
-	<script src="src/screen.js"></script>
-	<script src="src/input.js"></script>
-	<script src="src/sprites.js"></script>
-	<script src="src/stress/scene.js"></script>
-	<script src="src/stress/enemy.js"></script>
-
-	<script src="src/bullet.js"></script>
-	<script src="src/bulletpool.js"></script>
-	<script src="src/enemy.js"></script>
-	<script src="src/frustum.js"></script>
-	<script src="src/orb.js"></script>
-	<script src="src/path.js"></script>
-	<script src="src/paths.js"></script>
-	<script src="src/fade_scene.js"></script>
-	<script src="src/score.js"></script>
-	<script src="src/hud.js"></script>
-	<script src="src/button.js"></script>
-	<script src="src/scene_game.js"></script>
-	<script src="src/scene_predefined_paths.js"></script>
-	<script src="src/scene_gameover.js"></script>
-	<script src="src/scene_fact.js"></script>
-	<script src="src/scene_menu.js"></script>
-	<script src="src/time.js"></script>
-	<script src="src/timer.js"></script>
-	<script src="src/vector.js"></script>
-
-	<script src="src/audio.js"></script>
-	<script src="src/main.js"></script>
+	
+	
+	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+  <script src='js/script.js'></script>
 
 </body>
-
 </html>

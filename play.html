@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Pterodactyl Attack - Demo</title>
+
+    <!-- Lock viewport on mobile devices. -->
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+
+    <!-- Allow page to be saved as web app on iOS. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!-- Hide status bar -->
+    <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<style>
+	html {
+		height: 100%;
+	}
+	body {
+		background-color:#eeeeee;
+		background-image:url('img/iphone_b.png');
+		background-repeat:no-repeat;
+		background-position: -2000px -2000px; /* hide it before it's snapped into correct position */
+		margin:0;
+		height: 100%;
+	}
+	#controls {
+		font-family: sans-serif;
+		position: fixed;
+		top: -2px;
+		left: -2px;
+		color: #999;
+		z-index: 5;
+		background-color: rgba(0,0,0,0.8);
+		padding: 1em;
+		transition: width height 1s;
+		border-radius: 10px;
+		cursor: pointer;
+	}
+	a:link, a:hover, a:active, a:visited {
+		text-decoration: none;
+		color: #CCC;
+	}
+	#controls a{
+		text-decoration: none;
+	}
+	#controls li {
+		list-style-type: none;
+	}
+	#controls ul {
+		margin:0;
+		padding:0;
+	}
+	#controls-list {
+		display: none;
+	}
+	#controls table td {
+		padding:5px;
+		color: #777;
+	}
+	#controls table tr td:first-child {
+		font-weight: bold;
+		text-align: right;
+		color: #FFF;
+	}
+	</style>
+
+</head>
+
+<body onclick="showHelp(false)">
+	<div id="controls">
+		<script>
+			var isShowingHelp = false;
+			function showHelp(on) {
+				var list = document.getElementById("controls-list");
+				var symbol = document.getElementById("toggleSymbol");
+				var div = document.getElementById("controls");
+				isShowingHelp = on;
+				if (isShowingHelp) {
+					list.style.display = "block";
+					toggleSymbol.innerHTML = "";
+					div.style.cursor = "default";
+				}
+				else {
+					list.style.display = "none";
+					toggleSymbol.innerHTML = "[+]";
+					div.style.cursor = "pointer";
+				}
+			}
+			function toggleHelp() {
+				showHelp(!isShowingHelp);
+			}
+			document.getElementById("controls").addEventListener("click", function(evt) {
+				if (!isShowingHelp) {
+					toggleHelp();
+				}
+				evt.stopPropagation();
+			});
+		</script>
+		<div>Help <span id="toggleSymbol">[+]</span></div>
+		<div id="controls-list">
+			<table>
+				<tr><td>A</td><td>toggle aim spotlights</td></tr>
+				<tr><td>B</td><td>toggle sprite borders</td></tr>
+				<tr><td>F</td><td>toggle framerate display</td></tr>
+				<tr><td>SPACE</td><td>toggle pause</td></tr>
+				<tr><td>SHIFT</td><td>hold for slow motion</td></tr>
+				<tr><td>ENTER</td><td>fullscreen</td></tr>
+			</table>
+		</div>
+	</div>
+
+	<script src="lib/requestAnimationFrame.js"></script>
+	<script src="src/inherit.js"></script>
+	<script src="src/ptero.js"></script>
+	<script src="src/interp.js"></script>
+	<script src="src/assets.js"></script>
+	<script src="src/billboard.js"></script>
+	<script src="src/painter.js"></script>
+	<script src="src/background.js"></script>
+	<script src="src/executive.js"></script>
+	<script src="src/screen.js"></script>
+	<script src="src/input.js"></script>
+	<script src="src/sprites.js"></script>
+	<script src="src/stress/scene.js"></script>
+	<script src="src/stress/enemy.js"></script>
+
+	<script src="src/bullet.js"></script>
+	<script src="src/bulletpool.js"></script>
+	<script src="src/enemy.js"></script>
+	<script src="src/frustum.js"></script>
+	<script src="src/orb.js"></script>
+	<script src="src/path.js"></script>
+	<script src="src/paths.js"></script>
+	<script src="src/fade_scene.js"></script>
+	<script src="src/score.js"></script>
+	<script src="src/hud.js"></script>
+	<script src="src/button.js"></script>
+	<script src="src/scene_game.js"></script>
+	<script src="src/scene_predefined_paths.js"></script>
+	<script src="src/scene_gameover.js"></script>
+	<script src="src/scene_fact.js"></script>
+	<script src="src/scene_menu.js"></script>
+	<script src="src/time.js"></script>
+	<script src="src/timer.js"></script>
+	<script src="src/vector.js"></script>
+
+	<script src="src/audio.js"></script>
+	<script src="src/main.js"></script>
+
+</body>
+
+</html>
