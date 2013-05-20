@@ -79,6 +79,11 @@ Ptero.background = (function(){
 				layerPositions[i] = {x:0,y:0};
 				this.setLayerDepth(i, far-step*(5-i));
 			}
+
+			var savedDepths = Ptero.assets.json["bgLayerDepths"];
+			if (savedDepths) {
+				this.setLayerDepths(savedDepths.depths);
+			}
 		},
 
 		getScale: function getScale() { return scale; },

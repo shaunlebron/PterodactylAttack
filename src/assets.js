@@ -23,6 +23,12 @@ Ptero.assets = (function(){
 		"fourier": "levels/fourier-level",
 	};
 
+	var miscJsonSources = {
+		"bgLayerDepths": "img/bgLayerDepths.json",
+	};
+
+	var json = {};
+
 	var images = {};
 	var sprites = {};
 	var tables = {};
@@ -76,6 +82,11 @@ Ptero.assets = (function(){
 				totalCount++;
 			}
 		}
+		for (name in miscJsonSources) {
+			if (miscJsonSources.hasOwnProperty(name)) {
+				totalCount++;
+			}
+		}
 
 		var handleLoad = function() {
 			count++;
@@ -99,22 +110,27 @@ Ptero.assets = (function(){
 			if (levelSources.hasOwnProperty(name)) {
 				var src = levelSources[name];
 				var req = new XMLHttpRequest();
-				/*
-				req.onload = (function(name){
-					return function() {
-						if (req.status == 200) {
-							levels[name] = JSON.parse(req.responseText);
-							console.log("got level:", name);
-						}
-						handleLoad();
-					}
-				})(name);
-				*/
 				req.open('GET', src, false);
 				req.send();
 				if (req.status == 200) {
 					levels[name] = JSON.parse(req.responseText);
 					console.log("got level: "+ name);
+				}
+				else {
+					console.error("could not load: "+ name);
+				}
+				handleLoad();
+			}
+		}
+		for (name in miscJsonSources) {
+			if (miscJsonSources.hasOwnProperty(name)) {
+				var src = miscJsonSources[name];
+				var req = new XMLHttpRequest();
+				req.open('GET', src, false);
+				req.send();
+				if (req.status == 200) {
+					json[name] = JSON.parse(req.responseText);
+					console.log("got misc: "+ name);
 				}
 				else {
 					console.error("could not load: "+ name);
@@ -135,6 +151,7 @@ Ptero.assets = (function(){
 	}
 
 	return {
+		json: json,
 		load: load,
 		images: images,
 		sprites: sprites,

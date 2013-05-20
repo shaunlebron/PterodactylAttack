@@ -234,6 +234,18 @@ Ptero.Crater.Pane.prototype = {
 		}
 	},
 
+	drawBgLayer: function(ctx, i) {
+		var rects = Ptero.background.getLayerSpaceRects(i);
+		var i,len=rects.length,rect;
+		ctx.strokeStyle = "#BBB";
+		ctx.lineWidth = 2;
+		for (i=0; i<len; i++) {
+			rect = rects[i];
+			this.line(ctx, rect.bl, rect.br);
+			this.line(ctx, rect.bl, rect.tl);
+		}
+	},
+
 	drawModelPath: function(ctx, model) {
 		var interp = model.interp;
 		var totalTime = interp.totalTime;
@@ -401,6 +413,15 @@ Ptero.Crater.Pane.prototype = {
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawFrustum(ctx);
 		this.drawAxes(ctx);
+
+		if (this.axes[0] == 'x' && this.axes[1] == 'y') {
+		}
+		else {
+			var i,len=6;
+			for (i=0; i<len; i++) {
+				this.drawBgLayer(ctx, i);
+			}
+		}
 
 		var models = Ptero.Crater.enemy_model_list.models;
 		var i,len=models.length;
