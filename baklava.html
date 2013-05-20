@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Pterodactyl Attack - Reiniger</title>
+	<title>Pterodactyl Attack - Baklava</title>
 	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
 	<style>
@@ -59,6 +59,7 @@
 	<script src="src/vector.js"></script>
 
 	<script src="src/parallax/main.js"></script>
+	<script src="src/parallax/loader.js"></script>
 	<script src="src/parallax/model.js"></script>
 	<script src="src/parallax/screen.js"></script>
 	<script src="src/parallax/executive.js"></script>
@@ -67,13 +68,58 @@
 	<script src="src/parallax/Pane.js"></script>
 	<script src="src/parallax/LivePane.js"></script>
 
+	<style>
+	#title {
+		float: left;
+		display: inline;
+	}
+
+	#toolbar {
+		float: left;
+		margin: 15px 0 0 15px;
+	}
+	
+	#container {
+		clear:both;
+	}
+	</style>
+
 </head>
 
 <body>
 
-<h2 id="title">Reiniger</h2>
+<script>
+$(function(){
+	$('body').tooltip({
+		selector: '[rel="tooltip"]'
+	});
 
+});
+</script>
+
+
+<h2 id="title">Baklava</h2>
+<div class="btn-toolbar" id="toolbar">
+	<div class="btn-group">
+		<button
+			class="btn"
+			onclick="Ptero.Parallax.loader.pullDepths()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Pull from server"
+			><i class="icon-download"></i></button>
+		<button
+			class="btn"
+			onclick="Ptero.Parallax.loader.pushDepths()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Push to server"
+			><i class="icon-upload"></i></button>
+	</div>
+</div>
+<div id='container'>
 	<canvas id='canvas'></canvas>
+</div>
 
 </body>
 

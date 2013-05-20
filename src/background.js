@@ -15,6 +15,20 @@ Ptero.background = (function(){
 		getLayerDepth: function(i) {
 			return layerPositions[i].z;
 		},
+		getLayerDepths: function() {
+			var depths = [];
+			var i,len=layerPositions.length;
+			for (i=0; i<len; i++) {
+				depths.push(layerPositions[i].z);
+			}
+			return depths;
+		},
+		setLayerDepths: function(depths) {
+			var i,len=depths.length;
+			for (i=0; i<len; i++) {
+				this.setLayerDepth(i, depths[i]);
+			}
+		},
 		getLayerSpaceRects: function(i) {
 			var pos = layerPositions[i];
 			if (i == 1) {

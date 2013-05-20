@@ -83,10 +83,12 @@ Ptero.Parallax.LivePane.prototype = {
 	},
 
 	updateNodePosition: function(x,y) {
-		var point = Ptero.Parallax.model.enemyPos;
-		var spaceClick = this.screenToSpace(x,y,point.z);
-		point.x = spaceClick.x + this.selectedOffsetX;
-		point.y = spaceClick.y + this.selectedOffsetY;
+		if (Ptero.Parallax.model.enemySelected) {
+			var point = Ptero.Parallax.model.enemyPos;
+			var spaceClick = this.screenToSpace(x,y,point.z);
+			point.x = spaceClick.x + this.selectedOffsetX;
+			point.y = spaceClick.y + this.selectedOffsetY;
+		}
 	},
 
 	mouseStart: function(x,y) {

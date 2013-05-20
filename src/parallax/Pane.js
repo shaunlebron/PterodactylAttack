@@ -333,6 +333,7 @@ Ptero.Parallax.Pane.prototype = {
 			Ptero.background.setLayerDepth(
 				layer,
 				z + this.selectedOffsetZ);
+			Ptero.Parallax.loader.backup();
 		}
 		else if (Ptero.Parallax.model.enemySelected) {
 			var point = Ptero.Parallax.model.enemyPos;

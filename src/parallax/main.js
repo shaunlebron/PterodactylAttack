@@ -17,16 +17,13 @@ window.onload = function() {
 			console.log("initing background");
 			Ptero.background.init();
 			console.log("initing enemy model");
-			/*
 			var ignoreState = false;
 			if (!ignoreState && Ptero.Parallax.loader.restore()) {
 				console.log("restored previous state");
 			}
 			else {
 				console.log("creating new blank state");
-				Ptero.Parallax.loader.reset();
 			}
-			*/
 			console.log("setting scene");
 			Ptero.setScene(Ptero.Parallax.panes);
 			console.log("starting exec");
