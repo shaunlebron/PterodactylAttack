@@ -7,20 +7,19 @@ Ptero.Parallax.loader = (function(){
 			type:'GET',
 		}).done(function(data) {
 			try {
-				setState(JSON.parse(data));
+				setState(data);
 				bootbox.alert("Successfully pulled depths from server");
 			}
 			catch (e) {
 				bootbox.alert("Could not pull depths from server");
 			}
 		}).fail(function(data) {
-				bootbox.alert("Could not pull depths from server");
+            bootbox.alert("Could not pull depths from server");
 		});
 	}
 
 	function pushDepths() {
 		var data = JSON.stringify(getState());
-		console.log(data);
 		$.ajax({
 			url: 'img/bgLayerDepths.json',
 			type: 'POST',
