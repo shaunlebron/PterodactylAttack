@@ -87,12 +87,12 @@ Ptero.PathBullet = function(path) {
 
 Ptero.PathBullet.prototype = {
 	update: function(dt) {
-		this.smokeTime += dt;
+		//this.smokeTime += dt;
 		if (this.path.pos) {
-			if (this.smokeTime > this.smokeTimeLimit) {
-				this.smokeTime = 0;
-				Ptero.smokepool.add(this.path.pos);
-			}
+			//if (this.smokeTime > this.smokeTimeLimit) {
+			//	this.smokeTime = 0;
+			//	Ptero.smokepool.add(this.path.pos);
+			//}
 			this.dir = this.path.pos.copy();
 		}
 		else {
