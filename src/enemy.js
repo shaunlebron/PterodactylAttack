@@ -138,7 +138,7 @@ Ptero.Enemy.prototype = {
 		else if (this.path.isDone()) {
 			// HIT SCREEN
 
-			navigator.vibrate && navigator.vibrate(200);
+			//navigator.vibrate && navigator.vibrate(200);
 			this.die();
 		}
 		else {
