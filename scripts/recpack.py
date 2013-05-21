@@ -210,11 +210,21 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 	else:
 		globalMaxWidth = min(sumW, globalMaxWidth)
 
-	# Try initial size
+	# Set initial width and step size for size adjustments.
 	w = globalMaxWidth
-	h = globalMaxHeight
-	result = trySize(w,h)
-	if not result:
+	step = 10
+
+	def getInitialHeight():
+		for h in xrange(maxH,globalMaxHeight+1,step):
+			result = trySize(w,h)
+			if result:
+				return h, result
+		return None, None
+	
+	# Try to get initial height.
+	print "Finding a valid starting size..."
+	h,result = getInitialHeight()
+	if h is None:
 		return None
 
 	# Set the initial optimum results
@@ -243,7 +253,6 @@ def getOptimalRecPack(recs,globalMaxWidth=None,globalMaxHeight=None):
 			print '    "%s": {"x":%d, "y":%d},' % (r.name, p[0], p[1])
 		print "};"
 
-	step = 10
 	w -= step
 	w,h = nextSize(w,h)
 
