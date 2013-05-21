@@ -45,7 +45,7 @@ class RectanglePacker:
 		"""
 		output: x,y top left coord
 		"""
-		result = self.findCell(w,h)
+		result = self.findCell(w+1,h+1)
 		if result:
 			x,y,r,c,r0,c0,w0,h0 = result
 			self.fillCells(r,c,r0,c0,w0,h0)
