@@ -28,6 +28,19 @@
   a div {
 	color:#000;
   }
+  a:hover div#playdesktop {
+	background-color: rgb(111, 191, 77);
+  }
+  a:hover div#ptalaga {
+	background-color: #6BABF4;
+  }
+  a:hover div#fourier {
+	background-color: #333;
+	color: #FFF;
+  }
+  a:hover div#baklava {
+	background-color: #FFC642;
+  }
   p {
 	padding-left:10px;
 	padding-right:10px;
@@ -36,27 +49,51 @@
   img {
 	max-width: 100%;
   }
+  img.topright {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+  }
+  div.white {
+	background-color:#fff;
+  }
+  div.row div {
+	position:relative;
+  }
+  img.tool {
+	height: 40px;
+  }
   </style>
 </head>
 <body>
 	
 	<div class='container'>
 		<div class='row'>
-			<div class='col10' style="text-align:center;background-color:#fff">
-				<h2>Pterodactyl Attack - Developer Hub</h2>
+			<div class='col7 white'>
+				<h1>Pterodactyl Hub</h1>
+				<p>
+				Hello, this is the nesting ground of <em>Pterodactyl Attack</em>.  Here you'll find links to the current version of our game and engine tools as they incubate.
+				</p>
+			</div>
+			<div class='col3 white'>
+				<img src="hub/PTEROEGGS2.png" title="Johnny made these!">
 			</div>
 		</div>
 
+		<hr>
+
 		<div class='row'>
 			<a href="play.html">
-			<div class='col5'>
-				<h2>Play Desktop</h2>
+			<div class='col5' id="playdesktop">
+				<img src="hub/desktop.png" height="40px" class="topright">
+				<h2>PLAY DESKTOP</h2>
 				<p>
 					Click here to try out the current version of the game in a desktop browser.
 				</p>
 			</div></a>
 			<div class='col5'>
-				<h2>Play Mobile</h2>
+				<img src="hub/mobile.png" height="40px" class="topright">
+				<h2>PLAY MOBILE</h2>
 				<p>
 				<ol>
 					<li>Get the CocoonJS app for <a href="https://itunes.apple.com/us/app/cocoonjs-by-ludei/id519623307?mt=8">iOS</a> or <a href="https://play.google.com/store/apps/details?id=com.ideateca.cocoonjslauncher&hl=en">Android</a>.</li>
@@ -66,27 +103,32 @@
 				</p>
 			</div>
 		</div>		
+
+		<hr>
 		
 		<div class='row'>
 			<a href="ptalaga.html">
-			<div class='colthird'>
+			<div class='colthird' id="ptalaga">
 				<h2>Ptalaga</h2>
+				<img src="hub/ptalaga.png" class="topright tool">
 				<p>
 					Create a Pterodactyl wave by composing path trajectories.
 				</p>
 			</div></a>
 
 			<a href="fourier.html">
-			<div class='colthird'>
+			<div class='colthird' id="fourier">
 				<h2>Fourier</h2>
+				<img src="hub/fourier.png" class="topright tool">
 				<p>
 					Create a level by composing Pterodactyl waves.
 				</p>
 			</div></a>
 
 			<a href="baklava.html">
-			<div class='colthird'>
+			<div class='colthird' id="baklava">
 				<h2>Baklava</h2>
+				<img src="hub/baklava.png" class="topright tool">
 				<p>
 					Determine where each background layer should be positioned in space.
 				</p>
@@ -95,8 +137,5 @@
 	</div>
 	
 	
-	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
-  <script src='js/script.js'></script>
-
 </body>
 </html>
