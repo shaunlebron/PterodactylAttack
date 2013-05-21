@@ -42,7 +42,7 @@ def create_zip(in_names,out_name):
 
 if __name__ == "__main__":
 	print "Creating cocoon.js ..."
-	includes = get_all_js_includes("index.html")
+	includes = get_all_js_includes("play.html")
 	for i in includes:
 		print "   " + i
 	cat(includes, 'cocoon.js')
