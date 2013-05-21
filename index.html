@@ -28,11 +28,15 @@
   a div {
 	color:#000;
   }
+  a:hover div {
+	background-color: #FFC642;
+  }
   a:hover div#playdesktop {
 	background-color: rgb(111, 191, 77);
+	color: #FFF;
   }
   a:hover div#ptalaga {
-	background-color: #6BABF4;
+	background-color: #FFF;
   }
   a:hover div#fourier {
 	background-color: #333;
@@ -53,6 +57,12 @@
 	position: absolute;
 	top: 10px;
 	right: 10px;
+	height: 40px;
+  }
+  img.topright-noresize {
+	position: absolute;
+	top: 10px;
+	right: 10px;
   }
   div.white {
 	background-color:#fff;
@@ -60,8 +70,9 @@
   div.row div {
 	position:relative;
   }
-  img.tool {
-	height: 40px;
+  div#footer {
+	background-color:#fff;
+	text-align: center;
   }
   </style>
 </head>
@@ -72,7 +83,9 @@
 			<div class='col7 white'>
 				<h1>Pterodactyl Hub</h1>
 				<p>
-				Hello, this is the nesting ground of <em>Pterodactyl Attack</em>.  Here you'll find links to the current version of our game and engine tools as they incubate.
+				Hello, this is the nesting ground of <em>Pterodactyl
+				Attack</em>.  Here you'll find links to the current version of
+				our game and tools as they incubate. We also have links to our asset and code repositories, as well as sites we're using to track our tasks.
 				</p>
 			</div>
 			<div class='col3 white'>
@@ -85,14 +98,14 @@
 		<div class='row'>
 			<a href="play.html">
 			<div class='col5' id="playdesktop">
-				<img src="hub/desktop.png" height="40px" class="topright">
+				<img src="hub/desktop.png" class="topright">
 				<h2>PLAY DESKTOP</h2>
 				<p>
 					Click here to try out the current version of the game in a desktop browser.
 				</p>
 			</div></a>
 			<div class='col5'>
-				<img src="hub/mobile.png" height="40px" class="topright">
+				<img src="hub/mobile.png" class="topright">
 				<h2>PLAY MOBILE</h2>
 				<p>
 				<ol>
@@ -110,7 +123,7 @@
 			<a href="ptalaga.html">
 			<div class='colthird' id="ptalaga">
 				<h2>Ptalaga</h2>
-				<img src="hub/ptalaga.png" class="topright tool">
+				<img src="hub/ptalaga.png" class="topright">
 				<p>
 					Create a Pterodactyl wave by composing path trajectories.
 				</p>
@@ -119,7 +132,7 @@
 			<a href="fourier.html">
 			<div class='colthird' id="fourier">
 				<h2>Fourier</h2>
-				<img src="hub/fourier.png" class="topright tool">
+				<img src="hub/fourier.png" class="topright">
 				<p>
 					Create a level by composing Pterodactyl waves.
 				</p>
@@ -128,12 +141,68 @@
 			<a href="baklava.html">
 			<div class='colthird' id="baklava">
 				<h2>Baklava</h2>
-				<img src="hub/baklava.png" class="topright tool">
+				<img src="hub/baklava.png" class="topright">
 				<p>
 					Determine where each background layer should be positioned in space.
 				</p>
 			</div></a>
 		</div>		
+
+		<hr>
+
+		<div class='row'>
+			<a href="https://www.dropbox.com/sh/eldpvw6d2rcv1ta/PLY_zYJH2f">
+			<div class='col5'>
+				<h2>Private Dropbox</h2>
+				<img src="hub/dropbox.png" class="topright">
+				<p>
+				This is where we keep all the art assets and concept art.
+				</p>
+			</div></a>
+
+			<a href="https://bitbucket.org/shaunew/pteroattack-html5">
+			<div class='col5'>
+				<h2>Private Bitbucket</h2>
+				<img src="hub/bitbucket.png" class="topright-noresize" height="50px">
+				<p>
+				This is where the source code to the game is backed up.
+				</p>
+			</div></a>
+		</div>
+
+		<hr>
+
+		<div class='row'>
+			<a href="https://trello.com/board/pteroattack/50edce1bfec059580500062f">
+			<div class='col5'>
+				<h2>Trello</h2>
+				<img src="hub/trello.png" class="topright">
+				<p>
+				This is where Joey and Shaun are currently tracking progress on weekly tasks.
+				</p>
+			</div></a>
+			
+			<div class='col5'>
+				<h2>Workflowy</h2>
+				<p>
+				<ul>
+					<li>Brantley is keeping a checklist of tasks for building our public website/devblog <a href="">here</a>.</li>
+					<li>Shaun is keeping a giant checklist here.</li>
+				</ul>
+				</p>
+			</div>
+		</div>
+
+		<hr>
+
+		<div class='row'>
+			<div class='col10' id='footer'>
+			Hygoon 2013, LLC yet?
+			</div>
+		</div>
+
+
+
 	</div>
 	
 	
