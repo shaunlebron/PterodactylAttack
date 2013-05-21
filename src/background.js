@@ -8,6 +8,8 @@ Ptero.background = (function(){
 	var layerPositions = [];
 	var selectedLayer = null;
 
+	var parallaxOffset = 0;
+
 	return {
 		setSelectedLayer: function(i) {
 			selectedLayer = i;
@@ -84,6 +86,10 @@ Ptero.background = (function(){
 			if (savedDepths) {
 				this.setLayerDepths(savedDepths.depths);
 			}
+
+			window.addEventListener("deviceorientation", function(orientData) {
+				parallaxOffset = orientData.beta/500;
+			}, true);
 		},
 
 		getScale: function getScale() { return scale; },
@@ -91,7 +97,12 @@ Ptero.background = (function(){
 			grassAnim.update(dt);
 			for (i=0; i<6; i++) {
 				var layer = "bg"+i;
-				var pos = layerPositions[i];
+				var _pos = layerPositions[i];
+				var pos = {
+					x: _pos.x + parallaxOffset,
+					y: _pos.y,
+					z: _pos.z,
+				};
 				var desat = (selectedLayer != null && selectedLayer != i);
 				if (i == 1) {
 					Ptero.deferredSprites.defer(
@@ -99,7 +110,7 @@ Ptero.background = (function(){
 							return function(ctx) {
 								if (desat) {
 									bgLayersDesat.draw(ctx, pos,"bg1_1");
-									grassAnim.draw(ctx,{x:0,y:0,z:Ptero.screen.getFrustum().near});
+									grassAnim.draw(ctx,{x:parallaxOffset,y:0,z:Ptero.screen.getFrustum().near});
 									bgLayersDesat.draw(ctx, pos,"bg1_0");
 								}
 								else {
