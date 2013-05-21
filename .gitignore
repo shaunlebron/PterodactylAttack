@@ -1,3 +1,11 @@
 
+# ignore the cocoon files
 cocoon.js
 cocoon.zip
+
+# ignore node server modules
+node_modules
+
+# ignore files that are pushed to the server by our tools
+img/bgLayerDepths.json
+levels/fourier-level
