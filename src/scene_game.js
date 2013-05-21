@@ -121,8 +121,8 @@ Ptero.scene_game = (function() {
 				ctx.fill();
 			}
 			pauseBtn.draw(ctx);
-			Ptero.score.draw(ctx);
-			timerDisplay.draw(ctx);
+			//Ptero.score.draw(ctx);
+			//timerDisplay.draw(ctx);
 		}
 		else {
 			Ptero.background.draw(ctx);
