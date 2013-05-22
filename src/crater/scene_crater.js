@@ -2,6 +2,8 @@
 Ptero.Crater.scene_crater = (function() {
 
 	function init() {
+		Ptero.orb.init();
+		Ptero.orb.setOrigin(0,-1);
 	};
 
 	function update(dt) {
@@ -20,6 +22,7 @@ Ptero.Crater.scene_crater = (function() {
 			ctx.fillRect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
 		}
 		Ptero.deferredSprites.draw(ctx);
+		Ptero.orb.draw(ctx);
 	};
 
 	return {
