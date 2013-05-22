@@ -3,6 +3,9 @@ Ptero.scene_menu = (function(){
 
 	var titleSprite;
 	var song;
+	var titleMover;
+	var startY, endY;
+	var titlePos;
 
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
@@ -10,6 +13,28 @@ Ptero.scene_menu = (function(){
 
 	function init() {
 		titleSprite = Ptero.assets.sprites["logo"];
+
+		var frustum = Ptero.screen.getFrustum();
+		startY = frustum.nearTop*2;
+		endY = frustum.nearTop/3;
+		var midY = frustum.nearTop/4;
+
+		titlePos = {
+			x: 0,
+			z: frustum.near,
+		};
+		titleMover = {
+			t:0,
+			interp: Ptero.makeHermiteInterp([startY, midY, endY], [0, 0.3, 0.5]),
+			update: function(dt) {
+				this.t += dt;
+				var y = this.interp(this.t);
+				if (y != null) {
+					titlePos.y = y;
+				}
+			},
+		};
+		titleMover.update(0);
 
 		Ptero.input.addTouchHandler(touchHandler);
 		song = Ptero.audio.getTitleSong();
@@ -30,16 +55,12 @@ Ptero.scene_menu = (function(){
 	};
 
 	function update(dt) {
-		Ptero.deferredSprites.clear();
-		Ptero.background.update(dt);
-		Ptero.deferredSprites.finalize();
+		titleMover.update(dt);
 	}
 
 	function draw(ctx) {
-		Ptero.background.draw(ctx);
 		Ptero.deferredSprites.draw(ctx);
-		var frustum = Ptero.screen.getFrustum();
-		titleSprite.draw(ctx,{x:0,y:frustum.nearTop/3,z:frustum.near});
+		titleSprite.draw(ctx,titlePos);
 	}
 
 	return {

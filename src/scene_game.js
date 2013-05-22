@@ -77,8 +77,6 @@ Ptero.scene_game = (function() {
 	};
 
 	function update(dt) {
-		Ptero.deferredSprites.clear();
-		Ptero.background.update(dt);
 		var i;
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
@@ -96,7 +94,6 @@ Ptero.scene_game = (function() {
 		}
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
-		Ptero.deferredSprites.finalize();
 		Ptero.score.update(dt);
 
 		timerDisplay.update(dt);

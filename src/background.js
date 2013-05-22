@@ -165,15 +165,10 @@ Ptero.background = (function(){
 				z: Ptero.screen.getFrustum().near,
 			};
 
-			if (Ptero.scene.isFading) {
-				bgFlat.draw(ctx, pos);
+			if (Ptero.executive.isPaused()) {
+				bgBlur.draw(ctx, pos);
 			}
 			else {
-				if (Ptero.executive.isPaused()) {
-					bgBlur.draw(ctx, pos);
-				}
-				else {
-				}
 			}
 		},
 	};

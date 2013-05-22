@@ -73,21 +73,19 @@ Ptero.executive = (function(){
 		try {
 			updateFps(time);
 
-			var dt;
-			if (lastTime == undefined) {
-				dt = 0;
-			}
-			else {
-				dt = Math.min((time-lastTime)/1000, 1/minFps);
-			}
+			var dt = (lastTime == undefined) ? 0 : Math.min((time-lastTime)/1000, 1/minFps);
 			lastTime = time;
 
 			Ptero.audio.update(dt);
 
+			Ptero.deferredSprites.clear();
+			Ptero.background.update(dt);
 			var scene = Ptero.scene;
-			if (!isPaused) {
+			if (!isPaused) { // this condition could wrap this whole block if we want proper pausing
 				scene.update(dt*speedScale);
 			}
+			Ptero.deferredSprites.finalize();
+
 			var ctx = Ptero.screen.getCtx();
 			scene.draw(ctx);
 			drawFps(ctx);

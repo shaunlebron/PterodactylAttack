@@ -29,7 +29,6 @@ Ptero.scene_predefined_paths = (function() {
 		pauseBtn.disable();
 		Ptero.orb.disableTouch();
 		Ptero.bulletpool.clear();
-		Ptero.deferredSprites.clear();
 	}
 
 	function setLevel(level) {
@@ -114,8 +113,6 @@ Ptero.scene_predefined_paths = (function() {
 	};
 
 	function update(dt) {
-		Ptero.deferredSprites.clear();
-		Ptero.background.update(dt);
 		var i;
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
@@ -132,7 +129,6 @@ Ptero.scene_predefined_paths = (function() {
 		}
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
-		Ptero.deferredSprites.finalize();
 		Ptero.score.update(dt);
 
 		timerDisplay.update(dt);

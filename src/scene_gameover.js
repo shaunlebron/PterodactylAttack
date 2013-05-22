@@ -55,21 +55,20 @@ Ptero.scene_gameover = (function(){
 			},
 		});
 		quitBtn.enable();
+
+        Ptero.orb.setNextOrigin(0,-2);
 	}
 
 	function draw(ctx) {
-		Ptero.assets.keepExplosionsCached(ctx);
-		Ptero.background.draw(ctx);
 		Ptero.deferredSprites.draw(ctx);
+		Ptero.orb.draw(ctx);
 		scoreBtn.draw(ctx);
 		playBtn.draw(ctx);
 		quitBtn.draw(ctx);
 	}
 
 	function update(dt) {
-		Ptero.deferredSprites.clear();
-		Ptero.background.update(dt);
-		Ptero.deferredSprites.finalize();
+		Ptero.orb.update(dt);
 	}
 
 	return {
