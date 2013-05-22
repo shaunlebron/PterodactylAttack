@@ -52,6 +52,12 @@ Ptero.background = (function(){
 				bgLayers.billboards["bg1_1"].scale = scale;
 				bgLayersDesat.billboards["bg1_0"].scale = scale;
 				bgLayersDesat.billboards["bg1_1"].scale = scale;
+				
+				var names = grassAnim.mosaic.frame_names;
+				var j,len = names.length;
+				for (j=0; j<len; j++) {
+					grassAnim.mosaic.billboards[names[j]].scale = scale;
+				}
 			}
 			else {
 				bgLayers.billboards["bg"+i].scale = scale;
@@ -110,12 +116,12 @@ Ptero.background = (function(){
 							return function(ctx) {
 								if (desat) {
 									bgLayersDesat.draw(ctx, pos,"bg1_1");
-									grassAnim.draw(ctx,{x:parallaxOffset,y:0,z:Ptero.screen.getFrustum().near});
+									grassAnim.draw(ctx, pos);
 									bgLayersDesat.draw(ctx, pos,"bg1_0");
 								}
 								else {
 									bgLayers.draw(ctx, pos,"bg1_1");
-									grassAnim.draw(ctx,{x:0,y:0,z:Ptero.screen.getFrustum().near});
+									grassAnim.draw(ctx,pos);
 									bgLayers.draw(ctx, pos,"bg1_0");
 								}
 							};
