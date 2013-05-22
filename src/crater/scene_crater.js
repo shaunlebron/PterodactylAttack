@@ -19,10 +19,10 @@ Ptero.Crater.scene_crater = (function() {
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
 		if (Ptero.Crater.enemy_model_list.isEditing) {
-			ctx.fillStyle = "rgba(255,255,255,0.8)";
-			ctx.fillRect(0,0,Ptero.screen.getWidth(),Ptero.screen.getHeight());
+			Ptero.background.setWash(true);
 		}
 		Ptero.deferredSprites.draw(ctx);
+		Ptero.background.setWash(false);
 		Ptero.orb.draw(ctx);
 	};
 

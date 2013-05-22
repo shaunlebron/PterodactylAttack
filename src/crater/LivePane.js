@@ -226,6 +226,7 @@ Ptero.Crater.LivePane.prototype = {
 		var selectedPoint = model.getSelectedPoint();
 		if (selectedPoint) {
 			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
+			model.nodeSprites[selectedIndex].drawBorder(ctx, selectedPoint, "rgba(255,0,0,0.2)");
 		}
 		else {
 			this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#00F",2);

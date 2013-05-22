@@ -5,6 +5,7 @@ Ptero.assets = (function(){
 		"desert": "img/desert.png",
 		"bgLayers": "img/bgLayers.png",
 		"bgLayersDesat": "img/bgLayersDesat.png",
+		"bgLayersWash": "img/bgLayersWash.png",
 		"bg_frosted": "img/bg_frosted.png",
 		"grass": "img/grass.png",
 		"baby": "img/baby.png",

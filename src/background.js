@@ -1,7 +1,7 @@
 
 Ptero.background = (function(){
 
-	var bgLayers,bgBlur;
+	var bgLayers,bgLayersDesat,bgLayersWash,bgBlur;
 	var bgFlat;
 	var grassAnim;
 	var scale;
@@ -10,7 +10,13 @@ Ptero.background = (function(){
 
 	var parallaxOffset = 0;
 
+
+	var wash = false;
+
 	return {
+		setWash: function(on) {
+			wash = on;
+		},
 		setSelectedLayer: function(i) {
 			selectedLayer = i;
 		},
@@ -52,6 +58,8 @@ Ptero.background = (function(){
 				bgLayers.billboards["bg1_1"].scale = scale;
 				bgLayersDesat.billboards["bg1_0"].scale = scale;
 				bgLayersDesat.billboards["bg1_1"].scale = scale;
+				bgLayersWash.billboards["bg1_0"].scale = scale;
+				bgLayersWash.billboards["bg1_1"].scale = scale;
 				
 				var names = grassAnim.mosaic.frame_names;
 				var j,len = names.length;
@@ -62,6 +70,7 @@ Ptero.background = (function(){
 			else {
 				bgLayers.billboards["bg"+i].scale = scale;
 				bgLayersDesat.billboards["bg"+i].scale = scale;
+				bgLayersWash.billboards["bg"+i].scale = scale;
 			}
 		},
 		init: function() {
@@ -74,6 +83,7 @@ Ptero.background = (function(){
 			bgFlat = Ptero.assets.sprites["desert"];
 			bgLayers = Ptero.assets.mosaics["bgLayers"];
 			bgLayersDesat = Ptero.assets.mosaics["bgLayersDesat"];
+			bgLayersWash = Ptero.assets.mosaics["bgLayersWash"];
 			bgBlur = Ptero.assets.sprites["bg_frosted"];
 			grassAnim = new Ptero.AnimSprite({mosaic: Ptero.assets.mosaics.grass});
 
@@ -114,9 +124,12 @@ Ptero.background = (function(){
 					Ptero.deferredSprites.defer(
 						(function(pos,desat){
 							return function(ctx) {
-								if (desat) {
+								if (wash) {
+									bgLayersWash.draw(ctx, pos,"bg1_1");
+									bgLayersWash.draw(ctx, pos,"bg1_0");
+								}
+								else if (desat) {
 									bgLayersDesat.draw(ctx, pos,"bg1_1");
-									grassAnim.draw(ctx, pos);
 									bgLayersDesat.draw(ctx, pos,"bg1_0");
 								}
 								else {
@@ -131,7 +144,10 @@ Ptero.background = (function(){
 					Ptero.deferredSprites.defer(
 						(function(pos,layer,desat){
 							return function(ctx) {
-								if (desat) {
+								if (wash) {
+									bgLayersWash.draw(ctx, pos, layer);
+								}
+								else if (desat) {
 									bgLayersDesat.draw(ctx, pos, layer);
 								}
 								else {
