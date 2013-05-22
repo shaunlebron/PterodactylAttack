@@ -1,8 +1,13 @@
 
 Ptero.audio = (function() {
 	var titleSong;
+	var shoot,explode;
+	var select;
 
 	function init() {
+		shoot = new Audio("audio/shoot04.wav");
+		explode = new Audio("audio/explode04.wav");
+		select = new Audio("audio/select04.wav");
 		titleSong = new Ptero.Song("audio/theme3.mp3");
 	}
 
@@ -13,6 +18,9 @@ Ptero.audio = (function() {
 	return {
 		init: init,
 		update: update,
+		playSelect: function() { select.play(); },
+		playShoot: function() { shoot.play(); },
+		playExplode: function() { explode.play(); },
 		getTitleSong: function() { return titleSong; },
 	};
 })();
@@ -49,9 +57,7 @@ Ptero.Song.prototype = {
 			interp: Ptero.makeInterp('linear', [this.getVolume(), 0], [0, t]),
 			update: function(dt) {
 				this.time += dt;
-				console.log(this.time,dt);
 				var vol = this.interp(this.time);
-				console.log(vol);
 				if (vol == null) {
 					that.volumeFader = null;
 					that.stop();

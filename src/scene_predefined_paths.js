@@ -71,7 +71,6 @@ Ptero.scene_predefined_paths = (function() {
 
 		// create a timer to countdown to the last moment
 		timerDisplay = new Ptero.TimerDisplay(maxTime);
-		console.log(maxTime);
 
 		numEnemies = enemies.length;
 	}

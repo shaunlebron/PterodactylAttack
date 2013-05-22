@@ -84,6 +84,8 @@ Ptero.Enemy.prototype = {
 		// register hit to begin explosion
 		this.isHit = true;
 		var that = this;
+
+		Ptero.audio.playExplode();
 	},
 	init: function() {
 		this.isHit = false;

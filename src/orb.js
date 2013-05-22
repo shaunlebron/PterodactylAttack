@@ -262,6 +262,7 @@ Ptero.orb = (function(){
 
 		// Add the new bullet to our bullet collection.
 		Ptero.bulletpool.add(bullet);
+		Ptero.audio.playShoot();
 	};
 
 	// Returns the angle between the target projected on the screen and the aim vector.

@@ -38,6 +38,7 @@ Ptero.scene_gameover = (function(){
 			height: 200,
 			onclick: function() {
 				Ptero.fadeToScene(getReplayScene(),0.5);
+				Ptero.audio.playSelect();
 			},
 		});
 		playBtn.enable();
