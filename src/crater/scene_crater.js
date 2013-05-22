@@ -3,6 +3,7 @@ Ptero.Crater.scene_crater = (function() {
 
 	function init() {
 		Ptero.orb.init();
+		Ptero.orb.disableTouch();
 		Ptero.orb.setOrigin(0,-1);
 	};
 
