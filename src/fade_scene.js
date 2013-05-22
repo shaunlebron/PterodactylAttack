@@ -1,6 +1,5 @@
 
 Ptero.FadeScene = function(scene1, scene2, timeToFade) {
-	this.isFading = true;
 	this.scene1 = scene1;
 	this.scene2 = scene2;
 

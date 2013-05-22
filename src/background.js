@@ -124,6 +124,8 @@ Ptero.background = (function(){
 					Ptero.deferredSprites.defer(
 						(function(pos,desat){
 							return function(ctx) {
+								var alpha = ctx.globalAlpha;
+								ctx.globalAlpha = 1;
 								if (wash) {
 									bgLayersWash.draw(ctx, pos,"bg1_1");
 									bgLayersWash.draw(ctx, pos,"bg1_0");
@@ -137,6 +139,7 @@ Ptero.background = (function(){
 									grassAnim.draw(ctx,pos);
 									bgLayers.draw(ctx, pos,"bg1_0");
 								}
+								ctx.globalAlpha = alpha;
 							};
 						})(pos,desat), pos.z);
 				}
@@ -144,6 +147,8 @@ Ptero.background = (function(){
 					Ptero.deferredSprites.defer(
 						(function(pos,layer,desat){
 							return function(ctx) {
+								var alpha = ctx.globalAlpha;
+								ctx.globalAlpha = 1;
 								if (wash) {
 									bgLayersWash.draw(ctx, pos, layer);
 								}
@@ -153,6 +158,7 @@ Ptero.background = (function(){
 								else {
 									bgLayers.draw(ctx, pos, layer);
 								}
+								ctx.globalAlpha = alpha;
 							};
 						})(pos,layer,desat), pos.z);
 				}
