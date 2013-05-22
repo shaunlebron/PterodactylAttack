@@ -82,6 +82,8 @@ Ptero.executive = (function(){
 			}
 			lastTime = time;
 
+			Ptero.audio.update(dt);
+
 			var scene = Ptero.scene;
 			if (!isPaused) {
 				scene.update(dt*speedScale);
