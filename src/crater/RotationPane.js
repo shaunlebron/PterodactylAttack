@@ -86,17 +86,42 @@ Ptero.Crater.RotationPane.prototype = {
 				point.angle = click_angle + this.selectedOffsetAngle;
 			}
 			Ptero.Crater.enemy_model.refreshPath();
+			this.movedAngle = true;
 		}
 	},
 	mouseStart: function(x,y) {
 		var i = this.getNodeInfoFromCursor(x,y);
 		Ptero.Crater.enemy_model.selectPoint(i.index);
 		this.selectedOffsetAngle = i.offset_angle;
+		if (i.index == null) {
+			this.startAngle = null;
+		}
+		else {
+			var point = Ptero.Crater.enemy_model.getSelectedPoint();
+			this.startAngle = point.angle;
+			this.movedAngle = false;
+		}
 	},
 	mouseMove: function(x,y) {
 		this.updateNodePosition(x,y);
 	},
 	mouseEnd: function(x,y) {
+		if (this.startAngle != null && this.movedAngle) {
+			var model = Ptero.Crater.enemy_model;
+			var point = model.getSelectedPoint();
+			var prevAngle = this.startAngle;
+			var curAngle = point.angle;
+			Ptero.Crater.enemy_model_list.recordForUndo({
+				undo: function() {
+					point.angle = prevAngle;
+					model.refreshPath();
+				},
+				redo: function() {
+					point.angle = curAngle;
+					model.refreshPath();
+				},
+			});
+		}
 	},
 	drawNode: function(ctx,point) {
 
