@@ -112,6 +112,7 @@ Ptero.Crater.RotationPane.prototype = {
 			var prevAngle = this.startAngle;
 			var curAngle = point.angle;
 			Ptero.Crater.enemy_model_list.recordForUndo({
+				model: model,
 				undo: function() {
 					point.angle = prevAngle;
 					model.refreshPath();

@@ -13,7 +13,7 @@ Ptero.Crater.loader = (function(){
 
 	function reset() {
 		Ptero.Crater.enemy_model_list = new Ptero.Crater.EnemyModelList();
-		Ptero.Crater.enemy_model_list.createNew();
+		Ptero.Crater.enemy_model_list.createNew(true);
 	}
 
 	function getState() {

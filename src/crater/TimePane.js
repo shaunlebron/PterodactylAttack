@@ -228,6 +228,7 @@ Ptero.Crater.TimePane.prototype = {
 				}
 			}
 			Ptero.Crater.enemy_model_list.recordForUndo({
+				model: model,
 				undo: function() {
 					var i;
 					for (i=0; i<len; i++) {

@@ -186,6 +186,7 @@ Ptero.Crater.LivePane.prototype = {
 			var prevZ = this.startPoint.z;
 			var model = Ptero.Crater.enemy_model;
 			Ptero.Crater.enemy_model_list.recordForUndo({
+				model: model,
 				undo: function() {
 					sourcePoint.x = prevX;
 					sourcePoint.y = prevY;

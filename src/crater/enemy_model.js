@@ -94,8 +94,23 @@ Ptero.Crater.EnemyModelList.prototype = {
 		this.refreshMaxTime();
 		this.refreshOrder();
 		Ptero.Crater.loader.backup();
+
+		var that = this;
+		var index = that.index;
+		this.recordForUndo({
+			undo: function() {
+				that.removeIndex(index);
+			},
+			redo: function() {
+				that.models.push(e);
+				that.select(e);
+				that.refreshMaxTime();
+				that.refreshOrder();
+				Ptero.Crater.loader.backup();
+			},
+		});
 	},
-	createNew: function() {
+	createNew: function(skipUndo) {
 		this.index++;
 		var e = new Ptero.Crater.EnemyModel(this.index);
 		this.models.push(e);
@@ -103,13 +118,46 @@ Ptero.Crater.EnemyModelList.prototype = {
 		this.refreshMaxTime();
 		this.refreshOrder();
 		Ptero.Crater.loader.backup();
+
+		if (!skipUndo) {
+			var index = this.index;
+			var that = this;
+			this.recordForUndo({
+				undo: function() {
+					that.removeIndex(index);
+					that.index--;
+				},
+				redo: function() {
+					that.index++;
+					that.models.push(e);
+					that.select(e);
+					that.refreshMaxTime();
+					that.refreshOrder();
+					Ptero.Crater.loader.backup();
+				},
+			});
+		}
 	},
 	promptRemoveIndex: function(index) {
 		var that = this;
 		bootbox.confirm('Are you sure you want to delete "Path '+index+'"?',
 			function(result) {
 				if (result) {
+					var e = that.getModelFromIndex(index);
 					that.removeIndex(index);
+
+					that.recordForUndo({
+						undo: function() {
+							that.models.push(e);
+							that.select(e);
+							that.refreshMaxTime();
+							that.refreshOrder();
+							Ptero.Crater.loader.backup();
+						},
+						redo: function() {
+							that.removeIndex(index);
+						},
+					});
 				}
 			}
 		);
@@ -357,6 +405,7 @@ Ptero.Crater.EnemyModel.prototype = {
 		if (!skipUndo) {
 			var that = this;
 			Ptero.Crater.enemy_model_list.recordForUndo({
+				model: Ptero.Crater.enemy_model,
 				undo: function() {
 					that.times.push(p.t);
 					that.points.push(p);
@@ -397,6 +446,7 @@ Ptero.Crater.EnemyModel.prototype = {
 
 		var that = this;
 		Ptero.Crater.enemy_model_list.recordForUndo({
+			model: Ptero.Crater.enemy_model,
 			undo: function() {
 				that.removePoint(len, true);
 			},
