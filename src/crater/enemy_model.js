@@ -11,9 +11,33 @@ Ptero.Crater.EnemyModelList = function() {
 
 	this.isEditing = false;
 	this.isPaused = false;
+
+	this.undoStack = [];
+	this.undoStackLength = 0;
+	this.undoStackPos = 0;
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
+	recordForUndo: function(f) {
+		if (this.undoStackPos < this.undoStackLength) {
+			this.undoStack.splice(this.undoStackPos);
+		}
+		this.undoStack.push(f);
+		this.undoStackPos++;
+		this.undoStackLength = this.undoStackPos;
+	},
+	undo: function() {
+		if (this.undoStackPos > 0) {
+			this.undoStackPos--;
+			this.undoStack[this.undoStackPos].undo();
+		}
+	},
+	redo: function() {
+		if (this.undoStackPos < this.undoStackLength) {
+			this.undoStack[this.undoStackPos].redo();
+			this.undoStackPos++;
+		}
+	},
 	deselectAll: function() {
 		var i,len=this.models.length;
 		for (i=0; i<len; i++) {
@@ -316,19 +340,42 @@ Ptero.Crater.EnemyModel.prototype = {
 			this.delta_times
 		);
 	},
-	removePoint: function(index) {
+	removePoint: function(index, skipUndo) {
 		var len = this.points.length;
 		if (index == 0 || !(index > 0 && index < len) || len <= 2) {
 			return;
 		}
-		this.points.splice(index,1);
+		var p = this.points.splice(index,1)[0];
 		this.times.splice(index,1);
-		this.nodeSprites.splice(index,1);
+		var sprite = this.nodeSprites.splice(index,1)[0];
 
 		this.selectPoint(index-1);
 
 		this.refreshTimes();
 		this.refreshPath();
+
+		if (!skipUndo) {
+			var that = this;
+			Ptero.Crater.enemy_model_list.recordForUndo({
+				undo: function() {
+					that.times.push(p.t);
+					that.points.push(p);
+					that.nodeSprites.push(sprite);
+					that.refreshTimes();
+					that.refreshPath();
+					that.selectPoint(index);
+				},
+				redo: function() {
+					that.points.splice(index,1);
+					that.times.splice(index,1);
+					that.nodeSprites.splice(index,1);
+					that.refreshTimes();
+					that.refreshPath();
+					that.selectPoint(index-1);
+				},
+			});
+		}
+
 	},
 
 	removeSelectedPoint: function() {
@@ -347,6 +394,21 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.nodeSprites.push(sprite);
 
 		this.selectPoint(len);
+
+		var that = this;
+		Ptero.Crater.enemy_model_list.recordForUndo({
+			undo: function() {
+				that.removePoint(len, true);
+			},
+			redo: function() {
+				that.times.push(p.t);
+				that.points.push(p);
+				that.nodeSprites.push(sprite);
+				that.selectPoint(len);
+				that.refreshTimes();
+				that.refreshPath();
+			},
+		});
 
 		this.refreshTimes();
 		this.refreshPath();

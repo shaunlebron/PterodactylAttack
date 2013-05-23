@@ -156,7 +156,11 @@ Ptero.input = (function(){
 		}
 		document.addEventListener('keydown', function(e) {
 			if (e.keyCode == 13) { // enter key
-				toggleFullScreen(document.getElementsByTagName("html")[0]);
+				if (Ptero.Crater || Ptero.Parallax || Ptero.Fourier) {
+				}
+				else {
+					toggleFullScreen(document.getElementsByTagName("html")[0]);
+				}
 			}
 			else if (e.keyCode == 70) { // f
 				Ptero.executive.toggleFps();
