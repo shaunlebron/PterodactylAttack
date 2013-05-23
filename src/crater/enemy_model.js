@@ -15,9 +15,25 @@ Ptero.Crater.EnemyModelList = function() {
 	this.undoStack = [];
 	this.undoStackLength = 0;
 	this.undoStackPos = 0;
+	this.updateUndoButtons();
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
+	updateUndoButtons: function() {
+		if (this.undoStackPos > 0) {
+			$('#undo-button').removeAttr('disabled');
+		}
+		else {
+			$('#undo-button').attr('disabled','disabled');
+		}
+
+		if (this.undoStackPos < this.undoStackLength) {
+			$('#redo-button').removeAttr('disabled');
+		}
+		else {
+			$('#redo-button').attr('disabled','disabled');
+		}
+	},
 	recordForUndo: function(f) {
 		if (this.undoStackPos < this.undoStackLength) {
 			this.undoStack.splice(this.undoStackPos);
@@ -25,18 +41,21 @@ Ptero.Crater.EnemyModelList.prototype = {
 		this.undoStack.push(f);
 		this.undoStackPos++;
 		this.undoStackLength = this.undoStackPos;
+		this.updateUndoButtons();
 	},
 	undo: function() {
 		if (this.undoStackPos > 0) {
 			this.undoStackPos--;
 			this.undoStack[this.undoStackPos].undo();
 		}
+		this.updateUndoButtons();
 	},
 	redo: function() {
 		if (this.undoStackPos < this.undoStackLength) {
 			this.undoStack[this.undoStackPos].redo();
 			this.undoStackPos++;
 		}
+		this.updateUndoButtons();
 	},
 	deselectAll: function() {
 		var i,len=this.models.length;
