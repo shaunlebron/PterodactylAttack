@@ -46,6 +46,7 @@ Ptero.painter = (function(){
 		else {
 			ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h);
 			drawDebugOutline(ctx,x,y,w,h);
+			drawDebugOutline(ctx,dx,dy,dw,dh);
 		}
 	};
 

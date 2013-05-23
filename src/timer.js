@@ -1,16 +1,8 @@
 
 Ptero.TimerDisplay = function(seconds) {
 	this.timer = new Ptero.Timer(seconds*1000);
+	this.timerFont = Ptero.assets.mosaics["timer"];
 
-	this.button = new Ptero.TextButton({
-		fitText: true,
-		text: "00:00:00",
-		textAlign: "right",
-		textColor: "#FFF",
-		font: "monospace",
-		margin: 20,
-		anchor: {x:"right", y:"top"},
-	});
 	this.updateText();
 };
 
@@ -27,16 +19,7 @@ function zeroPad(numDigits,number) {
 Ptero.TimerDisplay.prototype = {
 	updateText: function() {
 		var t = this.timer.getMillisLeft()/1000;
-		var hundredths = Math.floor(t*100%100);
-		var seconds = Math.floor(t%60);
-		var minutes = Math.floor(t/60);
-		this.button.text = (
-			zeroPad(2,minutes) + ":" +
-			zeroPad(2,seconds) + ":" +
-			zeroPad(2,hundredths));
-		if (t <= 10) {
-			this.button.textColor = Math.floor(t) % 2 ? "#F00" : "#FFF";
-		}
+		this.text = zeroPad(2,Math.ceil(t));
 	},
 	update: function(dt) {
 		this.timer.increment(dt*1000);
@@ -46,6 +29,24 @@ Ptero.TimerDisplay.prototype = {
 		return this.timer.isDone();
 	},
 	draw: function(ctx) {
-		this.button.draw(ctx);
+
+		var i,len=this.text.length;
+		var totalW = 0;
+		var scale = Ptero.background.getScale();
+		for (i=0; i<len; i++) {
+			var c = this.text[i];
+			totalW += this.timerFont.frames[c].origSize.width * scale;
+		}
+
+		var x = Ptero.screen.getWidth()/2 - totalW/2;
+		var y = 0;
+		for (i=0; i<len; i++) {
+			var c = this.text[i];
+			var w = this.timerFont.frames[c].origSize.width * scale;
+			var h = this.timerFont.frames[c].origSize.height * scale;
+			var pos = Ptero.screen.screenToSpace({ x: x+w/2, y: y+h/2 });
+			this.timerFont.draw(ctx, pos, c);
+			x += w;
+		}
 	},
 };

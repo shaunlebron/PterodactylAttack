@@ -214,6 +214,40 @@ Ptero.orb = (function(){
 		Ptero.bulletpool.add(bullet);
 	}
 
+
+	// Try to fire a bullet into the given direction with target leading in mind.
+	function shootWithLead(aim_vector) {
+
+		var t;
+		var maxT = 1; // only search this many seconds ahead.
+		var dt = 1/100; // search in increments of dt.
+
+		var i,numTargets=targets.length;
+		var target;
+
+		for (t=0; t<=maxT; t+=dt) {
+			for (i=0; i<numTargets; i++) {
+				target = targets[i];
+
+				// do not try to hit a dead or invisible target
+				var pos = target.getPosition();
+				if (!pos) {
+					continue;
+				}
+
+				// do not try to hit a target that will be dead or invisible
+				pos = target.getFuturePosition(t);
+				if (!pos) {
+					continue;
+				}
+
+				var cone = getBulletConeAtPos(pos);
+				var bullet = createBulletFromCone(cone, aim_vector);
+				bullet.update(t);
+			}
+		}
+	}
+
 	// Try to fire a bullet into the given direction.
 	function shoot(aim_vector) {
 

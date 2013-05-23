@@ -17,6 +17,7 @@ Ptero.assets = (function(){
 		"pause": "img/pause.png",
 		"logo": "img/logo.png",
 		"missile": "img/missile.png",
+		"timer": "img/timer.png",
 	};
 
 	var levelSources = {

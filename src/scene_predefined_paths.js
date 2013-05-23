@@ -154,7 +154,7 @@ Ptero.scene_predefined_paths = (function() {
 			}
 			pauseBtn.draw(ctx);
 			//Ptero.score.draw(ctx);
-			//timerDisplay.draw(ctx);
+			timerDisplay.draw(ctx);
 		}
 		else {
 			Ptero.background.draw(ctx);
