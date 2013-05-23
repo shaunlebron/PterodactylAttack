@@ -17,6 +17,16 @@ window.onload = function() {
 			Ptero.background.init();
 			console.log("initing enemy model");
 			Ptero.Crater.enemy_model_list = new Ptero.Crater.EnemyModelList();
+
+			$(document).keydown(function(e){
+				if (e.which == 90 && e.ctrlKey) {
+					Ptero.Crater.enemy_model_list.undo();
+				}
+				else if (e.which == 89 && e.ctrlKey) {
+					Ptero.Crater.enemy_model_list.redo();
+				}
+			});
+
 			var ignoreState = false;
 			if (!ignoreState && Ptero.Crater.loader.restore()) {
 				console.log("restored previous state");
