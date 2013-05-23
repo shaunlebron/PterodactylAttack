@@ -111,6 +111,21 @@ Ptero.Crater.TimePane.prototype = {
 		Ptero.Crater.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
+		if (index == null) {
+			this.startTimes = null;
+		}
+		else {
+			this.startPoints = [];
+			var model = Ptero.Crater.enemy_model;
+			var i,len=model.points.length;
+			for (i=0; i<len; i++) {
+				this.startPoints.push({
+					point: model.points[i],
+					time: model.times[i],
+				});
+			}
+			this.movedPoint = false;
+		}
 	},
 
 	updateNodePosition: function(x,y) {
@@ -139,6 +154,7 @@ Ptero.Crater.TimePane.prototype = {
 		Ptero.Crater.enemy_model.refreshPath();
 
 		Ptero.Crater.enemy_model_list.setTime(time);
+		this.movedPoint = true;
 	},
 
 	isSeeking: function() {
@@ -193,6 +209,42 @@ Ptero.Crater.TimePane.prototype = {
 		this.isPanning = false;
 		if (this.isSeeking()) {
 			this.stopSeek();
+		}
+
+		if (this.startPoints && this.movedPoint) {
+			var model = Ptero.Crater.enemy_model;
+			var startPoints = this.startPoints;
+			var endTimes = model.times.slice(0);
+			var prevToCurrIndex = [];
+			var currToPrevIndex = [];
+			var len = model.points.length;
+			for (i=0; i<len; i++) {
+				for (j=0; j<len; j++) {
+					if (startPoints[i].point == model.points[j]) {
+						prevToCurrIndex[i] = j;
+						currToPrevIndex[j] = i;
+						break;
+					}
+				}
+			}
+			Ptero.Crater.enemy_model_list.recordForUndo({
+				undo: function() {
+					var i;
+					for (i=0; i<len; i++) {
+						model.times[i] = startPoints[currToPrevIndex[i]].time;
+					}
+					model.refreshTimes();
+					model.refreshPath();
+				},
+				redo: function() {
+					var i;
+					for (i=0; i<len; i++) {
+						model.times[i] = endTimes[prevToCurrIndex[i]];
+					}
+					model.refreshTimes();
+					model.refreshPath();
+				},
+			});
 		}
 	},
 	mouseScroll: function(x,y,delta,deltaX,deltaY) {
