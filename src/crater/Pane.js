@@ -347,6 +347,20 @@ Ptero.Crater.Pane.prototype = {
 		Ptero.Crater.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
+
+		if (index == null) {
+			this.startPoint = null;
+		}
+		else {
+			var p = Ptero.Crater.enemy_model.points[index];
+			this.sourcePoint = p;
+			this.startPoint = {
+				x: p.x,
+				y: p.y,
+				z: p.z,
+			};
+			this.movedPoint = false;
+		}
 	},
 
 	updateNodePosition: function(x,y) {
@@ -364,6 +378,8 @@ Ptero.Crater.Pane.prototype = {
 			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
 			point.z = Math.max(0.0001, point.z);
 			Ptero.Crater.enemy_model.refreshPath();
+
+			this.movedPoint = true;
 		}
 	},
 
@@ -393,6 +409,30 @@ Ptero.Crater.Pane.prototype = {
 	},
 	mouseEnd: function(x,y) {
 		this.isPanning = false;
+		if (this.startPoint && this.movedPoint) {
+			var sourcePoint = this.sourcePoint;
+			var curX = sourcePoint.x;
+			var curY = sourcePoint.y;
+			var curZ = sourcePoint.z;
+			var prevX = this.startPoint.x;
+			var prevY = this.startPoint.y;
+			var prevZ = this.startPoint.z;
+			var model = Ptero.Crater.enemy_model;
+			Ptero.Crater.enemy_model_list.recordForUndo({
+				undo: function() {
+					sourcePoint.x = prevX;
+					sourcePoint.y = prevY;
+					sourcePoint.z = prevZ;
+					model.refreshPath();
+				},
+				redo: function() {
+					sourcePoint.x = curX;
+					sourcePoint.y = curY;
+					sourcePoint.z = curZ;
+					model.refreshPath();
+				},
+			});
+		}
 	},
 	mouseScroll: function(x,y,delta,deltaX,deltaY) {
 		if (this.isZoomPanKey) {
