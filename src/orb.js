@@ -225,9 +225,10 @@ Ptero.orb = (function(){
 		var i,numTargets=targets.length;
 		var target;
 
-		var collideDist = Ptero.screen.getFrustum().nearWidth/4;
+		var collideDist = Ptero.screen.getFrustum().nearWidth/2;
 		var minDist = collideDist*4;
 		var minBullet;
+		var minTarget;
 		var bullet;
 
 		for (t=0; t<=maxT; t+=dt) {
@@ -263,6 +264,7 @@ Ptero.orb = (function(){
 				else if (dist < minDist) {
 					minDist = dist;
 					minBullet = createBulletFromCone(cone, aim_vector);
+					minTarget = target;
 				}
 				else {
 					bullet = null;
@@ -272,6 +274,8 @@ Ptero.orb = (function(){
 
 		if (minBullet) {
 			bullet = minBullet;
+			console.log("min bullet");
+			console.log(Ptero.screen.spaceToScreen(minTarget.getPosition()));
 		}
 		else {
 			// Create a default bullet path not aimed a specific target.
@@ -632,8 +636,8 @@ Ptero.orb = (function(){
 						shootHoming(getAimVector(nearPoint));
 					}
 					else {
-						//shoot(getAimVector(nearPoint));
-						shootWithLead(getAimVector(nearPoint));
+						shoot(getAimVector(nearPoint));
+						//shootWithLead(getAimVector(nearPoint));
 					}
 				}
 			}
