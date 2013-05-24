@@ -225,6 +225,11 @@ Ptero.orb = (function(){
 		var i,numTargets=targets.length;
 		var target;
 
+		var collideDist = Ptero.screen.getFrustum().nearWidth/4;
+		var minDist = collideDist*4;
+		var minBullet;
+		var bullet;
+
 		for (t=0; t<=maxT; t+=dt) {
 			for (i=0; i<numTargets; i++) {
 				target = targets[i];
@@ -237,15 +242,44 @@ Ptero.orb = (function(){
 
 				// do not try to hit a target that will be dead or invisible
 				pos = target.getFuturePosition(t);
-				if (!pos) {
+				if (!pos || pos.z <= 0) {
 					continue;
 				}
 
 				var cone = getBulletConeAtPos(pos);
 				var bullet = createBulletFromCone(cone, aim_vector);
 				bullet.update(t);
+
+				var dist = bullet.pos.dist(pos);
+				if (dist < collideDist) {
+					bullet = createBulletFromCone(cone, aim_vector);
+					bullet.collideTime = t;
+					bullet.collideTarget = target;
+					target.isGoingToDie = true;
+					Ptero.bulletpool.add(bullet);
+					Ptero.audio.playShoot();
+					return;
+				}
+				else if (dist < minDist) {
+					minDist = dist;
+					minBullet = createBulletFromCone(cone, aim_vector);
+				}
+				else {
+					bullet = null;
+				}
 			}
 		}
+
+		if (minBullet) {
+			bullet = minBullet;
+		}
+		else {
+			// Create a default bullet path not aimed a specific target.
+			var cone = getDefaultBulletCone(aim_vector);
+			bullet = createBulletFromCone(cone, aim_vector);
+		}
+		Ptero.bulletpool.add(bullet);
+		Ptero.audio.playShoot();
 	}
 
 	// Try to fire a bullet into the given direction.
@@ -598,7 +632,8 @@ Ptero.orb = (function(){
 						shootHoming(getAimVector(nearPoint));
 					}
 					else {
-						shoot(getAimVector(nearPoint));
+						//shoot(getAimVector(nearPoint));
+						shootWithLead(getAimVector(nearPoint));
 					}
 				}
 			}
