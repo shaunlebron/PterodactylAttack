@@ -19,7 +19,8 @@ function zeroPad(numDigits,number) {
 Ptero.TimerDisplay.prototype = {
 	updateText: function() {
 		var t = this.timer.getMillisLeft()/1000;
-		this.text = zeroPad(2,Math.ceil(t));
+		//this.text = zeroPad(2,Math.ceil(t));
+		this.text = ""+Math.ceil(t);
 	},
 	update: function(dt) {
 		this.timer.increment(dt*1000);
