@@ -13,6 +13,8 @@ window.onload = function() {
 		function onDone() {
 			console.log("initing input");
 			Ptero.input.init();
+			console.log("initing audio");
+			Ptero.audio.init();
 			console.log("initing background");
 			Ptero.background.init();
 			console.log("initing wave list");
