@@ -35,6 +35,15 @@ window.onload = function() {
 				console.log("creating new blank state");
 				Ptero.Crater.loader.reset();
 			}
+
+			Ptero.Crater.enemy_model_list.play();
+			window.addEventListener("keydown", function(e) {
+				if (e.keyCode == 32) {
+					e.preventDefault();
+					Ptero.Crater.enemy_model_list.togglePlay();
+				}
+			});
+
 			console.log("setting scene");
 			Ptero.setScene(Ptero.Crater.panes);
 			console.log("starting exec");

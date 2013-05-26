@@ -11,6 +11,7 @@ Ptero.Crater.EnemyModelList = function() {
 
 	this.isEditing = false;
 	this.isPaused = false;
+	this.isScrubbing = false;
 
 	this.undoStack = [];
 	this.undoStackLength = 0;
@@ -19,6 +20,24 @@ Ptero.Crater.EnemyModelList = function() {
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
+	togglePlay: function() {
+		if (this.isPaused) {
+			this.play();
+		}
+		else {
+			this.pause();
+		}
+	},
+	play: function() {
+		this.isPaused = false;
+		$('#play-btn').addClass('active');
+		$('#pause-btn').removeClass('active');
+	},
+	pause: function() {
+		this.isPaused = true;
+		$('#play-btn').removeClass('active');
+		$('#pause-btn').addClass('active');
+	},
 	updateUndoButtons: function() {
 		if (this.undoStackPos > 0) {
 			$('#undo-button').removeAttr('disabled');
@@ -292,7 +311,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	update: function(dt) {
 
-		if (!this.isEditing && !this.isPaused) {
+		if (!this.isEditing && !this.isPaused && !this.isScrubbing) {
 			this.setTime((this.time + dt) % this.maxTime);
 		}
 

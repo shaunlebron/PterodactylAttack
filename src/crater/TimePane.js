@@ -166,11 +166,11 @@ Ptero.Crater.TimePane.prototype = {
 		t = Math.max(0, t);
 		t = Math.min(t, Ptero.Crater.enemy_model_list.maxTime);
 		Ptero.Crater.enemy_model_list.setTime(t);
-		Ptero.Crater.enemy_model_list.isPaused = true;
+		Ptero.Crater.enemy_model_list.isScrubbing = true;
 	},
 
 	stopSeek: function() {
-		Ptero.Crater.enemy_model_list.isPaused = false;
+		Ptero.Crater.enemy_model_list.isScrubbing = false;
 	},
 
 	setFocusPoint: function(x) {
