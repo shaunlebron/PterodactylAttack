@@ -164,7 +164,7 @@ Ptero.Crater.TimePane.prototype = {
 	freezeAt: function(x) {
 		var t = this.screenToTime(x);
 		t = Math.max(0, t);
-		t = Math.min(t, Ptero.Crater.enemy_model_list.maxTime);
+		//t = Math.min(t, Ptero.Crater.enemy_model_list.maxTime);
 		Ptero.Crater.enemy_model_list.setTime(t);
 		Ptero.Crater.enemy_model_list.isScrubbing = true;
 	},

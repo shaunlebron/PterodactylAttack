@@ -17,6 +17,8 @@ Ptero.Crater.EnemyModelList = function() {
 	this.undoStackLength = 0;
 	this.undoStackPos = 0;
 	this.updateUndoButtons();
+
+	this.preview = false;
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
@@ -312,7 +314,11 @@ Ptero.Crater.EnemyModelList.prototype = {
 	update: function(dt) {
 
 		if (!this.isEditing && !this.isPaused && !this.isScrubbing) {
-			this.setTime((this.time + dt) % this.maxTime);
+			this.time += dt;
+			if (this.time > this.maxTime) {
+				this.time = 0;
+			}
+			this.setTime(this.time);
 		}
 
 		var i,len=this.models.length;
@@ -467,6 +473,67 @@ Ptero.Crater.EnemyModel.prototype = {
 
 	removeSelectedPoint: function() {
 		this.removePoint(this.selectedIndex);
+	},
+
+	insertPoint: function() {
+		if (this.selectedIndex != null) {
+			return;
+		}
+		var len = this.points.length;
+
+		var path = this.enemy.path;
+		var p = path.pos;
+		var t = path.time;
+		if (!p) {
+			p = Ptero.screen.getFrustum().getRandomPoint();
+			t = Ptero.Crater.enemy_model_list.time;
+		}
+		else {
+			p = p.copy();
+
+			// prevent insert point directly at the time of another point.
+			var i;
+			for (i=0; i<len; i++) {
+				if (this.times[i] == t) {
+					return;
+				}
+			}
+		}
+
+		p.angle = 0;
+		this.times.push(t);
+		p.t = this.times[len];
+		this.points.push(p);
+		var sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
+		sprite.shuffleTime();
+		this.nodeSprites.push(sprite);
+
+		this.selectPoint(len);
+
+		var that = this;
+		Ptero.Crater.enemy_model_list.recordForUndo({
+			model: Ptero.Crater.enemy_model,
+			undo: function() {
+				var i;
+				for (i=0; i<=len; i++) {
+					if (that.points[i] == p) {
+						that.removePoint(i);
+						break;
+					}
+				}
+			},
+			redo: function() {
+				that.times.push(p.t);
+				that.points.push(p);
+				that.nodeSprites.push(sprite);
+				that.selectPoint(len);
+				that.refreshTimes();
+				that.refreshPath();
+			},
+		});
+
+		this.refreshTimes();
+		this.refreshPath();
 	},
 
 	addPoint: function() {
