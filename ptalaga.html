@@ -125,6 +125,7 @@ $(function(){
 
 <input style="display:none" type="file" id="open-file" />
 <div class="btn-toolbar" id="toolbar">
+	<!--
 	<div class="btn-group">
 		<button
 			class="btn"
@@ -147,6 +148,34 @@ $(function(){
 			data-placement="bottom"
 			data-title="Save"
 			><i class="icon-download-alt"></i></a>
+	</div>
+	-->
+	<div class="btn-group">
+		<button
+			class="btn dropdown-toggle" data-toggle="dropdown">
+			File <span class="caret"></span>
+			</button>
+
+		<ul class="dropdown-menu">
+			<li>
+				<a
+					onclick="Ptero.Crater.loader.promptReset()"
+					href="#"
+					>New</a>
+			</li>
+			<li>
+				<a
+					onclick="$('#open-file').click()"
+					href="#"
+					>Open</a>
+			</li>
+			<li>
+				<a
+					id="save-button"
+					href="#"
+					>Save</a>
+			</li>
+		</ul>
 	</div>
 	<div class="btn-group">
 		<button
