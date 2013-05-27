@@ -22,6 +22,16 @@ Ptero.Crater.EnemyModelList = function() {
 };
 
 Ptero.Crater.EnemyModelList.prototype = {
+	togglePreview: function() {
+		if (this.isPreview) {
+			this.isPreview = false;
+			$('#preview-button').removeClass('active');
+		}
+		else {
+			this.isPreview = true;
+			$('#preview-button').addClass('active');
+		}
+	},
 	togglePlay: function() {
 		if (this.isPaused) {
 			this.play();
@@ -313,6 +323,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	update: function(dt) {
 
+		// we pause if we're editing, the pause button is pressed, or scrubbing in time pane.
 		if (!this.isEditing && !this.isPaused && !this.isScrubbing) {
 			this.time += dt;
 			if (this.time > this.maxTime) {
@@ -604,12 +615,12 @@ Ptero.Crater.EnemyModel.prototype = {
 
 	update: function(dt) {
 		var isActive = (this == Ptero.Crater.enemy_model);
+		this.enemy.babySprite.update(dt);
 
-		// REPLAY MODE
-		if (!Ptero.Crater.enemy_model_list.isEditing) {
+		// PREVIEW MODE
+		if (Ptero.Crater.enemy_model_list.isPreview) {
 
 			if (isActive || this.visible) {
-				this.enemy.babySprite.update(dt);
 
 				var that = this;
 				if (this.enemy.getPosition()) {
@@ -617,11 +628,11 @@ Ptero.Crater.EnemyModel.prototype = {
 						(function(e){
 							return function(ctx) {
 								if (!isActive) {
-									ctx.globalAlpha = 0.5;
+									//ctx.globalAlpha = 0.5;
 								}
 								e.draw(ctx);
 								if (!isActive) {
-									ctx.globalAlpha = 1;
+									//ctx.globalAlpha = 1;
 								}
 							};
 						})(this.enemy),
@@ -656,11 +667,23 @@ Ptero.Crater.EnemyModel.prototype = {
 						})(this.nodeSprites[i],this.points[i],this.selectedIndex == i),
 						this.points[i].z);
 				}
+				if (this.selectedIndex == null) {
+					var pos = this.enemy.getPosition();
+					if (pos) {
+						Ptero.deferredSprites.defer(
+							(function(enemy,sprite,pos) {
+								return function(ctx){
+									enemy.draw(ctx);
+									sprite.drawBorder(ctx,pos,"#00F");
+								};
+							})(this.enemy,this.enemy.babySprite,pos),
+							pos.z);
+					}
+				}
 			}
 
 			// WHEN NOT ACTIVE, DRAW SPRITE AT CURRENT TIME
 			else if (this.visible) {
-				this.enemy.babySprite.update(dt);
 
 				var pos = this.enemy.getPosition();
 				if (pos) {

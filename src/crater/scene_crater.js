@@ -18,7 +18,7 @@ Ptero.Crater.scene_crater = (function() {
 
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
-		if (Ptero.Crater.enemy_model_list.isEditing) {
+		if (!Ptero.Crater.enemy_model_list.isPreview) {
 			Ptero.background.setWash(true);
 		}
 		Ptero.deferredSprites.draw(ctx);

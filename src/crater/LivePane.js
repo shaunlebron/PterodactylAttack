@@ -269,7 +269,10 @@ Ptero.Crater.LivePane.prototype = {
 			model.nodeSprites[selectedIndex].drawBorder(ctx, selectedPoint, "rgba(255,0,0,0.2)");
 		}
 		else {
-			this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#00F",2);
+			var pos = model.enemy.getPosition();
+			if (pos) {
+				this.fillCircle(ctx, pos, this.nodeRadius, "#00F",2);
+			}
 		}
 	},
 
@@ -297,7 +300,7 @@ Ptero.Crater.LivePane.prototype = {
 
 	draw: function(ctx) {
 		this.scene.draw(ctx);
-		if (Ptero.Crater.enemy_model_list.isEditing) {
+		if (!Ptero.Crater.enemy_model_list.isPreview) {
 			var models = Ptero.Crater.enemy_model_list.models;
 			var i,len = models.length;
 			for (i=0; i<len; i++) {
