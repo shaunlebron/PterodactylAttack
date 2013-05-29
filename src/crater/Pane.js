@@ -255,8 +255,7 @@ Ptero.Crater.Pane.prototype = {
 		var r = 4;
 		var that = this;
 		function getPoints(t0,t1) {
-			var numInserts = 0;
-			var maxInserts = 0; // disabling insertion for now
+			var maxLevel = 3;
 
 			var p0 = {p:interp(t0)};
 			var p1 = {p:interp(t1)};
@@ -274,9 +273,8 @@ Ptero.Crater.Pane.prototype = {
 				return dx*dx + dy*dy < r*r;
 			}
 
-			function insertPoint(p0,p1,t0,t1) {
-				numInserts++;
-				if (numInserts > maxInserts) {
+			function insertPoint(p0,p1,t0,t1,level) {
+				if (level > maxLevel) {
 					return;
 				}
 
@@ -288,15 +286,15 @@ Ptero.Crater.Pane.prototype = {
 				p0.next = p1.prev = p;
 
 				if (!isCloseEnough(p,p0)) {
-					insertPoint(p0,p,t0,t);
+					insertPoint(p0,p,t0,t,level+1);
 				}
 				if (!isCloseEnough(p,p1)) {
-					insertPoint(p,p1,t,t1);
+					insertPoint(p,p1,t,t1,level+1);
 				}
 			}
 
 			if (!isCloseEnough(p0,p1)) {
-				insertPoint(p0,p1,t0,t1);
+				insertPoint(p0,p1,t0,t1,0);
 			}
 
 			return p0;
