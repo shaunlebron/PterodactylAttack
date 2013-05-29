@@ -234,15 +234,18 @@ Ptero.orb = (function(){
 		for (t=0; t<=maxT; t+=dt) {
 			for (i=0; i<numTargets; i++) {
 				target = targets[i];
+				if (!target.isHittable()) {
+					continue;
+				}
 
 				// do not try to hit a dead or invisible target
-				var pos = target.getPosition();
-				if (!pos) {
+				var pos0 = target.getPosition();
+				if (!pos0) {
 					continue;
 				}
 
 				// do not try to hit a target that will be dead or invisible
-				pos = target.getFuturePosition(t);
+				var pos = target.getFuturePosition(t);
 				if (!pos || pos.z <= 0) {
 					continue;
 				}
@@ -259,6 +262,7 @@ Ptero.orb = (function(){
 					target.isGoingToDie = true;
 					Ptero.bulletpool.add(bullet);
 					Ptero.audio.playShoot();
+					console.log(pos0,pos,target.path.time,target.path.totalTime);
 					return;
 				}
 				else if (dist < minDist) {
@@ -636,8 +640,8 @@ Ptero.orb = (function(){
 						shootHoming(getAimVector(nearPoint));
 					}
 					else {
-						shoot(getAimVector(nearPoint));
-						//shootWithLead(getAimVector(nearPoint));
+						//shoot(getAimVector(nearPoint));
+						shootWithLead(getAimVector(nearPoint));
 					}
 				}
 			}
