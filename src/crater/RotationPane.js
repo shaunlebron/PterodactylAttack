@@ -3,7 +3,7 @@ Ptero.Crater.RotationPane = function(w,h){
 	this.pixelW = w;
 	this.pixelH = h;
 	this.pad = 10;
-	this.radius = this.pixelH/2 - this.pad;
+	this.radius = Math.min(w,h)/2 - this.pad;
 	this.nodeRadius = 4;
 };
 

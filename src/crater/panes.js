@@ -196,5 +196,6 @@ Ptero.Crater.panes = (function() {
 		init: init,
 		draw: draw,
 		update: update,
+		getTimePane: function() { return timePane; },
 	};
 })();

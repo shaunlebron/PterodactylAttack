@@ -3,7 +3,15 @@ Ptero.Crater.TimePane = function(w,h,maxTime) {
 	this.pixelW = w;
 	this.pixelH = h;
 	this.maxTime = maxTime;
-	this.minTime = 0.25;
+
+	this.loopStartTime = 0;
+	this.loopEndTime = Ptero.Crater.enemy_model_list.maxTime;
+	this.loopRegionHeight = 20;
+
+
+	this.timeStartY = 30;
+	this.timeEndY = this.pixelH-this.loopRegionHeight-20;
+	this.timeHeight = this.timeEndY - this.timeStartY;
 
 	this.timeStartX = 100;
 	this.timeEndX = this.pixelW - 50;
@@ -86,6 +94,28 @@ Ptero.Crater.TimePane.prototype = {
 		var closest_index;
 		var offset_x, offset_y;
 
+		// return loop start time handle
+		if (y > this.pixelH - this.loopRegionHeight) {
+			pos = this.timeToScreen(this.loopStartTime);
+			dx = pos.x - x;
+			if (Math.abs(dx) < this.nodeRadius*2) {
+				return {
+					loopStart: true,
+					offset_x: dx,
+				}
+			}
+
+			// return loop end time handle
+			pos = this.timeToScreen(this.loopEndTime);
+			dx = pos.x - x;
+			if (Math.abs(dx) < this.nodeRadius*2) {
+				return {
+					loopEnd: true,
+					offset_x: dx,
+				}
+			}
+		}
+
 		for (i=0; i<len; i++) {
 			pos = this.timeToScreen(times[i]);
 			pos.y = this.transform({t:0,y:this.getY(Ptero.Crater.enemy_model)}).y;
@@ -112,7 +142,6 @@ Ptero.Crater.TimePane.prototype = {
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
 		if (index == null) {
-			this.startTimes = null;
 		}
 		else {
 			Ptero.Crater.enemy_model_list.pause();
@@ -130,6 +159,30 @@ Ptero.Crater.TimePane.prototype = {
 	},
 
 	updateNodePosition: function(x,y) {
+		if (this.selectedLoopHandle) {
+			var time = this.screenToTime(x + this.selectedOffsetX);
+			time = Math.max(0, time);
+			if (this.selectedLoopHandle == "start") {
+				this.loopStartTime = time;
+				this.freezeAt(time);
+			}
+			else if (this.selectedLoopHandle == "end") {
+				this.loopEndTime = time;
+				this.freezeAt(time);
+			}
+
+			if (this.loopStartTime > this.loopEndTime) {
+				this.selectedLoopHandle = this.selectedLoopHandle == "end" ? "start" : "end";
+				var temp = this.loopStartTime;
+				this.loopStartTime = this.loopEndTime;
+				this.loopEndTime = temp;
+			}
+
+			this.loopEndTime = Math.min(Ptero.Crater.enemy_model_list.maxTime, this.loopEndTime);
+
+			return;
+		}
+
 		var times = Ptero.Crater.enemy_model.times;
 		var delta_times = Ptero.Crater.enemy_model.delta_times;
 		var i = Ptero.Crater.enemy_model.selectedIndex;
@@ -159,11 +212,10 @@ Ptero.Crater.TimePane.prototype = {
 	},
 
 	isSeeking: function() {
-		return Ptero.Crater.enemy_model.selectedIndex == undefined;
+		return !this.selectedLoopHandle && Ptero.Crater.enemy_model.selectedIndex == undefined;
 	},
 
-	freezeAt: function(x) {
-		var t = this.screenToTime(x);
+	freezeAt: function(t) {
 		t = Math.max(0, t);
 		//t = Math.min(t, Ptero.Crater.enemy_model_list.maxTime);
 		Ptero.Crater.enemy_model_list.setTime(t);
@@ -186,10 +238,21 @@ Ptero.Crater.TimePane.prototype = {
 		else {
 			this.isPanning = false;
 			var i = this.getNodeInfoFromCursor(x,y);
+			if (i.loopStart) {
+				this.selectedLoopHandle = "start";
+				this.freezeAt(this.loopStartTime);
+			}
+			else if (i.loopEnd) {
+				this.selectedLoopHandle = "end";
+				this.freezeAt(this.loopEndTime);
+			}
+			else {
+				this.selectedLoopHandle = null;
+			}
 			this.selectNode(i.index, i.offset_x, i.offset_y);
 
 			if (this.isSeeking()) {
-				this.freezeAt(x);
+				this.freezeAt(this.screenToTime(x));
 			}
 		}
 	},
@@ -199,7 +262,7 @@ Ptero.Crater.TimePane.prototype = {
 		}
 		else {
 			if (this.isSeeking()) {
-				this.freezeAt(x);
+				this.freezeAt(this.screenToTime(x));
 			}
 			else {
 				this.updateNodePosition(x,y);
@@ -208,9 +271,7 @@ Ptero.Crater.TimePane.prototype = {
 	},
 	mouseEnd: function(x,y) {
 		this.isPanning = false;
-		if (this.isSeeking()) {
-			this.stopSeek();
-		}
+		this.stopSeek();
 
 		if (this.startPoints && this.movedPoint) {
 			var model = Ptero.Crater.enemy_model;
@@ -267,9 +328,10 @@ Ptero.Crater.TimePane.prototype = {
 		// Input: pos.t, pos.y
 		var s = this.timeToScreen(pos.t);
 		var y = pos.y;
+		var h = this.timeHeight;
 		var result = {
 			x: s.x,
-			y: (-y * this.pixelH/2) + this.pixelH/2,
+			y: (-y * h) + this.timeStartY + h/2,
 		};
 		return result;
 	},
@@ -320,15 +382,17 @@ Ptero.Crater.TimePane.prototype = {
 		ctx.lineWidth = 1;
 
 		ctx.textAlign = 'center';
-		ctx.textBaseline = 'middle';
+		ctx.textBaseline = 'top';
 		ctx.font = '1em serif';
 		ctx.fillStyle = "#777";
 		var s = {
 			x: this.timeStartX,
-			y: this.pixelH/2,
+			y: this.timeStartY,
 		};
 		ctx.fillText('time (s)', s.x/2, s.y);
 		ctx.fillText(Ptero.Crater.enemy_model.enemy.path.time.toFixed(2), s.x/2, s.y+20);
+
+		ctx.fillText('loop', s.x/2, this.pixelH - this.loopRegionHeight);
 
 		ctx.save();
 		ctx.beginPath();
@@ -408,6 +472,36 @@ Ptero.Crater.TimePane.prototype = {
 		}
 	},
 
+	drawLoopRegion: function(ctx) {
+		var x0 = this.timeToScreen(this.loopStartTime).x;
+		var x1 = this.timeToScreen(this.loopEndTime).x;
+		var w = x1-x0;
+		//var h = this.nodeRadius*2;
+		var h = this.loopRegionHeight;
+		var y = this.pixelH-this.loopRegionHeight;
+
+		ctx.fillStyle = "rgba(0,0,255,0.3)";
+		ctx.fillRect(x0,y,w,this.loopRegionHeight);
+
+		ctx.fillStyle = "#00F";
+		var bottomY = this.pixelH;
+		function drawArrow(x) {
+			var arrowW = 5;
+			ctx.beginPath();
+			ctx.moveTo(x,y);
+			ctx.lineTo(x+arrowW,y+h);
+			//ctx.lineTo(x+arrowW,bottomY);
+			//ctx.lineTo(x-arrowW,bottomY);
+			ctx.lineTo(x-arrowW,y+h);
+			ctx.closePath();
+			ctx.fill();
+		}
+
+		drawArrow(x0);
+		drawArrow(x1);
+
+	},
+
 	/* MAIN FUNCTIONS */
 
 	draw: function(ctx) {
@@ -433,6 +527,8 @@ Ptero.Crater.TimePane.prototype = {
 		e = Ptero.Crater.enemy_model;
 		this.drawModelPath(ctx, e);
 		this.drawModelNodes(ctx, e);
+
+		this.drawLoopRegion(ctx);
 
 		// remove clipping
 		ctx.restore();

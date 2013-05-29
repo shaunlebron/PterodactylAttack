@@ -114,9 +114,18 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	refreshMaxTime: function() {
 		var i,len=this.models.length;
+		var prevMaxTime = this.maxTime;
 		this.maxTime = 0;
 		for (i=0; i<len; i++) {
 			this.maxTime = Math.max(this.maxTime, this.models[i].enemy.path.totalTime);
+		}
+
+		// update time pane loop end if loop end time was "attached" to max time.
+		var timePane = Ptero.Crater.panes.getTimePane();
+		if (timePane) {
+			if (prevMaxTime == timePane.loopEndTime) {
+				timePane.loopEndTime = this.maxTime;
+			}
 		}
 	},
 	setModels: function(models) {
@@ -328,8 +337,10 @@ Ptero.Crater.EnemyModelList.prototype = {
 		// we pause if we're editing, the pause button is pressed, or scrubbing in time pane.
 		if (!this.isEditing && !this.isPaused && !this.isScrubbing) {
 			this.time += dt;
-			if (this.time > this.maxTime) {
-				this.time = 0;
+			var timePane = Ptero.Crater.panes.getTimePane();
+			this.time = Math.max(this.time, timePane.loopStartTime);
+			if (this.time > timePane.loopEndTime) {
+				this.time = timePane.loopStartTime;
 			}
 			this.setTime(this.time);
 		}
