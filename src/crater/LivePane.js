@@ -283,15 +283,65 @@ Ptero.Crater.LivePane.prototype = {
 		var numPoints = 70;
 		var step = totalTime/numPoints;
 
+		var r = 4;
+		var that = this;
+		function getPoints(t0,t1) {
+			var numInserts = 0;
+			var maxInserts = 0; // disabling insertion for now
+
+			var p0 = {p:interp(t0)};
+			var p1 = {p:interp(t1)};
+			if (!p0.p || !p1.p) {
+				return;
+			}
+			p0.next = p1;
+			p1.prev = p0;
+
+			function isCloseEnough(p0,p1) {
+				var s0 = that.spaceToScreen(p0.p);
+				var s1 = that.spaceToScreen(p1.p);
+				var dx = s0.x - s1.x;
+				var dy = s0.y - s1.y;
+				return dx*dx + dy*dy < r*r;
+			}
+
+			function insertPoint(p0,p1,t0,t1) {
+				numInserts++;
+				if (numInserts > maxInserts) {
+					return;
+				}
+
+				var t = t0+(t1-t0)/2;
+				var p = {p:interp(t)};
+
+				p.prev = p0;
+				p.next = p1;
+				p0.next = p1.prev = p;
+
+				if (!isCloseEnough(p,p0)) {
+					insertPoint(p0,p,t0,t);
+				}
+				if (!isCloseEnough(p,p1)) {
+					insertPoint(p,p1,t,t1);
+				}
+			}
+
+			if (!isCloseEnough(p0,p1)) {
+				insertPoint(p0,p1,t0,t1);
+			}
+
+			return p0;
+		}
+
 		ctx.beginPath();
 		for (t=0; t<=totalTime-step; t+=1.4*step) {
-			var pos = interp(t);
-			if (pos) {
-				this.moveTo(ctx, pos);
+			var p0 = getPoints(t,t+step);
+			if (!p0) {
+				continue;
 			}
-			pos = interp(t+step);
-			if (pos) {
-				this.lineTo(ctx, pos);
+			this.moveTo(ctx, p0.p);
+			while (p0 = p0.next) {
+				this.lineTo(ctx, p0.p);
 			}
 		}
 		ctx.strokeStyle = "#777";
