@@ -115,6 +115,7 @@ Ptero.Crater.TimePane.prototype = {
 			this.startTimes = null;
 		}
 		else {
+			Ptero.Crater.enemy_model_list.pause();
 			this.startPoints = [];
 			var model = Ptero.Crater.enemy_model;
 			var i,len=model.points.length;

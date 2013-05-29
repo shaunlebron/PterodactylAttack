@@ -91,7 +91,9 @@ Ptero.Crater.RotationPane.prototype = {
 	},
 	mouseStart: function(x,y) {
 		var i = this.getNodeInfoFromCursor(x,y);
-		Ptero.Crater.enemy_model.selectPoint(i.index);
+		if (i.index != null) {
+			Ptero.Crater.enemy_model.selectPoint(i.index);
+		}
 		this.selectedOffsetAngle = i.offset_angle;
 		if (i.index == null) {
 			this.startAngle = null;

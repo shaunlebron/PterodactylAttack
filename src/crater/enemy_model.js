@@ -41,6 +41,8 @@ Ptero.Crater.EnemyModelList.prototype = {
 		}
 	},
 	play: function() {
+		this.isEditing = false;
+		this.deselectAll();
 		this.isPaused = false;
 		$('#play-btn').addClass('active');
 		$('#pause-btn').removeClass('active');

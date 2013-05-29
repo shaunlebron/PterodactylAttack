@@ -133,6 +133,7 @@ Ptero.Crater.LivePane.prototype = {
 			this.startPoint = null;
 		}
 		else {
+			Ptero.Crater.enemy_model_list.pause();
 			var p = Ptero.Crater.enemy_model.points[index];
 			this.sourcePoint = p;
 			this.startPoint = {
