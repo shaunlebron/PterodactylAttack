@@ -83,8 +83,8 @@ Ptero.Fourier.WaveList.prototype = {
 	},
 	addWaveFromState: function(state) {
 		this.index++;
+		state.index = this.index;
 		var e = Ptero.Fourier.Wave.fromState(state);
-		e.index = this.index;
 		this.waves.push(e);
 		this.select(e);
 		this.refreshMaxTime();
@@ -177,7 +177,7 @@ Ptero.Fourier.WaveList.prototype = {
 
 			str += '<button class="close" type="button" ';
 			str += 'onclick="Ptero.Fourier.wave_list.promptRemoveIndex(' +e.index+ ')"';
-			str += '>&times;</button><span id="wave' + e.index +'name" contenteditable=true>Wave ' + e.index + '<span></a></li>';
+			str += '>&times;</button>' + e.name + '</a></li>';
 		}
 		str += '<li><a href="#" onclick="$(\'#import-wave-file\').click()"><i class="icon-white icon-plus"></i> Import</li>';
 		return str;
@@ -244,16 +244,23 @@ Ptero.Fourier.Wave.fromState = function(state) {
 };
 
 Ptero.Fourier.Wave.prototype = {
+	rename: function() {
+		var that = this;
+		bootbox.prompt("Rename wave:", "Cancel", "OK", function(result) {
+			if (result) {
+				that.name = result;
+				Ptero.Fourier.wave_list.refreshTabs();
+				Ptero.Fourier.loader.backup();
+			}
+		}, this.name);
+	},
 	getState: function() {
 		return {
-			name: this.getName(),
+			name: this.name,
 			index: this.index,
 			startTime: this.startTime,
 			models: this.enemy_models,
 		};
-	},
-	getName: function() {
-		return $('#wave'+this.index+'name').html();
 	},
 	setStartTime: function(t) {
 		this.startTime = t;
