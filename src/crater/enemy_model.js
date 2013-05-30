@@ -447,7 +447,9 @@ Ptero.Crater.EnemyModel.prototype = {
 		Ptero.Crater.loader.backup();
 	},
 	refreshPath: function() {
+		var t = this.enemy.path.time;
 		this.initPath();
+		this.enemy.path.setTime(t);
 	},
 	makeInterp: function() {
 		return Ptero.makeHermiteInterpForObjs(
