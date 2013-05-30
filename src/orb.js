@@ -262,7 +262,6 @@ Ptero.orb = (function(){
 					target.isGoingToDie = true;
 					Ptero.bulletpool.add(bullet);
 					Ptero.audio.playShoot();
-					console.log(pos0,pos,target.path.time,target.path.totalTime);
 					return;
 				}
 				else if (dist < minDist) {
@@ -278,8 +277,6 @@ Ptero.orb = (function(){
 
 		if (minBullet) {
 			bullet = minBullet;
-			console.log("min bullet");
-			console.log(Ptero.screen.spaceToScreen(minTarget.getPosition()));
 		}
 		else {
 			// Create a default bullet path not aimed a specific target.
