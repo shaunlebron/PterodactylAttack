@@ -42,6 +42,9 @@ window.onload = function() {
 					e.preventDefault();
 					Ptero.Crater.enemy_model_list.togglePlay();
 				}
+				else if (e.keyCode == 80) {
+					Ptero.Crater.enemy_model_list.togglePreview();
+				}
 			});
 
 			console.log("setting scene");
