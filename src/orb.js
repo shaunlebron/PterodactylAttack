@@ -114,8 +114,6 @@ Ptero.orb = (function(){
 		var painter = Ptero.painter;
 		var alpha = 0.3;
 
-		// Note: We are not drawing the red cone region because the start origin is no longer a static point.
-		//   As soon as we release, the startOrigin is no longer valid, making no opportunity to draw the red cone.
 		ctx.fillStyle = target.isGoingToDie ? "rgba(255,0,0,"+alpha+")" : "rgba(255,255,255,"+alpha+")";
 		ctx.strokeStyle = "rgba(0,0,0,"+alpha+")";
 

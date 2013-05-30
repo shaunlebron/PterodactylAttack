@@ -6,6 +6,8 @@
 	<meta charset="utf-8">
 	<title>Pterodactyl Attack - Baklava</title>
 	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
+	<script src="lib/html5slider.js"></script>
 
 	<style>
 	body {
@@ -26,6 +28,24 @@
 		font-size: 1.2em;
 	}
 	canvas {
+	}
+
+	#toolbar-position {
+		display: none;
+		float: left;
+		margin: 15px 0 0 15px;
+	}
+
+	#toolbar-collision {
+		display: none;
+		float: left;
+		margin: 15px 0 0 5px;
+	}
+
+	#toolbar-parallax {
+		display: none;
+		float: left;
+		margin: 15px 0 0 15px;
 	}
 
 	</style>
@@ -116,7 +136,65 @@ $(function(){
 			data-title="Push to server"
 			><i class="icon-upload"></i></button>
 	</div>
+	<div class="btn-group">
+		<button
+			id="btn-position"
+			class="btn"
+			onclick="Ptero.Parallax.model.setMode('position')"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Adjust position"
+			>Position</button>
+		<button
+			id="btn-collision"
+			class="btn"
+			onclick="Ptero.Parallax.model.setMode('collision')"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Create/edit collision geometry"
+			>Collision</button>
+		<button
+			id="btn-parallax"
+			class="btn"
+			onclick="Ptero.Parallax.model.setMode('parallax')"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Adjust parallax shift"
+			>Parallax</button>
+	</div>
 </div>
+
+<div class="btn-toolbar" id="toolbar-position">
+</div>
+<div id="toolbar-parallax">
+	<input type="range" value="0" min="-1" max="1" step="0.001" id="parallax-slider" />
+</div>
+<div class="btn-toolbar" id="toolbar-collision">
+	<div class="btn-group">
+		<button
+			class="btn"
+			onclick="Ptero.Parallax.model.createShape()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="New Shape"
+			><i class="icon-plus"></i></button>
+		<button
+			class="btn"
+			onclick="Ptero.Parallax.model.deletePoint()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Delete Point"
+			><i class="icon-minus-sign"></i></button>
+		<button
+			class="btn"
+			onclick="Ptero.Parallax.model.insertPoint()"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Insert Point"
+			><i class="icon-chevron-sign-down"></i></button>
+	</div>
+</div>
+
 <div id='container'>
 	<canvas id='canvas'></canvas>
 </div>

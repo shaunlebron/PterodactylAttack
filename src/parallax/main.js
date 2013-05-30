@@ -12,6 +12,8 @@ window.onload = function() {
 	Ptero.assets.load(
 		function onDone() {
 			Ptero.Parallax.model = new Ptero.Parallax.Model();
+			Ptero.Parallax.model.setMode("position");
+
 			console.log("initing input");
 			Ptero.input.init();
 			console.log("initing background");
