@@ -15,6 +15,7 @@ Ptero.Baklava.LivePane.prototype = {
 		return {
 			x: spacePos.x,
 			y: spacePos.y,
+			z: spaceZ,
 		};
 	},
 
@@ -37,8 +38,6 @@ Ptero.Baklava.LivePane.prototype = {
 
 	/* INPUT FUNCTIONS */
 
-	// Determine if the given coord is inside the selection rectangle
-	// of the given path knot index. Return an offset object if true.
 	getNodeSelectOffset: function(x,y) {
 		var nodeSprite = Ptero.Baklava.model.enemySprite;
 		var spaceCenter = Ptero.Baklava.model.enemyPos;
@@ -54,16 +53,104 @@ Ptero.Baklava.LivePane.prototype = {
 
 	getNodeInfoFromCursor: function(x,y) {
 
-		function getPointDistSq(x0,y0,x1,y1) {
-			var dx,dy,dist_sq;
-			dx = x0-x1;
-			dy = y0-y1;
-			return dx*dx + dy*dy;
+		var model = Ptero.Baklava.model;
+		var mode = model.mode;
+		if (mode == "position") {
+			// If a knot is clicked, return the offset from that knot.
+			if (node_offset = this.getNodeSelectOffset(x,y)) {
+				return node_offset;
+			}
 		}
+		else if (mode == "collision") {
+			var collisionMode = model.collisionMode;
+			var collisionDraft = model.collisionDraft;
+			var near = Ptero.screen.getFrustum().near;
 
-		// If a knot is clicked, return the offset from that knot.
-		if (node_offset = this.getNodeSelectOffset(x,y)) {
-			return node_offset;
+			// WHEN CREATING, WE ARE SIMPLY ADDING POINTS WITH EACH CLICK, AND STOPPING WHEN FIRST POINT IS CLICKED
+			if (collisionMode == "create") {
+				var len = collisionDraft.points.length;
+				if (len > 0) {
+					var screenPos0 = this.spaceToScreen(collisionDraft.points[0]);
+					var dx = x - screenPos0.x;
+					var dy = y - screenPos0.y;
+					var dist_sq = dx*dx+dy*dy;
+					if (dist_sq < 100) {
+						// finalize shape into current layer
+						collisionDraft.isComplete = true;
+						Ptero.background.addLayerCollisionShape(collisionDraft);
+						model.setCollisionMode("select");
+						return {};
+					}
+				}
+
+				var pos = this.screenToSpace(x,y,near);
+				collisionDraft.points.push(pos);
+				return {
+					point: collisionDraft.points[len],
+					offset_x: 0,
+					offset_y: 0,
+				};
+			}
+
+			// WHEN SELECTING, WE EITHER SELECT A SHAPE VERTEX OR ITS INSIDE REGION
+			else if (collisionMode == "select") {
+				var shapes = Ptero.background.getCurrentLayerCollisionShapes();
+				if (shapes) {
+					var i,numShapes=shapes.length;
+
+					// See if we have clicked on any points
+					for (i=0; i<numShapes; i++) {
+						var shape = shapes[i];
+						var j,numPoints = shape.points.length;
+						for (j=0; j<numPoints; j++) {
+							var point = shape.points[j];
+							var screenPos = this.spaceToScreen(point);
+							var dx = x - screenPos.x;
+							var dy = y - screenPos.y;
+							var dist_sq = dx*dx+dy*dy;
+							if (dist_sq < 100) {
+								var spaceClick = this.screenToSpace(x,y,point.z);
+								return {
+									shape: shape,
+									point: point,
+									pointIndex: i,
+									offset_x: point.x - spaceClick.x,
+									offset_y: point.y - spaceClick.y,
+								};
+							}
+						}
+					}
+
+					// See if we have clicked on any shapes
+					for (i=0; i<numShapes; i++) {
+						var shape = shapes[i];
+						var points = shape.points;
+						var spaceClick = this.screenToSpace(x,y,points[0].z);
+
+						if (shape.isPointInside(spaceClick.x, spaceClick.y)) {
+
+							// Compute the offset from each vertex in the shape to the point of click.
+							var offsets = [];
+							var j,numPoints = points.length;
+							for (j=0; j<numPoints; j++) {
+								var point = points[j];
+								offsets.push({
+									x: point.x - spaceClick.x,
+									y: point.y - spaceClick.y,
+								});
+							}
+
+							return {
+								shape: shape,
+								offsets: offsets,
+							};
+						}
+					}
+				}
+			}
+
+		}
+		else if (mode == "parallax") {
 		}
 
 		// Return an empty object if we cannot deduce a click selection.
@@ -72,22 +159,66 @@ Ptero.Baklava.LivePane.prototype = {
 	},
 
 	selectNode: function(info) {
-		if (info.enemy) {
-			Ptero.Baklava.model.selectEnemy();
-			this.selectedOffsetX = info.offset_x;
-			this.selectedOffsetY = info.offset_y;
+
+		var model = Ptero.Baklava.model;
+		var mode = model.mode;
+		if (mode == "position") {
+			if (info.enemy) {
+				Ptero.Baklava.model.selectEnemy();
+				this.selectedOffsetX = info.offset_x;
+				this.selectedOffsetY = info.offset_y;
+			}
+			else {
+				//Ptero.Baklava.model.selectLayer(null);
+			}
 		}
-		else {
-			Ptero.Baklava.model.selectLayer(null);
+		else if (mode == "collision") {
+			if (info.point) {
+				this.selectedPoint = info.point;
+				this.selectedOffsetX = info.offset_x;
+				this.selectedOffsetY = info.offset_y;
+				this.selectedShape = info.shape;
+				this.selectedPointIndex = info.pointIndex;
+			}
+			else {
+				this.selectedPoint = null;
+				this.selectedShape = info.shape;
+				this.selectedOffsets = info.offsets;
+			}
+		}
+		else if (mode == "parallax") {
 		}
 	},
 
 	updateNodePosition: function(x,y) {
-		if (Ptero.Baklava.model.enemySelected) {
-			var point = Ptero.Baklava.model.enemyPos;
-			var spaceClick = this.screenToSpace(x,y,point.z);
-			point.x = spaceClick.x + this.selectedOffsetX;
-			point.y = spaceClick.y + this.selectedOffsetY;
+		var model = Ptero.Baklava.model;
+		var mode = model.mode;
+		if (mode == "position") {
+			if (model.enemySelected && model.mode == "position") {
+				var point = Ptero.Baklava.model.enemyPos;
+				var spaceClick = this.screenToSpace(x,y,point.z);
+				point.x = spaceClick.x + this.selectedOffsetX;
+				point.y = spaceClick.y + this.selectedOffsetY;
+			}
+		}
+		else if (mode == "collision") {
+			if (this.selectedPoint != null) {
+				var spaceClick = this.screenToSpace(x,y,this.selectedPoint.z);
+				this.selectedPoint.x = spaceClick.x + this.selectedOffsetX;
+				this.selectedPoint.y = spaceClick.y + this.selectedOffsetY;
+			}
+			else if (this.selectedShape != null) {
+				var shape = this.selectedShape;
+				var spaceClick = this.screenToSpace(x,y,shape.points[0].z);
+				var offsets = this.selectedOffsets;
+				var i,len=offsets.length;
+				for (i=0; i<len; i++) {
+					shape.points[i].x = spaceClick.x + offsets[i].x;
+					shape.points[i].y = spaceClick.y + offsets[i].y;
+				}
+			}
+		}
+		else if (mode == "parallax") {
 		}
 	},
 
@@ -123,15 +254,19 @@ Ptero.Baklava.LivePane.prototype = {
 		this.lineTo(ctx, p2);
 		ctx.stroke();
 	},
-	lines: function(ctx, points) {
-		var i,len;
+	createPath: function(ctx, points, closed) {
+		var i,len=points.length;
+		if (len == 0) {
+			return;
+		}
 		ctx.beginPath();
 		this.moveTo(ctx, points[0]);
-		for (i=1,len=points.length; i<len; i++) {
+		for (i=1; i<len; i++) {
 			this.lineTo(ctx, points[i]);
 		}
-		ctx.closePath();
-		ctx.stroke();
+		if (closed) {
+			ctx.closePath();
+		}
 	},
 	fillCircle: function(ctx, spacePos, radius, color) {
 		ctx.beginPath();
@@ -151,51 +286,54 @@ Ptero.Baklava.LivePane.prototype = {
 
 	/* DRAWING FUNCTIONS */
 
-	drawModel: function(ctx, model) {
-	},
-
-	drawModelNodes: function(ctx, model) {
-		var nodes = model.points;
-		var i,len = nodes.length;
-		var selectedIndex = model.selectedIndex;
-		for (i=0; i<len; i++) {
-			if (selectedIndex != i) {
-				this.fillCircle(ctx, nodes[i], this.nodeRadius, "#555",2);
+	drawCollisionShape: function(ctx, shape) {
+		var points = shape.points;
+		this.createPath(ctx, points, shape.isComplete);
+		if (shape.isComplete) {
+			if (shape == this.selectedShape && this.selectedPoint == null) {
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
 			}
-		}
-		var selectedPoint = model.getSelectedPoint();
-		if (selectedPoint) {
-			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
+			else {
+				ctx.fillStyle = "rgba(255,255,255,0.2)";
+			}
+			ctx.fill();
+			ctx.strokeStyle = "#333";
+			ctx.lineWidth = 2;
+			ctx.stroke();
 		}
 		else {
-			this.fillCircle(ctx, model.enemy.getPosition(), this.nodeRadius, "#00F",2);
+			ctx.strokeStyle = "#333";
+			ctx.lineWidth = 2;
+			ctx.stroke();
 		}
-	},
-
-	drawModelPath: function(ctx, model) {
-		var interp = model.interp;
-		var totalTime = interp.totalTime;
-		var numPoints = 70;
-		var step = totalTime/numPoints;
-
-		ctx.beginPath();
-		for (t=0; t<=totalTime-step; t+=1.4*step) {
-			var pos = interp(t);
-			if (pos) {
-				this.moveTo(ctx, pos);
-			}
-			pos = interp(t+step);
-			if (pos) {
-				this.lineTo(ctx, pos);
-			}
+		var i,len = points.length;
+		for (i=0; i<len; i++) {
+			this.fillCircle(ctx, points[i], this.nodeRadius, points[i] == this.selectedPoint ? "#F00" : "#333");
 		}
-		ctx.strokeStyle = "#777";
-		ctx.lineWidth = 2;
-		ctx.stroke();
 	},
 
 	draw: function(ctx) {
 		this.scene.draw(ctx);
+
+		var model = Ptero.Baklava.model;
+		var mode = model.mode;
+		if (mode == "collision") {
+			var collisionMode = model.collisionMode;
+
+			var shapes = Ptero.background.getCurrentLayerCollisionShapes();
+			if (shapes) {
+				var i,len=shapes.length;
+				for (i=0; i<len; i++) {
+					this.drawCollisionShape(ctx, shapes[i]);
+				}
+			}
+
+			// Draw collision shape that is currently being drawn.
+			if (collisionMode == "create") {
+				this.drawCollisionShape(ctx, model.collisionDraft);
+			}
+		}
+
 
 		var p = Ptero.painter;
 		var f = Ptero.screen.getFrustum();

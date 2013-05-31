@@ -6,6 +6,7 @@ Ptero.background = (function(){
 	var grassAnim;
 	var scale;
 	var layerPositions = [];
+	var layerCollisions = [];
 	var selectedLayer = null;
 
 	var parallaxOffset = 0;
@@ -17,8 +18,27 @@ Ptero.background = (function(){
 		setWash: function(on) {
 			wash = on;
 		},
+		getSelectedLayer: function() {
+			return selectedLayer;
+		},
+		addLayerCollisionShape: function(shape) {
+			if (selectedLayer != null) {
+				if (!layerCollisions[selectedLayer]) {
+					layerCollisions[selectedLayer] = [shape];
+				}
+				else {
+					layerCollisions[selectedLayer].push(shape);
+				}
+			}
+		},
+		getCurrentLayerCollisionShapes: function() {
+			return layerCollisions[selectedLayer];
+		},
 		setSelectedLayer: function(i) {
 			selectedLayer = i;
+		},
+		getNumLayers: function() {
+			return numLayers;
 		},
 		getLayerDepth: function(i) {
 			return layerPositions[i].z;
@@ -33,6 +53,7 @@ Ptero.background = (function(){
 		},
 		setLayerDepths: function(depths) {
 			var i,len=depths.length;
+			numLayers = len;
 			for (i=0; i<len; i++) {
 				this.setLayerDepth(i, depths[i]);
 			}

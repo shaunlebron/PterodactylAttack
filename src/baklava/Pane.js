@@ -285,17 +285,20 @@ Ptero.Baklava.Pane.prototype = {
 	},
 
 	getNodeInfoFromCursor: function(x,y) {
-		var pos = this.spaceToScreen(Ptero.Baklava.model.enemyPos);
-		var dx = pos.x - x;
-		var dy = pos.y - y;
-		var dist_sq = dx*dx + dy*dy;
-		var r2 = 100;
-		if (dist_sq < r2) {
-			return {
-				enemy: true,
-				offset_x: dx,
-				offset_y: dy,
-			};
+		var mode = Ptero.Baklava.model.mode;
+		if (mode == "position") {
+			var pos = this.spaceToScreen(Ptero.Baklava.model.enemyPos);
+			var dx = pos.x - x;
+			var dy = pos.y - y;
+			var dist_sq = dx*dx + dy*dy;
+			var r2 = 100;
+			if (dist_sq < r2) {
+				return {
+					enemy: true,
+					offset_x: dx,
+					offset_y: dy,
+				};
+			}
 		}
 
 		var i = this.getLayerAtPos(x,y);
@@ -398,7 +401,10 @@ Ptero.Baklava.Pane.prototype = {
 			this.drawBgLayer(ctx, i);
 		}
 
-		this.drawEnemy(ctx);
+		var mode = Ptero.Baklava.model.mode;
+		if (mode == "position") {
+			this.drawEnemy(ctx);
+		}
 
 		if (this.axes[0] == 'x' && this.axes[1] == 'z') {
 			var p = Ptero.painter;

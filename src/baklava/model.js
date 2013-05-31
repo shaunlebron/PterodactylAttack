@@ -2,6 +2,9 @@
 Ptero.Baklava.Model = function() {
 	this.enemySprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
 	this.enemyPos = {x:0,y:0,z:Ptero.screen.getFrustum().near*2};
+
+	this.collisionDraft = null;
+	this.setCollisionMode("select");
 };
 
 Ptero.Baklava.Model.prototype = {
@@ -16,6 +19,32 @@ Ptero.Baklava.Model.prototype = {
 		$("#btn-"+mode).addClass('active');
 		$("#toolbar-"+mode).css('display', 'inherit');
 	},
+
+	setCollisionMode: function(mode) {
+		if (mode == "create" && Ptero.background.getSelectedLayer() == null) {
+			bootbox.alert("Please select a background layer to apply the collision geometry to first!");
+			mode = "select";
+		}
+		this.collisionMode = mode;
+
+		if (mode == "create") {
+			$("#btn-create-shape").addClass('active');
+			this.collisionDraft = new Ptero.CollisionShape();
+		}
+		else {
+			$("#btn-create-shape").removeClass('active');
+			this.collisionDraft = null;
+		}
+	},
+
+	createShape: function() {
+		this.setCollisionMode("create");
+	},
+	deletePoint: function() {
+	},
+	insertPoint: function() {
+	},
+
 	selectLayer: function(i) {
 		Ptero.background.setSelectedLayer(i);
 		this.selectedLayer = i;
@@ -27,11 +56,13 @@ Ptero.Baklava.Model.prototype = {
 		this.enemySelected = true;
 	},
 	update: function(dt) {
-		this.enemySprite.update(dt);
-		var pos = this.enemyPos;
-		var sprite = this.enemySprite;
-		Ptero.deferredSprites.defer(function(ctx) {
-			sprite.draw(ctx,pos);
-		}, this.enemyPos.z);
+		if (this.mode == "position") {
+			this.enemySprite.update(dt);
+			var pos = this.enemyPos;
+			var sprite = this.enemySprite;
+			Ptero.deferredSprites.defer(function(ctx) {
+				sprite.draw(ctx,pos);
+			}, this.enemyPos.z);
+		}
 	},
 };
