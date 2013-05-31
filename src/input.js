@@ -156,7 +156,7 @@ Ptero.input = (function(){
 		}
 		document.addEventListener('keydown', function(e) {
 			if (e.keyCode == 13) { // enter key
-				if (Ptero.Crater || Ptero.Parallax || Ptero.Fourier) {
+				if (Ptero.Ptalaga || Ptero.Baklava || Ptero.Fourier) {
 				}
 				else {
 					toggleFullScreen(document.getElementsByTagName("html")[0]);

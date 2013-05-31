@@ -1,5 +1,5 @@
 
-Ptero.Crater.executive = (function(){
+Ptero.Ptalaga.executive = (function(){
 
 	var lastTime;
 	var minFps = 20;

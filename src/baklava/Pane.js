@@ -1,5 +1,5 @@
 
-Ptero.Parallax.Pane = function (w,h,axes,title) {
+Ptero.Baklava.Pane = function (w,h,axes,title) {
 	// 2 axes labels (x,y,or z)
 	this.axes = axes;
 
@@ -23,7 +23,7 @@ Ptero.Parallax.Pane = function (w,h,axes,title) {
 	});
 };
 
-Ptero.Parallax.Pane.prototype = {
+Ptero.Baklava.Pane.prototype = {
 
 	/* WINDOW FUNCTIONS */
 
@@ -228,15 +228,15 @@ Ptero.Parallax.Pane.prototype = {
 	},
 
 	drawEnemy: function(ctx) {
-		var pos = Ptero.Parallax.model.enemyPos;
-		var color = (Ptero.Parallax.model.enemySelected) ? "#F00" : "#333";
+		var pos = Ptero.Baklava.model.enemyPos;
+		var color = (Ptero.Baklava.model.enemySelected) ? "#F00" : "#333";
 		this.fillCircle(ctx, pos, this.nodeRadius, color);
 	},
 
 	drawBgLayer: function(ctx, i) {
 		var rects = Ptero.background.getLayerSpaceRects(i);
 		var i,len=rects.length,rect;
-		ctx.strokeStyle = (i == Ptero.Parallax.model.selectedLayer) ? "#F00" : "#333";
+		ctx.strokeStyle = (i == Ptero.Baklava.model.selectedLayer) ? "#F00" : "#333";
 		ctx.lineWidth = 2;
 		for (i=0; i<len; i++) {
 			rect = rects[i];
@@ -285,7 +285,7 @@ Ptero.Parallax.Pane.prototype = {
 	},
 
 	getNodeInfoFromCursor: function(x,y) {
-		var pos = this.spaceToScreen(Ptero.Parallax.model.enemyPos);
+		var pos = this.spaceToScreen(Ptero.Baklava.model.enemyPos);
 		var dx = pos.x - x;
 		var dy = pos.y - y;
 		var dist_sq = dx*dx + dy*dy;
@@ -313,30 +313,30 @@ Ptero.Parallax.Pane.prototype = {
 
 	selectNode: function(info) {
 		if (info.layerIndex != null) {
-			Ptero.Parallax.model.selectLayer(info.layerIndex);
+			Ptero.Baklava.model.selectLayer(info.layerIndex);
 			this.selectedOffsetZ = info.offset_z;
 		}
 		else if (info.enemy) {
-			Ptero.Parallax.model.selectEnemy();
+			Ptero.Baklava.model.selectEnemy();
 			this.selectedOffsetX = info.offset_x;
 			this.selectedOffsetY = info.offset_y;
 		}
 		else {
-			Ptero.Parallax.model.selectLayer(null);
+			Ptero.Baklava.model.selectLayer(null);
 		}
 	},
 
 	updateNodePosition: function(x,y) {
-		var layer = Ptero.Parallax.model.selectedLayer;
+		var layer = Ptero.Baklava.model.selectedLayer;
 		if (layer != null) {
 			var z = this.screenToSpace(x,y).z;
 			Ptero.background.setLayerDepth(
 				layer,
 				z + this.selectedOffsetZ);
-			Ptero.Parallax.loader.backup();
+			Ptero.Baklava.loader.backup();
 		}
-		else if (Ptero.Parallax.model.enemySelected) {
-			var point = Ptero.Parallax.model.enemyPos;
+		else if (Ptero.Baklava.model.enemySelected) {
+			var point = Ptero.Baklava.model.enemyPos;
 			var pos = this.screenToSpace(
 				x + this.selectedOffsetX,
 				y + this.selectedOffsetY

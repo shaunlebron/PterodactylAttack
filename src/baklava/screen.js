@@ -1,5 +1,5 @@
 
-Ptero.Parallax.screen = (function(){
+Ptero.Baklava.screen = (function(){
 
 	var canvas;
 

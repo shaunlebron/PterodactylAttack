@@ -1,4 +1,4 @@
-Ptero.Crater.EnemyModelList = function() {
+Ptero.Ptalaga.EnemyModelList = function() {
 	this.models = [];
 
 	// running count of the number of paths created.
@@ -21,7 +21,7 @@ Ptero.Crater.EnemyModelList = function() {
 	this.preview = false;
 };
 
-Ptero.Crater.EnemyModelList.prototype = {
+Ptero.Ptalaga.EnemyModelList.prototype = {
 	togglePreview: function() {
 		if (this.isPreview) {
 			this.isPreview = false;
@@ -121,7 +121,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 		}
 
 		// update time pane loop end if loop end time was "attached" to max time.
-		var timePane = Ptero.Crater.panes.getTimePane();
+		var timePane = Ptero.Ptalaga.panes.getTimePane();
 		if (timePane) {
 			if (prevMaxTime == timePane.loopEndTime) {
 				timePane.loopEndTime = this.maxTime;
@@ -147,14 +147,14 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	duplicatePath: function() {
 		this.index++;
-		var state = Ptero.Crater.enemy_model.getState();
-		var e = Ptero.Crater.EnemyModel.fromState(state);
+		var state = Ptero.Ptalaga.enemy_model.getState();
+		var e = Ptero.Ptalaga.EnemyModel.fromState(state);
 		e.index = this.index;
 		this.models.push(e);
 		this.select(e);
 		this.refreshMaxTime();
 		this.refreshOrder();
-		Ptero.Crater.loader.backup();
+		Ptero.Ptalaga.loader.backup();
 
 		var that = this;
 		var index = that.index;
@@ -167,18 +167,18 @@ Ptero.Crater.EnemyModelList.prototype = {
 				that.select(e);
 				that.refreshMaxTime();
 				that.refreshOrder();
-				Ptero.Crater.loader.backup();
+				Ptero.Ptalaga.loader.backup();
 			},
 		});
 	},
 	createNew: function(skipUndo) {
 		this.index++;
-		var e = new Ptero.Crater.EnemyModel(this.index);
+		var e = new Ptero.Ptalaga.EnemyModel(this.index);
 		this.models.push(e);
 		this.select(e);
 		this.refreshMaxTime();
 		this.refreshOrder();
-		Ptero.Crater.loader.backup();
+		Ptero.Ptalaga.loader.backup();
 
 		if (!skipUndo) {
 			var index = this.index;
@@ -194,7 +194,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 					that.select(e);
 					that.refreshMaxTime();
 					that.refreshOrder();
-					Ptero.Crater.loader.backup();
+					Ptero.Ptalaga.loader.backup();
 				},
 			});
 		}
@@ -213,7 +213,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 							that.select(e);
 							that.refreshMaxTime();
 							that.refreshOrder();
-							Ptero.Crater.loader.backup();
+							Ptero.Ptalaga.loader.backup();
 						},
 						redo: function() {
 							that.removeIndex(index);
@@ -224,8 +224,8 @@ Ptero.Crater.EnemyModelList.prototype = {
 		);
 	},
 	previewIndex: function(index) {
-		this.active_enemy_model = Ptero.Crater.enemy_model;
-		Ptero.Crater.enemy_model = this.getModelFromIndex(index);
+		this.active_enemy_model = Ptero.Ptalaga.enemy_model;
+		Ptero.Ptalaga.enemy_model = this.getModelFromIndex(index);
 	},
 	unpreviewIndex: function(index) {
 		if (this.active_enemy_model) {
@@ -249,7 +249,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 	select: function(model) {
 		this.active_enemy_model = model;
-		Ptero.Crater.enemy_model = model;
+		Ptero.Ptalaga.enemy_model = model;
 		this.refreshTabs();
 	},
 	removeIndex: function(index) {
@@ -273,7 +273,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 		}
 		this.refreshMaxTime();
 		this.refreshOrder();
-		Ptero.Crater.loader.backup();
+		Ptero.Ptalaga.loader.backup();
 	},
 	toggleAllVisibility: function() {
 		var i,len=this.models.length;
@@ -303,14 +303,14 @@ Ptero.Crater.EnemyModelList.prototype = {
 		var str = "";
 		for (i=0; i<len; i++) {
 			e = this.models[i];
-			if (e == Ptero.Crater.enemy_model) {
+			if (e == Ptero.Ptalaga.enemy_model) {
 				str += '<li class="active"><a href="#">';
 			}
 			else {
 				str += '<li><a href="#" ';
-				str += 'onclick="Ptero.Crater.enemy_model_list.selectIndex(' + e.index + ')"';
-				str += 'onmouseover="Ptero.Crater.enemy_model_list.previewIndex(' + e.index + ')"';
-				str += 'onmouseout="Ptero.Crater.enemy_model_list.unpreviewIndex(' + e.index + ')"';
+				str += 'onclick="Ptero.Ptalaga.enemy_model_list.selectIndex(' + e.index + ')"';
+				str += 'onmouseover="Ptero.Ptalaga.enemy_model_list.previewIndex(' + e.index + ')"';
+				str += 'onmouseout="Ptero.Ptalaga.enemy_model_list.unpreviewIndex(' + e.index + ')"';
 				str += '>';
 			}
 			str += '<input ';
@@ -319,14 +319,14 @@ Ptero.Crater.EnemyModelList.prototype = {
 			if (e.visible) {
 				str += 'checked ';
 			}
-			str += 'onchange="Ptero.Crater.enemy_model_list.toggleVisibilityIndex('+e.index+')" ';
+			str += 'onchange="Ptero.Ptalaga.enemy_model_list.toggleVisibilityIndex('+e.index+')" ';
 			str += '></input>';
 
 			str += '<button class="close" type="button" ';
-			str += 'onclick="Ptero.Crater.enemy_model_list.promptRemoveIndex(' +e.index+ ')"';
+			str += 'onclick="Ptero.Ptalaga.enemy_model_list.promptRemoveIndex(' +e.index+ ')"';
 			str += '>&times;</button>Path ' + e.index + '</a></li>';
 		}
-		str += '<li><a href="#" onclick="Ptero.Crater.enemy_model_list.createNew()"><i class="icon-plus"></i></li>';
+		str += '<li><a href="#" onclick="Ptero.Ptalaga.enemy_model_list.createNew()"><i class="icon-plus"></i></li>';
 		return str;
 	},
 	refreshTabs: function() {
@@ -337,7 +337,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 		// we pause if we're editing, the pause button is pressed, or scrubbing in time pane.
 		if (!this.isEditing && !this.isPaused && !this.isScrubbing) {
 			this.time += dt;
-			var timePane = Ptero.Crater.panes.getTimePane();
+			var timePane = Ptero.Ptalaga.panes.getTimePane();
 			this.time = Math.max(this.time, timePane.loopStartTime);
 			if (this.time > timePane.loopEndTime) {
 				this.time = timePane.loopStartTime;
@@ -361,7 +361,7 @@ Ptero.Crater.EnemyModelList.prototype = {
 	},
 };
 
-Ptero.Crater.EnemyModel = function(index) {
+Ptero.Ptalaga.EnemyModel = function(index) {
 	this.visible = true;
 	this.index = index;
 	this.enemy = new Ptero.Enemy();
@@ -372,8 +372,8 @@ Ptero.Crater.EnemyModel = function(index) {
 	this.makeDefaultPath(2);
 };
 
-Ptero.Crater.EnemyModel.fromState = function(state) {
-	var model = new Ptero.Crater.EnemyModel(state.index);
+Ptero.Ptalaga.EnemyModel.fromState = function(state) {
+	var model = new Ptero.Ptalaga.EnemyModel(state.index);
 	model.points = state.points;
 
 	var i,len = model.points.length;
@@ -392,7 +392,7 @@ Ptero.Crater.EnemyModel.fromState = function(state) {
 	return model;
 };
 
-Ptero.Crater.EnemyModel.prototype = {
+Ptero.Ptalaga.EnemyModel.prototype = {
 	getState: function() {
 		var points = [];
 		var i,len = this.points.length;
@@ -442,9 +442,9 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.interp = this.makeInterp();
 		//this.enemy.path = new Ptero.Path(this.interp, true);
 		this.enemy.path = new Ptero.Path(this.interp);
-		Ptero.Crater.enemy_model_list.refreshMaxTime();
+		Ptero.Ptalaga.enemy_model_list.refreshMaxTime();
 
-		Ptero.Crater.loader.backup();
+		Ptero.Ptalaga.loader.backup();
 	},
 	refreshPath: function() {
 		var t = this.enemy.path.time;
@@ -474,8 +474,8 @@ Ptero.Crater.EnemyModel.prototype = {
 
 		if (!skipUndo) {
 			var that = this;
-			Ptero.Crater.enemy_model_list.recordForUndo({
-				model: Ptero.Crater.enemy_model,
+			Ptero.Ptalaga.enemy_model_list.recordForUndo({
+				model: Ptero.Ptalaga.enemy_model,
 				undo: function() {
 					that.times.push(p.t);
 					that.points.push(p);
@@ -512,7 +512,7 @@ Ptero.Crater.EnemyModel.prototype = {
 		var t = path.time;
 		if (!p) {
 			p = Ptero.screen.getFrustum().getRandomPoint();
-			t = Ptero.Crater.enemy_model_list.time;
+			t = Ptero.Ptalaga.enemy_model_list.time;
 		}
 		else {
 			p = p.copy();
@@ -537,8 +537,8 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.selectPoint(len);
 
 		var that = this;
-		Ptero.Crater.enemy_model_list.recordForUndo({
-			model: Ptero.Crater.enemy_model,
+		Ptero.Ptalaga.enemy_model_list.recordForUndo({
+			model: Ptero.Ptalaga.enemy_model,
 			undo: function() {
 				var i;
 				for (i=0; i<=len; i++) {
@@ -576,8 +576,8 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.selectPoint(len);
 
 		var that = this;
-		Ptero.Crater.enemy_model_list.recordForUndo({
-			model: Ptero.Crater.enemy_model,
+		Ptero.Ptalaga.enemy_model_list.recordForUndo({
+			model: Ptero.Ptalaga.enemy_model,
 			undo: function() {
 				that.removePoint(len, true);
 			},
@@ -629,11 +629,11 @@ Ptero.Crater.EnemyModel.prototype = {
 	},
 
 	update: function(dt) {
-		var isActive = (this == Ptero.Crater.enemy_model);
+		var isActive = (this == Ptero.Ptalaga.enemy_model);
 		this.enemy.babySprite.update(dt);
 
 		// PREVIEW MODE
-		if (Ptero.Crater.enemy_model_list.isPreview) {
+		if (Ptero.Ptalaga.enemy_model_list.isPreview) {
 
 			if (isActive || this.visible) {
 
@@ -728,15 +728,15 @@ Ptero.Crater.EnemyModel.prototype = {
 		this.selectedIndex = index;
 
 		// Set editing mode depending on whether we are selecting or deselecting.
-		Ptero.Crater.enemy_model_list.isEditing = (index != undefined);
+		Ptero.Ptalaga.enemy_model_list.isEditing = (index != undefined);
 
 		// Set the current time at the selected node.
 		if (index != undefined) {
-			Ptero.Crater.enemy_model_list.setTime(this.points[this.selectedIndex].t);
-			Ptero.Crater.enemy_model_list.selectSomething();
+			Ptero.Ptalaga.enemy_model_list.setTime(this.points[this.selectedIndex].t);
+			Ptero.Ptalaga.enemy_model_list.selectSomething();
 		}
 		else {
-			Ptero.Crater.enemy_model_list.deselectAll();
+			Ptero.Ptalaga.enemy_model_list.deselectAll();
 		}
 	},
 

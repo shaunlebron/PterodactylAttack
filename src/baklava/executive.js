@@ -1,5 +1,5 @@
 
-Ptero.Parallax.executive = (function(){
+Ptero.Baklava.executive = (function(){
 
 	var lastTime;
 	var minFps = 20;

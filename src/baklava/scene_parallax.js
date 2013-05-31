@@ -1,14 +1,14 @@
 
-Ptero.Parallax.scene_parallax = (function() {
+Ptero.Baklava.scene_parallax = (function() {
 
 	function init() {
-		//Ptero.Parallax.enemy = new 
+		//Ptero.Baklava.enemy = new 
 	};
 
 	function update(dt) {
 		Ptero.deferredSprites.clear();
 		Ptero.background.update(dt);
-		Ptero.Parallax.model.update(dt);
+		Ptero.Baklava.model.update(dt);
 		Ptero.deferredSprites.finalize();
 	};
 

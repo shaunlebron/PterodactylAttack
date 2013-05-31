@@ -1,5 +1,5 @@
 
-Ptero.Parallax = Ptero.Parallax || {};
+Ptero.Baklava = Ptero.Baklava || {};
 
 window.onload = function() {
 
@@ -7,12 +7,12 @@ window.onload = function() {
 	var canvas = document.getElementById('canvas');
 
 	console.log("initing screen");
-	Ptero.Parallax.screen.init(canvas);
+	Ptero.Baklava.screen.init(canvas);
 
 	Ptero.assets.load(
 		function onDone() {
-			Ptero.Parallax.model = new Ptero.Parallax.Model();
-			Ptero.Parallax.model.setMode("position");
+			Ptero.Baklava.model = new Ptero.Baklava.Model();
+			Ptero.Baklava.model.setMode("position");
 
 			console.log("initing input");
 			Ptero.input.init();
@@ -20,21 +20,21 @@ window.onload = function() {
 			Ptero.background.init();
 			console.log("initing enemy model");
 			var ignoreState = false;
-			if (!ignoreState && Ptero.Parallax.loader.restore()) {
+			if (!ignoreState && Ptero.Baklava.loader.restore()) {
 				console.log("restored previous state");
 			}
 			else {
 				console.log("creating new blank state");
 			}
 			console.log("setting scene");
-			Ptero.setScene(Ptero.Parallax.panes);
+			Ptero.setScene(Ptero.Baklava.panes);
 			console.log("starting exec");
-			Ptero.Parallax.executive.start();
+			Ptero.Baklava.executive.start();
 		},
 		function onProgress(percent) {
 			var ctx = Ptero.screen.getCtx();
-			var w = Ptero.Parallax.screen.getWidth();
-			var h = Ptero.Parallax.screen.getHeight();
+			var w = Ptero.Baklava.screen.getWidth();
+			var h = Ptero.Baklava.screen.getHeight();
 
 			var bw = w*0.8;
 			var bh = h*0.1;

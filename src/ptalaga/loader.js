@@ -1,5 +1,5 @@
 
-Ptero.Crater.loader = (function(){
+Ptero.Ptalaga.loader = (function(){
 
 	function promptReset() {
 		bootbox.confirm('Are you sure you want to discard this wave and start a new one?',
@@ -12,12 +12,12 @@ Ptero.Crater.loader = (function(){
 	}
 
 	function reset() {
-		Ptero.Crater.enemy_model_list = new Ptero.Crater.EnemyModelList();
-		Ptero.Crater.enemy_model_list.createNew(true);
+		Ptero.Ptalaga.enemy_model_list = new Ptero.Ptalaga.EnemyModelList();
+		Ptero.Ptalaga.enemy_model_list.createNew(true);
 	}
 
 	function getState() {
-		var models = Ptero.Crater.enemy_model_list.models;
+		var models = Ptero.Ptalaga.enemy_model_list.models;
 		var i,len = models.length;
 		var state = {
 			version: 1,
@@ -33,9 +33,9 @@ Ptero.Crater.loader = (function(){
 		var models = [];
 		var i,len = state.models.length;
 		for (i=0; i<len; i++) {
-			models.push(Ptero.Crater.EnemyModel.fromState(state.models[i]));
+			models.push(Ptero.Ptalaga.EnemyModel.fromState(state.models[i]));
 		}
-		Ptero.Crater.enemy_model_list.setModels(models);
+		Ptero.Ptalaga.enemy_model_list.setModels(models);
 		backup();
 	}
 

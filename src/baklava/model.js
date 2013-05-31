@@ -1,10 +1,10 @@
 
-Ptero.Parallax.Model = function() {
+Ptero.Baklava.Model = function() {
 	this.enemySprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
 	this.enemyPos = {x:0,y:0,z:Ptero.screen.getFrustum().near*2};
 };
 
-Ptero.Parallax.Model.prototype = {
+Ptero.Baklava.Model.prototype = {
 	setMode: function(mode) {
 		this.mode = mode;
 		$("#btn-position").removeClass("active");

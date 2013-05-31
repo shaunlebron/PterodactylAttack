@@ -1,10 +1,10 @@
 
-Ptero.Parallax.LivePane = function() {
-	this.scene = Ptero.Parallax.scene_parallax;
+Ptero.Baklava.LivePane = function() {
+	this.scene = Ptero.Baklava.scene_parallax;
 	this.nodeRadius = 4;
 };
 
-Ptero.Parallax.LivePane.prototype = {
+Ptero.Baklava.LivePane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
@@ -40,8 +40,8 @@ Ptero.Parallax.LivePane.prototype = {
 	// Determine if the given coord is inside the selection rectangle
 	// of the given path knot index. Return an offset object if true.
 	getNodeSelectOffset: function(x,y) {
-		var nodeSprite = Ptero.Parallax.model.enemySprite;
-		var spaceCenter = Ptero.Parallax.model.enemyPos;
+		var nodeSprite = Ptero.Baklava.model.enemySprite;
+		var spaceCenter = Ptero.Baklava.model.enemyPos;
 		var spaceClick = this.screenToSpace(x,y,spaceCenter.z);
 		if (nodeSprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
 			return {
@@ -73,18 +73,18 @@ Ptero.Parallax.LivePane.prototype = {
 
 	selectNode: function(info) {
 		if (info.enemy) {
-			Ptero.Parallax.model.selectEnemy();
+			Ptero.Baklava.model.selectEnemy();
 			this.selectedOffsetX = info.offset_x;
 			this.selectedOffsetY = info.offset_y;
 		}
 		else {
-			Ptero.Parallax.model.selectLayer(null);
+			Ptero.Baklava.model.selectLayer(null);
 		}
 	},
 
 	updateNodePosition: function(x,y) {
-		if (Ptero.Parallax.model.enemySelected) {
-			var point = Ptero.Parallax.model.enemyPos;
+		if (Ptero.Baklava.model.enemySelected) {
+			var point = Ptero.Baklava.model.enemyPos;
 			var spaceClick = this.screenToSpace(x,y,point.z);
 			point.x = spaceClick.x + this.selectedOffsetX;
 			point.y = spaceClick.y + this.selectedOffsetY;

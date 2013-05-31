@@ -1,11 +1,11 @@
 
-Ptero.Crater.TimePane = function(w,h,maxTime) {
+Ptero.Ptalaga.TimePane = function(w,h,maxTime) {
 	this.pixelW = w;
 	this.pixelH = h;
 	this.maxTime = maxTime;
 
 	this.loopStartTime = 0;
-	this.loopEndTime = Ptero.Crater.enemy_model_list.maxTime;
+	this.loopEndTime = Ptero.Ptalaga.enemy_model_list.maxTime;
 	this.loopRegionHeight = 20;
 
 
@@ -42,7 +42,7 @@ Ptero.Crater.TimePane = function(w,h,maxTime) {
 	});
 };
 
-Ptero.Crater.TimePane.prototype = {
+Ptero.Ptalaga.TimePane.prototype = {
 
 	zoom: function(scale, pos, pixel) {
 		this.scale = Math.max(5, scale);
@@ -55,7 +55,7 @@ Ptero.Crater.TimePane.prototype = {
 	/* COORDINATE FUNCTIONS */
 
 	getY: function(model) {
-		var len = Ptero.Crater.enemy_model_list.models.length;
+		var len = Ptero.Ptalaga.enemy_model_list.models.length;
 		var y;
 		if (len == 1) {
 			y = 0;
@@ -86,7 +86,7 @@ Ptero.Crater.TimePane.prototype = {
 
 	getNodeInfoFromCursor: function(x,y) {
 		var min_dist_sq = 100;
-		var times = Ptero.Crater.enemy_model.times;
+		var times = Ptero.Ptalaga.enemy_model.times;
 		var i,len = times.length;
 
 		var node,pos;
@@ -118,7 +118,7 @@ Ptero.Crater.TimePane.prototype = {
 
 		for (i=0; i<len; i++) {
 			pos = this.timeToScreen(times[i]);
-			pos.y = this.transform({t:0,y:this.getY(Ptero.Crater.enemy_model)}).y;
+			pos.y = this.transform({t:0,y:this.getY(Ptero.Ptalaga.enemy_model)}).y;
 			dx = pos.x - x;
 			dy = pos.y - y;
 			dist_sq = dx*dx + dy*dy;
@@ -138,15 +138,15 @@ Ptero.Crater.TimePane.prototype = {
 	},
 
 	selectNode: function(index,offset_x,offset_y) {
-		Ptero.Crater.enemy_model.selectPoint(index);
+		Ptero.Ptalaga.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
 		if (index == null) {
 		}
 		else {
-			Ptero.Crater.enemy_model_list.pause();
+			Ptero.Ptalaga.enemy_model_list.pause();
 			this.startPoints = [];
-			var model = Ptero.Crater.enemy_model;
+			var model = Ptero.Ptalaga.enemy_model;
 			var i,len=model.points.length;
 			for (i=0; i<len; i++) {
 				this.startPoints.push({
@@ -178,14 +178,14 @@ Ptero.Crater.TimePane.prototype = {
 				this.loopEndTime = temp;
 			}
 
-			this.loopEndTime = Math.min(Ptero.Crater.enemy_model_list.maxTime, this.loopEndTime);
+			this.loopEndTime = Math.min(Ptero.Ptalaga.enemy_model_list.maxTime, this.loopEndTime);
 
 			return;
 		}
 
-		var times = Ptero.Crater.enemy_model.times;
-		var delta_times = Ptero.Crater.enemy_model.delta_times;
-		var i = Ptero.Crater.enemy_model.selectedIndex;
+		var times = Ptero.Ptalaga.enemy_model.times;
+		var delta_times = Ptero.Ptalaga.enemy_model.delta_times;
+		var i = Ptero.Ptalaga.enemy_model.selectedIndex;
 		if (i == undefined) {
 			return;
 		}
@@ -204,26 +204,26 @@ Ptero.Crater.TimePane.prototype = {
 			}
 		}
 
-		Ptero.Crater.enemy_model.refreshTimes();
-		Ptero.Crater.enemy_model.refreshPath();
+		Ptero.Ptalaga.enemy_model.refreshTimes();
+		Ptero.Ptalaga.enemy_model.refreshPath();
 
-		Ptero.Crater.enemy_model_list.setTime(time);
+		Ptero.Ptalaga.enemy_model_list.setTime(time);
 		this.movedPoint = true;
 	},
 
 	isSeeking: function() {
-		return !this.selectedLoopHandle && Ptero.Crater.enemy_model.selectedIndex == undefined;
+		return !this.selectedLoopHandle && Ptero.Ptalaga.enemy_model.selectedIndex == undefined;
 	},
 
 	freezeAt: function(t) {
 		t = Math.max(0, t);
-		//t = Math.min(t, Ptero.Crater.enemy_model_list.maxTime);
-		Ptero.Crater.enemy_model_list.setTime(t);
-		Ptero.Crater.enemy_model_list.isScrubbing = true;
+		//t = Math.min(t, Ptero.Ptalaga.enemy_model_list.maxTime);
+		Ptero.Ptalaga.enemy_model_list.setTime(t);
+		Ptero.Ptalaga.enemy_model_list.isScrubbing = true;
 	},
 
 	stopSeek: function() {
-		Ptero.Crater.enemy_model_list.isScrubbing = false;
+		Ptero.Ptalaga.enemy_model_list.isScrubbing = false;
 	},
 
 	setFocusPoint: function(x) {
@@ -274,7 +274,7 @@ Ptero.Crater.TimePane.prototype = {
 		this.stopSeek();
 
 		if (this.startPoints && this.movedPoint) {
-			var model = Ptero.Crater.enemy_model;
+			var model = Ptero.Ptalaga.enemy_model;
 			var startPoints = this.startPoints;
 			var endTimes = model.times.slice(0);
 			var prevToCurrIndex = [];
@@ -289,7 +289,7 @@ Ptero.Crater.TimePane.prototype = {
 					}
 				}
 			}
-			Ptero.Crater.enemy_model_list.recordForUndo({
+			Ptero.Ptalaga.enemy_model_list.recordForUndo({
 				model: model,
 				undo: function() {
 					var i;
@@ -390,7 +390,7 @@ Ptero.Crater.TimePane.prototype = {
 			y: this.timeStartY,
 		};
 		ctx.fillText('time (s)', s.x/2, s.y);
-		ctx.fillText(Ptero.Crater.enemy_model.enemy.path.time.toFixed(2), s.x/2, s.y+20);
+		ctx.fillText(Ptero.Ptalaga.enemy_model.enemy.path.time.toFixed(2), s.x/2, s.y+20);
 
 		ctx.fillText('loop', s.x/2, this.pixelH - this.loopRegionHeight);
 
@@ -412,8 +412,8 @@ Ptero.Crater.TimePane.prototype = {
 			ctx.fillText(t, s.x, s.y+5);
 		}
 
-		ctx.strokeStyle = Ptero.Crater.enemy_model_list.isEditing ? "#F00" : "#00F";
-		var t = Ptero.Crater.enemy_model_list.time;
+		ctx.strokeStyle = Ptero.Ptalaga.enemy_model_list.isEditing ? "#F00" : "#00F";
+		var t = Ptero.Ptalaga.enemy_model_list.time;
 		this.line(ctx,
 			{t:t, y: h},
 			{t:t, y: -h});
@@ -430,7 +430,7 @@ Ptero.Crater.TimePane.prototype = {
 	},
 
 	drawModelNodes: function(ctx, model) {
-		var isActive = (model == Ptero.Crater.enemy_model);
+		var isActive = (model == Ptero.Ptalaga.enemy_model);
 		var times = model.times;
 		var delta_times = model.delta_times;
 		var i,len = times.length;
@@ -444,7 +444,7 @@ Ptero.Crater.TimePane.prototype = {
 				if (selectedIndex != i) {
 					this.fillCircle(ctx, {t:times[i], y:y}, this.nodeRadius, "#555",2);
 				}
-				if (i > 0 && model == Ptero.Crater.enemy_model) {
+				if (i > 0 && model == Ptero.Ptalaga.enemy_model) {
 					var pos = this.transform({t:times[i-1]+delta_times[i]/2, y:y+0.1});
 					ctx.fillText(delta_times[i].toFixed(2)+"s", pos.x, pos.y);
 				}
@@ -509,14 +509,14 @@ Ptero.Crater.TimePane.prototype = {
 		ctx.fillRect(0,0,this.pixelW,this.pixelH);
 		this.drawAxes(ctx);
 
-		var models = Ptero.Crater.enemy_model_list.models;
+		var models = Ptero.Ptalaga.enemy_model_list.models;
 		var i,len=models.length;
 		var e;
 		if (len > 1) {
 			ctx.globalAlpha = 0.35;
 			for (i=0; i<len; i++) {
 				var e = models[i];
-				if (e != Ptero.Crater.enemy_model && e.visible) {
+				if (e != Ptero.Ptalaga.enemy_model && e.visible) {
 					this.drawModelPath(ctx, e);
 					this.drawModelNodes(ctx, e);
 				}
@@ -524,7 +524,7 @@ Ptero.Crater.TimePane.prototype = {
 			ctx.globalAlpha = 1;
 		}
 
-		e = Ptero.Crater.enemy_model;
+		e = Ptero.Ptalaga.enemy_model;
 		this.drawModelPath(ctx, e);
 		this.drawModelNodes(ctx, e);
 

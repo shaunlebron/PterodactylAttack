@@ -1,5 +1,5 @@
 
-Ptero.Crater.scene_crater = (function() {
+Ptero.Ptalaga.scene_crater = (function() {
 
 	function init() {
 		Ptero.orb.init();
@@ -11,14 +11,14 @@ Ptero.Crater.scene_crater = (function() {
 		Ptero.deferredSprites.clear();
 		Ptero.background.update(dt);
 
-		Ptero.Crater.enemy_model_list.update(dt);
+		Ptero.Ptalaga.enemy_model_list.update(dt);
 
 		Ptero.deferredSprites.finalize();
 	};
 
 	function draw(ctx) {
 		Ptero.background.draw(ctx);
-		if (!Ptero.Crater.enemy_model_list.isPreview) {
+		if (!Ptero.Ptalaga.enemy_model_list.isPreview) {
 			Ptero.background.setWash(true);
 		}
 		Ptero.deferredSprites.draw(ctx);

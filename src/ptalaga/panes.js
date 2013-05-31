@@ -1,49 +1,64 @@
 
-Ptero.Parallax.panes = (function() {
+Ptero.Ptalaga.panes = (function() {
 
-	var topPane, rightPane, livePane;
+	var topPane, frontPane, rightPane, livePane, timePane, rotPane;
 	var panes;
 
-	var paneWidth,paneHeight;
+	var paneWidth,paneHeight,timePaneHeight,timePaneWidth,rotPaneWidth,rotPaneHeight;
 
 	function init() {
-		var w = Ptero.Parallax.screen.getPaneWidth();
-		var h = Ptero.Parallax.screen.getPaneHeight();
+		var w = Ptero.Ptalaga.screen.getPaneWidth();
+		var h = Ptero.Ptalaga.screen.getPaneHeight();
 		paneWidth = w;
 		paneHeight = h;
+		rotPaneHeight = timePaneHeight = Ptero.Ptalaga.screen.getTimePaneHeight();
+		rotPaneWidth = 100;
+		timePaneWidth = 2*w - rotPaneWidth;
 
 		var frustum = Ptero.screen.getFrustum();
 
 		// Create the panes for each projection.
-		topPane = new Ptero.Parallax.Pane( w,h, ['x','z'], 'top');
-		rightPane = new Ptero.Parallax.Pane( w,h, ['z','y'], 'right');
+		topPane = new Ptero.Ptalaga.Pane( w,h, ['x','z'], 'top');
+		frontPane = new Ptero.Ptalaga.Pane( w,h, ['x','y'], 'front');
+		rightPane = new Ptero.Ptalaga.Pane( w,h, ['z','y'], 'right');
 
 		// Set the pane windows to fit the frustum.
 		topPane.fitFrustum(frustum);
+		frontPane.fitFrustum(frustum);
 		rightPane.fitFrustum(frustum);
-
-		var scale = Math.min(topPane.scale, rightPane.scale);
-		topPane.minScale = rightPane.minScale = scale;
-		topPane.zoom(scale);
-		rightPane.zoom(scale);
 		
+		// Make all pane scales consistent.
+		var scale = Math.min(topPane.scale, frontPane.scale, rightPane.scale);
+		topPane.minScale = frontPane.minScale = rightPane.minScale = scale;
+		topPane.zoom(scale);
+		frontPane.zoom(scale);
+		rightPane.zoom(scale);
+
 		// Set the live pane to a scene and initialize it.
-		livePane = new Ptero.Parallax.LivePane();
+		livePane = new Ptero.Ptalaga.LivePane();
 		livePane.init();
 
+		rotPane = new Ptero.Ptalaga.RotationPane(rotPaneWidth, rotPaneHeight);
+		timePane = new Ptero.Ptalaga.TimePane(timePaneWidth, timePaneHeight, 20);
+
 		// This determines the position of the panes on the screen.
-		panes = [livePane, topPane, rightPane];
+		panes = [livePane, topPane, rightPane, frontPane];
 
 		initControls();
 	};
 
 	function getPaneFromXY(x,y) {
-		if (y < paneHeight * 2) {
-			return livePane;
+		if (y > 2*paneHeight) {
+			if (x > rotPaneWidth) {
+				return timePane;
+			}
+			else {
+				return rotPane;
+			}
 		}
-		else {
-			return (x < paneWidth) ? topPane : rightPane;
-		}
+		var row = Math.floor(y/paneHeight);
+		var col = Math.floor(x/paneWidth);
+		return panes[row*2+col];
 	};
 
 	function getXYRelativeToPane(x,y,pane) {
@@ -58,31 +73,39 @@ Ptero.Parallax.panes = (function() {
 		var w = paneWidth;
 		var h = paneHeight;
 
-		if (pane == livePane) {
+		if (pane == timePane) {
 			return {
-				x: 0,
-				y: 0,
-				w: 2*w,
-				h: 2*h,
+				x: rotPaneWidth,
+				y: 2*h,
+				w: timePane.pixelW,
+				h: timePane.pixelH,
 			};
 		}
-		else if (pane == topPane) {
+		else if (pane == rotPane) {
 			return {
 				x: 0,
 				y: 2*h,
-				w: w,
-				h: h,
-			};
-		}
-		else if (pane == rightPane) {
-			return {
-				x: w,
-				y: 2*h,
-				w: w,
-				h: h,
+				w: rotPane.pixelW,
+				h: rotPane.pixelH,
 			};
 		}
 
+		var i;
+		for (i=0; i<4; i++) {
+			if (pane == panes[i]) {
+				break;
+			}
+		}
+
+		var row = Math.floor(i/2);
+		var col = i%2;
+
+		return {
+			x: col*w,
+			y: row*h,
+			w: w,
+			h: h,
+		};
 	};
 
 	function initControls() {
@@ -138,31 +161,41 @@ Ptero.Parallax.panes = (function() {
 			ctx.restore();
 		}
 
-		var i,len=panes.length;
-		for (i=0; i<len; i++) {
+		var i=0, row, col;
+		for (i=0; i<4; i++) {
 			drawPane(panes[i]);
 		}
+		drawPane(timePane);
+		drawPane(rotPane);
 
+		// Draw pane borders.
 		ctx.strokeStyle = "#FFF";
 		ctx.lineWidth = 2;
 		ctx.beginPath();
+		ctx.moveTo(w,0);
+		ctx.lineTo(w,2*h);
+		ctx.moveTo(0,h);
+		ctx.lineTo(2*w,h);
 		ctx.moveTo(0,2*h);
 		ctx.lineTo(2*w,2*h);
-		ctx.moveTo(w,2*h);
-		ctx.lineTo(w,3*h);
+		ctx.moveTo(rotPaneWidth,2*h);
+		ctx.lineTo(rotPaneWidth,2*h+rotPaneHeight);
 		ctx.stroke();
+
 	};
 
 	function update(dt) {
-		var i,len=panes.length;
-		for (i=0; i<len; i++) {
+		var i;
+		for (i=0; i<4; i++) {
 			panes[i].update(dt);
 		}
+		timePane.update(dt);
 	};
 
 	return {
 		init: init,
 		draw: draw,
 		update: update,
+		getTimePane: function() { return timePane; },
 	};
 })();

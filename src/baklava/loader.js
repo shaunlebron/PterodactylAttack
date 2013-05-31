@@ -1,5 +1,5 @@
 
-Ptero.Parallax.loader = (function(){
+Ptero.Baklava.loader = (function(){
 
 	function pullDepths() {
 		$.ajax({

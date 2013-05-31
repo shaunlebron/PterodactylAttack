@@ -1,10 +1,10 @@
 
-Ptero.Crater.LivePane = function() {
-	this.scene = Ptero.Crater.scene_crater;
+Ptero.Ptalaga.LivePane = function() {
+	this.scene = Ptero.Ptalaga.scene_crater;
 	this.nodeRadius = 4;
 };
 
-Ptero.Crater.LivePane.prototype = {
+Ptero.Ptalaga.LivePane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
@@ -44,7 +44,7 @@ Ptero.Crater.LivePane.prototype = {
 			return;
 		}
 
-		var enemy_model = Ptero.Crater.enemy_model;
+		var enemy_model = Ptero.Ptalaga.enemy_model;
 		var nodeSprite = enemy_model.nodeSprites[index];
 		var spaceCenter = enemy_model.points[index];
 		var spaceClick = this.screenToSpace(x,y,spaceCenter.z);
@@ -59,7 +59,7 @@ Ptero.Crater.LivePane.prototype = {
 
 	getNodeInfoFromCursor: function(x,y) {
 
-		var enemy_model = Ptero.Crater.enemy_model;
+		var enemy_model = Ptero.Ptalaga.enemy_model;
 
 		function getPointDistSq(x0,y0,x1,y1) {
 			var dx,dy,dist_sq;
@@ -84,7 +84,7 @@ Ptero.Crater.LivePane.prototype = {
 
 		// First, see if any of the knots are clicked.
 		var min_dist_sq = 100;
-		var nodes = Ptero.Crater.enemy_model.points;
+		var nodes = Ptero.Ptalaga.enemy_model.points;
 		var i,len = nodes.length;
 		var node,pos;
 		var closest_index;
@@ -124,7 +124,7 @@ Ptero.Crater.LivePane.prototype = {
 	},
 
 	selectNode: function(index,offset_x,offset_y,offset_angle) {
-		Ptero.Crater.enemy_model.selectPoint(index);
+		Ptero.Ptalaga.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
 		this.selectedOffsetAngle = offset_angle;
@@ -133,8 +133,8 @@ Ptero.Crater.LivePane.prototype = {
 			this.startPoint = null;
 		}
 		else {
-			Ptero.Crater.enemy_model_list.pause();
-			var p = Ptero.Crater.enemy_model.points[index];
+			Ptero.Ptalaga.enemy_model_list.pause();
+			var p = Ptero.Ptalaga.enemy_model.points[index];
 			this.sourcePoint = p;
 			this.startPoint = {
 				x: p.x,
@@ -146,7 +146,7 @@ Ptero.Crater.LivePane.prototype = {
 	},
 
 	updateNodePosition: function(x,y) {
-		var enemy_model = Ptero.Crater.enemy_model;
+		var enemy_model = Ptero.Ptalaga.enemy_model;
 		var point = enemy_model.getSelectedPoint();
 		if (point) {
 			if (this.selectedOffsetAngle != undefined) {
@@ -162,7 +162,7 @@ Ptero.Crater.LivePane.prototype = {
 				point.x = spaceClick.x + this.selectedOffsetX;
 				point.y = spaceClick.y + this.selectedOffsetY;
 			}
-			Ptero.Crater.enemy_model.refreshPath();
+			Ptero.Ptalaga.enemy_model.refreshPath();
 			this.movedPoint = true;
 		}
 	},
@@ -185,8 +185,8 @@ Ptero.Crater.LivePane.prototype = {
 			var prevX = this.startPoint.x;
 			var prevY = this.startPoint.y;
 			var prevZ = this.startPoint.z;
-			var model = Ptero.Crater.enemy_model;
-			Ptero.Crater.enemy_model_list.recordForUndo({
+			var model = Ptero.Ptalaga.enemy_model;
+			Ptero.Ptalaga.enemy_model_list.recordForUndo({
 				model: model,
 				undo: function() {
 					sourcePoint.x = prevX;
@@ -349,12 +349,12 @@ Ptero.Crater.LivePane.prototype = {
 
 	draw: function(ctx) {
 		this.scene.draw(ctx);
-		if (!Ptero.Crater.enemy_model_list.isPreview) {
-			var models = Ptero.Crater.enemy_model_list.models;
+		if (!Ptero.Ptalaga.enemy_model_list.isPreview) {
+			var models = Ptero.Ptalaga.enemy_model_list.models;
 			var i,len = models.length;
 			for (i=0; i<len; i++) {
 				var e = models[i];
-				if (e == Ptero.Crater.enemy_model) {
+				if (e == Ptero.Ptalaga.enemy_model) {
 					this.drawModelNodes(ctx, e);
 					this.drawModelPath(ctx, e);
 				}

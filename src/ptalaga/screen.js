@@ -1,5 +1,5 @@
 
-Ptero.Crater.screen = (function(){
+Ptero.Ptalaga.screen = (function(){
 
 	var canvas;
 

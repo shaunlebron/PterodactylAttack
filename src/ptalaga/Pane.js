@@ -1,5 +1,5 @@
 
-Ptero.Crater.Pane = function (w,h,axes,title) {
+Ptero.Ptalaga.Pane = function (w,h,axes,title) {
 	// 2 axes labels (x,y,or z)
 	this.axes = axes;
 
@@ -23,7 +23,7 @@ Ptero.Crater.Pane = function (w,h,axes,title) {
 	});
 };
 
-Ptero.Crater.Pane.prototype = {
+Ptero.Ptalaga.Pane.prototype = {
 
 	/* WINDOW FUNCTIONS */
 
@@ -317,7 +317,7 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	drawModelNodes: function(ctx, model) {
-		var isActive = (model == Ptero.Crater.enemy_model);
+		var isActive = (model == Ptero.Ptalaga.enemy_model);
 
 		if (isActive) {
 			// Only draw nodes for active path
@@ -361,7 +361,7 @@ Ptero.Crater.Pane.prototype = {
 	// select the path node within a radius of the given selection point
 	getNodeInfoFromCursor: function(x,y) {
 		var min_dist_sq = 100;
-		var nodes = Ptero.Crater.enemy_model.points;
+		var nodes = Ptero.Ptalaga.enemy_model.points;
 		var i,len = nodes.length;
 
 		var node,pos;
@@ -391,7 +391,7 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	selectNode: function(index,offset_x,offset_y) {
-		Ptero.Crater.enemy_model.selectPoint(index);
+		Ptero.Ptalaga.enemy_model.selectPoint(index);
 		this.selectedOffsetX = offset_x;
 		this.selectedOffsetY = offset_y;
 
@@ -399,8 +399,8 @@ Ptero.Crater.Pane.prototype = {
 			this.startPoint = null;
 		}
 		else {
-			Ptero.Crater.enemy_model_list.pause();
-			var p = Ptero.Crater.enemy_model.points[index];
+			Ptero.Ptalaga.enemy_model_list.pause();
+			var p = Ptero.Ptalaga.enemy_model.points[index];
 			this.sourcePoint = p;
 			this.startPoint = {
 				x: p.x,
@@ -412,7 +412,7 @@ Ptero.Crater.Pane.prototype = {
 	},
 
 	updateNodePosition: function(x,y) {
-		var point = Ptero.Crater.enemy_model.getSelectedPoint();
+		var point = Ptero.Ptalaga.enemy_model.getSelectedPoint();
 		if (point) {
 			var pos = this.screenToSpace(
 				x + this.selectedOffsetX,
@@ -425,7 +425,7 @@ Ptero.Crater.Pane.prototype = {
 
 			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
 			point.z = Math.max(0.0001, point.z);
-			Ptero.Crater.enemy_model.refreshPath();
+			Ptero.Ptalaga.enemy_model.refreshPath();
 
 			this.movedPoint = true;
 		}
@@ -465,8 +465,8 @@ Ptero.Crater.Pane.prototype = {
 			var prevX = this.startPoint.x;
 			var prevY = this.startPoint.y;
 			var prevZ = this.startPoint.z;
-			var model = Ptero.Crater.enemy_model;
-			Ptero.Crater.enemy_model_list.recordForUndo({
+			var model = Ptero.Ptalaga.enemy_model;
+			Ptero.Ptalaga.enemy_model_list.recordForUndo({
 				model: model,
 				undo: function() {
 					sourcePoint.x = prevX;
@@ -512,21 +512,21 @@ Ptero.Crater.Pane.prototype = {
 			}
 		}
 
-		var models = Ptero.Crater.enemy_model_list.models;
+		var models = Ptero.Ptalaga.enemy_model_list.models;
 		var i,len=models.length;
 		var e;
 		if (len > 1) {
 			ctx.globalAlpha = 0.35;
 			for (i=0; i<len; i++) {
 				var e = models[i];
-				if (e != Ptero.Crater.enemy_model && e.visible) {
+				if (e != Ptero.Ptalaga.enemy_model && e.visible) {
 					this.drawModelPath(ctx, e);
 					this.drawModelNodes(ctx, e);
 				}
 			}
 			ctx.globalAlpha = 1;
 		}
-		e = Ptero.Crater.enemy_model;
+		e = Ptero.Ptalaga.enemy_model;
 		this.drawModelPath(ctx, e);
 		this.drawModelNodes(ctx, e);
 
