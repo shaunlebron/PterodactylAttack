@@ -123,14 +123,14 @@ $(function(){
 	<div class="btn-group">
 		<button
 			class="btn"
-			onclick="Ptero.Parallax.loader.pullDepths()"
+			onclick="Ptero.Baklava.loader.pullDepths()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Pull from server"
 			><i class="icon-download"></i></button>
 		<button
 			class="btn"
-			onclick="Ptero.Parallax.loader.pushDepths()"
+			onclick="Ptero.Baklava.loader.pushDepths()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Push to server"
@@ -140,7 +140,7 @@ $(function(){
 		<button
 			id="btn-position"
 			class="btn"
-			onclick="Ptero.Parallax.model.setMode('position')"
+			onclick="Ptero.Baklava.model.setMode('position')"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Adjust position"
@@ -148,7 +148,7 @@ $(function(){
 		<button
 			id="btn-collision"
 			class="btn"
-			onclick="Ptero.Parallax.model.setMode('collision')"
+			onclick="Ptero.Baklava.model.setMode('collision')"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Create/edit collision geometry"
@@ -156,11 +156,11 @@ $(function(){
 		<button
 			id="btn-parallax"
 			class="btn"
-			onclick="Ptero.Parallax.model.setMode('parallax')"
+			onclick="Ptero.Baklava.model.setMode('parallax')"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Adjust parallax shift"
-			>Parallax</button>
+			>Baklava</button>
 	</div>
 </div>
 
@@ -173,21 +173,21 @@ $(function(){
 	<div class="btn-group">
 		<button
 			class="btn"
-			onclick="Ptero.Parallax.model.createShape()"
+			onclick="Ptero.Baklava.model.createShape()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="New Shape"
 			><i class="icon-plus"></i></button>
 		<button
 			class="btn"
-			onclick="Ptero.Parallax.model.deletePoint()"
+			onclick="Ptero.Baklava.model.deletePoint()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Delete Point"
 			><i class="icon-minus-sign"></i></button>
 		<button
 			class="btn"
-			onclick="Ptero.Parallax.model.insertPoint()"
+			onclick="Ptero.Baklava.model.insertPoint()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Insert Point"

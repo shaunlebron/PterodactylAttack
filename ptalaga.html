@@ -112,7 +112,7 @@ $(function(){
 		selector: '[rel="tooltip"]'
 	});
 
-	var handleOpenFile = Ptero.Crater.loader.handleOpenFile;
+	var handleOpenFile = Ptero.Ptalaga.loader.handleOpenFile;
 
 	document.getElementById('open-file').addEventListener('change', handleOpenFile, false);
 
@@ -134,7 +134,7 @@ $(function(){
 	<div class="btn-group">
 		<button
 			class="btn"
-			onclick="Ptero.Crater.loader.promptReset()"
+			onclick="Ptero.Ptalaga.loader.promptReset()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="New"
@@ -164,7 +164,7 @@ $(function(){
 		<ul class="dropdown-menu">
 			<li>
 				<a
-					onclick="Ptero.Crater.loader.promptReset()"
+					onclick="Ptero.Ptalaga.loader.promptReset()"
 					href="#"
 					>New</a>
 			</li>
@@ -186,7 +186,7 @@ $(function(){
 		<button
 			id="preview-button"
 			class="btn"
-			onclick="Ptero.Crater.enemy_model_list.togglePreview()"
+			onclick="Ptero.Ptalaga.enemy_model_list.togglePreview()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Toggle Preview"
@@ -196,7 +196,7 @@ $(function(){
 		<button
 			id="undo-button"
 			class="btn"
-			onclick="Ptero.Crater.enemy_model_list.undo()"
+			onclick="Ptero.Ptalaga.enemy_model_list.undo()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Undo"
@@ -205,7 +205,7 @@ $(function(){
 		<button
 			id="redo-button"
 			class="btn"
-			onclick="Ptero.Crater.enemy_model_list.redo()"
+			onclick="Ptero.Ptalaga.enemy_model_list.redo()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Redo"
@@ -215,21 +215,21 @@ $(function(){
 	<div class="btn-group">
 		<button
 			class="btn"
-			onclick="Ptero.Crater.enemy_model.insertPoint()"
+			onclick="Ptero.Ptalaga.enemy_model.insertPoint()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Insert Point at current pos/time."
 			><i class="icon-chevron-sign-down"></i></button>
 		<button
 			class="btn"
-			onclick="Ptero.Crater.enemy_model.addPoint()"
+			onclick="Ptero.Ptalaga.enemy_model.addPoint()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Append Point at end of path."
 			><i class="icon-plus-sign"></i></button>
 		<button
 			class="btn"
-			onclick="Ptero.Crater.enemy_model.removeSelectedPoint()"
+			onclick="Ptero.Ptalaga.enemy_model.removeSelectedPoint()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Remove Point"
@@ -238,14 +238,14 @@ $(function(){
 	<div class="btn-group">
 		<button
 			class="btn"
-			onclick="Ptero.Crater.enemy_model_list.duplicatePath()"
+			onclick="Ptero.Ptalaga.enemy_model_list.duplicatePath()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Duplicate Path"
 			><i class="icon-asterisk"></i></button>
 		<button
 			class="btn"
-			onclick="Ptero.Crater.enemy_model_list.toggleAllVisibility()"
+			onclick="Ptero.Ptalaga.enemy_model_list.toggleAllVisibility()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Toggle All Visibility"
@@ -255,7 +255,7 @@ $(function(){
 		<button
 			id="16-9-btn"
 			class="btn"
-			onclick="Ptero.Crater.screen.setAspect(16,9)"
+			onclick="Ptero.Ptalaga.screen.setAspect(16,9)"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="newer smartphones"
@@ -263,7 +263,7 @@ $(function(){
 		<button
 			id="3-2-btn"
 			class="btn"
-			onclick="Ptero.Crater.screen.setAspect(3,2)"
+			onclick="Ptero.Ptalaga.screen.setAspect(3,2)"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="older smartphones"
@@ -271,7 +271,7 @@ $(function(){
 		<button
 			id="4-3-btn"
 			class="btn"
-			onclick="Ptero.Crater.screen.setAspect(4,3)"
+			onclick="Ptero.Ptalaga.screen.setAspect(4,3)"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="iPad"
@@ -281,7 +281,7 @@ $(function(){
 		<button
 			class="btn"
 			id="play-btn"
-			onclick="Ptero.Crater.enemy_model_list.play()"
+			onclick="Ptero.Ptalaga.enemy_model_list.play()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Play"
@@ -289,7 +289,7 @@ $(function(){
 		<button
 			class="btn"
 			id="pause-btn"
-			onclick="Ptero.Crater.enemy_model_list.pause()"
+			onclick="Ptero.Ptalaga.enemy_model_list.pause()"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Pause"
