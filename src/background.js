@@ -21,6 +21,15 @@ Ptero.background = (function(){
 		getSelectedLayer: function() {
 			return selectedLayer;
 		},
+		removeLayerCollisionShape: function(shape) {
+			var shapes = layerCollisions[selectedLayer];
+			if (shapes) {
+				var index = shapes.indexOf(shape);
+				if (index != null) {
+					shapes.splice(index,1);
+				}
+			}
+		},
 		addLayerCollisionShape: function(shape) {
 			if (selectedLayer != null) {
 				if (!layerCollisions[selectedLayer]) {

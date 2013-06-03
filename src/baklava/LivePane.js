@@ -113,7 +113,7 @@ Ptero.Baklava.LivePane.prototype = {
 								return {
 									shape: shape,
 									point: point,
-									pointIndex: i,
+									pointIndex: j,
 									offset_x: point.x - spaceClick.x,
 									offset_y: point.y - spaceClick.y,
 								};
@@ -148,6 +148,39 @@ Ptero.Baklava.LivePane.prototype = {
 					}
 				}
 			}
+			else if (collisionMode == "insert") {
+				var i = this.selectedPointIndex;
+				var points = this.selectedShape.points;
+				var j, numPoints = points.length;
+				var point0 = points[i];
+				var point1 = this.screenToSpace(x,y,point0.z);
+				var point2 = points[i==0 ? numPoints-1 : i-1];
+				var point3 = points[(i+1)%numPoints];
+
+				var v1 = new Ptero.Vector().set(point1).sub(point0).normalize();
+				var v2 = new Ptero.Vector().set(point2).sub(point0).normalize();
+				var v3 = new Ptero.Vector().set(point3).sub(point0).normalize();
+
+				var a2 = v1.angleTo(v2);
+				var a3 = v1.angleTo(v3);
+
+				if (a2 < a3) {
+					points.splice(i,0,point1);
+				}
+				else {
+					i++;
+					points.splice(i,0,point1);
+				}
+
+				Ptero.Baklava.model.setCollisionMode('select');
+				return {
+					shape: this.selectedShape,
+					point: point1,
+					pointIndex: i,
+					offset_x: 0,
+					offset_y: 0,
+				};
+			}
 
 		}
 		else if (mode == "parallax") {
@@ -156,6 +189,27 @@ Ptero.Baklava.LivePane.prototype = {
 		// Return an empty object if we cannot deduce a click selection.
 		return {};
 		
+	},
+
+	removeSelectedShape: function() {
+		if (this.selectedShape) {
+			Ptero.background.removeLayerCollisionShape(this.selectedShape);
+		}
+	},
+
+	removeSelectedPoint: function() {
+		if (this.selectedPoint) {
+			if (this.selectedShape.points.length == 1) {
+				this.removeSelectedShape();
+			}
+			else {
+				// remove point
+				this.selectedShape.points.splice(this.selectedPointIndex, 1);
+
+				// select another point
+				this.selectedPointIndex = Math.max(0, this.selectedPointIndex-1);
+			}
+		}
 	},
 
 	selectNode: function(info) {
@@ -179,6 +233,7 @@ Ptero.Baklava.LivePane.prototype = {
 				this.selectedOffsetY = info.offset_y;
 				this.selectedShape = info.shape;
 				this.selectedPointIndex = info.pointIndex;
+				console.log(this.selectedPointIndex);
 			}
 			else {
 				this.selectedPoint = null;

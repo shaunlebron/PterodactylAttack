@@ -164,5 +164,6 @@ Ptero.Baklava.panes = (function() {
 		init: init,
 		draw: draw,
 		update: update,
+		getLivePane: function() { return livePane; },
 	};
 })();

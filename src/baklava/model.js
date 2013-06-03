@@ -21,28 +21,55 @@ Ptero.Baklava.Model.prototype = {
 	},
 
 	setCollisionMode: function(mode) {
-		if (mode == "create" && Ptero.background.getSelectedLayer() == null) {
+		var livePane = Ptero.Baklava.panes.getLivePane();
+		if (mode == "insert" && this.collisionMode == "create") {
+			bootbox.alert("Please finish creating the shape before inserting new points.");
+			return;
+		}
+
+		if (mode == "insert" && !livePane.selectedPoint) {
+			bootbox.alert("Please select an existing point to insert a new point next to.");
+			return;
+		}
+
+		if ((mode == "create" || mode == "insert") && Ptero.background.getSelectedLayer() == null) {
 			bootbox.alert("Please select a background layer to apply the collision geometry to first!");
 			mode = "select";
 		}
+
 		this.collisionMode = mode;
+
+		$("#btn-create-shape").removeClass('active');
+		$("#btn-insert-point").removeClass('active');
 
 		if (mode == "create") {
 			$("#btn-create-shape").addClass('active');
 			this.collisionDraft = new Ptero.CollisionShape();
 		}
-		else {
-			$("#btn-create-shape").removeClass('active');
+		else if (mode == "select") {
 			this.collisionDraft = null;
+		}
+		else if (mode == "insert") {
+			$("#btn-insert-point").addClass('active');
 		}
 	},
 
 	createShape: function() {
 		this.setCollisionMode("create");
 	},
-	deletePoint: function() {
+	deleteShape: function() {
+		bootbox.confirm('Are you sure you want to delete this entire shape?',
+			function(result) {
+				if (result) {
+					var livePane = Ptero.Baklava.panes.getLivePane();
+					livePane.removeSelectedShape();
+				}
+			}
+		);
 	},
-	insertPoint: function() {
+	deletePoint: function() {
+		var livePane = Ptero.Baklava.panes.getLivePane();
+		livePane.removeSelectedPoint();
 	},
 
 	selectLayer: function(i) {
