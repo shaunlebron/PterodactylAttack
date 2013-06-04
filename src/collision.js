@@ -15,8 +15,16 @@ Ptero.CollisionShape.fromState = function(state) {
 Ptero.CollisionShape.prototype = {
 	getState: function() {
 		return {
-			points: points
+			points: this.points
 		};
+	},
+
+	projectToZ: function(z) {
+		var i,len=this.points.length;
+		var frustum = Ptero.screen.getFrustum();
+		for (i=0; i<len; i++) {
+			this.points[i] = frustum.projectToZ(this.points[i], z);
+		}
 	},
 
 	// from: https://github.com/substack/point-in-polygon/blob/master/index.js

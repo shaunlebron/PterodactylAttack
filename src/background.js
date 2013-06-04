@@ -21,6 +21,44 @@ Ptero.background = (function(){
 		getSelectedLayer: function() {
 			return selectedLayer;
 		},
+		getLayerCollisions: function() {
+			var result = [];
+			var i,len=layerCollisions.length;
+			for (i=0; i<len; i++) {
+				var shape_states = [];
+				var shapeGroup = layerCollisions[i];
+				if (shapeGroup) {
+					var j,numShapes = shapeGroup.length;
+					for (j=0; j<numShapes; j++) {
+						var shape = shapeGroup[j];
+						shape_states.push(shape.getState());
+					}
+				}
+				result.push(shape_states);
+			}
+			return result;
+		},
+		setLayerCollisions: function(result) {
+			layerCollisions.length = 0;
+			if (!result) {
+				return;
+			}
+
+			var i,len=result.length;
+			for (i=0; i<len; i++) {
+				var shapeGroup = result[i];
+				var j,numShapes = shapeGroup.length;
+				var shapes = [];
+				var depth = layerPositions[i].z;
+				for (j=0; j<numShapes; j++) {
+					var shapeState = shapeGroup[j];
+					var shape = Ptero.CollisionShape.fromState(shapeState)
+					shape.projectToZ(depth);
+					shapes.push(shape);
+				}
+				layerCollisions.push(shapes);
+			}
+		},
 		removeLayerCollisionShape: function(shape) {
 			var shapes = layerCollisions[selectedLayer];
 			if (shapes) {
@@ -131,6 +169,7 @@ Ptero.background = (function(){
 			var savedDepths = Ptero.assets.json["bgLayerDepths"];
 			if (savedDepths) {
 				this.setLayerDepths(savedDepths.depths);
+				this.setLayerCollisions(savedDepths.collisions);
 			}
 
 			window.addEventListener("deviceorientation", function(orientData) {

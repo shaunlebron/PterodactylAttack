@@ -261,6 +261,7 @@ Ptero.Baklava.LivePane.prototype = {
 				var spaceClick = this.screenToSpace(x,y,this.selectedPoint.z);
 				this.selectedPoint.x = spaceClick.x + this.selectedOffsetX;
 				this.selectedPoint.y = spaceClick.y + this.selectedOffsetY;
+				Ptero.Baklava.loader.backup();
 			}
 			else if (this.selectedShape != null) {
 				var shape = this.selectedShape;
@@ -271,6 +272,7 @@ Ptero.Baklava.LivePane.prototype = {
 					shape.points[i].x = spaceClick.x + offsets[i].x;
 					shape.points[i].y = spaceClick.y + offsets[i].y;
 				}
+				Ptero.Baklava.loader.backup();
 			}
 		}
 		else if (mode == "parallax") {

@@ -1,33 +1,33 @@
 
 Ptero.Baklava.loader = (function(){
 
-	function pullDepths() {
+	function pull() {
 		$.ajax({
 			url:'img/bgLayerDepths.json',
 			type:'GET',
 		}).done(function(data) {
 			try {
 				setState(data);
-				bootbox.alert("Successfully pulled depths from server");
+				bootbox.alert("Successfully pulled from server");
 			}
 			catch (e) {
-				bootbox.alert("Could not pull depths from server");
+				bootbox.alert("Could not pull from server");
 			}
 		}).fail(function(data) {
-            bootbox.alert("Could not pull depths from server");
+            bootbox.alert("Could not pull from server");
 		});
 	}
 
-	function pushDepths() {
+	function push() {
 		var data = JSON.stringify(getState());
 		$.ajax({
 			url: 'img/bgLayerDepths.json',
 			type: 'POST',
 			data: data,
 		}).done(function(data) {
-			bootbox.alert("Successfully pushed depths to server");
+			bootbox.alert("Successfully pushed to server");
 		}).fail(function(data) {
-			bootbox.alert("Failed to push depths to server: "+data);
+			bootbox.alert("Failed to push to server: "+data);
 		});
 	}
 
@@ -36,11 +36,13 @@ Ptero.Baklava.loader = (function(){
 		return {
 			version: 1,
 			depths: Ptero.background.getLayerDepths(),
+			collisions: Ptero.background.getLayerCollisions(),
 		};
 	}
 
 	function setState(state) {
 		Ptero.background.setLayerDepths(state.depths);
+		Ptero.background.setLayerCollisions(state.collisions);
 		backup();
 	}
 
@@ -70,7 +72,7 @@ Ptero.Baklava.loader = (function(){
 	return {
 		backup: backup,
 		restore: restore,
-		pushDepths: pushDepths,
-		pullDepths: pullDepths,
+		push: push,
+		pull: pull,
 	};
 })();
