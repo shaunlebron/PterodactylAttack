@@ -213,6 +213,96 @@ Ptero.orb = (function(){
 	}
 
 
+	function collideBulletWithBg(bullet) {
+		var startZ = bullet.pos.z;
+		var endZ, collideTime;
+		var collideZ = Infinity;
+		if (bullet.collideTarget) {
+			endZ = bullet.pos.z + bullet.dir.z * bullet.speed * bullet.collideTime;
+
+			// test against all layers between Z bounds
+			var layerCollisions = Ptero.background.getLayerCollisions();
+			var i,len=layerCollisions.length;
+			for (i=0; i<len; i++) {
+				var shapeGroup = layerCollisions[i];
+				if (shapeGroup) {
+
+					// get this layer's depth
+					var z = shapeGroup[0].points[0].z;
+
+					// skip this depth if it is not in our search range
+					if (!(z > startZ && z < endZ && z < collideZ)) {
+						continue;
+					}
+
+					// get time and position of bullet when it reaches the layer
+					var t = (z - bullet.pos.z) / (bullet.dir.z * bullet.speed);
+					var x = bullet.pos.x + bullet.dir.x * bullet.speed * t;
+					var y = bullet.pos.y + bullet.dir.y * bullet.speed * t;
+
+					// test collision on every shape in this layer
+					var j,numShapes = shapeGroup.length;
+					for (j=0; j<numShapes; j++) {
+						var shape = shapeGroup[j];
+						if (shape.isPointInside(x,y)) {
+							collideZ = z;
+							collideTime = t;
+							break;
+						}
+					}
+				}
+			}
+
+			if (collideZ < Infinity) {
+				bullet.collideTarget = null;
+				bullet.collideTime = collideTime;
+			}
+			else {
+				bullet.collideTarget.isGoingToDie = true;
+			}
+		}
+		else {
+
+			// test against all layers after start Z
+			var layerCollisions = Ptero.background.getLayerCollisions();
+			var i,len=layerCollisions.length;
+			for (i=0; i<len; i++) {
+				var shapeGroup = layerCollisions[i];
+				if (shapeGroup) {
+
+					// get this layer's depth
+					var z = shapeGroup[0].points[0].z;
+
+					// skip this depth if it is not in our search range
+					if (!(z > startZ && z < collideZ)) {
+						continue;
+					}
+
+					// get time and position of bullet when it reaches the layer
+					var t = (z - bullet.pos.z) / (bullet.dir.z * bullet.speed);
+					var x = bullet.pos.x + bullet.dir.x * bullet.speed * t;
+					var y = bullet.pos.y + bullet.dir.y * bullet.speed * t;
+
+					// test collision on every shape in this layer
+					var j,numShapes = shapeGroup.length;
+					for (j=0; j<numShapes; j++) {
+						var shape = shapeGroup[j];
+						if (shape.isPointInside(x,y)) {
+							collideZ = z;
+							collideTime = t;
+							break;
+						}
+					}
+				}
+			}
+
+			// set collide time if exists
+			if (collideZ < Infinity) {
+				bullet.collideTime = collideTime;
+			}
+		}
+	}
+
 	// Try to fire a bullet into the given direction with target leading in mind.
 	function shootWithLead(aim_vector) {
 
@@ -257,7 +347,8 @@ Ptero.orb = (function(){
 					bullet = createBulletFromCone(cone, aim_vector);
 					bullet.collideTime = t;
 					bullet.collideTarget = target;
-					target.isGoingToDie = true;
+					//target.isGoingToDie = true;
+					collideBulletWithBg(bullet);
 					Ptero.bulletpool.add(bullet);
 					Ptero.audio.playShoot();
 					return;
@@ -281,6 +372,7 @@ Ptero.orb = (function(){
 			var cone = getDefaultBulletCone(aim_vector);
 			bullet = createBulletFromCone(cone, aim_vector);
 		}
+		collideBulletWithBg(bullet);
 		Ptero.bulletpool.add(bullet);
 		Ptero.audio.playShoot();
 	}

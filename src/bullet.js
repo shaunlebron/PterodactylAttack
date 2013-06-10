@@ -76,6 +76,9 @@ Ptero.Bullet.prototype = {
 			this.prevPos = null;
 		}
 	},
+	collidePathWithBgLayers: function() {
+		var finalZ = this.pos.z + this.dir.z * this.speed * this.collideTime;
+	},
 	draw: function draw(ctx) {
 		this.sprite.draw(ctx, this.pos);
 		if (this.prevPos) {
@@ -94,7 +97,7 @@ Ptero.Bullet.prototype = {
 	isDone: function() {
 		return (
 			this.time > this.lifeTime ||
-			this.collideTarget && this.time > this.collideTime
+			(this.collideTime != null && this.time >= this.collideTime)
 		);
 	},
 	getPosition: function() {

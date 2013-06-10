@@ -22,6 +22,9 @@ Ptero.background = (function(){
 			return selectedLayer;
 		},
 		getLayerCollisions: function() {
+			return layerCollisions;
+		},
+		getLayerCollisionStates: function() {
 			var result = [];
 			var i,len=layerCollisions.length;
 			for (i=0; i<len; i++) {
@@ -38,7 +41,7 @@ Ptero.background = (function(){
 			}
 			return result;
 		},
-		setLayerCollisions: function(result) {
+		setLayerCollisionStates: function(result) {
 			layerCollisions.length = 0;
 			if (!result) {
 				return;
@@ -169,7 +172,7 @@ Ptero.background = (function(){
 			var savedDepths = Ptero.assets.json["bgLayerDepths"];
 			if (savedDepths) {
 				this.setLayerDepths(savedDepths.depths);
-				this.setLayerCollisions(savedDepths.collisions);
+				this.setLayerCollisionStates(savedDepths.collisions);
 			}
 
 			window.addEventListener("deviceorientation", function(orientData) {
