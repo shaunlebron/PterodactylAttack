@@ -196,7 +196,7 @@ Ptero.background = (function(){
 			}
 
 			window.addEventListener("deviceorientation", function(orientData) {
-				parallaxMultiplier = orientData.beta/500;
+				parallaxMultiplier = orientData.beta/90; // return -1 to 1 since degrees goes from -90 to 90.
 			}, true);
 		},
 		setParallaxMultiplier: function(k) {
