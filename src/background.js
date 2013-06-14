@@ -7,14 +7,17 @@ Ptero.background = (function(){
 	var scale;
 	var layerPositions = [];
 	var layerCollisions = [];
+	var layerParallaxOffsets = [];
 	var selectedLayer = null;
 
-	var parallaxOffset = 0;
-
+	var parallaxMultiplier = 0;
 
 	var wash = false;
 
 	return {
+		getLayerParallaxOffsets: function() {
+			return layerParallaxOffsets;
+		},
 		setWash: function(on) {
 			wash = on;
 		},
@@ -81,6 +84,12 @@ Ptero.background = (function(){
 				}
 			}
 		},
+		setCurrentLayerParallaxOffset: function(x) {
+			layerParallaxOffsets[selectedLayer] = x;
+		},
+		getCurrentLayerParallaxOffset: function() {
+			return layerParallaxOffsets[selectedLayer];
+		},
 		getCurrentLayerCollisionShapes: function() {
 			return layerCollisions[selectedLayer];
 		},
@@ -120,6 +129,9 @@ Ptero.background = (function(){
 				return bgLayers.getFrameSpaceRects(pos, "bg"+i);
 			}
 		},
+		setLayerParallaxOffset: function(i,x) {
+			layerParallaxOffsets[i] = x;
+		},
 		setLayerDepth: function(i,z) {
 			layerPositions[i].z = z;
 			var near = Ptero.screen.getFrustum().near;
@@ -144,6 +156,12 @@ Ptero.background = (function(){
 				bgLayersWash.billboards["bg"+i].scale = scale;
 			}
 		},
+		setLayerParallaxOffsets: function(offsets) {
+			if (offsets) {
+				layerParallaxOffsets = offsets;
+				console.log(offsets);
+			}
+		},
 		init: function() {
 			var w = 1280;
 			var h = 720;
@@ -166,6 +184,7 @@ Ptero.background = (function(){
 			var i;
 			for (i=0; i<6; i++) {
 				layerPositions[i] = {x:0,y:0};
+				layerParallaxOffsets[i] = 0;
 				this.setLayerDepth(i, far-step*(5-i));
 			}
 
@@ -173,28 +192,56 @@ Ptero.background = (function(){
 			if (savedDepths) {
 				this.setLayerDepths(savedDepths.depths);
 				this.setLayerCollisionStates(savedDepths.collisions);
+				this.setLayerParallaxOffsets(savedDepths.parallaxOffsets);
 			}
 
 			window.addEventListener("deviceorientation", function(orientData) {
-				parallaxOffset = orientData.beta/500;
+				parallaxMultiplier = orientData.beta/500;
 			}, true);
+		},
+		setParallaxMultiplier: function(k) {
+			parallaxMultiplier = k;
 		},
 
 		getScale: function getScale() { return scale; },
 		update: function(dt) {
+			var frustum = Ptero.screen.getFrustum();
 			grassAnim.update(dt);
 			for (i=0; i<6; i++) {
 				var layer = "bg"+i;
 				var _pos = layerPositions[i];
+				var offset = layerParallaxOffsets[i];
+				if (offset != null) {
+					offset = frustum.projectToZ({
+						x: offset * parallaxMultiplier,
+						y: 0,
+						z: frustum.near }, _pos.z).x;
+				}
+				else {
+					offset = 0;
+				}
 				var pos = {
-					x: _pos.x + parallaxOffset,
+					x: _pos.x + offset,
 					y: _pos.y,
 					z: _pos.z,
 				};
 				var desat = (selectedLayer != null && selectedLayer != i);
+				var parallaxPositions;
+				if (selectedLayer == i && Ptero.Baklava && Ptero.Baklava.model.mode == "parallax") {
+					parallaxPositions = [
+						frustum.projectToZ({
+							x: layerParallaxOffsets[i],
+							y: 0,
+							z: frustum.near }, _pos.z),
+						frustum.projectToZ({
+							x: -layerParallaxOffsets[i],
+							y: 0,
+							z: frustum.near }, _pos.z),
+					];
+				}
 				if (i == 1) {
 					Ptero.deferredSprites.defer(
-						(function(pos,desat){
+						(function(pos,desat,parallaxPositions){
 							return function(ctx) {
 								var alpha = ctx.globalAlpha;
 								ctx.globalAlpha = 1;
@@ -207,13 +254,23 @@ Ptero.background = (function(){
 									bgLayersDesat.draw(ctx, pos,"bg1_0");
 								}
 								else {
+									if (parallaxPositions) {
+										ctx.globalAlpha = 0.5;
+										bgLayers.draw(ctx, parallaxPositions[0],"bg1_1");
+										grassAnim.draw(ctx,parallaxPositions[0]);
+										bgLayers.draw(ctx, parallaxPositions[0],"bg1_0");
+										bgLayers.draw(ctx, parallaxPositions[1],"bg1_1");
+										grassAnim.draw(ctx,parallaxPositions[1]);
+										bgLayers.draw(ctx, parallaxPositions[1],"bg1_0");
+										ctx.globalAlpha = 1;
+									}
 									bgLayers.draw(ctx, pos,"bg1_1");
 									grassAnim.draw(ctx,pos);
 									bgLayers.draw(ctx, pos,"bg1_0");
 								}
 								ctx.globalAlpha = alpha;
 							};
-						})(pos,desat), pos.z);
+						})(pos,desat,parallaxPositions), pos.z);
 				}
 				else {
 					Ptero.deferredSprites.defer(
@@ -228,11 +285,17 @@ Ptero.background = (function(){
 									bgLayersDesat.draw(ctx, pos, layer);
 								}
 								else {
+									if (parallaxPositions) {
+										ctx.globalAlpha = 0.5;
+										bgLayers.draw(ctx, parallaxPositions[0], layer);
+										bgLayers.draw(ctx, parallaxPositions[1], layer);
+										ctx.globalAlpha = 1;
+									}
 									bgLayers.draw(ctx, pos, layer);
 								}
 								ctx.globalAlpha = alpha;
 							};
-						})(pos,layer,desat), pos.z);
+						})(pos,layer,desat,parallaxPositions), pos.z);
 				}
 			}
 		},

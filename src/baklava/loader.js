@@ -37,12 +37,14 @@ Ptero.Baklava.loader = (function(){
 			version: 1,
 			depths: Ptero.background.getLayerDepths(),
 			collisions: Ptero.background.getLayerCollisionStates(),
+			parallaxOffsets: Ptero.background.getLayerParallaxOffsets(),
 		};
 	}
 
 	function setState(state) {
 		Ptero.background.setLayerDepths(state.depths);
 		Ptero.background.setLayerCollisionStates(state.collisions);
+		Ptero.background.setLayerParallaxOffsets(state.parallaxOffsets);
 		backup();
 	}
 

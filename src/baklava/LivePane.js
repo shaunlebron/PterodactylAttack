@@ -184,6 +184,31 @@ Ptero.Baklava.LivePane.prototype = {
 
 		}
 		else if (mode == "parallax") {
+			var offset = Ptero.background.getCurrentLayerParallaxOffset();
+			var frustum = Ptero.screen.getFrustum();
+			var leftPos = { x: offset, y: 0, z: frustum.near };
+			var rightPos = { x: -offset, y: 0, z: frustum.near };
+			var leftScreenPos = this.spaceToScreen(leftPos);
+			var rightScreenPos = this.spaceToScreen(rightPos);
+
+			var spaceClick = this.screenToSpace(x,y,frustum.near);
+			var leftScreenDx = leftScreenPos.x - x;
+			var rightScreenDx = rightScreenPos.x - x;
+			
+			var minDx = 10;
+
+			if (Math.abs(leftScreenDx) <= minDx) {
+				return {
+					parallax: true,
+					offset_x: leftPos.x - spaceClick.x,
+				};
+			}
+			else if (Math.abs(rightScreenDx) <= minDx) {
+				return {
+					parallax: true,
+					offset_x: rightPos.x - spaceClick.x,
+				};
+			}
 		}
 
 		// Return an empty object if we cannot deduce a click selection.
@@ -242,6 +267,7 @@ Ptero.Baklava.LivePane.prototype = {
 			}
 		}
 		else if (mode == "parallax") {
+			this.selectedOffset = info.offset_x;
 		}
 	},
 
@@ -276,6 +302,13 @@ Ptero.Baklava.LivePane.prototype = {
 			}
 		}
 		else if (mode == "parallax") {
+			if (this.selectedOffset != null) {
+				var frustum = Ptero.screen.getFrustum();
+				var spaceClick = this.screenToSpace(x,y,frustum.near);
+				var offset = Math.abs(spaceClick.x + this.selectedOffset);
+				Ptero.background.setCurrentLayerParallaxOffset(offset);
+				Ptero.Baklava.loader.backup();
+			}
 		}
 	},
 
@@ -388,6 +421,33 @@ Ptero.Baklava.LivePane.prototype = {
 			// Draw collision shape that is currently being drawn.
 			if (collisionMode == "create") {
 				this.drawCollisionShape(ctx, model.collisionDraft);
+			}
+		}
+		else if (mode == "parallax") {
+			var offset = Ptero.background.getCurrentLayerParallaxOffset();
+			var frustum = Ptero.screen.getFrustum();
+			var painter = Ptero.painter;
+			if (offset != null) {
+				ctx.beginPath();
+				painter.moveTo(ctx,{ x: 0, y: frustum.nearTop, z: frustum.near, });
+				painter.lineTo(ctx,{ x: 0, y: frustum.nearBottom, z: frustum.near, });
+				ctx.strokeStyle = "rgba(255,0,0,0.5)";
+				ctx.lineWidth = 1;
+				ctx.stroke();
+
+				ctx.beginPath();
+				painter.moveTo(ctx,{ x: offset, y: frustum.nearTop, z: frustum.near, });
+				painter.lineTo(ctx,{ x: offset, y: frustum.nearBottom, z: frustum.near, });
+				ctx.strokeStyle = "#F00";
+				ctx.lineWidth = 2;
+				ctx.stroke();
+
+				ctx.beginPath();
+				painter.moveTo(ctx,{ x: -offset, y: frustum.nearTop, z: frustum.near, });
+				painter.lineTo(ctx,{ x: -offset, y: frustum.nearBottom, z: frustum.near, });
+				ctx.strokeStyle = "#F00";
+				ctx.lineWidth = 2;
+				ctx.stroke();
 			}
 		}
 

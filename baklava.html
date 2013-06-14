@@ -170,6 +170,26 @@ $(function(){
 
 <div id="toolbar-parallax">
 	<input type="range" value="0" min="-1" max="1" step="0.001" id="parallax-slider" />
+	<script>
+	$(function(){
+		var slider = $('#parallax-slider');
+		var down = false;
+		slider.mousedown(function() {
+			Ptero.background.setSelectedLayer(null);
+			down = true;
+		});
+		slider.mousemove(function(){
+			if (down) {
+				Ptero.background.setParallaxMultiplier(slider.val());
+			}
+		});
+		slider.mouseup(function() {
+			slider.val(0);
+			down = false;
+			Ptero.background.setParallaxMultiplier(0);
+		});
+	});
+	</script>
 </div>
 
 <div class="btn-toolbar" id="toolbar-collision">
