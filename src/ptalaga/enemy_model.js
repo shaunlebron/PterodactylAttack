@@ -226,6 +226,7 @@ Ptero.Ptalaga.EnemyModelList.prototype = {
 	previewIndex: function(index) {
 		this.active_enemy_model = Ptero.Ptalaga.enemy_model;
 		Ptero.Ptalaga.enemy_model = this.getModelFromIndex(index);
+		this.refreshEnemyAttributeControls();
 	},
 	unpreviewIndex: function(index) {
 		if (this.active_enemy_model) {
@@ -251,6 +252,7 @@ Ptero.Ptalaga.EnemyModelList.prototype = {
 		this.active_enemy_model = model;
 		Ptero.Ptalaga.enemy_model = model;
 		this.refreshTabs();
+		this.refreshEnemyAttributeControls();
 	},
 	removeIndex: function(index) {
 		this.remove(this.getModelFromIndex(index));
@@ -332,9 +334,9 @@ Ptero.Ptalaga.EnemyModelList.prototype = {
 	refreshTabs: function() {
 		$("#pathtabs").html(this.getTabsString());
 	},
-	refreshAttributeDisplays: function() {
-		// update attack flag
-		// update enemy type box
+	refreshEnemyAttributeControls: function() {
+		// TODO: update attack flag
+		Ptero.Ptalaga.enemy_model.refreshEnemyType();
 	},
 	update: function(dt) {
 
@@ -379,15 +381,14 @@ Ptero.Ptalaga.EnemyModel = function(index) {
 Ptero.Ptalaga.EnemyModel.fromState = function(state) {
 	var model = new Ptero.Ptalaga.EnemyModel(state.index);
 	model.points = state.points;
+	model.setType(state.enemyType || "baby");
 
 	var i,len = model.points.length;
 	model.nodeSprites = [];
 	model.times = [];
 	for (i=0; i<len; i++) {
 		model.times[i] = model.points[i].t;
-		var sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-		sprite.shuffleTime();
-		model.nodeSprites[i] = sprite;
+		model.nodeSprites[i] = model.enemy.makeAnimSprite();
 	}
 
 	model.refreshTimes();
@@ -397,6 +398,19 @@ Ptero.Ptalaga.EnemyModel.fromState = function(state) {
 };
 
 Ptero.Ptalaga.EnemyModel.prototype = {
+	refreshEnemyType: function() {
+		$('#enemy-type-label').html(this.enemy.typeName);
+	},
+	setType: function(type) {
+		this.enemy.setType(type);
+
+		var i,len=this.nodeSprites.length;
+		for (i=0; i<len; i++) {
+			this.nodeSprites[i] = this.enemy.makeAnimSprite();
+		}
+		this.refreshEnemyType();
+		Ptero.Ptalaga.loader.backup();
+	},
 	getState: function() {
 		var points = [];
 		var i,len = this.points.length;
@@ -414,6 +428,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 		return {
 			index: this.index,
 			isAttack: this.isAttack,
+			enemyType: this.enemy.typeName,
 			points: points,
 		};
 	},
@@ -431,8 +446,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 				z:far - i/(numPoints-1)*dist,
 				angle: 0,
 			};
-			sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-			sprite.shuffleTime();
+			sprite = this.enemy.makeAnimSprite();
 			this.nodeSprites[i] = sprite;
 		}
 		var t = 0;
@@ -535,8 +549,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 		this.times.push(t);
 		p.t = this.times[len];
 		this.points.push(p);
-		var sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-		sprite.shuffleTime();
+		var sprite = this.enemy.makeAnimSprite();
 		this.nodeSprites.push(sprite);
 
 		this.selectPoint(len);
@@ -574,8 +587,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 		this.times.push(this.times[len-1] + 1.0);
 		p.t = this.times[len];
 		this.points.push(p);
-		var sprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-		sprite.shuffleTime();
+		var sprite = this.enemy.makeAnimSprite();
 		this.nodeSprites.push(sprite);
 
 		this.selectPoint(len);

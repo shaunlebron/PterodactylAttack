@@ -9,6 +9,7 @@ Ptero.assets = (function(){
 		"bg_frosted": "img/bg_frosted.png",
 		"grass": "img/grass.png",
 		"baby": "img/baby.png",
+		"adult": "img/adult.png",
 		"boom1": "img/boom1.png",
 		"boom2": "img/boom2.png",
 		"boom3": "img/boom3.png",
@@ -152,6 +153,22 @@ Ptero.assets = (function(){
 		ctx.drawImage(Ptero.assets.images["boom3"],0,0,s,s);
 	}
 
+	function makeAnimSprite(name) {
+
+		var table = Ptero.assets.tables[name];
+		var mosaic = Ptero.assets.mosaics[name];
+
+		var spriteData = {};
+		if (table) {
+			spriteData.table = table;
+		}
+		else if (mosaic) {
+			spriteData.mosaic = mosaic;
+		}
+
+		return new Ptero.AnimSprite(spriteData);
+	}
+
 	return {
 		json: json,
 		load: load,
@@ -160,6 +177,7 @@ Ptero.assets = (function(){
 		tables: tables,
 		mosaics: mosaics,
 		levels: levels,
+		makeAnimSprite: makeAnimSprite,
 		keepExplosionsCached: keepExplosionsCached,
 	};
 })();

@@ -4,6 +4,11 @@ Ptero.enemyTypes = {
 		"damage": 10,
 		"spriteName": "baby",
 	},
+	"adult": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult",
+	},
 };
 
 Ptero.Enemy = function() {
@@ -64,25 +69,18 @@ Ptero.Enemy.fromState = function(state, startTime) {
 };
 
 Ptero.Enemy.prototype = {
+	makeAnimSprite: function() {
+		var sprite = Ptero.assets.makeAnimSprite(this.typeData.spriteName);
+		sprite.shuffleTime();
+		return sprite;
+	},
 	setType: function(type) {
 		this.typeName = type;
 		this.typeData = Ptero.enemyTypes[type];
 
 		this.health = this.typeData.health;
 
-		var table = Ptero.assets.tables[this.typeData.spriteName];
-		var mosaic = Ptero.assets.mosaics[this.typeData.spriteName];
-
-		var spriteData = {};
-		if (table) {
-			spriteData.table = table;
-		}
-		else if (mosaic) {
-			spriteData.mosaic = mosaic;
-		}
-
-		this.sprite = new Ptero.AnimSprite(spriteData);
-		this.sprite.shuffleTime();
+		this.sprite = this.makeAnimSprite();
 	},
 	randomizeBoom: function randomizeBoom() {
 		var numBooms = this.boomSprites.length;
@@ -134,6 +132,7 @@ Ptero.Enemy.prototype = {
 		this.applyDamage(Ptero.player.damage);
 	},
 	init: function() {
+		this.health = this.typeData.health;
 		this.isHit = false;
 		this.isGoingToDie = false;
 		this.isDead = false;
