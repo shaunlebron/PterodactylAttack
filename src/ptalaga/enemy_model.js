@@ -335,7 +335,7 @@ Ptero.Ptalaga.EnemyModelList.prototype = {
 		$("#pathtabs").html(this.getTabsString());
 	},
 	refreshEnemyAttributeControls: function() {
-		// TODO: update attack flag
+		Ptero.Ptalaga.enemy_model.refreshIsAttack();
 		Ptero.Ptalaga.enemy_model.refreshEnemyType();
 	},
 	update: function(dt) {
@@ -382,6 +382,7 @@ Ptero.Ptalaga.EnemyModel.fromState = function(state) {
 	var model = new Ptero.Ptalaga.EnemyModel(state.index);
 	model.points = state.points;
 	model.setType(state.enemyType || "baby");
+	model.setIsAttack(state.isAttack);
 
 	var i,len = model.points.length;
 	model.nodeSprites = [];
@@ -398,6 +399,22 @@ Ptero.Ptalaga.EnemyModel.fromState = function(state) {
 };
 
 Ptero.Ptalaga.EnemyModel.prototype = {
+	refreshIsAttack: function() {
+		if (this.isAttack) {
+			$('#enemy-is-attack').addClass('active');
+		}
+		else {
+			$('#enemy-is-attack').removeClass('active');
+		}
+	},
+	toggleIsAttack: function() {
+		this.setIsAttack(!this.isAttack);
+	},
+	setIsAttack: function(isAttack) {
+		this.isAttack = isAttack;
+		Ptero.Ptalaga.loader.backup();
+		this.refreshIsAttack();
+	},
 	refreshEnemyType: function() {
 		$('#enemy-type-label').html(this.enemy.typeName);
 	},
