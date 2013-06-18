@@ -100,11 +100,12 @@ Ptero.Enemy.prototype = {
 	getBillboard: function() {
 		return this.sprite.getBillboard();
 	},
-	applyDamage: function(dmg) {
+	applyDamage: function(damage) {
+		console.log(damage);
 		if (this.health <= 0) {
 			return;
 		}
-		this.health -= dmg;
+		this.health -= damage;
 
 		if (this.health <= 0) {
 
@@ -116,7 +117,7 @@ Ptero.Enemy.prototype = {
 			Ptero.audio.playHurt();
 		}
 	},
-	onHit: function onHit() {
+	onHit: function onHit(damage) {
 		if (!this.isHittable()) {
 			return;
 		}
@@ -129,7 +130,7 @@ Ptero.Enemy.prototype = {
 		// scene.score += 100 + scene.getStreakBonus();
 		// scene.streakCount++;
 
-		this.applyDamage(Ptero.player.damage);
+		this.applyDamage(damage);
 	},
 	init: function() {
 		this.health = this.typeData.health;

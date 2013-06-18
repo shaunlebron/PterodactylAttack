@@ -102,7 +102,7 @@ Ptero.bulletpool = (function(){
 			b.update(dt);
 			if (b.isDone()) {
 				if (b.collideTarget && b.collideTarget.onHit) {
-					b.collideTarget.onHit();
+					b.collideTarget.onHit(b.damage);
 				}
 				bullets[i] = null;
 			}

@@ -48,6 +48,7 @@ Ptero.BulletSmoke.prototype = {
 };
 
 Ptero.Bullet = function() {
+	this.damage = 100;
 	this.pos = new Ptero.Vector;
 	this.dir = new Ptero.Vector;
 	this.speed = 0;
@@ -108,6 +109,7 @@ Ptero.Bullet.prototype = {
 Ptero.PathBullet = function(path) {
 	this.path = path;
 	this.sprite = Ptero.assets.mosaics["missile"];
+	this.damage = 1000;
 
 	this.smokeTime = 0;
 	this.smokeTimeLimit = 0.01;
