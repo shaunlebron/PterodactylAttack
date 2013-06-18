@@ -19,9 +19,15 @@ Ptero.Ptalaga.EnemyModelList = function() {
 	this.updateUndoButtons();
 
 	this.preview = false;
+
+	this.setPlaybackSpeed(1);
 };
 
 Ptero.Ptalaga.EnemyModelList.prototype = {
+	setPlaybackSpeed: function(speed) {
+		this.playbackSpeed = speed;
+		$('#playback-speed-label').html(speed+'x');
+	},
 	togglePreview: function() {
 		if (this.isPreview) {
 			this.isPreview = false;
@@ -342,7 +348,7 @@ Ptero.Ptalaga.EnemyModelList.prototype = {
 
 		// we pause if we're editing, the pause button is pressed, or scrubbing in time pane.
 		if (!this.isEditing && !this.isPaused && !this.isScrubbing) {
-			this.time += dt;
+			this.time += dt*this.playbackSpeed;
 			var timePane = Ptero.Ptalaga.panes.getTimePane();
 			this.time = Math.max(this.time, timePane.loopStartTime);
 			if (this.time > timePane.loopEndTime) {
