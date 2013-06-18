@@ -1,12 +1,13 @@
 
 Ptero.audio = (function() {
 	var titleSong;
-	var shoot,explode;
+	var shoot,explode,hurt;
 	var select;
 
 	function init() {
 		shoot = new Audio("audio/shoot04.wav");
 		explode = new Audio("audio/explode04.wav");
+		hurt = new Audio("audio/hurt.wav");
 		select = new Audio("audio/select04.wav");
 		titleSong = new Ptero.Song("audio/theme3.mp3");
 	}
@@ -21,6 +22,7 @@ Ptero.audio = (function() {
 		playSelect: function() { select.play(); },
 		playShoot: function() { shoot.play(); },
 		playExplode: function() { explode.play(); },
+		playHurt: function() { hurt.play(); },
 		getTitleSong: function() { return titleSong; },
 	};
 })();

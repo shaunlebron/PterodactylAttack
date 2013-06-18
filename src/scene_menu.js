@@ -44,7 +44,7 @@ Ptero.scene_menu = (function(){
 	var touchHandler = {
 		start: function(x,y) {
 			song.fadeOut(1);
-			Ptero.fadeToScene(Ptero.scene_predefined_paths, 0.25);
+			Ptero.fadeToScene(Ptero.scene_survivor, 0.25);
 		},
 		move: function(x,y) {
 		},

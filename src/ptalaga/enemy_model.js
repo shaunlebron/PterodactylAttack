@@ -332,6 +332,10 @@ Ptero.Ptalaga.EnemyModelList.prototype = {
 	refreshTabs: function() {
 		$("#pathtabs").html(this.getTabsString());
 	},
+	refreshAttributeDisplays: function() {
+		// update attack flag
+		// update enemy type box
+	},
 	update: function(dt) {
 
 		// we pause if we're editing, the pause button is pressed, or scrubbing in time pane.
@@ -409,6 +413,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 		}
 		return {
 			index: this.index,
+			isAttack: this.isAttack,
 			points: points,
 		};
 	},
@@ -630,7 +635,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 
 	update: function(dt) {
 		var isActive = (this == Ptero.Ptalaga.enemy_model);
-		this.enemy.babySprite.update(dt);
+		this.enemy.sprite.update(dt);
 
 		// PREVIEW MODE
 		if (Ptero.Ptalaga.enemy_model_list.isPreview) {
@@ -691,7 +696,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 									enemy.draw(ctx);
 									sprite.drawBorder(ctx,pos,"#00F");
 								};
-							})(this.enemy,this.enemy.babySprite,pos),
+							})(this.enemy,this.enemy.sprite,pos),
 							pos.z);
 					}
 				}
@@ -722,7 +727,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 		if (index == undefined && this.selectedIndex != undefined) {
 
 			// just aesthetics: match the replay sprite with the editing node sprite
-			this.enemy.babySprite.time = this.nodeSprites[this.selectedIndex].time;
+			this.enemy.sprite.time = this.nodeSprites[this.selectedIndex].time;
 		}
 
 		this.selectedIndex = index;

@@ -1,12 +1,12 @@
+Ptero.enemyTypes = {
+	"baby": {
+		"health": 100,
+		"damage": 10,
+		"spriteName": "baby",
+	},
+};
 
-Ptero.Enemy = function(makeNewPath) {
-	this.makeNewPath = makeNewPath;
-	if (makeNewPath) {
-		this.path = makeNewPath();
-	}
-
-	this.babySprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
-	this.babySprite.shuffleTime();
+Ptero.Enemy = function() {
 
 	this.boom1Sprite = new Ptero.AnimSprite({mosaic:Ptero.assets.mosaics.boom1});
 	this.boom1Sprite.setRepeat(false);
@@ -22,6 +22,8 @@ Ptero.Enemy = function(makeNewPath) {
 	];
 	this.randomizeBoom();
 
+	this.setType("baby");
+
 	this.init();
 
 	this.life = 0;
@@ -31,7 +33,19 @@ Ptero.Enemy.fromState = function(state, startTime) {
 
 	startTime = startTime || 0;
 
+	var enemyType = state.enemyType;
+	var isAttack = state.isAttack;
+
+	if (enemyType == null) {
+		enemyType = "baby";
+	}
+	if (isAttack == null) {
+		isAttack = false;
+	}
+
 	var enemy = new Ptero.Enemy();
+	enemy.setType(enemyType);
+	enemy.isAttack = isAttack;
 
 	var points = state.points;
 	var delta_times = [points[0].t + startTime];
@@ -50,6 +64,26 @@ Ptero.Enemy.fromState = function(state, startTime) {
 };
 
 Ptero.Enemy.prototype = {
+	setType: function(type) {
+		this.typeName = type;
+		this.typeData = Ptero.enemyTypes[type];
+
+		this.health = this.typeData.health;
+
+		var table = Ptero.assets.tables[this.typeData.spriteName];
+		var mosaic = Ptero.assets.mosaics[this.typeData.spriteName];
+
+		var spriteData = {};
+		if (table) {
+			spriteData.table = table;
+		}
+		else if (mosaic) {
+			spriteData.mosaic = mosaic;
+		}
+
+		this.sprite = new Ptero.AnimSprite(spriteData);
+		this.sprite.shuffleTime();
+	},
 	randomizeBoom: function randomizeBoom() {
 		var numBooms = this.boomSprites.length;
 		var i = Math.floor(Math.random()*numBooms);
@@ -66,7 +100,23 @@ Ptero.Enemy.prototype = {
 		return this.path.totalTime - this.path.time;
 	},
 	getBillboard: function() {
-		return this.babySprite.getBillboard();
+		return this.sprite.getBillboard();
+	},
+	applyDamage: function(dmg) {
+		if (this.health <= 0) {
+			return;
+		}
+		this.health -= dmg;
+
+		if (this.health <= 0) {
+
+			// register hit to begin explosion
+			this.isHit = true;
+			Ptero.audio.playExplode();
+		}
+		else {
+			Ptero.audio.playHurt();
+		}
 	},
 	onHit: function onHit() {
 		if (!this.isHittable()) {
@@ -81,11 +131,7 @@ Ptero.Enemy.prototype = {
 		// scene.score += 100 + scene.getStreakBonus();
 		// scene.streakCount++;
 
-		// register hit to begin explosion
-		this.isHit = true;
-		var that = this;
-
-		Ptero.audio.playExplode();
+		this.applyDamage(Ptero.player.damage);
 	},
 	init: function() {
 		this.isHit = false;
@@ -94,14 +140,7 @@ Ptero.Enemy.prototype = {
 		this.randomizeBoom();
 	},
 	die: function() {
-		if (this.makeNewPath) {
-			this.path = this.makeNewPath();
-			this.life++;
-			this.init();
-		}
-		else {
-			this.isDead = true;
-		}
+		this.isDead = true;
 
 		if (this.selected) {
 			Ptero.orb.deselectTarget(this);
@@ -139,8 +178,10 @@ Ptero.Enemy.prototype = {
 		}
 		else if (this.path.isDone()) {
 			// HIT SCREEN
+			if (this.isAttack) {
+				Ptero.player.applyDamage(this.typeData.damage);
+			}
 
-			//navigator.vibrate && navigator.vibrate(200);
 			this.die();
 		}
 		else {
@@ -160,12 +201,12 @@ Ptero.Enemy.prototype = {
 			}
 
 			// update animation
-			this.babySprite.update(dt);
+			this.sprite.update(dt);
 		}
 	},
 	drawBorder: function(ctx, color) {
 		var pos = this.path.pos;
-		this.babySprite.drawBorder(ctx, pos, color);
+		this.sprite.drawBorder(ctx, pos, color);
 	},
 	draw: function draw(ctx) {
 		var pos = this.path.pos;
@@ -176,12 +217,12 @@ Ptero.Enemy.prototype = {
 		else if (this.path.isDone()) {
 		}
 		else {
-			this.babySprite.draw(ctx, pos);
+			this.sprite.draw(ctx, pos);
 			if (this.selected) {
-				this.babySprite.drawBorder(ctx, pos, "#0FF");
+				this.sprite.drawBorder(ctx, pos, "#0FF");
 			}
 			if (this.lockedon) {
-				this.babySprite.drawBorder(ctx, pos, "#F0F");
+				this.sprite.drawBorder(ctx, pos, "#F0F");
 			}
 		}
 

@@ -1,5 +1,5 @@
 
-Ptero.scene_predefined_paths = (function() {
+Ptero.scene_survivor = (function() {
 	var enemies = [];
 	var numEnemies;
 
@@ -37,7 +37,7 @@ Ptero.scene_predefined_paths = (function() {
 		var waves = level.waves;
 		var numWaves = waves.length;
 		var i,wave,t;
-		var j,points;
+		var j;
 		var maxTime = 0;
 		var models, numModels;
 
@@ -53,9 +53,6 @@ Ptero.scene_predefined_paths = (function() {
 
 			// iterate each enemy in wave
 			for (j=0; j<numModels; j++) {
-
-				// get control points for this enemy
-				points = models[j].points;
 
 				// create enemy
 				var e = Ptero.Enemy.fromState(models[j], t);
@@ -102,6 +99,7 @@ Ptero.scene_predefined_paths = (function() {
 		});
 
 
+		Ptero.player = new Ptero.Player();
 
 		setLevel(Ptero.assets.levels["fourier"]);
 		Ptero.orb.init();

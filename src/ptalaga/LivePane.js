@@ -48,7 +48,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		var nodeSprite = enemy_model.nodeSprites[index];
 		var spaceCenter = enemy_model.points[index];
 		var spaceClick = this.screenToSpace(x,y,spaceCenter.z);
-		if (enemy_model.enemy.babySprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
+		if (enemy_model.enemy.sprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
 			return {
 				index: index,
 				offset_x: spaceCenter.x - spaceClick.x,
@@ -71,7 +71,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		/*
 		if (enemy_model.selectedIndex != undefined) {
 			var point = enemy_model.getSelectedPoint();
-			if (enemy_model.enemy.babySprite.getBillboard().isOverRotationHandle(x,y,point)) {
+			if (enemy_model.enemy.sprite.getBillboard().isOverRotationHandle(x,y,point)) {
 				var p = Ptero.screen.spaceToScreen(point);
 				var click_angle = this.screenToAngle(x,y,p.x,p.y);
 				return {
