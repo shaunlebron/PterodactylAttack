@@ -12,9 +12,15 @@ Ptero.Fourier.WaveList = function() {
 
 	this.isEditing = false;
 	this.isPaused = false;
+
+	this.setPlaybackSpeed(1);
 };
 
 Ptero.Fourier.WaveList.prototype = {
+	setPlaybackSpeed: function(speed) {
+		this.playbackSpeed = speed;
+		$('#playback-speed-label').html(speed+'x');
+	},
 
 	refreshOrbTargets: function() {
 		var enemies = [];
@@ -200,7 +206,7 @@ Ptero.Fourier.WaveList.prototype = {
 		}
 
 		if (!this.isEditing && !this.isPaused) {
-			var t = this.time + dt;
+			var t = this.time + dt*this.playbackSpeed;
 			if (t >= this.maxTime) {
 				this.resetWaves();
 				t %= this.maxTime;
