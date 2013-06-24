@@ -4,6 +4,7 @@ Ptero.Path = function(interp, loop) {
 	this.totalTime = interp.totalTime;
 	this.loop = loop;
 	this.reset();
+	this.freezeAtEnd = false;
 };
 
 Ptero.Path.prototype = {
@@ -11,9 +12,14 @@ Ptero.Path.prototype = {
 	// return a predicted state that is dt seconds in the future
 	seek: function seek(dt) {
 
+		var t = this.time + dt;
+		if (this.freezeAtEnd) {
+			t = Math.min(this.totalTime, t);
+		}
+
 		// Turn the interpolated value into a vector object.
 		// Also add the "angle" property to it.
-		var i = this.interp(this.time+dt);
+		var i = this.interp(t);
 		if (i == null) {
 			return null;
 		}
@@ -41,7 +47,7 @@ Ptero.Path.prototype = {
 	},
 
 	isDone: function isDone() {
-		return !this.loop && this.time > this.totalTime; 
+		return !this.loop && !this.freezeAtEnd && this.time > this.totalTime; 
 	},
 
 	isPresent: function() {

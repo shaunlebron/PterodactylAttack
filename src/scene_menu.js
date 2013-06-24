@@ -1,50 +1,73 @@
 
 Ptero.scene_menu = (function(){
 
-	var titleSprite;
 	var song;
-	var titleMover;
-	var startY, endY;
-	var titlePos;
+	var paths;
+	var enemies = [];
 
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
+		Ptero.orb.disableTouch();
+		Ptero.bulletpool.clear();
 	}
 
+	function createPteros() {
+		var wave = Ptero.assets.json["mainmenu_paths"];
+
+		var models = wave.models;
+		var numModels = models.length;
+
+		enemies.length = 0;
+
+		// iterate each enemy in wave
+		for (j=0; j<numModels; j++) {
+
+			// create enemy
+			var e = Ptero.Enemy.fromState(models[j]);
+			e.path.freezeAtEnd = true;
+
+			// add enemy to this scene's enemies
+			enemies.push(e);
+		}
+
+		enemies[0].afterHit = function() {
+			// start survivor mode
+		}
+		enemies[1].afterHit = function() {
+			// start time attack mode
+			switchScene(Ptero.scene_timeattack);
+			var song = Ptero.audio.getTitleSong();
+			song.fadeOut(1);
+		}
+		enemies[2].afterHit = function() {
+			// exit
+			switchScene(Ptero.scene_title);
+		}
+		enemies[3].afterHit = function() {
+			// options
+		}
+	}
+
+	var time;
 	function init() {
-		titleSprite = Ptero.assets.sprites["logo"];
-
-		var frustum = Ptero.screen.getFrustum();
-		startY = frustum.nearTop*2;
-		endY = frustum.nearTop/3;
-		var midY = frustum.nearTop/4;
-
-		titlePos = {
-			x: 0,
-			z: frustum.near,
-		};
-		titleMover = {
-			t:0,
-			interp: Ptero.makeHermiteInterp([startY, midY, endY], [0, 0.3, 0.5]),
-			update: function(dt) {
-				this.t += dt;
-				var y = this.interp(this.t);
-				if (y != null) {
-					titlePos.y = y;
-				}
-			},
-		};
-		titleMover.update(0);
+		time = 0;
 
 		Ptero.input.addTouchHandler(touchHandler);
-		song = Ptero.audio.getTitleSong();
-		song.play();
+		Ptero.orb.allowTapToSelect(false);
+
+		createPteros();
+
+		Ptero.orb.init();
+		Ptero.orb.setTargets(enemies);
+        Ptero.orb.setNextOrigin(0,-1);
+	}
+
+	function switchScene(scene) {
+		Ptero.fadeToScene(scene, 0.25);
 	}
 
 	var touchHandler = {
 		start: function(x,y) {
-			song.fadeOut(1);
-			Ptero.fadeToScene(Ptero.scene_survivor, 0.25);
 		},
 		move: function(x,y) {
 		},
@@ -55,12 +78,55 @@ Ptero.scene_menu = (function(){
 	};
 
 	function update(dt) {
-		titleMover.update(dt);
+		time += dt;
+
+		var i,numEnemies = enemies.length;
+		for (i=0; i<numEnemies; i++) {
+			enemies[i].update(dt);
+			var pos = enemies[i].getPosition();
+			if (pos) {
+				Ptero.deferredSprites.defer(
+					(function(e) {
+						return function(ctx){
+							e.draw(ctx);
+						};
+					})(enemies[i]),
+					pos.z);
+			}
+		}
+
+		Ptero.orb.update(dt);
+		Ptero.bulletpool.deferBullets();
 	}
 
 	function draw(ctx) {
+		Ptero.assets.keepExplosionsCached(ctx);
 		Ptero.deferredSprites.draw(ctx);
-		titleSprite.draw(ctx,titlePos);
+
+		Ptero.orb.draw(ctx);
+
+		if (time >= 1) {
+			ctx.font = "30px SharkParty";
+			ctx.fillStyle = "#FFF";
+			ctx.textBaseline = "middle";
+			ctx.textAlign = "center";
+
+			var titles = [
+				"Survivor",
+				"Time Attack",
+				"Exit",
+				"Options",
+			];
+
+			var i;
+			for (i=0; i<4; i++) {
+				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
+				var x = p.x;
+				var y = p.y;
+				var title = titles[i];
+				ctx.fillText(titles[i],x,y);
+			}
+		}
 	}
 
 	return {

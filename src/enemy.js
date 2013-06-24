@@ -101,7 +101,6 @@ Ptero.Enemy.prototype = {
 		return this.sprite.getBillboard();
 	},
 	applyDamage: function(damage) {
-		console.log(damage);
 		if (this.health <= 0) {
 			return;
 		}
@@ -174,6 +173,7 @@ Ptero.Enemy.prototype = {
 			this.boomSprite.update(dt);
 			if (this.boomSprite.isDone()) {
 				this.die();
+				this.afterHit && this.afterHit();
 			}
 		}
 		else if (this.path.isDone()) {

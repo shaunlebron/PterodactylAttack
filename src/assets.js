@@ -28,6 +28,7 @@ Ptero.assets = (function(){
 
 	var miscJsonSources = {
 		"bgLayerDepths": "img/bgLayerDepths.json",
+		"mainmenu_paths": "paths/mainmenu.json",
 	};
 
 	var json = {};

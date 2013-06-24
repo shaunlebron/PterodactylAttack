@@ -1,4 +1,22 @@
 Ptero.orb = (function(){
+
+	var blinkTimer = 0;
+	var blinkPeriod = 0.125;
+	var blinkFillStyle = "rgba(0,0,0,0.5)";
+	function blink() {
+		blinkTimer = 0.75;
+	}
+	function updateBlinkTimer(dt) {
+		if (blinkTimer <= 0) {
+			blinkTimer = 0;
+		}
+		else {
+			blinkTimer -= dt;
+		}
+		var red = "rgba(255,0,0,0.5)";
+		var black = "rgba(0,0,0,0.5)";
+		blinkFillStyle = (Math.floor(blinkTimer / blinkPeriod) % 2) ? red : black;
+	}
 	
 	// A note about coordinate systems:
 	// Screen coordinates are usual pixel coordinates: topleft (0,0); bottomright (width-1,height-1)
@@ -95,6 +113,7 @@ Ptero.orb = (function(){
 		origin.ease_to(next_origin, 0.1);
 		Ptero.bulletpool.update(dt);
 		charge.update(dt);
+		updateBlinkTimer(dt);
 	};
 
 	var shouldDrawCones = false;
@@ -152,7 +171,7 @@ Ptero.orb = (function(){
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToScreen(origin);
 
-		ctx.fillStyle = "rgba(0,0,0,0.5)";
+		ctx.fillStyle = blinkFillStyle;
 		ctx.beginPath();
 		ctx.arc(p.x,p.y,radius, 0, 2*Math.PI);
 		ctx.fill();
@@ -665,11 +684,16 @@ Ptero.orb = (function(){
 
 		if (closest_index != null) {
 			target = targets[closest_index];
-			if (target.selected) {
-				deselectTarget(target);
+			if (tapToSelect) {
+				if (target.selected) {
+					deselectTarget(target);
+				}
+				else {
+					selectTarget(target);
+				}
 			}
 			else {
-				selectTarget(target);
+				blink();
 			}
 		}
 	};
@@ -689,8 +713,13 @@ Ptero.orb = (function(){
 				continue;
 			}
 			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
-				if (!target.selected) {
-					selectTarget(target);
+				if (tapToSelect) {
+					if (!target.selected) {
+						selectTarget(target);
+					}
+				}
+				else {
+					blink();
 				}
 			}
 		}
@@ -777,6 +806,11 @@ Ptero.orb = (function(){
 		Ptero.input.removeTouchHandler(touchHandler);
 	};
 
+	var tapToSelect = true;
+	function allowTapToSelect(on) {
+		tapToSelect = on;
+	};
+
 	return {
 		init: init,
 		draw: draw,
@@ -790,5 +824,6 @@ Ptero.orb = (function(){
 		enableTouch: enableTouch,
 		disableTouch: disableTouch,
 		deselectTarget: deselectTarget,
+		allowTapToSelect: allowTapToSelect,
 	};
 })();

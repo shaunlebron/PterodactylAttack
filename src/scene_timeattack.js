@@ -1,5 +1,5 @@
 
-Ptero.scene_survivor = (function() {
+Ptero.scene_timeattack = (function() {
 	var enemies = [];
 	var numEnemies;
 
@@ -73,6 +73,8 @@ Ptero.scene_survivor = (function() {
 
 	function init() {
 		Ptero.score.reset();
+
+		Ptero.orb.allowTapToSelect(true);
 
 		pauseBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites["pause"],
