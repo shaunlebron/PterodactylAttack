@@ -1,5 +1,5 @@
 
-Ptero.scene_menu = (function(){
+Ptero.scene_pre_survivor = (function(){
 
 	var song;
 	var paths;
@@ -12,7 +12,7 @@ Ptero.scene_menu = (function(){
 	}
 
 	function createPteros() {
-		var wave = Ptero.assets.json["mainmenu_paths"];
+		var wave = Ptero.assets.json["difficulty_paths"];
 
 		var models = wave.models;
 		var numModels = models.length;
@@ -32,26 +32,26 @@ Ptero.scene_menu = (function(){
 		}
 
 		enemies[0].afterHit = function() {
-			// start survivor mode
-			switchScene(Ptero.scene_pre_survivor);
+			// easy
+			switchScene(Ptero.scene_survivor);
 		}
 		enemies[1].afterHit = function() {
-			// start time attack mode
-			switchScene(Ptero.scene_pre_timeattack);
+			// medium
+			switchScene(Ptero.scene_survivor);
 		}
 		enemies[2].afterHit = function() {
-			// exit
-			switchScene(Ptero.scene_title);
+			// hard
+			switchScene(Ptero.scene_survivor);
 		}
 		enemies[3].afterHit = function() {
-			// options
-			switchScene(Ptero.scene_options);
+			// back
+			switchScene(Ptero.scene_menu);
 		}
 	}
 
 	var time;
 	function init() {
-		Ptero.background.enableDesat(false);
+		Ptero.background.enableDesat(true);
 
 		time = 0;
 
@@ -116,7 +116,7 @@ Ptero.scene_menu = (function(){
 		var p = Ptero.screen.spaceToScreen({x:0, y:frustum.nearTop/4*3, z:frustum.near});
 		var x = p.x;
 		var y = p.y;
-		ctx.fillText("MAIN MENU", x,y);
+		ctx.fillText("SURVIVOR", x,y);
 
 		if (time >= 1) {
 			ctx.font = "30px SharkParty";
@@ -125,10 +125,10 @@ Ptero.scene_menu = (function(){
 			ctx.textAlign = "center";
 
 			var titles = [
-				"Survivor",
-				"Time Attack",
-				"Exit",
-				"Options",
+				"easy",
+				"medium",
+				"hard",
+				"back",
 			];
 
 			var i;
@@ -137,7 +137,7 @@ Ptero.scene_menu = (function(){
 				var x = p.x;
 				var y = p.y;
 				var title = titles[i];
-				ctx.fillText(title,x,y);
+				ctx.fillText(titles[i],x,y);
 			}
 		}
 	}

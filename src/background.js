@@ -9,12 +9,16 @@ Ptero.background = (function(){
 	var layerCollisions = [];
 	var layerParallaxOffsets = [];
 	var selectedLayer = null;
+	var isDesat = false;
 
 	var parallaxMultiplier = 0;
 
 	var wash = false;
 
 	return {
+		enableDesat: function(on) {
+			isDesat = on;
+		},
 		getLayerParallaxOffsets: function() {
 			return layerParallaxOffsets;
 		},
@@ -225,7 +229,7 @@ Ptero.background = (function(){
 					y: _pos.y,
 					z: _pos.z,
 				};
-				var desat = (selectedLayer != null && selectedLayer != i);
+				var desat = isDesat || (selectedLayer != null && selectedLayer != i);
 				var parallaxPositions;
 				if (selectedLayer == i && Ptero.Baklava && Ptero.Baklava.model.mode == "parallax") {
 					parallaxPositions = [

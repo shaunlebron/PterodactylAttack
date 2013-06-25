@@ -1,7 +1,7 @@
 
 Ptero.TimerDisplay = function(seconds) {
 	this.timer = new Ptero.Timer(seconds*1000);
-	this.timerFont = Ptero.assets.mosaics["timer"];
+	this.timerFont = Ptero.assets.mosaics["timertype"];
 
 	this.updateText();
 };
@@ -40,7 +40,7 @@ Ptero.TimerDisplay.prototype = {
 		}
 
 		var x = Ptero.screen.getWidth()/2 - totalW/2;
-		var y = 0;
+		var y = Ptero.hud.getBorderPad();
 		for (i=0; i<len; i++) {
 			var c = this.text[i];
 			var w = this.timerFont.frames[c].origSize.width * scale;

@@ -14,6 +14,14 @@ Ptero.screen = (function(){
 		canvas.height = height;
 	};
 
+	var shakeTime = 0;
+	var shakeMaxTime = 1;
+	var shakeOffset = 0;
+	var shakeRadius;
+	function shake() {
+		shakeTime = shakeMaxTime;
+	};
+
 	function setStartSize(w,h) {
 		width = w;
 		height = h;
@@ -30,13 +38,32 @@ Ptero.screen = (function(){
 		var near = 1;
 		var far = near*20;
 		frustum = new Ptero.Frustum(near,far,fov,aspect);
+		shakeRadius = frustum.nearTop/16;
 
 		Ptero.sizeFactor = frustum.nearTop;
 	};
 
+	var shakeSign = 1;
+	function update(dt) {
+		shakeTime = Math.max(0, shakeTime - dt);
+		updateShake();
+	};
+
+	function updateShake() {
+		var cycles = 10;
+		var t = shakeTime/shakeMaxTime * Math.PI * 2 * 10;
+		var mag = shakeTime/shakeMaxTime;
+		shakeOffset = Math.sin(t) * mag * shakeRadius;
+	};
+
 	// Determine screen coordinates from a point in the frustum.
 	function spaceToScreen(vector) {
-		var v = frustum.projectToNear(vector);
+		var v2 = {
+			x: vector.x + shakeOffset,
+			y: vector.y,
+			z: vector.z,
+		};
+		var v = frustum.projectToNear(v2);
 		return new Ptero.Vector(
 			(v.x/frustum.nearWidth + 0.5) * width,
 			(-v.y/frustum.nearHeight + 0.5) * height);
@@ -89,6 +116,9 @@ Ptero.screen = (function(){
 		screenToSpace: screenToSpace,
         getScreenToSpaceRatio: getScreenToSpaceRatio,
 		getCanvasPos: getCanvasPos,
+		update: update,
+		updateShake: updateShake,
+		shake: shake,
 	};
 })();
 

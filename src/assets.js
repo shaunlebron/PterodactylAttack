@@ -18,7 +18,8 @@ Ptero.assets = (function(){
 		"pause": "img/pause.png",
 		"logo": "img/logo.png",
 		"missile": "img/missile.png",
-		"timer": "img/timer.png",
+		"timertype": "img/timertype.png",
+		"scoretype": "img/scoretype.png",
 	};
 
 	var levelSources = {
@@ -29,6 +30,7 @@ Ptero.assets = (function(){
 	var miscJsonSources = {
 		"bgLayerDepths": "img/bgLayerDepths.json",
 		"mainmenu_paths": "paths/mainmenu.json",
+		"difficulty_paths": "paths/difficulty.json",
 	};
 
 	var json = {};

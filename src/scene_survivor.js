@@ -1,5 +1,5 @@
 
-Ptero.scene_timeattack = (function() {
+Ptero.scene_survivor = (function() {
 	var enemies = [];
 	var numEnemies;
 
@@ -138,9 +138,9 @@ Ptero.scene_timeattack = (function() {
 
 			timerDisplay.update(dt);
 			if (timerDisplay.isDone()) {
-				Ptero.scene_gameover.setReplayScene(this);
-				Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+				setLevel(Ptero.assets.levels["fourier"]);
 			}
+
 		}
 	};
 
@@ -175,8 +175,8 @@ Ptero.scene_timeattack = (function() {
 			if (time > 2) {
 				pauseBtn.draw(ctx);
 				Ptero.score.draw(ctx);
-				timerDisplay.draw(ctx);
 			}
+			//timerDisplay.draw(ctx);
 		}
 		else {
 			Ptero.background.draw(ctx);
@@ -184,7 +184,7 @@ Ptero.scene_timeattack = (function() {
 		}
 
 		if (time < 2) {
-			drawText("Kill as many as you can in 60s!");
+			drawText("Survive as long as you can!");
 		}
 		else if (time < 4) {
 			drawText("GO!");

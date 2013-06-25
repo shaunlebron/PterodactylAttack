@@ -76,6 +76,7 @@ Ptero.executive = (function(){
 			var dt = (lastTime == undefined) ? 0 : Math.min((time-lastTime)/1000, 1/minFps);
 			lastTime = time;
 
+			Ptero.screen.update(dt);
 			Ptero.audio.update(dt);
 
 			Ptero.deferredSprites.clear();

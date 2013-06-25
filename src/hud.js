@@ -23,6 +23,10 @@ Ptero.hud = (function(){
 		};
 	}
 
+	function getBorderPad() {
+		return Ptero.screen.getHeight()/16;
+	}
+
 	function getBaseTextSize() {
 		var h = Ptero.screen.getHeight();
 		var size = Math.floor(h/10);
@@ -32,6 +36,7 @@ Ptero.hud = (function(){
 	return {
 		getAnchoredScreenPos: getAnchoredScreenPos,
 		getBaseTextSize: getBaseTextSize,
+		getBorderPad: getBorderPad,
 	};
 
 })();

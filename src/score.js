@@ -1,6 +1,16 @@
 
 Ptero.score = (function(){
 
+	function zeroPad(numDigits,number) {
+		var result = (""+number);
+		var len = result.length;
+		var i;
+		for (i=len; i<numDigits; i++) {
+			result = "0" + result;
+		}
+		return result;
+	}
+
 	var total = 0;
 	var pointQueue = [];
 	var pointDuration = 2.0;
@@ -30,28 +40,23 @@ Ptero.score = (function(){
 			}
 		},
 		draw: function(ctx) {
-			var size = Ptero.hud.getBaseTextSize();
-			ctx.font = size + "px monospace";
-			ctx.textAlign = "right";
-			ctx.textBaseline = "top";
-			var x = size*4;
-			var y = 10;
-			var r = 2;
-			ctx.fillStyle = "#000";
-			var text = total ? total : "000";
-			ctx.fillText(text,x+r,y+r);
-			ctx.fillStyle = "#FFF";
-			ctx.fillText(text,x,y);
+			var scoreFont = Ptero.assets.mosaics["scoretype"];
 
-			y += size*1.125;
-			size = Math.floor(size*0.65);
-			pad = size/8;
-			ctx.font = size + "px monospace";
-			ctx.fillStyle = "rgba(255,255,255,0.5)";
-			var i,len=pointQueue.length;
-			for (i=0; i<len; i++) {
-				ctx.fillText("+"+pointQueue[i].value,x,y);
-				y += size+pad;
+			var pad = Ptero.hud.getBorderPad();
+			var y = pad;
+			var x = Ptero.screen.getWidth() - pad;
+
+			var text = zeroPad(7,total);
+			var scale = Ptero.background.getScale();
+
+			var i,len=text.length;
+			for (i=len-1; i>=0; i--) {
+				var c = text[i];
+				var w = scoreFont.frames[c].origSize.width * scale;
+				var h = scoreFont.frames[c].origSize.height * scale;
+				var pos = Ptero.screen.screenToSpace({ x: x-w/2, y: y+h/2 });
+				scoreFont.draw(ctx, pos, c);
+				x -= w;
 			}
 		},
 		addPoints: function(value) {

@@ -1,9 +1,11 @@
 
-Ptero.scene_menu = (function(){
+Ptero.scene_options = (function(){
 
 	var song;
 	var paths;
 	var enemies = [];
+
+	var vibrate = true;
 
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
@@ -32,27 +34,29 @@ Ptero.scene_menu = (function(){
 		}
 
 		enemies[0].afterHit = function() {
-			// start survivor mode
-			switchScene(Ptero.scene_pre_survivor);
+			// high score
+			switchScene(Ptero.scene_highscore);
 		}
 		enemies[1].afterHit = function() {
-			// start time attack mode
-			switchScene(Ptero.scene_pre_timeattack);
+			// credits
+			switchScene(Ptero.scene_credits);
 		}
 		enemies[2].afterHit = function() {
-			// exit
-			switchScene(Ptero.scene_title);
+			// back
+			switchScene(Ptero.scene_menu);
+		}
+		enemies[3].whenHit = function() {
+			vibrate = !vibrate;
+			Ptero.screen.shake();
 		}
 		enemies[3].afterHit = function() {
-			// options
-			switchScene(Ptero.scene_options);
+			// vibration
+			enemies[3].init();
 		}
 	}
 
 	var time;
 	function init() {
-		Ptero.background.enableDesat(false);
-
 		time = 0;
 
 		Ptero.input.addTouchHandler(touchHandler);
@@ -116,7 +120,7 @@ Ptero.scene_menu = (function(){
 		var p = Ptero.screen.spaceToScreen({x:0, y:frustum.nearTop/4*3, z:frustum.near});
 		var x = p.x;
 		var y = p.y;
-		ctx.fillText("MAIN MENU", x,y);
+		ctx.fillText("OPTIONS", x,y);
 
 		if (time >= 1) {
 			ctx.font = "30px SharkParty";
@@ -125,10 +129,10 @@ Ptero.scene_menu = (function(){
 			ctx.textAlign = "center";
 
 			var titles = [
-				"Survivor",
-				"Time Attack",
-				"Exit",
-				"Options",
+				"High Score",
+				"Credits",
+				"Back",
+				"Vibration",
 			];
 
 			var i;
@@ -137,6 +141,10 @@ Ptero.scene_menu = (function(){
 				var x = p.x;
 				var y = p.y;
 				var title = titles[i];
+				if (i == 3) {
+					title += ": ";
+					title += vibrate ? "ON" : "OFF";
+				}
 				ctx.fillText(title,x,y);
 			}
 		}

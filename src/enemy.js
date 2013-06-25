@@ -120,6 +120,8 @@ Ptero.Enemy.prototype = {
 		if (!this.isHittable()) {
 			return;
 		}
+		this.whenHit && this.whenHit();
+
 		this.lockedon = false;
 
 		// update score
