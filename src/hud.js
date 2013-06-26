@@ -33,10 +33,22 @@ Ptero.hud = (function(){
 		return size;
 	}
 
+	function getTextSize(name) {
+		var factors = {
+			"menu_option": 0.75,
+			"menu_title": 1.5,
+		};
+		var k = factors[name];
+		if (k) {
+			return k * getBaseTextSize();
+		}
+	}
+
 	return {
 		getAnchoredScreenPos: getAnchoredScreenPos,
 		getBaseTextSize: getBaseTextSize,
 		getBorderPad: getBorderPad,
+		getTextSize: getTextSize,
 	};
 
 })();

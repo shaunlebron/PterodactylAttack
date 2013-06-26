@@ -20,6 +20,7 @@ Ptero.assets = (function(){
 		"missile": "img/missile.png",
 		"timertype": "img/timertype.png",
 		"scoretype": "img/scoretype.png",
+		"swipe": "img/swipe.png",
 	};
 
 	var levelSources = {

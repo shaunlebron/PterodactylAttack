@@ -1,5 +1,31 @@
 Ptero.orb = (function(){
 
+	var swipePos;
+	var swipeDir;
+	var swipeSpeed;
+	var swipeTimer = 0;
+	function startSwipeAnim(targetPos) {
+		var frustum = Ptero.screen.getFrustum();
+		swipePos = (new Ptero.Vector).set({x:0, y:frustum.nearBottom/4*3, z:frustum.near});
+		swipeDir = (new Ptero.Vector).set(targetPos).sub(swipePos).normalize();
+		swipeSpeed = frustum.nearHeight; // swiping the full height of the screen in 1 second
+		swipeTimer = 0.75;
+	}
+	function updateSwipeAnim(dt) {
+		swipeTimer = Math.max(0, swipeTimer-dt);
+		if (swipeTimer) {
+
+			if (swipeTimer > 0.25 && swipeTimer < 0.5) {
+				swipePos.x += swipeDir.x * swipeSpeed * dt;
+				swipePos.y += swipeDir.y * swipeSpeed * dt;
+				swipePos.z += swipeDir.z * swipeSpeed * dt;
+			}
+		}
+		else {
+			swipePos = null;
+		}
+	}
+
 	var blinkTimer = 0;
 	var blinkPeriod = 0.125;
 	var blinkFillStyle = "rgba(0,0,0,0.5)";
@@ -7,12 +33,8 @@ Ptero.orb = (function(){
 		blinkTimer = 0.75;
 	}
 	function updateBlinkTimer(dt) {
-		if (blinkTimer <= 0) {
-			blinkTimer = 0;
-		}
-		else {
-			blinkTimer -= dt;
-		}
+		blinkTimer = Math.max(0, blinkTimer-dt);
+
 		var red = "rgba(255,0,0,0.5)";
 		var black = "rgba(0,0,0,0.5)";
 		blinkFillStyle = (Math.floor(blinkTimer / blinkPeriod) % 2) ? red : black;
@@ -114,6 +136,7 @@ Ptero.orb = (function(){
 		Ptero.bulletpool.update(dt);
 		charge.update(dt);
 		updateBlinkTimer(dt);
+		updateSwipeAnim(dt);
 	};
 
 	var shouldDrawCones = false;
@@ -176,6 +199,11 @@ Ptero.orb = (function(){
 		ctx.arc(p.x,p.y,radius, 0, 2*Math.PI);
 		ctx.fill();
 		charge.draw(ctx,p);
+
+		if (swipePos) {
+			var sprite = Ptero.assets.sprites["swipe"];
+			sprite.draw(ctx, swipePos);
+		}
 	};
 
 	// Get a unit vector pointing from the startOrigin to the given point in space.
@@ -693,7 +721,9 @@ Ptero.orb = (function(){
 				}
 			}
 			else {
+				var targetPos = Ptero.screen.getFrustum().projectToNear(target.getPosition());
 				blink();
+				startSwipeAnim(targetPos);
 			}
 		}
 	};
@@ -719,7 +749,7 @@ Ptero.orb = (function(){
 					}
 				}
 				else {
-					blink();
+					//blink();
 				}
 			}
 		}
