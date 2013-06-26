@@ -1,28 +1,43 @@
 Ptero.orb = (function(){
 
 	var swipePos;
-	var swipeDir;
-	var swipeSpeed;
-	var swipeTimer = 0;
+	var swipeAnimInterp;
+	var swipeAlpha;
+	var swipeTimer;
 	function startSwipeAnim(targetPos) {
 		var frustum = Ptero.screen.getFrustum();
-		swipePos = (new Ptero.Vector).set({x:0, y:frustum.nearBottom/4*3, z:frustum.near});
-		swipeDir = (new Ptero.Vector).set(targetPos).sub(swipePos).normalize();
-		swipeSpeed = frustum.nearHeight; // swiping the full height of the screen in 1 second
-		swipeTimer = 0.75;
+		var swipePos = (new Ptero.Vector).set({x:0, y:frustum.nearBottom/4*3, z:frustum.near});
+		var swipeDir = (new Ptero.Vector).set(targetPos).sub(swipePos).normalize();
+		var swipePos2 = (new Ptero.Vector).set(swipeDir).mul(frustum.nearHeight/4).add(swipePos);
+		var dt = 1/3;
+		swipeTimer = 0;
+		swipeAnimInterp = Ptero.makeInterpForObjs('linear',
+			[
+				{ alpha: 0, x: swipePos.x, y: swipePos.y, z: swipePos.z },
+				{ alpha: 1, x: swipePos.x, y: swipePos.y, z: swipePos.z },
+				{ alpha: 1, x: swipePos2.x, y: swipePos2.y, z: swipePos2.z },
+				{ alpha: 0, x: swipePos2.x, y: swipePos2.y, z: swipePos2.z },
+			],
+			['alpha', 'x', 'y', 'z'],
+			[0,dt,dt,dt]);
 	}
 	function updateSwipeAnim(dt) {
-		swipeTimer = Math.max(0, swipeTimer-dt);
-		if (swipeTimer) {
-
-			if (swipeTimer > 0.25 && swipeTimer < 0.5) {
-				swipePos.x += swipeDir.x * swipeSpeed * dt;
-				swipePos.y += swipeDir.y * swipeSpeed * dt;
-				swipePos.z += swipeDir.z * swipeSpeed * dt;
+		if (swipeAnimInterp) {
+			swipeTimer += dt;
+			var s = swipeAnimInterp(swipeTimer);
+			if (s) {
+				swipePos = {
+					x: s.x,
+					y: s.y,
+					z: s.z,
+				};
+				swipeAlpha = s.alpha;
 			}
-		}
-		else {
-			swipePos = null;
+			else {
+				swipePos = null;
+				swipeAlpha = null;
+				swipeAnimInterp = null;
+			}
 		}
 	}
 
@@ -30,14 +45,14 @@ Ptero.orb = (function(){
 	var blinkPeriod = 0.125;
 	var blinkFillStyle = "rgba(0,0,0,0.5)";
 	function blink() {
-		blinkTimer = 0.75;
+		blinkTimer = 1;
 	}
 	function updateBlinkTimer(dt) {
 		blinkTimer = Math.max(0, blinkTimer-dt);
 
-		var red = "rgba(255,0,0,0.5)";
-		var black = "rgba(0,0,0,0.5)";
-		blinkFillStyle = (Math.floor(blinkTimer / blinkPeriod) % 2) ? red : black;
+		var on = "rgba(0,255,255,0.5)";
+		var off = "rgba(255,255,255,0)";
+		blinkFillStyle = (Math.floor(blinkTimer / blinkPeriod) % 2) ? on : off;
 	}
 	
 	// A note about coordinate systems:
@@ -194,15 +209,27 @@ Ptero.orb = (function(){
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToScreen(origin);
 
-		ctx.fillStyle = blinkFillStyle;
+		//ctx.fillStyle = blinkFillStyle;
+		ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
 		ctx.arc(p.x,p.y,radius, 0, 2*Math.PI);
 		ctx.fill();
 		charge.draw(ctx,p);
 
 		if (swipePos) {
+			var backupAlpha = ctx.globalAlpha;
+			ctx.globalAlpha = swipeAlpha;
+
+			var p = Ptero.screen.spaceToScreen(swipePos);
+			ctx.fillStyle = "rgba(255,255,255,0.3)";
+			radius /= 4;
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, radius, 0, 2*Math.PI);
+			ctx.fill();
+
 			var sprite = Ptero.assets.sprites["swipe"];
 			sprite.draw(ctx, swipePos);
+			ctx.globalAlpha = backupAlpha;
 		}
 	};
 
