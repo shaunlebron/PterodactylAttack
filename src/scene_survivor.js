@@ -39,6 +39,7 @@ Ptero.scene_survivor = (function() {
 		Ptero.orb.disableTouch();
 	}
 
+	var levelCount = 0;
 	function setLevel(level) {
 		enemies.length = 0;
 
@@ -75,13 +76,14 @@ Ptero.scene_survivor = (function() {
 
 		// create a timer to countdown to the last moment
 		timerDisplay = new Ptero.TimerDisplay(maxTime);
+		time = 2;
+
 
 		numEnemies = enemies.length;
 	}
 
 	var time;
 	function init() {
-		time = 0;
 		Ptero.background.enableDesat(false);
 		Ptero.score.reset();
 
@@ -99,7 +101,10 @@ Ptero.scene_survivor = (function() {
 
 		Ptero.player = new Ptero.Player();
 
-		setLevel(Ptero.assets.levels["fourier"]);
+		setLevel(Ptero.assets.levels["survival01"]);
+		levelCount++;
+
+		time = 0;
 
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
@@ -145,7 +150,10 @@ Ptero.scene_survivor = (function() {
 
 			timerDisplay.update(dt);
 			if (timerDisplay.isDone()) {
-				setLevel(Ptero.assets.levels["fourier"]);
+				var l = (levelCount%3)+1;
+				console.log(l);
+				setLevel(Ptero.assets.levels["survival0"+l]);
+				levelCount++;
 			}
 
 		}
@@ -189,7 +197,7 @@ Ptero.scene_survivor = (function() {
 				drawText("Survive as long as you can!");
 			}
 			else if (time < 4) {
-				drawText("GO!");
+				drawText("New wave approaching!");
 			}
 		}
 		else {

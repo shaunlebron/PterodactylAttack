@@ -39,6 +39,9 @@ Ptero.assets = (function(){
 	var levelSources = {
 		"level1": "levels/level1.json",
 		"fourier": "levels/fourier-level",
+		"survival01": "levels/survival01.json",
+		"survival02": "levels/survival02.json",
+		"survival03": "levels/survival03.json",
 	};
 
 	var miscJsonSources = {
