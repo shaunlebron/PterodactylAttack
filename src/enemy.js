@@ -4,10 +4,75 @@ Ptero.enemyTypes = {
 		"damage": 10,
 		"spriteName": "baby",
 	},
+	"baby_green": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "baby_green",
+	},
+	"baby_pink": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "baby_pink",
+	},
+	"baby_purple": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "baby_purple",
+	},
+	"baby_teal": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "baby_teal",
+	},
+	"baby_yellow": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "baby_yellow",
+	},
 	"adult": {
 		"health": 200,
 		"damage": 20,
 		"spriteName": "adult",
+	},
+	"adult_green": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_green",
+	},
+	"adult_greenspot": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_greenspot",
+	},
+	"adult_pink": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_pink",
+	},
+	"adult_purple": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_purple",
+	},
+	"adult_red": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_red",
+	},
+	"adult_redspot": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_redspot",
+	},
+	"adult_yellow": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_yellow",
+	},
+	"adult_yellowstripe": {
+		"health": 200,
+		"damage": 20,
+		"spriteName": "adult_yellowstripe",
 	},
 };
 

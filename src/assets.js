@@ -21,6 +21,19 @@ Ptero.assets = (function(){
 		"timertype": "img/timertype.png",
 		"scoretype": "img/scoretype.png",
 		"swipe": "img/swipe.png",
+		"baby_green": "img/baby_green.png",
+		"baby_pink": "img/baby_pink.png",
+		"baby_purple": "img/baby_purple.png",
+		"baby_teal": "img/baby_teal.png",
+		"baby_yellow": "img/baby_yellow.png",
+		"adult_green": "img/adult_green.png",
+		"adult_greenspot": "img/adult_greenspot.png",
+		"adult_pink": "img/adult_pink.png",
+		"adult_purple": "img/adult_purple.png",
+		"adult_red": "img/adult_red.png",
+		"adult_redspot": "img/adult_redspot.png",
+		"adult_yellow": "img/adult_yellow.png",
+		"adult_yellowstripe": "img/adult_yellowstripe.png",
 	};
 
 	var levelSources = {

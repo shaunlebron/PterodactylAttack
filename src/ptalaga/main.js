@@ -11,6 +11,16 @@ window.onload = function() {
 
 	Ptero.assets.load(
 		function onDone() {
+			console.log('populating enemy type menu');
+			(function() {
+				var enemyType;
+				var str="";
+				for (enemyType in Ptero.enemyTypes) {
+					str += "<li><a onclick=\"Ptero.Ptalaga.enemy_model.setType('" + enemyType + "')\" href=\"#\">" + enemyType + "</a></li>";
+				}
+				$('#enemyTypeMenu').html(str);
+			})();
+
 			console.log("initing input");
 			Ptero.input.init();
 			console.log("initing background");
