@@ -1,4 +1,5 @@
 Ptero.setScene = function(scene) {
+	Ptero.prevScene = Ptero.scene;
 	if (Ptero.scene && Ptero.scene.cleanup) {
 		Ptero.scene.cleanup();
 	}
@@ -7,6 +8,7 @@ Ptero.setScene = function(scene) {
 };
 
 Ptero.resumeScene = function(scene) {
+	Ptero.prevScene = Ptero.scene;
 	if (Ptero.scene && Ptero.scene.cleanup) {
 		Ptero.scene.cleanup();
 	}
@@ -16,6 +18,7 @@ Ptero.resumeScene = function(scene) {
 
 Ptero.fadeToScene = function(scene, timeToFade) {
 	//Ptero.setScene(scene);
+	Ptero.prevScene = Ptero.scene;
 	Ptero.scene = new Ptero.FadeScene(Ptero.scene, scene, timeToFade);
 };
 
@@ -25,7 +28,7 @@ Ptero.executive = (function(){
 	var minFps = 20;
 
     var fps;
-    var updateFps = (function(){
+	var updateFps = (function(){
         var length = 60;
         var times = [];
         var startIndex = 0;

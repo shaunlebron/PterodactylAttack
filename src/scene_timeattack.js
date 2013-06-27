@@ -31,6 +31,16 @@ Ptero.scene_timeattack = (function() {
 		Ptero.bulletpool.clear();
 	}
 
+	function enableControls() {
+		pauseBtn.enable();
+		Ptero.orb.enableTouch();
+	}
+
+	function disableControls() {
+		pauseBtn.disable();
+		Ptero.orb.disableTouch();
+	}
+
 	function setLevel(level) {
 		enemies.length = 0;
 
@@ -85,24 +95,9 @@ Ptero.scene_timeattack = (function() {
 			margin: 10,
 			onclick: function() {
 				Ptero.executive.togglePause();
-				pauseBtn.disable();
-				playBtn.enable();
-				Ptero.orb.disableTouch();
+				Ptero.pause_menu.enable();
 			},
 		});
-		pauseBtn.enable();
-
-		playBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites["play"],
-			anchor: {x:"center",y:"center"},
-			onclick: function() {
-				Ptero.executive.togglePause();
-				playBtn.disable();
-				pauseBtn.enable();
-				Ptero.orb.enableTouch();
-			}
-		});
-
 
 		Ptero.player = new Ptero.Player();
 
@@ -113,7 +108,20 @@ Ptero.scene_timeattack = (function() {
 
 		window.addEventListener("keydown", onKeyDown);
 		window.addEventListener("keyup", onKeyUp);
+
+		Ptero.pause_menu.init();
+
+		Ptero.scene_options.setReturnScene(this);
+		Ptero.scene_options.setResumeOnReturn(true);
+		enableControls();
 	};
+
+	function resume() {
+		//on resume, renable the pause menu
+		Ptero.executive.togglePause();
+		Ptero.pause_menu.enable();
+		Ptero.orb.setTargets(enemies);
+	}
 
 	function update(dt) {
 		time += dt;
@@ -177,24 +185,28 @@ Ptero.scene_timeattack = (function() {
 				Ptero.score.draw(ctx);
 				timerDisplay.draw(ctx);
 			}
+
+			if (time < 2) {
+				drawText("Kill as many as you can in 60s!");
+			}
+			else if (time < 4) {
+				drawText("GO!");
+			}
 		}
 		else {
 			Ptero.background.draw(ctx);
-			playBtn.draw(ctx);
+			Ptero.pause_menu.draw(ctx);
 		}
 
-		if (time < 2) {
-			drawText("Kill as many as you can in 60s!");
-		}
-		else if (time < 4) {
-			drawText("GO!");
-		}
 	};
 
 	return {
 		init: init,
+		resume: resume,
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
+		disableControls: disableControls,
+		enableControls: enableControls,
 	};
 })();

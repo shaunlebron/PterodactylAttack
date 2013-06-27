@@ -35,15 +35,22 @@ Ptero.scene_options = (function(){
 
 		enemies[0].afterHit = function() {
 			// high score
-			switchScene(Ptero.scene_highscore);
+			//switchScene(Ptero.scene_highscore);
+			enemies[0].init();
 		}
 		enemies[1].afterHit = function() {
 			// credits
-			switchScene(Ptero.scene_credits);
+			//switchScene(Ptero.scene_credits);
+			enemies[1].init();
 		}
 		enemies[2].afterHit = function() {
 			// back
-			switchScene(Ptero.scene_menu);
+			if (resumeOnReturn) {
+				Ptero.resumeScene(returnScene);
+			}
+			else {
+				switchScene(returnScene);
+			}
 		}
 		enemies[3].whenHit = function() {
 			vibrate = !vibrate;
@@ -152,11 +159,22 @@ Ptero.scene_options = (function(){
 		}
 	}
 
+	var returnScene;
+	var resumeOnReturn;
+	function setReturnScene(scene) {
+		returnScene = scene;
+	}
+	function setResumeOnReturn(on) {
+		resumeOnReturn = on;
+	}
+
 	return {
 		init: init,
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
+		setReturnScene: setReturnScene,
+		setResumeOnReturn: setResumeOnReturn,
 	};
 
 })();

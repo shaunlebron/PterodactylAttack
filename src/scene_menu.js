@@ -45,6 +45,8 @@ Ptero.scene_menu = (function(){
 		}
 		enemies[3].afterHit = function() {
 			// options
+			Ptero.scene_options.setReturnScene(Ptero.scene_menu);
+			Ptero.scene_options.setResumeOnReturn(false);
 			switchScene(Ptero.scene_options);
 		}
 	}
