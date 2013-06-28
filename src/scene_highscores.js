@@ -1,7 +1,6 @@
 
-Ptero.scene_options = (function(){
+Ptero.scene_highscores = (function(){
 
-	var song;
 	var paths;
 	var enemies = [];
 
@@ -14,7 +13,7 @@ Ptero.scene_options = (function(){
 	}
 
 	function createPteros() {
-		var wave = Ptero.assets.json["mainmenu_paths"];
+		var wave = Ptero.assets.json["highscores_paths"];
 
 		var models = wave.models;
 		var numModels = models.length;
@@ -34,30 +33,16 @@ Ptero.scene_options = (function(){
 		}
 
 		enemies[0].afterHit = function() {
-			// high score
-			switchScene(Ptero.scene_highscores);
+			// exit
+			switchScene(Ptero.scene_options);
 		}
-		enemies[1].afterHit = function() {
-			// credits
-			//switchScene(Ptero.scene_credits);
-			enemies[1].init();
-		}
-		enemies[2].afterHit = function() {
-			// back
-			if (resumeOnReturn) {
-				Ptero.resumeScene(returnScene);
-			}
-			else {
-				switchScene(returnScene);
-			}
-		}
-		enemies[3].whenHit = function() {
-			vibrate = !vibrate;
+		enemies[1].whenHit = function() {
 			Ptero.screen.shake();
-		}
-		enemies[3].afterHit = function() {
-			// vibration
-			enemies[3].init();
+			Ptero.score.resetHighScores();
+		};
+		enemies[1].afterHit = function() {
+			// reset scores
+			enemies[1].init();
 		}
 	}
 
@@ -127,7 +112,59 @@ Ptero.scene_options = (function(){
 		var p = Ptero.screen.spaceToScreen({x:0, y:frustum.nearTop/4*3, z:frustum.near});
 		var x = p.x;
 		var y = p.y;
-		ctx.fillText("OPTIONS", x,y);
+		ctx.fillText("HIGH SCORES", x,y);
+
+		size = Ptero.hud.getTextSize('menu_option');
+		ctx.font = size + "px SharkParty";
+		ctx.fillStyle = "rgba(255,255,255,0.7)";
+		ctx.textBaseline = "middle";
+		ctx.textAlign = "center";
+		var highScores = Ptero.score.getHighScores();
+		
+		var topy = frustum.nearTop/3;
+
+		p = Ptero.screen.spaceToScreen({x:frustum.nearLeft/2, y:topy, z:frustum.near});
+		var x = p.x;
+		var y = p.y;
+		var h = size*1.25;
+		y += h;
+		ctx.fillText("easy", x,y);
+		y += h;
+		ctx.fillText("medium", x,y);
+		y += h;
+		ctx.fillText("hard", x,y);
+		y += h;
+
+		p = Ptero.screen.spaceToScreen({x:0, y:topy, z:frustum.near});
+		var x = p.x;
+		var y = p.y;
+		var h = size*1.25;
+		ctx.fillStyle = "rgba(255,255,255,0.7)";
+		ctx.fillText("survivor", x,y);
+		y += h;
+		ctx.fillStyle = "#FFF";
+		ctx.fillText(highScores["survivor_easy"], x,y);
+		y += h;
+		ctx.fillText(highScores["survivor_medium"], x,y);
+		y += h;
+		ctx.fillText(highScores["survivor_hard"], x,y);
+		y += h;
+
+		p = Ptero.screen.spaceToScreen({x:frustum.nearRight/2, y:topy, z:frustum.near});
+		var x = p.x;
+		var y = p.y;
+		var h = size*1.25;
+		ctx.fillStyle = "rgba(255,255,255,0.7)";
+		ctx.fillText("time attack", x,y);
+		y += h;
+		ctx.fillStyle = "#FFF";
+		ctx.fillText(highScores["timeattack_easy"], x,y);
+		y += h;
+		ctx.fillText(highScores["timeattack_medium"], x,y);
+		y += h;
+		ctx.fillText(highScores["timeattack_hard"], x,y);
+		y += h;
+
 
 		if (time >= 1) {
 			var size = Ptero.hud.getTextSize('menu_option');
@@ -137,22 +174,16 @@ Ptero.scene_options = (function(){
 			ctx.textAlign = "center";
 
 			var titles = [
-				"High Scores",
-				"Credits",
 				"Back",
-				"Vibration",
+				"Reset Scores",
 			];
 
 			var i;
-			for (i=0; i<4; i++) {
+			for (i=0; i<enemies.length; i++) {
 				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
 				var x = p.x;
 				var y = p.y;
 				var title = titles[i];
-				if (i == 3) {
-					title += ": ";
-					title += vibrate ? "ON" : "OFF";
-				}
 				ctx.fillText(title,x,y);
 			}
 		}

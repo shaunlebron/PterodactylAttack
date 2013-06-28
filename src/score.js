@@ -18,6 +18,17 @@ Ptero.score = (function(){
 	var pointDuration = 2.0;
 
 	return {
+		resetHighScores: function() {
+			highScores = {
+				"survivor_easy": 0,
+				"survivor_medium": 0,
+				"survivor_hard": 0,
+				"timeattack_easy": 0,
+				"timeattack_medium": 0,
+				"timeattack_hard": 0,
+			};
+			this.commitHighScores();
+		},
 		getHighScores: function() {
 			return highScores;
 		},
@@ -32,14 +43,7 @@ Ptero.score = (function(){
 			catch (e) {
 			}
 			if (!highScores) {
-				highScores = {
-					"survivor_easy": 0,
-					"survivor_medium": 0,
-					"survivor_hard": 0,
-					"timeattack_easy": 0,
-					"timeattack_medium": 0,
-					"timeattack_hard": 0,
-				};
+				this.resetHighScores();
 			}
 			var name;
 			for (name in highScores) {

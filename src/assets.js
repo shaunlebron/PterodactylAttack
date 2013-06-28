@@ -49,6 +49,7 @@ Ptero.assets = (function(){
 		"bgLayerDepths": "img/bgLayerDepths.json",
 		"mainmenu_paths": "paths/mainmenu.json",
 		"difficulty_paths": "paths/difficulty.json",
+		"highscores_paths": "paths/highscores.json",
 	};
 
 	var json = {};
