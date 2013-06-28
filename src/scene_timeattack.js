@@ -190,7 +190,7 @@ Ptero.scene_timeattack = (function() {
 				drawText("Kill as many as you can in 60s!");
 			}
 			else if (time < 4) {
-				drawText("GO!");
+				//drawText("GO!");
 			}
 		}
 		else {

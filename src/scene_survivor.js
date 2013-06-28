@@ -84,6 +84,7 @@ Ptero.scene_survivor = (function() {
 
 	var time;
 	function init() {
+
 		Ptero.background.enableDesat(false);
 		Ptero.score.reset();
 
@@ -128,32 +129,40 @@ Ptero.scene_survivor = (function() {
 	}
 
 	function update(dt) {
-		time += dt;
-		if (time > 2) {
-			var i;
-			for (i=0; i<numEnemies; i++) {
-				enemies[i].update(dt);
-				var pos = enemies[i].getPosition();
-				if (pos) {
-					Ptero.deferredSprites.defer(
-						(function(e) {
-							return function(ctx){
-								e.draw(ctx);
-							};
-						})(enemies[i]),
-						pos.z);
-				}
-			}
-			Ptero.orb.update(dt);
-			Ptero.bulletpool.deferBullets();
-			Ptero.score.update(dt);
+		if (Ptero.player.health <= 0) {
+			Ptero.scene_gameover.setReplayScene(this);
+			Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+		}
+		else {
 
-			timerDisplay.update(dt);
-			if (timerDisplay.isDone()) {
-				var l = (levelCount%3)+1;
-				console.log(l);
-				setLevel(Ptero.assets.levels["survival0"+l]);
-				levelCount++;
+			time += dt;
+			if (time > 2) {
+				var i;
+				for (i=0; i<numEnemies; i++) {
+					enemies[i].update(dt);
+					var pos = enemies[i].getPosition();
+					if (pos) {
+						Ptero.deferredSprites.defer(
+							(function(e) {
+								return function(ctx){
+									e.draw(ctx);
+								};
+							})(enemies[i]),
+							pos.z);
+					}
+				}
+				Ptero.orb.update(dt);
+				Ptero.bulletpool.deferBullets();
+				Ptero.score.update(dt);
+
+				timerDisplay.update(dt);
+				if (timerDisplay.isDone()) {
+					var l = (levelCount%3)+1;
+					console.log(l);
+					setLevel(Ptero.assets.levels["survival0"+l]);
+					levelCount++;
+				}
+
 			}
 
 		}

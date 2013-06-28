@@ -19,7 +19,7 @@ Ptero.scene_gameover = (function(){
 	function init() {
 		scoreBtn = new Ptero.TextButton({
 			hudPos: {x:0.5, y:0.25},
-			font: "monospace",
+			font: "SharkParty",
 			fontSize: Ptero.hud.getBaseTextSize()*2,
 			textAlign: "center",
 			textColor: "#FFF",
@@ -30,7 +30,7 @@ Ptero.scene_gameover = (function(){
 
 		playBtn = new Ptero.TextButton({
 			hudPos: {x:0.25, y:0.5},
-			font: "sans-serif",
+			font: "SharkParty",
 			textAlign: "center",
 			textColor: "#FFF",
 			text: "Play again",
@@ -44,7 +44,7 @@ Ptero.scene_gameover = (function(){
 		playBtn.enable();
 		quitBtn = new Ptero.TextButton({
 			hudPos: {x:0.75, y:0.5},
-			font: "sans-serif",
+			font: "SharkParty",
 			textAlign: "center",
 			textColor: "#FFF",
 			text: "Quit to Title",
