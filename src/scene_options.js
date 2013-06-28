@@ -175,6 +175,7 @@ Ptero.scene_options = (function(){
 		cleanup:cleanup,
 		setReturnScene: setReturnScene,
 		setResumeOnReturn: setResumeOnReturn,
+		isVibrate: function() { return vibrate; },
 	};
 
 })();

@@ -162,9 +162,7 @@ Ptero.scene_survivor = (function() {
 					setLevel(Ptero.assets.levels["survival0"+l]);
 					levelCount++;
 				}
-
 			}
-
 		}
 	};
 
@@ -199,6 +197,7 @@ Ptero.scene_survivor = (function() {
 			if (time > 2) {
 				pauseBtn.draw(ctx);
 				Ptero.score.draw(ctx);
+				Ptero.player.drawHealth(ctx);
 			}
 			//timerDisplay.draw(ctx);
 

@@ -30,6 +30,7 @@ Ptero.Sprite.prototype = {
 
 Ptero.SpriteTable = function(img,dict) {
 	this.img = img;
+	this.scale = dict.scale || 1;
 
 	this.rows = dict.rows;
 	this.cols = dict.cols;
@@ -48,7 +49,7 @@ Ptero.SpriteTable = function(img,dict) {
 		tileCenterY,
 		this.tileWidth,
 		this.tileHeight,
-		(dict.scale || 1));
+		this.scale);
 };
 
 Ptero.SpriteTable.prototype = {
@@ -75,6 +76,7 @@ Ptero.SpriteTable.prototype = {
 Ptero.SpriteMosaic = function(img,dict) {
 	this.img = img;
 	this.frames = dict.mosaic;
+	this.scale = dict.scale || 1;
 
 	// one billboard for each frame
 	this.billboards = {};
@@ -94,8 +96,7 @@ Ptero.SpriteMosaic = function(img,dict) {
 			var h = frame.origSize.height;
 			var centerX = w * (frame.centerX == undefined ? 0.5 : frame.centerX);
 			var centerY = h * (frame.centerY == undefined ? 0.5 : frame.centerY);
-			var scale = (dict.scale || 1);
-			this.billboards[key] = new Ptero.Billboard(centerX,centerY,w,h,scale);
+			this.billboards[key] = new Ptero.Billboard(centerX,centerY,w,h,this.scale);
 		}
 	}
 	this.frame_names.sort()

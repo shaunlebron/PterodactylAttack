@@ -34,6 +34,7 @@ Ptero.assets = (function(){
 		"adult_redspot": "img/adult_redspot.png",
 		"adult_yellow": "img/adult_yellow.png",
 		"adult_yellowstripe": "img/adult_yellowstripe.png",
+		"health": "img/health.png",
 	};
 
 	var levelSources = {
