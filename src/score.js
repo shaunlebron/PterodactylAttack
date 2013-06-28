@@ -11,11 +11,41 @@ Ptero.score = (function(){
 		return result;
 	}
 
+	var highScores;
+
 	var total = 0;
 	var pointQueue = [];
 	var pointDuration = 2.0;
 
 	return {
+		getHighScores: function() {
+			return highScores;
+		},
+		commitHighScores: function() {
+			localStorage.highScores = JSON.stringify(highScores);
+		},
+		loadHighScores: function() {
+			highScores = null;
+			try {
+				highScores = JSON.parse(localStorage.highScores);
+			}
+			catch (e) {
+			}
+			if (!highScores) {
+				highScores = {
+					"survivor_easy": 0,
+					"survivor_medium": 0,
+					"survivor_hard": 0,
+					"timeattack_easy": 0,
+					"timeattack_medium": 0,
+					"timeattack_hard": 0,
+				};
+			}
+			var name;
+			for (name in highScores) {
+				console.log(name + " = " + highScores[name]);
+			}
+		},
 		reset: function() {
 			pointQueue.length = 0;
 			total = 0;

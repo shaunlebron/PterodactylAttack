@@ -158,7 +158,6 @@ Ptero.scene_survivor = (function() {
 				timerDisplay.update(dt);
 				if (timerDisplay.isDone()) {
 					var l = (levelCount%3)+1;
-					console.log(l);
 					setLevel(Ptero.assets.levels["survival0"+l]);
 					levelCount++;
 				}
@@ -215,6 +214,14 @@ Ptero.scene_survivor = (function() {
 
 	};
 
+	var difficulty;
+	function getDifficulty() {
+		return difficulty;
+	}
+	function setDifficulty(d) {
+		difficulty = d;
+	}
+
 	return {
 		init: init,
 		resume: resume,
@@ -223,5 +230,7 @@ Ptero.scene_survivor = (function() {
 		cleanup:cleanup,
 		disableControls: disableControls,
 		enableControls: enableControls,
+		getDifficulty: getDifficulty,
+		setDifficulty: setDifficulty,
 	};
 })();

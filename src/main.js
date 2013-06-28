@@ -41,6 +41,8 @@ window.onload = function() {
 
 	Ptero.assets.load(
 		function onDone(){
+			console.log('loading high scores');
+			Ptero.score.loadHighScores();
 			console.log("initing audio");
 			Ptero.audio.init();
 			console.log("initing input");

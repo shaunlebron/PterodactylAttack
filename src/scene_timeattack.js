@@ -200,6 +200,14 @@ Ptero.scene_timeattack = (function() {
 
 	};
 
+	var difficulty;
+	function getDifficulty() {
+		return difficulty;
+	}
+	function setDifficulty(d) {
+		difficulty = d;
+	}
+
 	return {
 		init: init,
 		resume: resume,
@@ -208,5 +216,7 @@ Ptero.scene_timeattack = (function() {
 		cleanup:cleanup,
 		disableControls: disableControls,
 		enableControls: enableControls,
+		getDifficulty: getDifficulty,
+		setDifficulty: setDifficulty,
 	};
 })();

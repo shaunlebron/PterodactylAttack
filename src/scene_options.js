@@ -138,7 +138,7 @@ Ptero.scene_options = (function(){
 			ctx.textAlign = "center";
 
 			var titles = [
-				"High Score",
+				"High Scores",
 				"Credits",
 				"Back",
 				"Vibration",

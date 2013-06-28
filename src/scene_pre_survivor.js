@@ -33,14 +33,17 @@ Ptero.scene_pre_survivor = (function(){
 
 		enemies[0].afterHit = function() {
 			// easy
+			Ptero.scene_survivor.setDifficulty("easy");
 			switchScene(Ptero.scene_survivor);
 		}
 		enemies[1].afterHit = function() {
 			// medium
+			Ptero.scene_survivor.setDifficulty("medium");
 			switchScene(Ptero.scene_survivor);
 		}
 		enemies[2].afterHit = function() {
 			// hard
+			Ptero.scene_survivor.setDifficulty("hard");
 			switchScene(Ptero.scene_survivor);
 		}
 		enemies[3].afterHit = function() {

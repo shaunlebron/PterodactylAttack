@@ -1,7 +1,7 @@
 
 Ptero.scene_gameover = (function(){
 
-	var scoreBtn,playBtn,quitBtn,selectStageBtn;
+	var scoreBtn,playBtn,quitBtn,selectStageBtn,newHighBtn;
 
 	var replayScene;
 	function getReplayScene() {
@@ -18,6 +18,17 @@ Ptero.scene_gameover = (function(){
 	}
 
 	function init() {
+		newHighBtn = new Ptero.TextButton({
+			hudPos: {x:0.5, y:0.33},
+			font: "SharkParty",
+			fontSize: Ptero.hud.getBaseTextSize()/2,
+			textAlign: "center",
+			textColor: "#F00",
+			text: "High Score!",
+			width: 400,
+			height: 200,
+		});
+
 		scoreBtn = new Ptero.TextButton({
 			hudPos: {x:0.5, y:0.25},
 			font: "SharkParty",
@@ -78,7 +89,33 @@ Ptero.scene_gameover = (function(){
 		});
 		selectStageBtn.enable();
 
+		commitHighScore();
+
         Ptero.orb.setNextOrigin(0,-2);
+	}
+
+	var newHighScore;
+	function commitHighScore() {
+		newHighScore = false;
+		var highScores = Ptero.score.getHighScores();
+		var scene = getReplayScene();
+		function setScore(name) {
+			name += "_" + scene.getDifficulty();
+			var currentHigh = highScores[name] || 0;
+			var currentScore = Ptero.score.getTotal();
+			if (currentScore > currentHigh) {
+				// TODO: trigger new high score animation
+				highScores[name] = currentScore;
+				newHighScore = true;
+				Ptero.score.commitHighScores();
+			}
+		}
+		if (scene == Ptero.scene_survivor) {
+			setScore("survivor");
+		}
+		else if (scene == Ptero.scene_timeattack) {
+			setScore("timeattack");
+		}
 	}
 
 	function draw(ctx) {
@@ -88,6 +125,9 @@ Ptero.scene_gameover = (function(){
 		playBtn.draw(ctx);
 		quitBtn.draw(ctx);
 		selectStageBtn.draw(ctx);
+		if (newHighScore) {
+			newHighBtn.draw(ctx);
+		}
 	}
 
 	function update(dt) {

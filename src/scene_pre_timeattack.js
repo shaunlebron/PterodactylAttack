@@ -33,14 +33,17 @@ Ptero.scene_pre_timeattack = (function(){
 
 		enemies[0].afterHit = function() {
 			// easy
+			Ptero.scene_timeattack.setDifficulty("easy");
 			switchScene(Ptero.scene_timeattack);
 		}
 		enemies[1].afterHit = function() {
 			// medium
+			Ptero.scene_timeattack.setDifficulty("medium");
 			switchScene(Ptero.scene_timeattack);
 		}
 		enemies[2].afterHit = function() {
 			// hard
+			Ptero.scene_timeattack.setDifficulty("hard");
 			switchScene(Ptero.scene_timeattack);
 		}
 		enemies[3].afterHit = function() {
