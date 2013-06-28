@@ -740,12 +740,14 @@ Ptero.orb = (function(){
 		if (closest_index != null) {
 			target = targets[closest_index];
 			if (tapToSelect) {
+				/* disabling missiles for now
 				if (target.selected) {
 					deselectTarget(target);
 				}
 				else {
 					selectTarget(target);
 				}
+				*/
 			}
 			else {
 				var targetPos = Ptero.screen.getFrustum().projectToNear(target.getPosition());
@@ -771,9 +773,11 @@ Ptero.orb = (function(){
 			}
 			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
 				if (tapToSelect) {
+					/* disabling missiles for now
 					if (!target.selected) {
 						selectTarget(target);
 					}
+					*/
 				}
 				else {
 					//blink();

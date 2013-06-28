@@ -1,7 +1,7 @@
 
 Ptero.scene_gameover = (function(){
 
-	var scoreBtn,playBtn,quitBtn;
+	var scoreBtn,playBtn,quitBtn,selectStageBtn;
 
 	var replayScene;
 	function getReplayScene() {
@@ -14,6 +14,7 @@ Ptero.scene_gameover = (function(){
 	function cleanup() {
 		playBtn.disable();
 		quitBtn.disable();
+		selectStageBtn.disable();
 	}
 
 	function init() {
@@ -42,6 +43,7 @@ Ptero.scene_gameover = (function(){
 			},
 		});
 		playBtn.enable();
+
 		quitBtn = new Ptero.TextButton({
 			hudPos: {x:0.75, y:0.5},
 			font: "SharkParty",
@@ -56,6 +58,26 @@ Ptero.scene_gameover = (function(){
 		});
 		quitBtn.enable();
 
+		selectStageBtn = new Ptero.TextButton({
+			hudPos: {x:0.5, y:0.75},
+			font: "SharkParty",
+			textAlign: "center",
+			textColor: "#FFF",
+			text: "Select Stage",
+			width: 400,
+			height: 200,
+			onclick: function() {
+				var scene = getReplayScene();
+				if (scene == Ptero.scene_timeattack) {
+					Ptero.fadeToScene(Ptero.scene_pre_timeattack,0.5);
+				}
+				else if (scene == Ptero.scene_survivor) {
+					Ptero.fadeToScene(Ptero.scene_pre_survivor,0.5);
+				}
+			},
+		});
+		selectStageBtn.enable();
+
         Ptero.orb.setNextOrigin(0,-2);
 	}
 
@@ -65,6 +87,7 @@ Ptero.scene_gameover = (function(){
 		scoreBtn.draw(ctx);
 		playBtn.draw(ctx);
 		quitBtn.draw(ctx);
+		selectStageBtn.draw(ctx);
 	}
 
 	function update(dt) {

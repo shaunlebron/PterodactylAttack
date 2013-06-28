@@ -1,7 +1,6 @@
 Ptero.Player = function() {
 	this.maxHealth = 5;
 	this.initHealth = 3;
-	this.damage = 1;
 
 	this.reset();
 };

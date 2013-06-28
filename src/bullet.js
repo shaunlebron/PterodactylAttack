@@ -48,7 +48,7 @@ Ptero.BulletSmoke.prototype = {
 };
 
 Ptero.Bullet = function() {
-	this.damage = 100;
+	this.damage = 1;
 	this.pos = new Ptero.Vector;
 	this.dir = new Ptero.Vector;
 	this.speed = 0;
