@@ -66,6 +66,34 @@ Ptero.scene_pre_timeattack = (function(){
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
+		
+		resetPanes();
+	}
+
+
+	var topPaneY;
+	var botPaneY;
+	var topPaneY2;
+	var botPaneY2;
+	function resetPanes() {
+		var h = Ptero.screen.getHeight();
+		topPaneY = 0;
+		topPaneY2 = h/10*3;
+		botPaneY = h;
+		botPaneY2 = h/5*3;
+	}
+	function updatePanes() {
+		topPaneY += (topPaneY2 - topPaneY) * 0.1;
+		botPaneY += (botPaneY2 - botPaneY) * 0.1;
+	}
+	function drawPanes(ctx) {
+		var w = Ptero.screen.getWidth();
+		var h = Ptero.screen.getHeight();
+
+		ctx.fillStyle = "rgba(255,255,255,0.5)";
+
+		ctx.fillRect(0,0,w,topPaneY);
+		ctx.fillRect(0,botPaneY,w,h);
 	}
 
 	function switchScene(scene) {
@@ -103,17 +131,20 @@ Ptero.scene_pre_timeattack = (function(){
 
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
+
+		updatePanes();
 	}
 
 	function draw(ctx) {
 		Ptero.assets.keepExplosionsCached(ctx);
 		Ptero.deferredSprites.draw(ctx);
 
+		drawPanes(ctx);
 		Ptero.orb.draw(ctx);
 
 		var size = Ptero.hud.getTextSize('menu_title');
 		ctx.font = size + "px SharkParty";
-		ctx.fillStyle = "rgba(255,255,255,0.25)";
+		ctx.fillStyle = "#000";
 		ctx.textBaseline = "middle";
 		ctx.textAlign = "center";
 		var frustum = Ptero.screen.getFrustum();
