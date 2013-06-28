@@ -154,7 +154,8 @@ Ptero.scene_timeattack = (function() {
 
 	function draw(ctx) {
 		function drawText(text) {
-			ctx.font = "40px SharkParty";
+			var size = Ptero.hud.getTextSize('menu_option');
+			ctx.font = size + "px SharkParty";
 			ctx.fillStyle = "#FFF";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";

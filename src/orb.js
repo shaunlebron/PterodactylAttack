@@ -750,6 +750,7 @@ Ptero.orb = (function(){
 				*/
 			}
 			else {
+				target.onTap && target.onTap();
 				var targetPos = Ptero.screen.getFrustum().projectToNear(target.getPosition());
 				blink();
 				startSwipeAnim(targetPos);

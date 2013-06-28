@@ -36,15 +36,24 @@ Ptero.scene_pre_timeattack = (function(){
 			Ptero.scene_timeattack.setDifficulty("easy");
 			switchScene(Ptero.scene_timeattack);
 		}
+		enemies[0].onTap = function() {
+			highScore = Ptero.score.getHighScores()["timeattack_easy"];
+		}
 		enemies[1].afterHit = function() {
 			// medium
 			Ptero.scene_timeattack.setDifficulty("medium");
 			switchScene(Ptero.scene_timeattack);
 		}
+		enemies[1].onTap = function() {
+			highScore = Ptero.score.getHighScores()["timeattack_medium"];
+		}
 		enemies[2].afterHit = function() {
 			// hard
 			Ptero.scene_timeattack.setDifficulty("hard");
 			switchScene(Ptero.scene_timeattack);
+		}
+		enemies[2].onTap = function() {
+			highScore = Ptero.score.getHighScores()["timeattack_hard"];
 		}
 		enemies[3].afterHit = function() {
 			// back
@@ -68,6 +77,28 @@ Ptero.scene_pre_timeattack = (function(){
         Ptero.orb.setNextOrigin(0,-1);
 		
 		resetPanes();
+
+		resetHighScoreText();
+	}
+
+	var highScore;
+	function resetHighScoreText() {
+		highScore = null;
+	}
+	function drawHighScoreText(ctx) {
+		if (highScore != null) {
+			var size = Ptero.hud.getTextSize('menu_option');
+			ctx.font = size +"px SharkParty";
+			ctx.fillStyle = "rgba(0,0,0,0.5)";
+			ctx.textBaseline = "bottom";
+			ctx.textAlign = "right";
+			var pad = Ptero.hud.getBorderPad();
+			var y = topPaneY;
+			var x = Ptero.screen.getWidth() - pad;
+			var p = Ptero.screen.screenToSpace({ x: x, y: y });
+			p = Ptero.screen.spaceToScreen(p); // to get it shaking
+			ctx.fillText("high: " + highScore, p.x, p.y);
+		}
 	}
 
 
@@ -141,6 +172,7 @@ Ptero.scene_pre_timeattack = (function(){
 
 		drawPanes(ctx);
 		Ptero.orb.draw(ctx);
+		drawHighScoreText(ctx);
 
 		var size = Ptero.hud.getTextSize('menu_title');
 		ctx.font = size + "px SharkParty";
