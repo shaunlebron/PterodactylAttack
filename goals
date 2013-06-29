@@ -1,0 +1,75 @@
+Code to be done:
+
+	- Get first panning intro layers into the game.
+	- Get score screen into the game.
+
+Art to be done:
+
+	- animated dactyls (baby and adults of different colors)
+	- animated hygoon and ptero logos for splash intro
+	- 6 vector levels (different environments)
+
+Sound effects to be done:
+
+	- dactyl explode
+	- dactyl hurt
+	- player hurt?
+	- player fire
+	- streak bleeps
+
+Design to be done:
+
+	- streak logic
+
+========
+BACKLOG
+
+	- make stage select go back to pause menu
+
+========
+SCHEDULE
+
+todo:
+
+- ANIMATION WEEK:
+	- integrate animated level intros
+	- integrate animated score screens
+
+- DESIGN WEEK(S):
+	- make gameplay fun!
+	- design levels
+
+- USER EXPERIENCE WEEK:
+	- identify and fix annoyances
+	- identify and add improvements
+
+- SOUND DESIGN WEEK:
+	- find and pay sound guy
+
+- LOCALIZATION WEEK:
+	- recruit translators: http://www.tethras.com/
+	- art logos and text everywhere else
+
+- MOBILE WEEK:
+	- make cocoon packages
+	- optimize for performance
+	- global high scores
+	- ad integration
+
+- MARKETING WEEK:
+	- http://gamedev.tutsplus.com/articles/business-articles/promoting-your-indie-game-checklist/
+		- press kit
+		- submit to blogs, youtube reviewers
+		- write articles
+		- keep up with dailies
+
+weekly:
+Jun 30 - complete menu functions, publish website
+Jul 07 - ???
+Jul 14 - ???
+Jul 21 - ???
+Jul 28 - ???
+Aug 04 - game complete on desktop
+Aug 11 - game complete/optimized for mobile
+
+
