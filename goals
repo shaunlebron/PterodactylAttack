@@ -44,15 +44,18 @@ todo:
 	- identify and add improvements
 
 - SOUND DESIGN WEEK:
-	- find and pay sound guy
+	- identify sound effect assets that need to be created.
+	- find and pay sound guy to create identified assets.
 
 - LOCALIZATION WEEK:
 	- recruit translators: http://www.tethras.com/
 	- art logos and text everywhere else
 
+=========== PENCILS DOWN! ============
+
 - MOBILE WEEK:
-	- make cocoon packages
-	- optimize for performance
+	- make cocoon packages for App Store / Google Play
+	- optimize for performance on Androids
 	- global high scores
 	- ad integration
 
@@ -62,6 +65,7 @@ todo:
 		- submit to blogs, youtube reviewers
 		- write articles
 		- keep up with dailies
+		- polish website
 
 weekly:
 Jun 30 - complete menu functions, publish website
