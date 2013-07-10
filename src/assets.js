@@ -37,6 +37,10 @@ Ptero.assets = (function(){
 		"health": "img/health.png",
 	};
 
+	if (!navigator.isCocoonJS) {
+		imageSources["bg_mountain"] = "img/bg_mountain.svg";
+	}
+
 	var levelSources = {
 		"level1": "levels/level1.json",
 		"fourier": "levels/fourier-level",
@@ -55,6 +59,7 @@ Ptero.assets = (function(){
 	var json = {};
 
 	var images = {};
+	var vectorSprites = {};
 	var sprites = {};
 	var tables = {};
 	var mosaics = {};
@@ -68,6 +73,10 @@ Ptero.assets = (function(){
 		else if (meta.mosaic != undefined) {
 			console.log("creating mosaic",name);
 			mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
+		}
+		else if (meta.vector) {
+			console.log('creating vector', name, 'for desktop');
+			vectorSprites[name] = new Ptero.Sprite(images[name], meta);
 		}
 		else {
 			console.log("creating sprite",name);
@@ -195,6 +204,7 @@ Ptero.assets = (function(){
 		json: json,
 		load: load,
 		images: images,
+		vectorSprites: vectorSprites,
 		sprites: sprites,
 		tables: tables,
 		mosaics: mosaics,

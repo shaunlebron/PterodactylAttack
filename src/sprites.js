@@ -1,3 +1,50 @@
+Ptero.VectorSprite = function(dict) {
+	this.shapesOrFuncs = dict.shapesOrFuncs || [];
+
+	this.width = dict.width;
+	this.height = dict.height;
+
+	if (dict.centerX == undefined) dict.centerX = 0.5;
+	if (dict.centerY == undefined) dict.centerY = 0.5;
+
+	var centerX = this.width * dict.centerX;
+	var centerY = this.height * dict.centerY;
+
+	this.billboard = new Ptero.Billboard(
+		centerX,
+		centerY,
+		this.width,
+		this.height,
+		(dict.scale || 1));
+}
+
+Ptero.VectorSprite.prototype = {
+	draw: function(ctx,pos) {
+		function drawArray(array) {
+			var i,len=array.length;
+			var val,type;
+			for (i=0; i<len; i++) {
+				val = array[i];
+				type = Object.prototype.toString.call(val);
+				if( type == '[object Array]' ) {
+					drawArray(val);
+				}
+				else if ( type == '[object Function]' ) {
+					val(ctx);
+					ctx.fill();
+				}
+				else {
+					ctx.fillShape(val);
+				}
+			}
+		}
+		ctx.save();
+		this.billboard.transform(ctx, pos);
+		drawArray(this.shapesOrFuncs);
+		ctx.restore();
+	},
+};
+
 Ptero.Sprite = function(img,dict) {
 	this.img = img;
 

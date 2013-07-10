@@ -1,79 +1,80 @@
-Code to be done:
-
-	- Get first panning intro layers into the game.
-	- Get score screen into the game.
-
-Art to be done:
-
-	- animated dactyls (baby and adults of different colors)
-	- animated hygoon and ptero logos for splash intro
-	- 6 vector levels (different environments)
-
-Sound effects to be done:
-
-	- dactyl explode
-	- dactyl hurt
-	- player hurt?
-	- player fire
-	- streak bleeps
-
-Design to be done:
-
-	- streak logic
-
-========
-BACKLOG
-
-	- make stage select go back to pause menu
-
-========
 SCHEDULE
 
-todo:
+- Weeks 1 and 2 - Art and Animation 
+	Ends JULY 14
+	Deliver: 
+		- level intro animations in-game
+		- level backgrounds in-game
+		- score screen animation in-game
+		- game event animations in-game
+			- intro caption
+			- point gain
+			- health loss
+			- wave intermission
+			- game over "lose" and "win" animations
+		- complete time attack levels
+	Details:
+		- play-test time attack levels with people and iterate
 
-- ANIMATION WEEK:
-	- integrate animated level intros
-	- integrate animated score screens
+- Week 3 - User Experience and Menus
+	Ends JULY 21
+	Deliver:
+		- a polished menu, intuitive, smooth, and non-annoying
+		- complete survivor levels
+	Details:
+		- play-test survivor levels with people and iterate
+		- polish menus to be aesthetic and smooth
+		- identify and fix annoyances
+		- identify and add improvements
 
-- DESIGN WEEK(S):
-	- make gameplay fun!
-	- design levels
+- Week 4 - Music and Sound
+	Ends JULY 28
+	Deliver:
+		- completed sound effects and music in-game
+	Details:
+		- identify sound effect assets that need to be created.
+		- find and pay sound guy to create identified assets.
 
-- USER EXPERIENCE WEEK:
-	- identify and fix annoyances
-	- identify and add improvements
+- Week 5 - Localization
+	Ends AUGUST 4
+	Deliver:
+		- art and text localized for major languages
+	Details:
+		- recruit translators: http://www.tethras.com/
 
-- SOUND DESIGN WEEK:
-	- identify sound effect assets that need to be created.
-	- find and pay sound guy to create identified assets.
 
-- LOCALIZATION WEEK:
-	- recruit translators: http://www.tethras.com/
-	- art logos and text everywhere else
+========== AUGUST 4 is PENCILS DOWN.  GAME IS COMPLETE. ============
 
-=========== PENCILS DOWN! ============
+- Week 6 - Mobile Packages
+	Ends AUGUST 11
+	Deliver:
+		- build packages for App Store and Google Play
+	Details:
+		- optimize for performance on Androids
+		- integrate global high scores
+		- integrate ads
 
-- MOBILE WEEK:
-	- make cocoon packages for App Store / Google Play
-	- optimize for performance on Androids
-	- global high scores
-	- ad integration
+- Week 7 - Beta Testing
+	Ends AUGUST 18
+	Deliver:
+		- Feedback reports from TheBetaFamily.com
+		- bug fixes and usability fixes based on reports
+	Details:
+		- fix all the small things that would cause initial bad reviews
 
-- MARKETING WEEK:
-	- http://gamedev.tutsplus.com/articles/business-articles/promoting-your-indie-game-checklist/
+- Week 8 - Marketing
+	Ends AUGUST 24
+	Deliver:
+		- submit packages to App Store and Google Play
 		- press kit
 		- submit to blogs, youtube reviewers
-		- write articles
-		- keep up with dailies
+		- complete website articles
 		- polish website
+		- from: http://gamedev.tutsplus.com/articles/business-articles/promoting-your-indie-game-checklist/
 
-weekly:
-Jun 30 - complete menu functions, publish website
-Jul 07 - ???
-Jul 14 - ???
-Jul 21 - ???
-Jul 28 - ???
-Aug 04 - game complete on desktop
-Aug 11 - game complete/optimized for mobile
+========== AUGUST 24 we deliver the game and update our portfolios ============
 
+- Week 9 - Review
+	AUGUST 31
+	Talk about how we did and what we want to do in the future.
 

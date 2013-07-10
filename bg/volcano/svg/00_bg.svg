@@ -1,0 +1,17 @@
+<g id="BG">
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="6841.4492" y1="534.0928" x2="9113" y2="534.0928">
+		<stop  offset="0.0237" style="stop-color:#0D002D"/>
+		<stop  offset="0.067" style="stop-color:#1A1C45"/>
+		<stop  offset="0.1423" style="stop-color:#2F466A"/>
+		<stop  offset="0.219" style="stop-color:#3F6989"/>
+		<stop  offset="0.2964" style="stop-color:#4C84A1"/>
+		<stop  offset="0.3746" style="stop-color:#5698B2"/>
+		<stop  offset="0.4542" style="stop-color:#5BA3BC"/>
+		<stop  offset="0.5371" style="stop-color:#5DA7BF"/>
+		<stop  offset="0.6602" style="stop-color:#5DA4BB"/>
+		<stop  offset="0.7765" style="stop-color:#5B9AB0"/>
+		<stop  offset="0.8896" style="stop-color:#5A8A9D"/>
+		<stop  offset="0.9983" style="stop-color:#577483"/>
+	</linearGradient>
+	<rect x="6841.449" y="-5.907" fill="url(#SVGID_1_)" stroke="#000000" stroke-miterlimit="10" width="2271.551" height="1080"/>
+</g>
