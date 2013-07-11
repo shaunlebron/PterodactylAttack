@@ -61,7 +61,10 @@ Ptero.scene_title = (function(){
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
+
+		Ptero.bg_mountain.draw(ctx);
 		titleSprite.draw(ctx,titlePos);
+
 	}
 
 	return {

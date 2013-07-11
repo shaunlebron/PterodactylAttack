@@ -20,27 +20,28 @@ Ptero.VectorSprite = function(dict) {
 
 Ptero.VectorSprite.prototype = {
 	draw: function(ctx,pos) {
+		function draw(val) {
+			var type = Object.prototype.toString.call(val);
+			if( type == '[object Array]' ) {
+				drawArray(val);
+			}
+			else if ( type == '[object Function]' ) {
+				val(ctx);
+				ctx.fill();
+			}
+			else {
+				ctx.fillShape(val);
+			}
+		}
 		function drawArray(array) {
 			var i,len=array.length;
-			var val,type;
 			for (i=0; i<len; i++) {
-				val = array[i];
-				type = Object.prototype.toString.call(val);
-				if( type == '[object Array]' ) {
-					drawArray(val);
-				}
-				else if ( type == '[object Function]' ) {
-					val(ctx);
-					ctx.fill();
-				}
-				else {
-					ctx.fillShape(val);
-				}
+				draw(array[i]);
 			}
 		}
 		ctx.save();
 		this.billboard.transform(ctx, pos);
-		drawArray(this.shapesOrFuncs);
+		draw(this.shapesOrFuncs);
 		ctx.restore();
 	},
 };

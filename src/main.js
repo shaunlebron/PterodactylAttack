@@ -41,6 +41,8 @@ window.onload = function() {
 
 	Ptero.assets.load(
 		function onDone(){
+			console.log('creating backgrounds');
+			Ptero.createBackgrounds();
 			console.log('loading high scores');
 			Ptero.score.loadHighScores();
 			console.log("initing audio");
@@ -51,6 +53,7 @@ window.onload = function() {
 			Ptero.background.init();
 			console.log("setting scene");
 			Ptero.setScene(Ptero.scene_title);
+			//Ptero.setScene(Ptero.scene_bgpos);
 			console.log("starting exec");
 			Ptero.executive.start();
 		},

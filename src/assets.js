@@ -35,11 +35,26 @@ Ptero.assets = (function(){
 		"adult_yellow": "img/adult_yellow.png",
 		"adult_yellowstripe": "img/adult_yellowstripe.png",
 		"health": "img/health.png",
-	};
 
-	if (!navigator.isCocoonJS) {
-		imageSources["bg_mountain"] = "img/bg_mountain.svg";
-	}
+		"bg_mountain_00": "img/bg_mountain/00.svg",
+		"bg_mountain_01": "img/bg_mountain/01.svg",
+		"bg_mountain_02": "img/bg_mountain/02.svg",
+		"bg_mountain_03": "img/bg_mountain/03.svg",
+		"bg_mountain_04": "img/bg_mountain/04.svg",
+		"bg_mountain_05": "img/bg_mountain/05.svg",
+		"bg_mountain_06": "img/bg_mountain/06.svg",
+		"bg_mountain_07": "img/bg_mountain/07.svg",
+		"bg_mountain_08": "img/bg_mountain/08.svg",
+		"bg_mountain_09": "img/bg_mountain/09.svg",
+		"bg_mountain_10": "img/bg_mountain/10.svg",
+		"bg_mountain_11": "img/bg_mountain/11.svg",
+		"bg_mountain_12": "img/bg_mountain/12.svg",
+		"bg_mountain_13": "img/bg_mountain/13.svg",
+		"bg_mountain_14": "img/bg_mountain/14.svg",
+		"bg_mountain_15": "img/bg_mountain/15.svg",
+		"bg_mountain_16": "img/bg_mountain/16.svg",
+		"bg_mountain_17": "img/bg_mountain/17.svg",
+	};
 
 	var levelSources = {
 		"level1": "levels/level1.json",
@@ -75,8 +90,21 @@ Ptero.assets = (function(){
 			mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
 		}
 		else if (meta.vector) {
-			console.log('creating vector', name, 'for desktop');
-			vectorSprites[name] = new Ptero.Sprite(images[name], meta);
+			console.log('creating vector', name);
+			if (navigator.isCocoonJS) {
+				var src = imageSources[name] + ".js";
+				console.log(src);
+				var req = new XMLHttpRequest();
+				req.open('GET', src, false);
+				req.send();
+				if (req.status == 200) {
+					meta.shapesOrFuncs = eval(req.responseText);
+				}
+				vectorSprites[name] = new Ptero.VectorSprite(meta);
+			}
+			else {
+				vectorSprites[name] = new Ptero.Sprite(images[name], meta);
+			}
 		}
 		else {
 			console.log("creating sprite",name);
@@ -134,10 +162,17 @@ Ptero.assets = (function(){
 		var img;
 		for (name in imageSources) {
 			if (imageSources.hasOwnProperty(name)) {
-				img = new Image();
-				img.src = imageSources[name];
-				img.onload = handleLoad;
-				images[name] = img;
+				var src = imageSources[name];
+				if (navigator.isCocoonJS && src.match(/\.svg$/)) {
+					// skip loading svg files in cocoon
+					handleLoad();
+				}
+				else {
+					img = new Image();
+					img.src = src;
+					img.onload = handleLoad;
+					images[name] = img;
+				}
 			}
 		}
 		for (name in levelSources) {

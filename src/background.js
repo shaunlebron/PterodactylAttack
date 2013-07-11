@@ -1,3 +1,63 @@
+Ptero.Background = function() {
+	this.layerImages = [];
+	this.layerPositions = [];
+	this.layerCollisions = [];
+	this.layerParallaxOffsets = [];
+};
+
+Ptero.Background.prototype = {
+	draw: function(ctx) {
+		var i,len=this.layerImages.length;
+		for (i=0; i<len; i++) {
+			this.layerImages[i].draw(ctx, this.layerPositions[i]);
+		}
+	},
+	update: function(dt) {
+	},
+};
+
+Ptero.createBackgrounds = function() {
+	var bg = Ptero.bg_mountain = new Ptero.Background();
+	bg.layerImages = [
+		Ptero.assets.vectorSprites["bg_mountain_00"],
+		Ptero.assets.vectorSprites["bg_mountain_01"],
+		Ptero.assets.vectorSprites["bg_mountain_02"],
+		Ptero.assets.vectorSprites["bg_mountain_03"],
+		Ptero.assets.vectorSprites["bg_mountain_04"],
+		Ptero.assets.vectorSprites["bg_mountain_05"],
+		Ptero.assets.vectorSprites["bg_mountain_06"],
+		Ptero.assets.vectorSprites["bg_mountain_07"],
+		Ptero.assets.vectorSprites["bg_mountain_08"],
+		Ptero.assets.vectorSprites["bg_mountain_09"],
+		Ptero.assets.vectorSprites["bg_mountain_10"],
+		Ptero.assets.vectorSprites["bg_mountain_11"],
+		Ptero.assets.vectorSprites["bg_mountain_12"],
+		Ptero.assets.vectorSprites["bg_mountain_13"],
+		Ptero.assets.vectorSprites["bg_mountain_14"],
+		Ptero.assets.vectorSprites["bg_mountain_15"],
+		Ptero.assets.vectorSprites["bg_mountain_16"],
+		Ptero.assets.vectorSprites["bg_mountain_17"],
+	];
+
+	var i,len = bg.layerImages.length;
+	var frustum = Ptero.screen.getFrustum();
+	for (i=0; i<len; i++) {
+		bg.layerPositions.push({
+			x: frustum.nearLeft*3,
+			y: 0,
+			z: frustum.near,
+		});
+	}
+
+	bg.layerExtremes = [
+		[-1.617, -1.754], // 00 - bg
+		[-1.417, -1.644], // 01 - sky blob
+		[-1.221, -1.677], // 02 - sky blob
+		[-1.221, -1.677], // 03 - sky blob
+		[-1.221, -1.677], // 04 - sky blob
+		[-1.710, -1.749], // 05 - volcano
+	];
+};
 
 Ptero.background = (function(){
 

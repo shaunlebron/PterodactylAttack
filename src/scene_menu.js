@@ -108,15 +108,6 @@ Ptero.scene_menu = (function(){
 		Ptero.assets.keepExplosionsCached(ctx);
 		Ptero.deferredSprites.draw(ctx);
 
-		// bg_mountain vector test:
-		//var frustum = Ptero.screen.getFrustum();
-		//var pos = {
-		//	x: 0,
-		//	y: 0,
-		//	z: frustum.near,
-		//};
-		//Ptero.assets.vectorSprites["bg_mountain"].draw(ctx, pos);
-
 		Ptero.orb.draw(ctx);
 
 		var size = Ptero.hud.getTextSize('menu_title');
