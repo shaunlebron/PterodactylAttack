@@ -4,7 +4,7 @@ var cp = require('child_process');
 
 var app = express();
 
-app.get(/^\/img/(.*)$/, function(req,res) {
+app.get(/^\/img\/(.*)$/, function(req,res) {
     var filename = 'img/' + req.params[0];
     fs.exists(filename, function(exists) {
         if (exists) {
