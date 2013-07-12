@@ -1,0 +1,114 @@
+[
+	{
+		"desc": "sky",
+		"images": [0],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "skyblob1",
+		"images": [1],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "skyblob2",
+		"images": [2],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "cloud_right",
+		"images": [3],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "cloud_left",
+		"images": [4],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "volcano",
+		"images": [5,7,8],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "cloud_volcano",
+		"images": [6],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "back_mountains",
+		"images": [9],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "back_cloud_left",
+		"images": [10],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "back_cloud_right",
+		"images": [11],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "mid_mountains",
+		"images": [12],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "mid_cloud",
+		"images": [13],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "front_mountains",
+		"images": [14],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "back_hills",
+		"images": [15],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "front_hills",
+		"images": [16],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	},
+	{
+		"desc": "foreground",
+		"images": [17],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": []
+	}
+]
