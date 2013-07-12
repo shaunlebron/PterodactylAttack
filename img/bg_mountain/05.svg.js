@@ -84,6 +84,43 @@
 		ctx.closePath();
 		},
 		function(ctx){
+		ctx.fillStyle='#D8AF75';
+		ctx.beginPath();
+		ctx.moveTo(7787,98);
+		ctx.lineTo(7840,58);
+		ctx.lineTo(7889,60);
+		ctx.lineTo(7900,186);
+		ctx.lineTo(7823,207);
+		ctx.lineTo(7776,170);
+		ctx.lineTo(7787,98);
+		ctx.closePath();
+		},
+		function(ctx){
+		ctx.fillStyle='#D8AF75';
+		ctx.beginPath();
+		ctx.moveTo(8076,127);
+		ctx.lineTo(8129,126);
+		ctx.lineTo(8131,153);
+		ctx.lineTo(8139,157);
+		ctx.lineTo(8143,237);
+		ctx.lineTo(8078,244);
+		ctx.lineTo(8078,189);
+		ctx.lineTo(8058,178);
+		ctx.lineTo(8055,112);
+		ctx.lineTo(8076,127);
+		ctx.closePath();
+		},
+		function(ctx){
+		ctx.fillStyle='#D8AF75';
+		ctx.beginPath();
+		ctx.moveTo(7689,165);
+		ctx.bezierCurveTo(7669,139,7698,88,7698,88);
+		ctx.lineTo(7637,109);
+		ctx.bezierCurveTo(7635,145,7623,181,7623,181);
+		ctx.bezierCurveTo(7623,181,7680,169,7689,165);
+		ctx.closePath();
+		}
+		function(ctx){
 		ctx.fillStyle='#788470';
 		ctx.beginPath();
 		ctx.moveTo(7555,213);
@@ -349,43 +386,6 @@
 		ctx.lineTo(7820,216);
 		ctx.closePath();
 		},
-		function(ctx){
-		ctx.fillStyle='#D8AF75';
-		ctx.beginPath();
-		ctx.moveTo(7787,98);
-		ctx.lineTo(7840,58);
-		ctx.lineTo(7889,60);
-		ctx.lineTo(7900,186);
-		ctx.lineTo(7823,207);
-		ctx.lineTo(7776,170);
-		ctx.lineTo(7787,98);
-		ctx.closePath();
-		},
-		function(ctx){
-		ctx.fillStyle='#D8AF75';
-		ctx.beginPath();
-		ctx.moveTo(8076,127);
-		ctx.lineTo(8129,126);
-		ctx.lineTo(8131,153);
-		ctx.lineTo(8139,157);
-		ctx.lineTo(8143,237);
-		ctx.lineTo(8078,244);
-		ctx.lineTo(8078,189);
-		ctx.lineTo(8058,178);
-		ctx.lineTo(8055,112);
-		ctx.lineTo(8076,127);
-		ctx.closePath();
-		},
-		function(ctx){
-		ctx.fillStyle='#D8AF75';
-		ctx.beginPath();
-		ctx.moveTo(7689,165);
-		ctx.bezierCurveTo(7669,139,7698,88,7698,88);
-		ctx.lineTo(7637,109);
-		ctx.bezierCurveTo(7635,145,7623,181,7623,181);
-		ctx.bezierCurveTo(7623,181,7680,169,7689,165);
-		ctx.closePath();
-		}
 	]);
 
 })();

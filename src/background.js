@@ -1,18 +1,73 @@
+/*
+
+A background layer's position is always on the near plane for simplicity for tracking
+depth-independent movement relative to the screen.
+
+Though the collision geometry for each layer is stored in these near cooordinates,
+they are projected to the layer's depth at init to allow for easier collision checks.
+
+*/
+
+Ptero.BackgroundLayer = function() {
+
+	this.depth = null;
+	this.position = {}; // will be replaced by path
+
+	this.path = null; // active path
+	this.introPath = null;
+	this.idlePath = null;
+
+	this.collisionShapes = [];
+	this.parallaxOffset = null;
+
+	this.images = [];
+};
+
+Ptero.BackgroundLayer.prototype = {
+	deferImages: function() {
+
+		var images = this.images;
+		var i,len=images.length;
+
+		// TODO: displace based on parallax offset
+		var pos = this.position;
+
+		Ptero.deferredSprites.defer(
+			function(ctx) {
+				for (i=0; i<len; i++) {
+					images[i].draw(ctx, pos);
+				}
+			},
+			this.depth);
+	},
+	update: function(dt) {
+		// update current path
+		if (this.path == this.introPath && this.path.isDone()) {
+			this.path = this.idlePath;
+		}
+
+		// update current path
+		this.path.update(dt);
+
+		// matching position to current position on path (paths always on near plane)
+		this.position.x = this.pos.x;
+		this.position.y = this.pos.y;
+		this.position.z = Ptero.screen.getFrustum().near;
+
+		this.deferImages();
+	},
+};
+
 Ptero.Background = function() {
-	this.layerImages = [];
-	this.layerPositions = [];
-	this.layerCollisions = [];
-	this.layerParallaxOffsets = [];
+	this.layers = [];
 };
 
 Ptero.Background.prototype = {
-	draw: function(ctx) {
-		var i,len=this.layerImages.length;
-		for (i=0; i<len; i++) {
-			this.layerImages[i].draw(ctx, this.layerPositions[i]);
-		}
-	},
 	update: function(dt) {
+		var i,len=this.layers.length;
+		for (i=0; i<len; i++) {
+			this.layers[i].update(dt);
+		}
 	},
 };
 
@@ -50,12 +105,78 @@ Ptero.createBackgrounds = function() {
 	}
 
 	bg.layerExtremes = [
-		[-1.617, -1.754], // 00 - bg
-		[-1.417, -1.644], // 01 - sky blob
-		[-1.221, -1.677], // 02 - sky blob
-		[-1.221, -1.677], // 03 - sky blob
-		[-1.221, -1.677], // 04 - sky blob
-		[-1.710, -1.749], // 05 - volcano
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.3601021467924035,
+			-1.7591189123037416
+		],
+		[
+			-1.7423431200882091,
+			-1.4322069106184807
+		],
+		[
+			-1.221,
+			-1.677
+		],
+		[
+			-1.221,
+			-1.677
+		],
+		[
+			-1.71,
+			-1.749
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.71,
+			-1.749
+		],
+		[
+			-1.71,
+			-1.749
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			-1.617,
+			-1.754
+		],
+		[
+			1.778346310016103,
+			-1.8016354119877551
+		]
 	];
 };
 

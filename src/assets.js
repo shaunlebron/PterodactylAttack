@@ -2,39 +2,36 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
-		"desert": "img/desert.png",
-		"bgLayers": "img/bgLayers.png",
-		"bgLayersDesat": "img/bgLayersDesat.png",
-		"bgLayersWash": "img/bgLayersWash.png",
-		"bg_frosted": "img/bg_frosted.png",
-		"grass": "img/grass.png",
-		"baby": "img/baby.png",
-		"adult": "img/adult.png",
 		"boom1": "img/boom1.png",
 		"boom2": "img/boom2.png",
 		"boom3": "img/boom3.png",
+
 		"bullet": "img/bullet.png",
-		"play": "img/play.png",
-		"pause": "img/pause.png",
-		"logo": "img/logo.png",
-		"missile": "img/missile.png",
-		"timertype": "img/timertype.png",
-		"scoretype": "img/scoretype.png",
-		"swipe": "img/swipe.png",
-		"baby_green": "img/baby_green.png",
-		"baby_pink": "img/baby_pink.png",
-		"baby_purple": "img/baby_purple.png",
-		"baby_teal": "img/baby_teal.png",
-		"baby_yellow": "img/baby_yellow.png",
-		"adult_green": "img/adult_green.png",
-		"adult_greenspot": "img/adult_greenspot.png",
-		"adult_pink": "img/adult_pink.png",
-		"adult_purple": "img/adult_purple.png",
-		"adult_red": "img/adult_red.png",
-		"adult_redspot": "img/adult_redspot.png",
-		"adult_yellow": "img/adult_yellow.png",
-		"adult_yellowstripe": "img/adult_yellowstripe.png",
-		"health": "img/health.png",
+
+		"play"      : "img/play.png",
+		"pause"     : "img/pause.png",
+		"logo"      : "img/logo.png",
+		"timertype" : "img/timertype.png",
+		"scoretype" : "img/scoretype.png",
+		"swipe"     : "img/swipe.png",
+		"health"    : "img/health.png",
+
+		"baby"        : "img/pteros/baby.png",
+		"baby_green"  : "img/pteros/baby_green.png",
+		"baby_pink"   : "img/pteros/baby_pink.png",
+		"baby_purple" : "img/pteros/baby_purple.png",
+		"baby_teal"   : "img/pteros/baby_teal.png",
+		"baby_yellow" : "img/pteros/baby_yellow.png",
+
+		"adult"              : "img/pteros/adult.png",
+		"adult_green"        : "img/pteros/adult_green.png",
+		"adult_greenspot"    : "img/pteros/adult_greenspot.png",
+		"adult_pink"         : "img/pteros/adult_pink.png",
+		"adult_purple"       : "img/pteros/adult_purple.png",
+		"adult_red"          : "img/pteros/adult_red.png",
+		"adult_redspot"      : "img/pteros/adult_redspot.png",
+		"adult_yellow"       : "img/pteros/adult_yellow.png",
+		"adult_yellowstripe" : "img/pteros/adult_yellowstripe.png",
 
 		"bg_mountain_00": "img/bg_mountain/00.svg",
 		"bg_mountain_01": "img/bg_mountain/01.svg",
@@ -213,10 +210,12 @@ Ptero.assets = (function(){
 		// This seems to prevents the sporadic drawing of explosions from creating hiccups in the framerate.
 		// This method works by trying to keep the textures loaded in whatever internal cache the Chrome browser uses for drawing textures.
 		// We try to draw it in the smallest surface area possible.
-		var s = 10;
-		ctx.drawImage(Ptero.assets.images["boom1"],0,0,s,s);
-		ctx.drawImage(Ptero.assets.images["boom2"],0,0,s,s);
-		ctx.drawImage(Ptero.assets.images["boom3"],0,0,s,s);
+		if (!navigator.isCocoonJS) {
+			var s = 10;
+			ctx.drawImage(Ptero.assets.images["boom1"],0,0,s,s);
+			ctx.drawImage(Ptero.assets.images["boom2"],0,0,s,s);
+			ctx.drawImage(Ptero.assets.images["boom3"],0,0,s,s);
+		}
 	}
 
 	function makeAnimSprite(name) {
