@@ -81,7 +81,7 @@ Ptero.score = (function(){
 			var x = Ptero.screen.getWidth() - pad;
 
 			var text = zeroPad(7,total);
-			var scale = Ptero.background.getScale() * scoreFont.scale;
+			var scale = Ptero.screen.getScale() * scoreFont.scale;
 
 			var i,len=text.length;
 			for (i=len-1; i>=0; i--) {

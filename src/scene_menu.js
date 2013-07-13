@@ -53,7 +53,7 @@ Ptero.scene_menu = (function(){
 
 	var time;
 	function init() {
-		Ptero.background.enableDesat(false);
+		//Ptero.background.enableDesat(false);
 
 		time = 0;
 

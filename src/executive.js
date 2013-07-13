@@ -83,7 +83,7 @@ Ptero.executive = (function(){
 			Ptero.audio.update(dt);
 
 			Ptero.deferredSprites.clear();
-			//Ptero.background.update(dt);
+			Ptero.background.update(dt);
 			var scene = Ptero.scene;
 			if (!isPaused) { // this condition could wrap this whole block if we want proper pausing
 				scene.update(dt*speedScale);

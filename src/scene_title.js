@@ -14,6 +14,10 @@ Ptero.scene_title = (function(){
 	}
 
 	function init() {
+
+		// set title background environment
+		Ptero.setBackground(Ptero.bg_mountain);
+
 		titleSprite = Ptero.assets.sprites["logo"];
 
 		var frustum = Ptero.screen.getFrustum();
@@ -62,7 +66,6 @@ Ptero.scene_title = (function(){
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
 
-		Ptero.bg_mountain.draw(ctx);
 		titleSprite.draw(ctx,titlePos);
 
 	}

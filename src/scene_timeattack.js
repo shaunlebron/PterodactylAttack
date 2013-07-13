@@ -84,7 +84,7 @@ Ptero.scene_timeattack = (function() {
 	var time;
 	function init() {
 		time = 0;
-		Ptero.background.enableDesat(false);
+		//Ptero.background.enableDesat(false);
 		Ptero.score.reset();
 
 		Ptero.orb.allowTapToSelect(true);
@@ -170,7 +170,7 @@ Ptero.scene_timeattack = (function() {
 
 		if (!Ptero.executive.isPaused()) {
 			Ptero.assets.keepExplosionsCached(ctx);
-			Ptero.background.draw(ctx);
+			//Ptero.background.draw(ctx);
 			Ptero.deferredSprites.draw(ctx);
 			Ptero.orb.draw(ctx);
 			var point;
@@ -195,7 +195,7 @@ Ptero.scene_timeattack = (function() {
 			}
 		}
 		else {
-			Ptero.background.draw(ctx);
+			//Ptero.background.draw(ctx);
 			Ptero.pause_menu.draw(ctx);
 		}
 

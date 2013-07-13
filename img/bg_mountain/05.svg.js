@@ -119,7 +119,7 @@
 		ctx.bezierCurveTo(7635,145,7623,181,7623,181);
 		ctx.bezierCurveTo(7623,181,7680,169,7689,165);
 		ctx.closePath();
-		}
+		},
 		function(ctx){
 		ctx.fillStyle='#788470';
 		ctx.beginPath();

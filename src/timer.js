@@ -33,7 +33,7 @@ Ptero.TimerDisplay.prototype = {
 
 		var i,len=this.text.length;
 		var totalW = 0;
-		var scale = Ptero.background.getScale() * this.timerFont.scale;
+		var scale = Ptero.screen.getScale() * this.timerFont.scale;
 		for (i=0; i<len; i++) {
 			var c = this.text[i];
 			totalW += this.timerFont.frames[c].origSize.width * scale;

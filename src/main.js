@@ -49,11 +49,9 @@ window.onload = function() {
 			Ptero.audio.init();
 			console.log("initing input");
 			Ptero.input.init();
-			console.log("initing background");
-			Ptero.background.init();
 			console.log("setting scene");
-			//Ptero.setScene(Ptero.scene_title);
-			Ptero.setScene(Ptero.scene_bgpos);
+			Ptero.setScene(Ptero.scene_title);
+			//Ptero.setScene(Ptero.scene_bgpos);
 			console.log("starting exec");
 			Ptero.executive.start();
 		},

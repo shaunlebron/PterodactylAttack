@@ -1,7 +1,10 @@
 Ptero.screen = (function(){
+
 	var width;
 	var height;
 	var aspect;
+	var scale;
+
 	var canvas,ctx;
 	var frustum;
 	var borderSize;
@@ -12,6 +15,15 @@ Ptero.screen = (function(){
 		aspect = width/height;
 		canvas.width = width;
 		canvas.height = height;
+	};
+
+	function establishScale() {
+		var baseW = 1280;
+		var baseH = 720;
+		var baseAspect = baseW / baseH;
+		var scaleH = height / baseH;
+		var scaleW = width / baseW;
+		scale = (baseAspect > aspect) ? scaleH : scaleW;
 	};
 
 	var shakeTime = 0;
@@ -32,6 +44,7 @@ Ptero.screen = (function(){
 		ctx = canvas.getContext("2d");
 
 		setSize(width,height);
+		establishScale();
 
 		var fov = 30*Math.PI/180;
 		//var near = height/2 / Math.tan(fov/2);
@@ -108,6 +121,7 @@ Ptero.screen = (function(){
 		getWidth:	function() { return width; },
 		getHeight:  function() { return height; },
 		getAspect:  function() { return aspect; },
+		getScale:   function() { return scale; },
 		getCanvas:	function() { return canvas; },
 		getCtx:		function() { return ctx; },
 		getFrustum: function() { return frustum; },

@@ -63,7 +63,7 @@ Ptero.scene_pre_timeattack = (function(){
 
 	var time;
 	function init() {
-		Ptero.background.enableDesat(true);
+		//Ptero.background.enableDesat(true);
 
 		time = 0;
 

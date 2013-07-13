@@ -29,7 +29,7 @@ Ptero.Player.prototype = {
 		var x = Ptero.screen.getWidth() - pad;
 
 		var spriteTable = Ptero.assets.tables["health"];
-		var scale = Ptero.background.getScale() * spriteTable.scale;
+		var scale = Ptero.screen.getScale() * spriteTable.scale;
 		var w = spriteTable.tileWidth * scale;
 		var h = spriteTable.tileHeight * scale;
 

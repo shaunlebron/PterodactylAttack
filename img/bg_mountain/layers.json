@@ -4,111 +4,239 @@
 		"images": [0],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "skyblob1",
 		"images": [1],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.3601021467924035, -1.7591189123037416 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "skyblob2",
 		"images": [2],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.7423431200882091, -1.4322069106184807 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "cloud_right",
 		"images": [3],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.221, -1.677 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "cloud_left",
 		"images": [4],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.221, -1.677 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "volcano",
 		"images": [5,7,8],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.71, -1.749 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "cloud_volcano",
 		"images": [6],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "back_mountains",
 		"images": [9],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "back_cloud_left",
 		"images": [10],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "back_cloud_right",
 		"images": [11],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "mid_mountains",
 		"images": [12],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "mid_cloud",
 		"images": [13],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "front_mountains",
 		"images": [14],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "back_hills",
 		"images": [15],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "front_hills",
 		"images": [16],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ -1.617, -1.754 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	},
 	{
 		"desc": "foreground",
 		"images": [17],
 		"depth": 1,
 		"parallaxOffset": 0,
-		"collisionShapes": []
+		"collisionShapes": [],
+		"introPath": {
+			"values": [ 1.778346310016103, -1.8016354119877551 ],
+			"deltaTimes": [ 0, 1]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
 	}
 ]
