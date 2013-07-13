@@ -114,7 +114,7 @@ Ptero.Background.prototype = {
 
 			// Set depth (use furthest depth until baklava works with new background format)
 			//layer.depth = d.depth;
-			layer.depth = frustum.far;
+			layer.depth = frustum.far-i;
 
 			// build image array from indexes
 			var j,numImages = d.images.length;
