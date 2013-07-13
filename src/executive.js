@@ -85,9 +85,7 @@ Ptero.executive = (function(){
 			Ptero.deferredSprites.clear();
 			Ptero.background.update(dt);
 			var scene = Ptero.scene;
-			if (!isPaused) { // this condition could wrap this whole block if we want proper pausing
-				scene.update(dt*speedScale);
-			}
+			scene.update(isPaused ? 0 : dt*speedScale); // this condition could wrap this whole block if we want proper pausing
 			Ptero.deferredSprites.finalize();
 
 			var ctx = Ptero.screen.getCtx();

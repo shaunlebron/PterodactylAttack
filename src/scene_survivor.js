@@ -85,7 +85,6 @@ Ptero.scene_survivor = (function() {
 	var time;
 	function init() {
 
-		//Ptero.background.enableDesat(false);
 		Ptero.score.reset();
 
 		Ptero.orb.allowTapToSelect(true);
@@ -209,7 +208,7 @@ Ptero.scene_survivor = (function() {
 			}
 		}
 		else {
-			//Ptero.background.draw(ctx);
+			Ptero.deferredSprites.draw(ctx);
 			Ptero.pause_menu.draw(ctx);
 		}
 

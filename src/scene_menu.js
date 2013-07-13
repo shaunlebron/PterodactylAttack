@@ -124,7 +124,6 @@ Ptero.scene_menu = (function(){
 		if (time >= 1) {
 			var size = Ptero.hud.getTextSize('menu_option');
 			ctx.font = size + "px SharkParty";
-			ctx.fillStyle = "#FFF";
 			ctx.textBaseline = "middle";
 			ctx.textAlign = "center";
 
@@ -141,6 +140,14 @@ Ptero.scene_menu = (function(){
 				var x = p.x;
 				var y = p.y;
 				var title = titles[i];
+
+				// shadow
+				var r = 2;
+				ctx.fillStyle = "#000";
+				ctx.fillText(title, x+r,y+r);
+
+				// text
+				ctx.fillStyle = "#FFF";
 				ctx.fillText(title,x,y);
 			}
 		}

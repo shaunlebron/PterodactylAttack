@@ -78,6 +78,11 @@ Ptero.pause_menu = (function(){
 	}
 
 	function draw(ctx) {
+		var w = Ptero.screen.getWidth();
+		var h = Ptero.screen.getHeight();
+		ctx.fillStyle = "rgba(0,0,0,0.5)";
+		ctx.fillRect(0,0,w,h);
+
 		playBtn.draw(ctx);
 		optionsBtn.draw(ctx);
 		stageSelectBtn.draw(ctx);

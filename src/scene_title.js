@@ -31,7 +31,7 @@ Ptero.scene_title = (function(){
 		};
 		titleMover = {
 			t:0,
-			interp: Ptero.makeHermiteInterp([startY, midY, endY], [0, 0.3, 0.5]),
+			interp: Ptero.makeHermiteInterp([startY, midY, endY], [1.0, 0.3, 0.5]),
 			update: function(dt) {
 				this.t += dt;
 				var y = this.interp(this.t);

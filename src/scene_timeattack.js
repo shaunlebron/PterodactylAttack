@@ -84,7 +84,6 @@ Ptero.scene_timeattack = (function() {
 	var time;
 	function init() {
 		time = 0;
-		//Ptero.background.enableDesat(false);
 		Ptero.score.reset();
 
 		Ptero.orb.allowTapToSelect(true);
@@ -195,7 +194,7 @@ Ptero.scene_timeattack = (function() {
 			}
 		}
 		else {
-			//Ptero.background.draw(ctx);
+			Ptero.deferredSprites.draw(ctx);
 			Ptero.pause_menu.draw(ctx);
 		}
 
