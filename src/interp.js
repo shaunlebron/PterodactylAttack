@@ -68,6 +68,8 @@
 	// Input: two points (a,b) and 0<=t<=1
 	var easeFunctions = {
 		linear: function(a,b,t) { return a + (b-a) * t; },
+		'<': function(a,b,t) { return a + (b-a) * Math.pow(t, 1.7); },
+		'>': function(a,b,t) { return a + (b-a) * Math.pow(t, 0.48); },
 	};
 
 	// Create an interpolation function for a given collection of points and delta times.

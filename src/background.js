@@ -33,9 +33,21 @@ Ptero.BackgroundLayer.prototype = {
 		this.path = this.introPath;
 		this.syncPositionToPath();
 	},
+	setShade: function(color) {
+		this.color = color;
+	},
 	deferImages: function() {
 
 		var images = this.images;
+		if (!navigator.isCocoonJS) {
+			console.log(this.color);
+			if (this.color == 'red') {
+				images = this.redImages;
+			}
+			else if (this.color == 'white') {
+				images = this.whiteImages;
+			}
+		}
 		var i,len=images.length;
 
 		// TODO: displace based on parallax offset
@@ -82,6 +94,12 @@ Ptero.Background.prototype = {
 		// placeholder until we implement collisions
 		// (see usage in orb.js)
 		return [];
+	},
+	setShade: function(color) {
+		var i,len=this.layers.length;
+		for (i=0; i<len; i++) {
+			this.layers[i].setShade(color);
+		}
 	},
 	init: function() {
 		var i,len=this.layers.length;
@@ -132,7 +150,7 @@ Ptero.Background.prototype = {
 
 			// build intro path from points
 			layer.introPath = new Ptero.InterpDriver(
-				Ptero.makeInterp('linear', 
+				Ptero.makeInterp('linear',
 					d.introPath.values,
 					d.introPath.deltaTimes),
 				false);

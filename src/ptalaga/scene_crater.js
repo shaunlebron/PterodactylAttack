@@ -10,14 +10,17 @@ Ptero.Ptalaga.scene_crater = (function() {
 
 	function update(dt) {
 		Ptero.Ptalaga.enemy_model_list.update(dt);
+		if (!Ptero.Ptalaga.enemy_model_list.isPreview) {
+			Ptero.background.setShade('white');
+		}
+		else {
+			Ptero.background.setShade(null);
+		}
+		Ptero.background.update(dt);
 	};
 
 	function draw(ctx) {
-		if (!Ptero.Ptalaga.enemy_model_list.isPreview) {
-			//Ptero.background.setWash(true);
-		}
 		Ptero.deferredSprites.draw(ctx);
-		//Ptero.background.setWash(false);
 		Ptero.orb.draw(ctx);
 	};
 
