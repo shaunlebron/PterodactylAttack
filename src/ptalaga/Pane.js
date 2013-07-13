@@ -234,20 +234,6 @@ Ptero.Ptalaga.Pane.prototype = {
 		}
 	},
 
-	drawBgLayer: function(ctx, i) {
-		/*
-		var rects = Ptero.background.getLayerSpaceRects(i);
-		var i,len=rects.length,rect;
-		ctx.strokeStyle = "#BBB";
-		ctx.lineWidth = 2;
-		for (i=0; i<len; i++) {
-			rect = rects[i];
-			this.line(ctx, rect.bl, rect.br);
-			this.line(ctx, rect.bl, rect.tl);
-		}
-		*/
-	},
-
 	drawModelPath: function(ctx, model) {
 		var interp = model.interp;
 		var totalTime = interp.totalTime;
@@ -508,9 +494,9 @@ Ptero.Ptalaga.Pane.prototype = {
 		if (this.axes[0] == 'x' && this.axes[1] == 'y') {
 		}
 		else {
-			var i,len=6;
+			var i,len=Ptero.background.layers.length;
 			for (i=0; i<len; i++) {
-				this.drawBgLayer(ctx, i);
+				//this.drawBgLayer(ctx, i);
 			}
 		}
 

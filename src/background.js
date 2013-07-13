@@ -40,7 +40,6 @@ Ptero.BackgroundLayer.prototype = {
 
 		var images = this.images;
 		if (!navigator.isCocoonJS) {
-			console.log(this.color);
 			if (this.color == 'red') {
 				images = this.redImages;
 			}
