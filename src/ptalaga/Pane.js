@@ -235,6 +235,7 @@ Ptero.Ptalaga.Pane.prototype = {
 	},
 
 	drawBgLayer: function(ctx, i) {
+		/*
 		var rects = Ptero.background.getLayerSpaceRects(i);
 		var i,len=rects.length,rect;
 		ctx.strokeStyle = "#BBB";
@@ -244,6 +245,7 @@ Ptero.Ptalaga.Pane.prototype = {
 			this.line(ctx, rect.bl, rect.br);
 			this.line(ctx, rect.bl, rect.tl);
 		}
+		*/
 	},
 
 	drawModelPath: function(ctx, model) {

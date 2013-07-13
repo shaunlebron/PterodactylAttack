@@ -5,24 +5,19 @@ Ptero.Ptalaga.scene_crater = (function() {
 		Ptero.orb.init();
 		Ptero.orb.disableTouch();
 		Ptero.orb.setOrigin(0,-1);
+		Ptero.setBackground(Ptero.bg_mountain);
 	};
 
 	function update(dt) {
-		Ptero.deferredSprites.clear();
-		Ptero.background.update(dt);
-
 		Ptero.Ptalaga.enemy_model_list.update(dt);
-
-		Ptero.deferredSprites.finalize();
 	};
 
 	function draw(ctx) {
-		Ptero.background.draw(ctx);
 		if (!Ptero.Ptalaga.enemy_model_list.isPreview) {
-			Ptero.background.setWash(true);
+			//Ptero.background.setWash(true);
 		}
 		Ptero.deferredSprites.draw(ctx);
-		Ptero.background.setWash(false);
+		//Ptero.background.setWash(false);
 		Ptero.orb.draw(ctx);
 	};
 

@@ -21,10 +21,10 @@ window.onload = function() {
 				$('#enemyTypeMenu').html(str);
 			})();
 
+			console.log('creating backgrounds');
+			Ptero.createBackgrounds();
 			console.log("initing input");
 			Ptero.input.init();
-			console.log("initing background");
-			Ptero.background.init();
 			console.log("initing enemy model");
 			Ptero.Ptalaga.enemy_model_list = new Ptero.Ptalaga.EnemyModelList();
 
