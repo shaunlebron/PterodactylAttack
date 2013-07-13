@@ -16,10 +16,14 @@ Ptero.Fourier.executive = (function(){
 			}
 			lastTime = time;
 
+			Ptero.deferredSprites.clear();
+			Ptero.background.update(dt);
 			var scene = Ptero.scene;
 			if (!isPaused) {
 				scene.update(dt);
 			}
+			Ptero.deferredSprites.finalize();
+
 			var ctx = Ptero.screen.getCtx();
 			scene.draw(ctx);
 			requestAnimationFrame(tick);

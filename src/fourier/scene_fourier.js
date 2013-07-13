@@ -14,19 +14,17 @@ Ptero.Fourier.scene_fourier = (function() {
 		Ptero.orb.init();
 		//Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
+
+		Ptero.setBackground(Ptero.bg_mountain);
 	};
 
 	function update(dt) {
-		Ptero.deferredSprites.clear();
-		Ptero.background.update(dt);
 		Ptero.Fourier.wave_list.update(dt);
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
-		Ptero.deferredSprites.finalize();
 	};
 
 	function draw(ctx) {
-		Ptero.background.draw(ctx);
 		Ptero.deferredSprites.draw(ctx);
 
 		Ptero.orb.draw(ctx);
