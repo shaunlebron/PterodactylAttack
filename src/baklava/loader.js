@@ -49,6 +49,8 @@ Ptero.Baklava.loader = (function(){
 	}
 
 	function backup() {
+		return; // exit early while we finish converting to new background structure
+
 		var state = getState();
 		var stateStr = JSON.stringify(state,null,'\t');
 		if (window.localStorage != undefined) {

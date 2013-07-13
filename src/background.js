@@ -89,6 +89,20 @@ Ptero.Background = function() {
 };
 
 Ptero.Background.prototype = {
+	setSelectedLayer: function(j) {
+		var i,len=this.layers.length;
+		for (i=0; i<len; i++) {
+			if (j == null) {
+				this.layers[i].setShade(null);
+			}
+			else if (i == j) {
+				this.layers[i].setShade('red');
+			}
+			else {
+				this.layers[i].setShade('white');
+			}
+		}
+	},
 	getLayerCollisions: function() {
 		// placeholder until we implement collisions
 		// (see usage in orb.js)

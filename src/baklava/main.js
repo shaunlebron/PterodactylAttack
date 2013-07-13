@@ -11,15 +11,16 @@ window.onload = function() {
 
 	Ptero.assets.load(
 		function onDone() {
+			console.log('creating backgrounds');
+			Ptero.createBackgrounds();
+
 			Ptero.Baklava.model = new Ptero.Baklava.Model();
 			Ptero.Baklava.model.setMode("position");
 
 			console.log("initing input");
 			Ptero.input.init();
-			console.log("initing background");
-			Ptero.background.init();
 			console.log("initing enemy model");
-			var ignoreState = false;
+			var ignoreState = true;
 			if (!ignoreState && Ptero.Baklava.loader.restore()) {
 				console.log("restored previous state");
 			}

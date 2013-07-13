@@ -32,7 +32,7 @@ Ptero.Baklava.Model.prototype = {
 			return;
 		}
 
-		if ((mode == "create" || mode == "insert") && Ptero.background.getSelectedLayer() == null) {
+		if ((mode == "create" || mode == "insert") && this.selectedLayer == null) {
 			bootbox.alert("Please select a background layer to apply the collision geometry to first!");
 			mode = "select";
 		}

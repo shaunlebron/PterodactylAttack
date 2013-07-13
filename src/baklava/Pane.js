@@ -234,15 +234,32 @@ Ptero.Baklava.Pane.prototype = {
 	},
 
 	drawBgLayer: function(ctx, i) {
-		var rects = Ptero.background.getLayerSpaceRects(i);
-		var i,len=rects.length,rect;
 		ctx.strokeStyle = (i == Ptero.Baklava.model.selectedLayer) ? "#F00" : "#333";
 		ctx.lineWidth = 2;
-		for (i=0; i<len; i++) {
-			rect = rects[i];
-			this.line(ctx, rect.bl, rect.br);
-			this.line(ctx, rect.bl, rect.tl);
-		}
+		var frustum = Ptero.screen.getFrustum();
+
+		var z = Ptero.background.layers[i].depth;
+		var x = frustum.nearRight / frustum.near * z;
+		var y = frustum.nearTop / frustum.near * z;
+
+		var bl = {
+			x: -x,
+			y: -y,
+			z: z,
+		};
+		var br = {
+			x: x,
+			y: -y,
+			z: z,
+		};
+		var tl = {
+			x: -x,
+			y: y,
+			z: z,
+		};
+
+		this.line(ctx, bl, br);
+		this.line(ctx, bl, tl);
 	},
 
 	drawFrustum: function(ctx) {
@@ -267,9 +284,9 @@ Ptero.Baklava.Pane.prototype = {
 	},
 
 	getLayerAtPos: function(x,y) {
-		for (i=0; i<6; i++) {
-			var screenPos = this.spaceToScreen(
-				{x:0,y:0,z:Ptero.background.getLayerDepth(i)});
+		var i,len=Ptero.background.layers.length;
+		for (i=0; i<len; i++) {
+			var screenPos = this.spaceToScreen({x:0,y:0,z:Ptero.background.layers[i].depth});
 			if (this.axes[0] == 'z') {
 				if (Math.abs(screenPos.x - x) < this.nodeRadius) {
 					return i;
@@ -306,7 +323,7 @@ Ptero.Baklava.Pane.prototype = {
 			var z = this.screenToSpace(x,y).z;
 			return {
 				layerIndex: i,
-				offset_z: Ptero.background.getLayerDepth(i) - z,
+				offset_z: Ptero.background.layers[i].depth - z,
 			};
 		}
 		else {
@@ -315,6 +332,7 @@ Ptero.Baklava.Pane.prototype = {
 	},
 
 	selectNode: function(info) {
+		this.hoverSelect = false;
 		if (info.layerIndex != null) {
 			Ptero.Baklava.model.selectLayer(info.layerIndex);
 			this.selectedOffsetZ = info.offset_z;
@@ -325,6 +343,7 @@ Ptero.Baklava.Pane.prototype = {
 			this.selectedOffsetY = info.offset_y;
 		}
 		else {
+			this.hoverSelect = true;
 			Ptero.Baklava.model.selectLayer(null);
 		}
 	},
@@ -333,9 +352,7 @@ Ptero.Baklava.Pane.prototype = {
 		var layer = Ptero.Baklava.model.selectedLayer;
 		if (layer != null) {
 			var z = this.screenToSpace(x,y).z;
-			Ptero.background.setLayerDepth(
-				layer,
-				z + this.selectedOffsetZ);
+			Ptero.background.layers[layer].depth = z + this.selectedOffsetZ;
 			Ptero.Baklava.loader.backup();
 		}
 		else if (Ptero.Baklava.model.enemySelected) {
@@ -369,11 +386,17 @@ Ptero.Baklava.Pane.prototype = {
 			this.zoom(this.scale, this.apos, this.bpos, x, y);
 		}
 		else {
+			if (this.hoverSelect) {
+				var info = this.getNodeInfoFromCursor(x,y);
+				Ptero.Baklava.model.selectLayer(info.layerIndex);
+				this.selectedOffsetZ = info.offset_z;
+			}
 			this.updateNodePosition(x,y);
 		}
 	},
 	mouseEnd: function(x,y) {
 		this.isPanning = false;
+		this.hoverSelect = false;
 	},
 	mouseScroll: function(x,y,delta,deltaX,deltaY) {
 		if (this.isZoomPanKey) {
@@ -396,7 +419,7 @@ Ptero.Baklava.Pane.prototype = {
 		this.drawFrustum(ctx);
 		this.drawAxes(ctx);
 
-		var i,len=6;
+		var i,len=Ptero.background.layers.length;
 		for (i=0; i<len; i++) {
 			this.drawBgLayer(ctx, i);
 		}
