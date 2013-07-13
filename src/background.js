@@ -121,6 +121,14 @@ Ptero.Background.prototype = {
 			for (j=0; j<numImages; j++) {
 				layer.images.push(this.images[d.images[j]]);
 			}
+			if (!navigator.isCocoonJS) {
+				layer.redImages = [];
+				layer.whiteImages = [];
+				for (j=0; j<numImages; j++) {
+					layer.redImages.push(this.redImages[d.images[j]]);
+					layer.whiteImages.push(this.whiteImages[d.images[j]]);
+				}
+			}
 
 			// build intro path from points
 			layer.introPath = new Ptero.InterpDriver(
@@ -152,29 +160,53 @@ Ptero.Background.prototype = {
 
 Ptero.createBackgrounds = function() {
 
+	// helper for creating image array for a background
+	function setImages(bg, imageNames) {
+		var i,len=imageNames.length;
+		var name;
+
+		// create image array
+		bg.images = [];
+		for (i=0; i<len; i++) {
+			name = imageNames[i];
+			bg.images.push(Ptero.assets.vectorSprites[name]);
+		}
+
+		// create image array for white and red versions
+		if (!navigator.isCocoonJS) {
+			bg.redImages = [];
+			bg.whiteImages = [];
+			for (i=0; i<len; i++) {
+				name = imageNames[i];
+				bg.redImages.push(Ptero.assets.vectorSprites[name+"_red"]);
+				bg.whiteImages.push(Ptero.assets.vectorSprites[name+"_white"]);
+			}
+		}
+	}
+
 	Ptero.bg_mountain = (function(){
 
 		var bg = new Ptero.Background();
-		bg.images = [
-			Ptero.assets.vectorSprites["bg_mountain_00"],
-			Ptero.assets.vectorSprites["bg_mountain_01"],
-			Ptero.assets.vectorSprites["bg_mountain_02"],
-			Ptero.assets.vectorSprites["bg_mountain_03"],
-			Ptero.assets.vectorSprites["bg_mountain_04"],
-			Ptero.assets.vectorSprites["bg_mountain_05"],
-			Ptero.assets.vectorSprites["bg_mountain_06"],
-			Ptero.assets.vectorSprites["bg_mountain_07"],
-			Ptero.assets.vectorSprites["bg_mountain_08"],
-			Ptero.assets.vectorSprites["bg_mountain_09"],
-			Ptero.assets.vectorSprites["bg_mountain_10"],
-			Ptero.assets.vectorSprites["bg_mountain_11"],
-			Ptero.assets.vectorSprites["bg_mountain_12"],
-			Ptero.assets.vectorSprites["bg_mountain_13"],
-			Ptero.assets.vectorSprites["bg_mountain_14"],
-			Ptero.assets.vectorSprites["bg_mountain_15"],
-			Ptero.assets.vectorSprites["bg_mountain_16"],
-			Ptero.assets.vectorSprites["bg_mountain_17"],
-		];
+		setImages(bg, [
+			"bg_mountain_00",
+			"bg_mountain_01",
+			"bg_mountain_02",
+			"bg_mountain_03",
+			"bg_mountain_04",
+			"bg_mountain_05",
+			"bg_mountain_06",
+			"bg_mountain_07",
+			"bg_mountain_08",
+			"bg_mountain_09",
+			"bg_mountain_10",
+			"bg_mountain_11",
+			"bg_mountain_12",
+			"bg_mountain_13",
+			"bg_mountain_14",
+			"bg_mountain_15",
+			"bg_mountain_16",
+			"bg_mountain_17",
+		]);
 		bg.loadLayersData(Ptero.assets.json["bg_mountain_layers"]);
 		return bg;
 	})();

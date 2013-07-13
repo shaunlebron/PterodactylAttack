@@ -53,6 +53,46 @@ Ptero.assets = (function(){
 		"bg_mountain_17": "img/bg_mountain/17.svg",
 	};
 
+	if (!navigator.isCocoonJS) {
+		imageSources["bg_mountain_00_red"] = "img/bg_mountain/00.red.svg";
+		imageSources["bg_mountain_01_red"] = "img/bg_mountain/01.red.svg";
+		imageSources["bg_mountain_02_red"] = "img/bg_mountain/02.red.svg";
+		imageSources["bg_mountain_03_red"] = "img/bg_mountain/03.red.svg";
+		imageSources["bg_mountain_04_red"] = "img/bg_mountain/04.red.svg";
+		imageSources["bg_mountain_05_red"] = "img/bg_mountain/05.red.svg";
+		imageSources["bg_mountain_06_red"] = "img/bg_mountain/06.red.svg";
+		imageSources["bg_mountain_07_red"] = "img/bg_mountain/07.red.svg";
+		imageSources["bg_mountain_08_red"] = "img/bg_mountain/08.red.svg";
+		imageSources["bg_mountain_09_red"] = "img/bg_mountain/09.red.svg";
+		imageSources["bg_mountain_10_red"] = "img/bg_mountain/10.red.svg";
+		imageSources["bg_mountain_11_red"] = "img/bg_mountain/11.red.svg";
+		imageSources["bg_mountain_12_red"] = "img/bg_mountain/12.red.svg";
+		imageSources["bg_mountain_13_red"] = "img/bg_mountain/13.red.svg";
+		imageSources["bg_mountain_14_red"] = "img/bg_mountain/14.red.svg";
+		imageSources["bg_mountain_15_red"] = "img/bg_mountain/15.red.svg";
+		imageSources["bg_mountain_16_red"] = "img/bg_mountain/16.red.svg";
+		imageSources["bg_mountain_17_red"] = "img/bg_mountain/17.red.svg";
+
+		imageSources["bg_mountain_00_white"] = "img/bg_mountain/00.white.svg";
+		imageSources["bg_mountain_01_white"] = "img/bg_mountain/01.white.svg";
+		imageSources["bg_mountain_02_white"] = "img/bg_mountain/02.white.svg";
+		imageSources["bg_mountain_03_white"] = "img/bg_mountain/03.white.svg";
+		imageSources["bg_mountain_04_white"] = "img/bg_mountain/04.white.svg";
+		imageSources["bg_mountain_05_white"] = "img/bg_mountain/05.white.svg";
+		imageSources["bg_mountain_06_white"] = "img/bg_mountain/06.white.svg";
+		imageSources["bg_mountain_07_white"] = "img/bg_mountain/07.white.svg";
+		imageSources["bg_mountain_08_white"] = "img/bg_mountain/08.white.svg";
+		imageSources["bg_mountain_09_white"] = "img/bg_mountain/09.white.svg";
+		imageSources["bg_mountain_10_white"] = "img/bg_mountain/10.white.svg";
+		imageSources["bg_mountain_11_white"] = "img/bg_mountain/11.white.svg";
+		imageSources["bg_mountain_12_white"] = "img/bg_mountain/12.white.svg";
+		imageSources["bg_mountain_13_white"] = "img/bg_mountain/13.white.svg";
+		imageSources["bg_mountain_14_white"] = "img/bg_mountain/14.white.svg";
+		imageSources["bg_mountain_15_white"] = "img/bg_mountain/15.white.svg";
+		imageSources["bg_mountain_16_white"] = "img/bg_mountain/16.white.svg";
+		imageSources["bg_mountain_17_white"] = "img/bg_mountain/17.white.svg";
+	}
+
 	var levelSources = {
 		"level1": "levels/level1.json",
 		"fourier": "levels/fourier-level",
