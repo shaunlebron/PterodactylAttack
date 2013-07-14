@@ -1,5 +1,25 @@
+/*
+
+Here we define structures for managing various sprites.
+
+*/
+
 Ptero.VectorSprite = function(dict) {
-	this.shapesOrFuncs = dict.shapesOrFuncs || [];
+
+	var vectorData = dict.vectorPathData;
+	this.isShape = vectorPathData.shapeCompatible;
+	this.paths = vectorPathData.paths;
+
+	// Create a preset shape that Cocoon's HTML5 Path API allows for fast vector drawing.
+	if (this.isShape) {
+		var i,len=this.paths.length;
+		this.shape = new Shape();
+		for (i=0; i<len; i++) {
+			var path = new Path();
+			this.paths[i](path);
+			this.shape.addPath(path);
+		}
+	}
 
 	this.width = dict.width;
 	this.height = dict.height;

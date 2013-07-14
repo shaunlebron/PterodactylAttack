@@ -33,6 +33,9 @@ Ptero.assets = (function(){
 		"adult_yellow"       : "img/pteros/adult_yellow.png",
 		"adult_yellowstripe" : "img/pteros/adult_yellowstripe.png",
 
+	};
+
+	var vectorSources = {
 		"bg_mountain_00": "img/bg_mountain/00.svg",
 		"bg_mountain_01": "img/bg_mountain/01.svg",
 		"bg_mountain_02": "img/bg_mountain/02.svg",
@@ -53,44 +56,20 @@ Ptero.assets = (function(){
 		"bg_mountain_17": "img/bg_mountain/17.svg",
 	};
 
+	// load SVG images for faster drawing of vector images if we're not in Cocoon
 	if (!navigator.isCocoonJS) {
-		imageSources["bg_mountain_00_red"] = "img/bg_mountain/00.red.svg";
-		imageSources["bg_mountain_01_red"] = "img/bg_mountain/01.red.svg";
-		imageSources["bg_mountain_02_red"] = "img/bg_mountain/02.red.svg";
-		imageSources["bg_mountain_03_red"] = "img/bg_mountain/03.red.svg";
-		imageSources["bg_mountain_04_red"] = "img/bg_mountain/04.red.svg";
-		imageSources["bg_mountain_05_red"] = "img/bg_mountain/05.red.svg";
-		imageSources["bg_mountain_06_red"] = "img/bg_mountain/06.red.svg";
-		imageSources["bg_mountain_07_red"] = "img/bg_mountain/07.red.svg";
-		imageSources["bg_mountain_08_red"] = "img/bg_mountain/08.red.svg";
-		imageSources["bg_mountain_09_red"] = "img/bg_mountain/09.red.svg";
-		imageSources["bg_mountain_10_red"] = "img/bg_mountain/10.red.svg";
-		imageSources["bg_mountain_11_red"] = "img/bg_mountain/11.red.svg";
-		imageSources["bg_mountain_12_red"] = "img/bg_mountain/12.red.svg";
-		imageSources["bg_mountain_13_red"] = "img/bg_mountain/13.red.svg";
-		imageSources["bg_mountain_14_red"] = "img/bg_mountain/14.red.svg";
-		imageSources["bg_mountain_15_red"] = "img/bg_mountain/15.red.svg";
-		imageSources["bg_mountain_16_red"] = "img/bg_mountain/16.red.svg";
-		imageSources["bg_mountain_17_red"] = "img/bg_mountain/17.red.svg";
+		var name;
+		for (name in vectorSources) {
 
-		imageSources["bg_mountain_00_white"] = "img/bg_mountain/00.white.svg";
-		imageSources["bg_mountain_01_white"] = "img/bg_mountain/01.white.svg";
-		imageSources["bg_mountain_02_white"] = "img/bg_mountain/02.white.svg";
-		imageSources["bg_mountain_03_white"] = "img/bg_mountain/03.white.svg";
-		imageSources["bg_mountain_04_white"] = "img/bg_mountain/04.white.svg";
-		imageSources["bg_mountain_05_white"] = "img/bg_mountain/05.white.svg";
-		imageSources["bg_mountain_06_white"] = "img/bg_mountain/06.white.svg";
-		imageSources["bg_mountain_07_white"] = "img/bg_mountain/07.white.svg";
-		imageSources["bg_mountain_08_white"] = "img/bg_mountain/08.white.svg";
-		imageSources["bg_mountain_09_white"] = "img/bg_mountain/09.white.svg";
-		imageSources["bg_mountain_10_white"] = "img/bg_mountain/10.white.svg";
-		imageSources["bg_mountain_11_white"] = "img/bg_mountain/11.white.svg";
-		imageSources["bg_mountain_12_white"] = "img/bg_mountain/12.white.svg";
-		imageSources["bg_mountain_13_white"] = "img/bg_mountain/13.white.svg";
-		imageSources["bg_mountain_14_white"] = "img/bg_mountain/14.white.svg";
-		imageSources["bg_mountain_15_white"] = "img/bg_mountain/15.white.svg";
-		imageSources["bg_mountain_16_white"] = "img/bg_mountain/16.white.svg";
-		imageSources["bg_mountain_17_white"] = "img/bg_mountain/17.white.svg";
+			// make the vector source load as an image
+			imageSources[name] = vectorSources[name];
+
+			// add the white- and red-shaded versions of the background layers
+			if (name.match(/^bg_/)) {
+				imageSources[name+"_red"] = vectorSources[name].replace(/svg$/, "red.svg");
+				imageSources[name+"_white"] = vectorSources[name].replace(/svg$/, "white.svg");
+			}
+		}
 	}
 
 	var levelSources = {
@@ -112,14 +91,25 @@ Ptero.assets = (function(){
 
 	var json = {};
 
+	// "Image" objects, actual image file data
 	var images = {};
+
+	// image meta data loaded for each image
+	var imagesMeta = {};
+	var vectorPathData = {};
+
+	// post-processed image structures
 	var vectorSprites = {};
 	var sprites = {};
 	var tables = {};
 	var mosaics = {};
+
 	var levels = {};
 
-	function parseMetaData(name, meta) {
+	function postProcessImage(name) {
+
+		var meta = imagesMeta[name];
+
 		if (meta.rows != undefined) {
 			console.log("creating table",name);
 			tables[name] = new Ptero.SpriteTable(images[name], meta);
@@ -128,123 +118,146 @@ Ptero.assets = (function(){
 			console.log("creating mosaic",name);
 			mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
 		}
-		else if (meta.vector) {
-			console.log('creating vector', name);
-			if (navigator.isCocoonJS) {
-				var src = imageSources[name] + ".js";
-				console.log(src);
-				var req = new XMLHttpRequest();
-				req.open('GET', src, false);
-				req.send();
-				if (req.status == 200) {
-					meta.shapesOrFuncs = eval(req.responseText);
-				}
-				vectorSprites[name] = new Ptero.VectorSprite(meta);
-			}
-			else {
-				vectorSprites[name] = new Ptero.Sprite(images[name], meta);
-			}
-		}
 		else {
 			console.log("creating sprite",name);
 			sprites[name] = new Ptero.Sprite(images[name], meta);
 		}
 	};
 
-	function retrieveMetaData() {
-		var name,req,src,metadata;
-		for (name in imageSources) {
-			if (imageSources.hasOwnProperty(name)) {
-				src = imageSources[name] + ".json";
-				console.log(src);
-				req = new XMLHttpRequest();
-				req.open('GET', src, false);
-				req.send();
-				if (req.status == 200) {
-					metadata = JSON.parse(req.responseText);
-				}
-				parseMetaData(name, metadata);
+	function postProcessVector(name) {
+
+		// load image metadata
+		var meta = imagesMeta[name];
+
+		// append metadata with the vector path data
+		meta.vectorPathData = vectorPathData[name];
+
+		// Create the vector sprite structure
+		var vectorSprite = vectorSprites[name] = new Ptero.VectorSprite(meta);
+
+		// Add information on the SVG version for faster drawing outside of Cocoon
+		if (!navigator.isCocoonJS) {
+			vectorSprite.sprite = sprites[name];
+			if (sprites[name+"_red"]) {
+				vectorSprite.redSprite = sprites[name+"_red"];
 			}
+			if (sprites[name+"_white"]) {
+				vectorSprite.redSprite = sprites[name+"_white"];
+			}
+		}
+	}
+
+	function postProcess() {
+
+		var name;
+
+		// post-process images
+		for (name in imageSources) {
+			postProcessImage(name);
+		}
+
+		// post-process vectors
+		for (name in vectorSources) {
+			postProcessVector(name);
 		}
 	};
 
 	function load(onDone,onProgress) {
-		var count = 0;
-		var totalCount = 0;
-		var name;
+
+		// Call onprogress for first time.
 		onProgress && onProgress(0);
-		for (name in imageSources) {
-			if (imageSources.hasOwnProperty(name)) {
-				totalCount++;
-			}
-		}
-		for (name in levelSources) {
-			if (levelSources.hasOwnProperty(name)) {
-				totalCount++;
-			}
-		}
-		for (name in miscJsonSources) {
-			if (miscJsonSources.hasOwnProperty(name)) {
-				totalCount++;
-			}
+
+		// Determine the number of files we are loading.
+		var totalCount = 0;
+		for (name in imageSources) { totalCount += 2; } // image+metadata
+		for (name in vectorSources) { totalCount++; }
+		for (name in levelSources) { totalCount++; }
+		for (name in miscJsonSources) { totalCount++; }
+
+		// Running count of how many files have been loaded.
+		var count = 0;
+
+		// Called when all files are loaded.
+		function handleAllDone() {
+			postProcess();
+			onDone && onDone();
 		}
 
-		var handleLoad = function() {
+		// Called after a file is loaded.
+		function handleLoad() {
 			count++;
 			if (count == totalCount) {
-				retrieveMetaData();
-				onDone && onDone();
+				handleAllDone();
 			}
 			onProgress && onProgress(count/totalCount);
-		};
+		}
 
-		var img;
+		var img,name,src,req;
+
+		// Load images
 		for (name in imageSources) {
-			if (imageSources.hasOwnProperty(name)) {
-				var src = imageSources[name];
-				if (navigator.isCocoonJS && src.match(/\.svg$/)) {
-					// skip loading svg files in cocoon
+
+			// load image
+			src = imageSources[name];
+			img = new Image();
+			img.src = src;
+			img.onload = handleLoad;
+			images[name] = img;
+
+			// load metadata
+			src = imageSources[name] + ".json";
+			console.log(src);
+			req = new XMLHttpRequest();
+			req.onload = (function(name){
+				return function() {
+					imagesMeta[name] = JSON.parse(this.responseText);
 					handleLoad();
-				}
-				else {
-					img = new Image();
-					img.src = src;
-					img.onload = handleLoad;
-					images[name] = img;
-				}
-			}
+				};
+			})(name);
+			req.open('GET', src, true);
+			req.send();
 		}
+
+		// Load vector path data
+		for (name in vectorSources) {
+			src = vectorSources[name] + ".js";
+			req = new XMLHttpRequest();
+			req.onload = (function(name){
+				return function() {
+					vectorPathData[name] = eval(this.responseText);
+					handleLoad();
+				};
+			})(name);
+		}
+
+		// Load levels
 		for (name in levelSources) {
-			if (levelSources.hasOwnProperty(name)) {
-				var src = levelSources[name];
-				var req = new XMLHttpRequest();
-				req.open('GET', src, false);
-				req.send();
-				if (req.status == 200) {
-					levels[name] = JSON.parse(req.responseText);
+			src = levelSources[name];
+			req = new XMLHttpRequest();
+			req.onload = (function(name){
+				return function() {
+					levels[name] = JSON.parse(this.responseText);
 					console.log("got level: "+ name);
-				}
-				else {
-					console.error("could not load: "+ name);
-				}
-				handleLoad();
-			}
+					handleLoad();
+				};
+			})(name);
+			req.open('GET', src, true);
+			req.send();
 		}
+
+		// Load miscellaneous json data.
 		for (name in miscJsonSources) {
-			if (miscJsonSources.hasOwnProperty(name)) {
-				var src = miscJsonSources[name];
-				var req = new XMLHttpRequest();
-				req.open('GET', src, false);
-				req.send();
-				if (req.status == 200) {
-					json[name] = JSON.parse(req.responseText);
+			src = miscJsonSources[name];
+			req = new XMLHttpRequest();
+			req.onload = (function(name){
+				return function() {
+					json[name] = JSON.parse(this.responseText);
 					console.log("got misc: "+ name);
-				}
-				else {
-					console.error("could not load: "+ name);
-				}
-				handleLoad();
-			}
+					handleLoad();
+				};
+			})(name);
+			req.open('GET', src, true);
+			req.send();
 		}
 	};
 
