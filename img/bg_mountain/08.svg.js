@@ -1,17 +1,6 @@
 (function(){
 
-	function makeShape(pathfuncs) {
-		var shape = new Shape();
-		var i,len=pathfuncs.length;
-		for (i=0; i<len; i++) {
-			var ctx = new Path();
-			pathfuncs[i](ctx);
-			shape.addPath(ctx);
-		}
-		return shape;
-	}
-
-	return makeShape([
+	var paths = [
 		function(ctx){
 		ctx.fillStyle='#52594D';
 		ctx.beginPath();
@@ -48,7 +37,12 @@
 		ctx.bezierCurveTo(8508,1789,10158,1257,10158,1257);
 		ctx.bezierCurveTo(10158,1257,10416,801,9462,801);
 		ctx.closePath();
-		}
-	]);
+		},
+	];
+
+	return {
+		shapeCompatible: true,
+		paths: paths,
+	};
 
 })();

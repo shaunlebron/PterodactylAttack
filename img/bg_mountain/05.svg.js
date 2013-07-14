@@ -1,17 +1,6 @@
 (function(){
 
-	function makeShape(pathFuncs) {
-		var shape = new Shape();
-		var i,len=pathFuncs.length;
-		for (i=0; i<len; i++) {
-			var ctx = new Path();
-			pathFuncs[i](ctx);
-			shape.addPath(ctx);
-		}
-		return shape;
-	}
-
-	return makeShape([
+	var paths = [
 		function(ctx){
 		ctx.fillStyle='#B7603E';
 		ctx.beginPath();
@@ -386,6 +375,11 @@
 		ctx.lineTo(7820,216);
 		ctx.closePath();
 		},
-	]);
+	];
+
+	return {
+		shapeCompatible: true,
+		paths: paths,
+	};
 
 })();
