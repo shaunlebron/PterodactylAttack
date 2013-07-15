@@ -33,6 +33,15 @@ Ptero.BackgroundLayer.prototype = {
 		this.path = this.introPath;
 		this.syncPositionToPath();
 	},
+	isMouseInside: function(x,y) {
+		var i,len=this.sprites.length;
+		for (i=0; i<len; i++) {
+			if (this.sprites[i].isMouseInside(this.position,x,y)) {
+				return true;
+			}
+		}
+		return false;
+	},
 	setShade: function(color) {
 		this.color = color;
 	},
@@ -82,6 +91,9 @@ Ptero.Background = function() {
 };
 
 Ptero.Background.prototype = {
+	pickLayerWithMouse: function(x,y) {
+		// create a sorted list of layers from near to far
+	},
 	setSelectedLayer: function(j) {
 		var i,len=this.layers.length;
 		for (i=0; i<len; i++) {

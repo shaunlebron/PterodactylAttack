@@ -39,6 +39,30 @@ Ptero.VectorSprite = function(dict) {
 }
 
 Ptero.VectorSprite.prototype = {
+	isMouseInside: function(pos,x,y) {
+		if (!this.paths) {
+			return;
+		}
+
+		var ctx = Ptero.screen.getCtx();
+
+		ctx.save();
+		this.billboard.transform(ctx, pos);
+
+		var isInside = false;
+		var i,len=this.paths.length;
+		for (i=0; i<len; i++) {
+			this.paths[i](ctx);
+			if (ctx.isPointInside(x,y)) {
+				isInside = true;
+				break;
+			}
+		}
+
+		ctx.restore();
+
+		return isInside;
+	},
 	draw: function(ctx,pos) {
 
 		if (this.sprite) {
