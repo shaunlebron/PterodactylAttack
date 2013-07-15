@@ -1,0 +1,29 @@
+
+To take SVG frames from a SWF file....
+
+1.
+
+Go to Google Swiffy
+https://www.google.com/doubleclick/studio/swiffy/
+
+Upload the SWF file and save the page locally.
+
+2.
+
+Open the page in a text editor and remove the 'svg' element.
+
+3.
+
+Insert the text:
+<script src="getSvgFrames.js"></script>
+
+4.
+
+Open the file and save all the frames from the auto-created download links.
+
+5.
+
+Edit each svg file:
+	- move the width and height attribtues from the rectfill tag to the svg tag (append the numbers with "px")
+	- remove the rectfill tag
+	- remove the first g transform tag and its closing tag.
