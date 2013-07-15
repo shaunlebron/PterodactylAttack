@@ -100,7 +100,7 @@ Ptero.scene_timeattack = (function() {
 
 		Ptero.player = new Ptero.Player();
 
-		setLevel(Ptero.assets.levels["fourier"]);
+		setLevel(Ptero.assets.json["fourier"]);
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);

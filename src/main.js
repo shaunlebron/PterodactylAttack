@@ -67,6 +67,12 @@ window.onload = function() {
 			ctx.fillRect(0,0,w,h);
 
 			ctx.strokeStyle = ctx.fillStyle = "#000";
+
+			ctx.font = "40px SharkParty";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillText("loading...", w/2, h/3);
+
 			ctx.lineWidth = 2;
 			ctx.strokeRect(w/2-bw/2,h/2-bh/2,bw,bh);
 			ctx.fillRect(w/2-bw/2,h/2-bh/2,bw*percent,bh);

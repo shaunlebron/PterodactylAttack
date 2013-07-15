@@ -20,7 +20,7 @@ Ptero.BackgroundLayer = function() {
 	this.collisionShapes = [];
 	this.parallaxOffset = null;
 
-	this.images = [];
+	this.sprites = [];
 };
 
 Ptero.BackgroundLayer.prototype = {
@@ -36,18 +36,11 @@ Ptero.BackgroundLayer.prototype = {
 	setShade: function(color) {
 		this.color = color;
 	},
-	deferImages: function() {
+	deferSprites: function() {
 
-		var images = this.images;
-		if (!navigator.isCocoonJS) {
-			if (this.color == 'red') {
-				images = this.redImages;
-			}
-			else if (this.color == 'white') {
-				images = this.whiteImages;
-			}
-		}
-		var i,len=images.length;
+		var color = this.color;
+		var sprites = this.sprites;
+		var i,len=sprites.length;
 
 		// TODO: displace based on parallax offset
 		var pos = this.position;
@@ -55,7 +48,7 @@ Ptero.BackgroundLayer.prototype = {
 		Ptero.deferredSprites.defer(
 			function(ctx) {
 				for (i=0; i<len; i++) {
-					images[i].draw(ctx, pos);
+					sprites[i].draw(ctx, pos, color);
 				}
 			},
 			this.depth);
@@ -79,13 +72,13 @@ Ptero.BackgroundLayer.prototype = {
 
 		this.syncPositionToPath();
 
-		this.deferImages();
+		this.deferSprites();
 	},
 };
 
 Ptero.Background = function() {
 	this.layers = [];
-	this.images = [];
+	this.sprites = [];
 };
 
 Ptero.Background.prototype = {
@@ -147,18 +140,10 @@ Ptero.Background.prototype = {
 			//layer.depth = d.depth;
 			layer.depth = frustum.far-i;
 
-			// build image array from indexes
+			// build sprite array from indexes
 			var j,numImages = d.images.length;
 			for (j=0; j<numImages; j++) {
-				layer.images.push(this.images[d.images[j]]);
-			}
-			if (!navigator.isCocoonJS) {
-				layer.redImages = [];
-				layer.whiteImages = [];
-				for (j=0; j<numImages; j++) {
-					layer.redImages.push(this.redImages[d.images[j]]);
-					layer.whiteImages.push(this.whiteImages[d.images[j]]);
-				}
+				layer.sprites.push(this.sprites[d.images[j]]);
 			}
 
 			// build intro path from points
@@ -191,34 +176,23 @@ Ptero.Background.prototype = {
 
 Ptero.createBackgrounds = function() {
 
-	// helper for creating image array for a background
-	function setImages(bg, imageNames) {
-		var i,len=imageNames.length;
+	// helper for creating sprite array for a background
+	function setSprites(bg, spriteNames) {
+		var i,len=spriteNames.length;
 		var name;
 
-		// create image array
-		bg.images = [];
+		// create sprite array
+		bg.sprites = [];
 		for (i=0; i<len; i++) {
-			name = imageNames[i];
-			bg.images.push(Ptero.assets.vectorSprites[name]);
-		}
-
-		// create image array for white and red versions
-		if (!navigator.isCocoonJS) {
-			bg.redImages = [];
-			bg.whiteImages = [];
-			for (i=0; i<len; i++) {
-				name = imageNames[i];
-				bg.redImages.push(Ptero.assets.vectorSprites[name+"_red"]);
-				bg.whiteImages.push(Ptero.assets.vectorSprites[name+"_white"]);
-			}
+			name = spriteNames[i];
+			bg.sprites.push(Ptero.assets.vectorSprites[name]);
 		}
 	}
 
 	Ptero.bg_mountain = (function(){
 
 		var bg = new Ptero.Background();
-		setImages(bg, [
+		setSprites(bg, [
 			"bg_mountain_00",
 			"bg_mountain_01",
 			"bg_mountain_02",

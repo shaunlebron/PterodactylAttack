@@ -56,47 +56,58 @@ Ptero.assets = (function(){
 		"bg_mountain_17": "img/bg_mountain/17.svg",
 	};
 
-	// load SVG images for faster drawing of vector images if we're not in Cocoon
-	if (!navigator.isCocoonJS) {
-		var name;
-		for (name in vectorSources) {
+	var jsonSources = {
 
-			// make the vector source load as an image
-			imageSources[name] = vectorSources[name];
-
-			// add the white- and red-shaded versions of the background layers
-			if (name.match(/^bg_/)) {
-				imageSources[name+"_red"] = vectorSources[name].replace(/svg$/, "red.svg");
-				imageSources[name+"_white"] = vectorSources[name].replace(/svg$/, "white.svg");
-			}
-		}
-	}
-
-	var levelSources = {
 		"level1": "levels/level1.json",
 		"fourier": "levels/fourier-level",
 		"survival01": "levels/survival01.json",
 		"survival02": "levels/survival02.json",
 		"survival03": "levels/survival03.json",
-	};
-
-	var miscJsonSources = {
 
 		"bg_mountain_layers": "img/bg_mountain/layers.json",
-
 		"mainmenu_paths": "paths/mainmenu.json",
 		"difficulty_paths": "paths/difficulty.json",
 		"highscores_paths": "paths/highscores.json",
 	};
 
+	// Add secondary sources dependent on the primary sources listed above.
+	(function(){
+		var name;
+
+		// load SVG images for faster drawing of vector images if we're not in Cocoon
+		if (!navigator.isCocoonJS) {
+			var name;
+			for (name in vectorSources) {
+
+				// make the vector source load as an image
+				imageSources[name] = vectorSources[name];
+
+				// add the white- and red-shaded versions of the background layers
+				if (name.match(/^bg_/)) {
+					imageSources[name+"_red"] = vectorSources[name].replace(/svg$/, "red.svg");
+					imageSources[name+"_white"] = vectorSources[name].replace(/svg$/, "white.svg");
+				}
+			}
+		}
+
+		// add metadata json sources to loading list
+		for (name in imageSources) {
+			jsonSources[name] = imageSources[name]+".json";
+		}
+
+		// add vector metadata to loading list
+		for (name in vectorSources) {
+			jsonSources[name] = vectorSources[name]+".json";
+		}
+
+	})();
+
+	var vectorPathData = {};
+
 	var json = {};
 
 	// "Image" objects, actual image file data
 	var images = {};
-
-	// image meta data loaded for each image
-	var imagesMeta = {};
-	var vectorPathData = {};
 
 	// post-processed image structures
 	var vectorSprites = {};
@@ -104,11 +115,9 @@ Ptero.assets = (function(){
 	var tables = {};
 	var mosaics = {};
 
-	var levels = {};
-
 	function postProcessImage(name) {
 
-		var meta = imagesMeta[name];
+		var meta = json[name];
 
 		if (meta.rows != undefined) {
 			console.log("creating table",name);
@@ -127,7 +136,7 @@ Ptero.assets = (function(){
 	function postProcessVector(name) {
 
 		// load image metadata
-		var meta = imagesMeta[name];
+		var meta = json[name];
 
 		// append metadata with the vector path data
 		meta.vectorPathData = vectorPathData[name];
@@ -169,10 +178,9 @@ Ptero.assets = (function(){
 
 		// Determine the number of files we are loading.
 		var totalCount = 0;
-		for (name in imageSources) { totalCount += 2; } // image+metadata
+		for (name in imageSources) { totalCount++; }
 		for (name in vectorSources) { totalCount++; }
-		for (name in levelSources) { totalCount++; }
-		for (name in miscJsonSources) { totalCount++; }
+		for (name in jsonSources) { totalCount++; }
 
 		// Running count of how many files have been loaded.
 		var count = 0;
@@ -196,26 +204,16 @@ Ptero.assets = (function(){
 
 		// Load images
 		for (name in imageSources) {
-
-			// load image
 			src = imageSources[name];
 			img = new Image();
 			img.src = src;
-			img.onload = handleLoad;
-			images[name] = img;
-
-			// load metadata
-			src = imageSources[name] + ".json";
-			console.log(src);
-			req = new XMLHttpRequest();
-			req.onload = (function(name){
+			img.onload = (function(name){
 				return function() {
-					imagesMeta[name] = JSON.parse(this.responseText);
+					console.log("loaded image: "+ name);
 					handleLoad();
 				};
 			})(name);
-			req.open('GET', src, true);
-			req.send();
+			images[name] = img;
 		}
 
 		// Load vector path data
@@ -225,19 +223,7 @@ Ptero.assets = (function(){
 			req.onload = (function(name){
 				return function() {
 					vectorPathData[name] = eval(this.responseText);
-					handleLoad();
-				};
-			})(name);
-		}
-
-		// Load levels
-		for (name in levelSources) {
-			src = levelSources[name];
-			req = new XMLHttpRequest();
-			req.onload = (function(name){
-				return function() {
-					levels[name] = JSON.parse(this.responseText);
-					console.log("got level: "+ name);
+					console.log("loaded js: "+ name);
 					handleLoad();
 				};
 			})(name);
@@ -245,14 +231,14 @@ Ptero.assets = (function(){
 			req.send();
 		}
 
-		// Load miscellaneous json data.
-		for (name in miscJsonSources) {
-			src = miscJsonSources[name];
+		// Load json data.
+		for (name in jsonSources) {
+			src = jsonSources[name];
 			req = new XMLHttpRequest();
 			req.onload = (function(name){
 				return function() {
 					json[name] = JSON.parse(this.responseText);
-					console.log("got misc: "+ name);
+					console.log("loaded json: "+ name);
 					handleLoad();
 				};
 			})(name);
@@ -297,7 +283,6 @@ Ptero.assets = (function(){
 		sprites: sprites,
 		tables: tables,
 		mosaics: mosaics,
-		levels: levels,
 		makeAnimSprite: makeAnimSprite,
 		keepExplosionsCached: keepExplosionsCached,
 	};

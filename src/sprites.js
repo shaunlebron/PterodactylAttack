@@ -6,12 +6,12 @@ Here we define structures for managing various sprites.
 
 Ptero.VectorSprite = function(dict) {
 
-	var vectorData = dict.vectorPathData;
+	var vectorPathData = dict.vectorPathData;
 	this.isShape = vectorPathData.shapeCompatible;
 	this.paths = vectorPathData.paths;
 
 	// Create a preset shape that Cocoon's HTML5 Path API allows for fast vector drawing.
-	if (this.isShape) {
+	if (navigator.isCocoonJS && this.isShape) {
 		var i,len=this.paths.length;
 		this.shape = new Shape();
 		for (i=0; i<len; i++) {
@@ -40,29 +40,27 @@ Ptero.VectorSprite = function(dict) {
 
 Ptero.VectorSprite.prototype = {
 	draw: function(ctx,pos) {
-		function draw(val) {
-			var type = Object.prototype.toString.call(val);
-			if( type == '[object Array]' ) {
-				drawArray(val);
-			}
-			else if ( type == '[object Function]' ) {
-				val(ctx);
-				ctx.fill();
-			}
-			else {
-				ctx.fillShape(val);
-			}
+
+		if (this.sprite) {
+			this.sprite.draw(ctx,pos);
 		}
-		function drawArray(array) {
-			var i,len=array.length;
-			for (i=0; i<len; i++) {
-				draw(array[i]);
+		else {
+			ctx.save();
+			this.billboard.transform(ctx, pos);
+
+			if (this.shape) {
+				ctx.fillShape(this.shape);
 			}
+			else if (this.paths) {
+				var i,len=this.paths.length;
+				for (i=0; i<len; i++) {
+					this.paths[i](ctx);
+					ctx.fill();
+				}
+			}
+
+			ctx.restore();
 		}
-		ctx.save();
-		this.billboard.transform(ctx, pos);
-		draw(this.shapesOrFuncs);
-		ctx.restore();
 	},
 };
 

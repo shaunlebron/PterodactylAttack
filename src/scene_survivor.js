@@ -101,7 +101,7 @@ Ptero.scene_survivor = (function() {
 
 		Ptero.player = new Ptero.Player();
 
-		setLevel(Ptero.assets.levels["survival01"]);
+		setLevel(Ptero.assets.json["survival01"]);
 		levelCount++;
 
 		time = 0;
@@ -157,7 +157,7 @@ Ptero.scene_survivor = (function() {
 				timerDisplay.update(dt);
 				if (timerDisplay.isDone()) {
 					var l = (levelCount%3)+1;
-					setLevel(Ptero.assets.levels["survival0"+l]);
+					setLevel(Ptero.assets.json["survival0"+l]);
 					levelCount++;
 				}
 			}
