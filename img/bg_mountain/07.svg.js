@@ -1,6 +1,6 @@
 (function(){
 
-	var shapes = [
+	var paths = [
 		function(ctx){
 		ctx.fillStyle='#30382D';
 		ctx.beginPath();
