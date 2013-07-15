@@ -56,9 +56,12 @@ Ptero.Baklava.LivePane.prototype = {
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
 		if (mode == "position") {
-			// If a knot is clicked, return the offset from that knot.
 			if (node_offset = this.getNodeSelectOffset(x,y)) {
 				return node_offset;
+			}
+			else {
+				var layer = Ptero.background.getLayerFromPixel(x,y);
+				Ptero.Baklava.model.selectLayer(layer);
 			}
 		}
 		else if (mode == "collision") {
@@ -248,7 +251,6 @@ Ptero.Baklava.LivePane.prototype = {
 				this.selectedOffsetY = info.offset_y;
 			}
 			else {
-				//Ptero.Baklava.model.selectLayer(null);
 			}
 		}
 		else if (mode == "collision") {

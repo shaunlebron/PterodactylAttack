@@ -39,7 +39,7 @@ Ptero.VectorSprite = function(dict) {
 }
 
 Ptero.VectorSprite.prototype = {
-	isMouseInside: function(pos,x,y) {
+	isPixelInside: function(pos,x,y) {
 		if (!this.paths) {
 			return;
 		}
@@ -53,7 +53,7 @@ Ptero.VectorSprite.prototype = {
 		var i,len=this.paths.length;
 		for (i=0; i<len; i++) {
 			this.paths[i](ctx);
-			if (ctx.isPointInside(x,y)) {
+			if (ctx.isPointInPath(x,y)) {
 				isInside = true;
 				break;
 			}
@@ -63,10 +63,18 @@ Ptero.VectorSprite.prototype = {
 
 		return isInside;
 	},
-	draw: function(ctx,pos) {
+	draw: function(ctx,pos,color) {
 
 		if (this.sprite) {
-			this.sprite.draw(ctx,pos);
+			if (this.redSprite && color == 'red') {
+				this.redSprite.draw(ctx,pos);
+			}
+			else if (this.whiteSprite && color == 'white') {
+				this.whiteSprite.draw(ctx,pos);
+			}
+			else {
+				this.sprite.draw(ctx,pos);
+			}
 		}
 		else {
 			ctx.save();

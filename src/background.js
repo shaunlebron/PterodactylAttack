@@ -33,10 +33,10 @@ Ptero.BackgroundLayer.prototype = {
 		this.path = this.introPath;
 		this.syncPositionToPath();
 	},
-	isMouseInside: function(x,y) {
+	isPixelInside: function(x,y) {
 		var i,len=this.sprites.length;
 		for (i=0; i<len; i++) {
-			if (this.sprites[i].isMouseInside(this.position,x,y)) {
+			if (this.sprites[i].isPixelInside(this.position,x,y)) {
 				return true;
 			}
 		}
@@ -91,21 +91,49 @@ Ptero.Background = function() {
 };
 
 Ptero.Background.prototype = {
-	pickLayerWithMouse: function(x,y) {
-		// create a sorted list of layers from near to far
+	getLayerFromPixel: function(x,y) {
+
+		// copy layers array
+		var orderedLayers = [];
+		var i,len = this.layers.length;
+		for (i=0; i<len; i++) {
+			orderedLayers.push({
+				origIndex: i,
+				layer: this.layers[i],
+			});
+		}
+
+		// sort the copied array of layers
+		orderedLayers.sort(function(a,b) {
+			return a.layer.depth - b.layer.depth;
+		});
+
+		// return the first layer index which contains the pixel
+		var obj;
+		for (i=0; i<len; i++) {
+			obj = orderedLayers[i];
+			if (obj.layer.isPixelInside(x,y)) {
+				return obj.origIndex;
+			}
+		}
+
+		return null;
 	},
 	setSelectedLayer: function(j) {
 		var i,len=this.layers.length;
 		for (i=0; i<len; i++) {
+			var color;
 			if (j == null) {
-				this.layers[i].setShade(null);
+				color = null;
 			}
 			else if (i == j) {
-				this.layers[i].setShade('red');
+				color = 'red';
 			}
 			else {
-				this.layers[i].setShade('white');
+				color = 'white';
 			}
+			this.layers[i].setShade(color);
+			console.log(i,j,color);
 		}
 	},
 	getLayerCollisions: function() {

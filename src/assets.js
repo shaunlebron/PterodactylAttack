@@ -151,7 +151,7 @@ Ptero.assets = (function(){
 				vectorSprite.redSprite = sprites[name+"_red"];
 			}
 			if (sprites[name+"_white"]) {
-				vectorSprite.redSprite = sprites[name+"_white"];
+				vectorSprite.whiteSprite = sprites[name+"_white"];
 			}
 		}
 	}
