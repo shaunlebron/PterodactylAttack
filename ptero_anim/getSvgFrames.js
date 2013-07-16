@@ -14,7 +14,7 @@
 		a.setAttribute('style','display:block');
 		a.innerHTML = name;
 		a.href = "data:image/svg+xml;base64," + btoa(text);
-		//a.download = name;
+		a.download = name;
 		div.appendChild(a);
 	}
 	

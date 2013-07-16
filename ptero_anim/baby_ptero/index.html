@@ -1,0 +1,26 @@
+
+<canvas id="canvas"></canvas>
+<script>
+
+window.onload = function() {
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+	
+	canvas.width = 1100;
+	canvas.height = 800;
+	ctx.scale(0.1, 0.1);
+
+	var req = new XMLHttpRequest();
+	req.onload = function() {
+		var data = eval(this.responseText);
+		var i,len=data.paths.length;
+		for (i=0; i<len; i++) {
+			ctx.save();
+			data.paths[i](ctx);
+			ctx.restore();
+		}
+	};
+	req.open('GET', '0.svg.js', true);
+	req.send();
+}
+</script>
