@@ -1,7 +1,5 @@
 
-<svg style="fill-rule: evenodd; pointer-events: none; -moz-user-select: none; width: 100%; height: 100%;" color-interpolation-filters="sRGB">
-
-<g transform="matrix(0.05 0 0 0.05 0 0)">
+<svg width="30000px" height="20000px" style="fill-rule: evenodd; pointer-events: none; -moz-user-select: none; width: 100%; height: 100%;" color-interpolation-filters="sRGB">
 
 <g enable-background="new">
 
@@ -116,8 +114,6 @@
 <path fill="none" stroke-opacity="1.000" stroke="rgb(0,0,0)" stroke-linejoin="round" stroke-linecap="round" stroke-width="28.571998006975587" d="M 436 -7173 Q 526 -7324 621 -7445 M -85 -5921 L -9 -6156 M 128 -6532 Q 192 -6694 259 -6838 M 683 -1207 L 537 -1173 L 538 -1066 Q 536 -877 594 -693 L 683 -724 M 362 -1146 L 537 -1173 L 563 -1509 M 1151 169 L 790 -300 L 643 -221 M 594 -693 L 790 -300 L 945 -362 M 482 -664 L 594 -693 M 813 958 Q 901 924 991 893 M 387 1139 Q 512 1078 641 1025 M -51 1385 Q 33 1331 120 1281 L 147 1266 M -303 -5224 L -204 -5527 M -89 -5906 L -85 -5921 M -615 -4480 Q -527 -4618 -411 -4921 M -765 -1207 L -725 -997 L -523 -966 M -998 123 L -819 -378 L -906 -422 M -819 -378 L -780 -542 Q -727 -764 -725 -997 L -865 -1006 M -819 -378 L -644 -282 M -485 1706 Q -406 1633 -319 1569 M -76 1401 L -51 1385">
 
 </path>
-
-</g>
 
 </g>
 

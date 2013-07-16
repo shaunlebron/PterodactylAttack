@@ -27,3 +27,4 @@ Edit each svg file:
 	- move the width and height attribtues from the rectfill tag to the svg tag (append the numbers with "px")
 	- remove the rectfill tag
 	- remove the first g transform tag and its closing tag.
+	- half each line width (cocoon doubles it for some reason)

@@ -77,8 +77,6 @@
 			ctx.quadraticCurveTo(-3590,-1404,-4096,-1546);
 			ctx.quadraticCurveTo(-4537,-1670,-4981,-1670);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(-0.49,0,0,0.48,6058,4433);
@@ -161,8 +159,6 @@
 			ctx.quadraticCurveTo(382,149,369,-326);
 			ctx.quadraticCurveTo(355,-857,28,-1311);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(-0.49,0,0,0.48,6058,4433);
@@ -226,8 +222,6 @@
 			ctx.closePath();
 			ctx.moveTo(-6120,-1372);
 			ctx.lineTo(-6198,-1267);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(-0.49,0,0,0.48,6058,4433);
@@ -350,8 +344,6 @@
 			ctx.lineTo(-882,311);
 			ctx.moveTo(-3672,-7);
 			ctx.lineTo(-3555,23);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,4959,4433);
@@ -429,8 +421,6 @@
 			ctx.quadraticCurveTo(-3590,-1404,-4096,-1546);
 			ctx.quadraticCurveTo(-4537,-1670,-4981,-1670);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,4959,4433);
@@ -513,8 +503,6 @@
 			ctx.quadraticCurveTo(382,149,369,-326);
 			ctx.quadraticCurveTo(355,-857,28,-1311);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,4959,4433);
@@ -578,8 +566,6 @@
 			ctx.closePath();
 			ctx.moveTo(-6120,-1372);
 			ctx.lineTo(-6198,-1267);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,4959,4433);
@@ -702,8 +688,6 @@
 			ctx.lineTo(-882,311);
 			ctx.moveTo(-3672,-7);
 			ctx.lineTo(-3555,23);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5460,4611);
@@ -753,8 +737,6 @@
 			ctx.quadraticCurveTo(-695,-1325,-506,-1436);
 			ctx.quadraticCurveTo(-508,-1436,-511,-1436);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5460,4611);
@@ -811,8 +793,6 @@
 			ctx.quadraticCurveTo(845,-1562,389,-1616);
 			ctx.quadraticCurveTo(295,-1627,203,-1627);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5460,4611);
@@ -941,8 +921,6 @@
 			ctx.lineTo(-1595,756);
 			ctx.moveTo(-1720,511);
 			ctx.lineTo(-1745,466);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5460,4611);
@@ -1012,8 +990,6 @@
 			ctx.quadraticCurveTo(-1285,1110,-1272,1096);
 			ctx.quadraticCurveTo(-1244,1065,-1236,1019);
 			ctx.quadraticCurveTo(-1230,986,-1235,946);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5486,4038);
@@ -1045,8 +1021,6 @@
 			ctx.quadraticCurveTo(1846,-1642,1823,-1690);
 			ctx.lineTo(1821,-1692);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5486,4038);
@@ -1129,8 +1103,6 @@
 			ctx.lineTo(365,-3555);
 			ctx.lineTo(355,-3594);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5486,4038);
@@ -1211,8 +1183,6 @@
 			ctx.lineTo(351,-3608);
 			ctx.quadraticCurveTo(341,-3646,278,-3664);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5486,4038);
@@ -1249,8 +1219,6 @@
 			ctx.quadraticCurveTo(1794,-1729,1757,-1742);
 			ctx.quadraticCurveTo(1752,-1743,1747,-1743);
 			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5486,4038);
@@ -1416,8 +1384,6 @@
 			ctx.quadraticCurveTo(-1237,-1897,-1172,-1831);
 			ctx.moveTo(-1373,-895);
 			ctx.quadraticCurveTo(-1409,-864,-1437,-848);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5486,4038);
@@ -1562,8 +1528,6 @@
 			ctx.lineTo(-1,-3314);
 			ctx.moveTo(-849,29);
 			ctx.lineTo(-933,-93);
-			ctx.fill();
-			ctx.stroke();
 		},
 		function(ctx) {
 			ctx.transform(0.48,0,0,0.48,5486,4038);
@@ -1575,8 +1539,6 @@
 			ctx.beginPath();
 			ctx.moveTo(1821,-1692);
 			ctx.lineTo(1823,-1690);
-			ctx.fill();
-			ctx.stroke();
 		},
 	];
 
