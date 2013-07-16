@@ -1,4 +1,3 @@
-
 ctx.save();
 ctx.strokeStyle='rgba(0,0,0,0)';
 ctx.lineCap='butt';

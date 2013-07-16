@@ -6,30 +6,41 @@ window.onload = function() {
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
 	
-	canvas.width = 1500;
-	canvas.height =1000;
+	canvas.width = 1100;
+	canvas.height = 800;
 	canvas.style.border = "1px solid black";
-	ctx.scale(0.05, 0.05);
+	ctx.scale(0.1, 0.1);
 
-	var req = new XMLHttpRequest();
-	req.onload = function() {
-		var data = eval(this.responseText);
-		var i,len=data.paths.length;
-		for (i=0; i<len; i++) {
-			ctx.save();
-			ctx.fillStyle = null;
-			ctx.strokeStyle = null;
-			data.paths[i](ctx);
-			if (ctx.fillStyle) {
-				ctx.fill();
+	function drawImage(filename) {
+		var req = new XMLHttpRequest();
+		req.onload = function() {
+			var data = eval(this.responseText);
+			var i,len=data.paths.length;
+			for (i=0; i<len; i++) {
+				ctx.save();
+				ctx.fillStyle = null;
+				ctx.strokeStyle = null;
+				data.paths[i](ctx);
+				if (ctx.fillStyle) {
+					ctx.fill();
+				}
+				if (ctx.strokeStyle) {
+					ctx.stroke();
+				}
+				ctx.restore();
 			}
-			if (ctx.strokeStyle) {
-				ctx.stroke();
-			}
-			ctx.restore();
-		}
-	};
-	req.open('GET', '0.svg.js', true);
-	req.send();
+		};
+		req.open('GET', filename, false);
+		req.send();
+	}
+	
+	drawImage('0.svg.js');
+	drawImage('1.svg.js');
+	drawImage('2.svg.js');
+	drawImage('3.svg.js');
+	drawImage('4.svg.js');
+	drawImage('5.svg.js');
+	drawImage('6.svg.js');
+	drawImage('7.svg.js');
 }
 </script>
