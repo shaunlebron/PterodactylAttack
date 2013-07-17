@@ -1,0 +1,60 @@
+
+<script>
+
+window.onload = function() {
+
+	function drawImage(ctx, filename) {
+		var req = new XMLHttpRequest();
+		req.onload = function() {
+			var data = eval(this.responseText);
+			var i,len=data.paths.length;
+			for (i=0; i<len; i++) {
+				ctx.save();
+				ctx.fillStyle = null;
+				ctx.strokeStyle = null;
+				data.paths[i](ctx);
+				if (ctx.fillStyle) {
+					ctx.fill();
+				}
+				if (ctx.strokeStyle) {
+					ctx.stroke();
+				}
+				ctx.restore();
+			}
+		};
+		req.open('GET', filename, false);
+		req.send();
+	}
+	
+	function makeFrame(num) {
+		var canvas = document.createElement('canvas');
+
+		var w = 800;
+		var h = 400;
+		canvas.width = w;
+		canvas.height = h;
+		canvas.style.border = "1px solid black";
+		document.body.appendChild(canvas);
+
+		var ctx = canvas.getContext('2d');
+
+		ctx.save();
+			ctx.translate(-200,-300);
+			var s = 0.05;
+			ctx.scale(s,s);
+		drawImage(ctx, 'adult_ptero/'+((num+3)%9)+'.svg.js');
+		ctx.restore();
+		ctx.save();
+			ctx.translate(-100,-100);
+			var s = 0.05;
+			ctx.scale(s,s);
+			drawImage(ctx, 'baby_ptero/'+num+'.svg.js');
+		ctx.restore();
+	}
+
+	var i;
+	for (i=0; i<9; i++) {
+		makeFrame(i);
+	}
+}
+</script>
