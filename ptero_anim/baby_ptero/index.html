@@ -6,10 +6,13 @@ window.onload = function() {
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
 	
-	canvas.width = 1100;
-	canvas.height = 800;
+	var w = 11000;
+	var h = 8000;
+	var s = 0.1;
+	canvas.width = w*s;
+	canvas.height = h*s;
 	canvas.style.border = "1px solid black";
-	ctx.scale(0.1, 0.1);
+	ctx.scale(s,s);
 
 	function drawImage(filename) {
 		var req = new XMLHttpRequest();

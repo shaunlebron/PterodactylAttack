@@ -1,5 +1,5 @@
-(function(){
 
+(function(){
 	var paths = [
 		function(ctx) {
 			ctx.transform(-0.49,0,0,0.48,6058,4433);
@@ -164,6 +164,7 @@
 			ctx.transform(-0.49,0,0,0.48,6058,4433);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=40;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -227,6 +228,7 @@
 			ctx.transform(-0.49,0,0,0.48,6058,4433);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=28.57;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -508,6 +510,7 @@
 			ctx.transform(0.48,0,0,0.48,4959,4433);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=40;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -571,6 +574,7 @@
 			ctx.transform(0.48,0,0,0.48,4959,4433);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=28.57;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -798,6 +802,7 @@
 			ctx.transform(0.48,0,0,0.48,5460,4611);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=28.57;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -926,6 +931,7 @@
 			ctx.transform(0.48,0,0,0.48,5460,4611);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=40;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -1224,6 +1230,7 @@
 			ctx.transform(0.48,0,0,0.48,5486,4038);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=40;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -1389,6 +1396,7 @@
 			ctx.transform(0.48,0,0,0.48,5486,4038);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=28.57;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -1533,6 +1541,7 @@
 			ctx.transform(0.48,0,0,0.48,5486,4038);
 			ctx.fillStyle='rgba(0,0,0,0)';
 			ctx.strokeStyle='rgb(0,0,0)';
+			ctx.strokeStyle='rgba(0,0,0,1.000)';
 			ctx.lineWidth=60;
 			ctx.lineCap='round';
 			ctx.lineJoin='round';
@@ -1541,10 +1550,9 @@
 			ctx.lineTo(1823,-1690);
 		},
 	];
-
 	return {
 		shapeCompatible: true,
 		paths: paths,
 	};
-
 })();
+

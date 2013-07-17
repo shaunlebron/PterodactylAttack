@@ -1,6 +1,6 @@
-(function(){
 
-	var paths =[
+(function(){
+	var paths = [
 		function(ctx) {
 			ctx.transform(-0.49,0,0,0.48,6058,4535);
 			ctx.fillStyle='rgba(128,193,185,1.000)';
@@ -2292,10 +2292,9 @@
 			ctx.lineTo(1823,-1690);
 		},
 	];
-
 	return {
 		shapeCompatible: true,
 		paths: paths,
 	};
-
 })();
+

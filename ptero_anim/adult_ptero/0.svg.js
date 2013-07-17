@@ -1,3 +1,4 @@
+
 (function(){
 	var paths = [
 		function(ctx) {
@@ -1547,5 +1548,5 @@
 		shapeCompatible: true,
 		paths: paths,
 	};
-
 })();
+

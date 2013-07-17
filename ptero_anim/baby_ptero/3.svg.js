@@ -1,5 +1,5 @@
-(function(){
 
+(function(){
 	var paths = [
 		function(ctx) {
 			ctx.transform(-0.49,0,0,0.48,6058,4552);
@@ -1354,7 +1354,6 @@
 			ctx.lineTo(1823,-1690);
 		},
 	];
-
 	return {
 		shapeCompatible: true,
 		paths: paths,
