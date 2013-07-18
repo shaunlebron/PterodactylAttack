@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="7987px"
+	 height="1080px" viewBox="0 0 7987 1080" enable-background="new 0 0 7987 1080" xml:space="preserve">
+<g id="Sky">
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="7027.0986" y1="600.8984" x2="7021.208" y2="-135.5353">
+		<stop  offset="0" style="stop-color:#64D9D2"/>
+		<stop  offset="0.1508" style="stop-color:#4AA1AB"/>
+		<stop  offset="0.3029" style="stop-color:#347088"/>
+		<stop  offset="0.4541" style="stop-color:#21486C"/>
+		<stop  offset="0.6015" style="stop-color:#132956"/>
+		<stop  offset="0.7439" style="stop-color:#081246"/>
+		<stop  offset="0.8793" style="stop-color:#02053C"/>
+		<stop  offset="1" style="stop-color:#000039"/>
+	</linearGradient>
+	
+		<rect x="6033.443" y="-39.239" fill="url(#SVGID_1_)" stroke="#6641D8" stroke-miterlimit="10" width="1986.476" height="1176.118"/>
+</g>
+</svg>

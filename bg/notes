@@ -1,0 +1,11 @@
+
+background conversion process
+- get svg file from johnny
+- split svg layers into separate files > i.svg
+- feed each svg into http://omniso.sslcert13.com/?returnUrl=/iTrax/Home/svg2Canvas/0 > i.js
+- convert i.js to path list > i.svg.js
+	- if fill() is present and fillStyle is not present, then set fillStyle = '#000'
+	- if fill() not present, then set fillStyle = 'rgba(0,0,0,0)'
+	- if stroke() is present and strokeStyle is not present, then set strokeStyle = '#000'
+	- if stroke() is not present then set strokeStyle = 'rgba(0,0,0,0)'
+- correct opacity
