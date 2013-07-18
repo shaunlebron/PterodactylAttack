@@ -26,5 +26,6 @@ fi
 
 for i in $args; do
 	j=$(printf '%02d' $i)
+	echo writing $j.svg.js
 	./jsToPaths.py $j.js > $j.svg.js
 done

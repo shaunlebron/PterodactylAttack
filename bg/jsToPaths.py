@@ -87,7 +87,7 @@ if __name__ == "__main__":
 				inGradient = False
 
 
-		if "fillStyle" in line:
+		if "fillStyle" in line or "beginPath" in line:
 			begin = True
 
 		if not begin:

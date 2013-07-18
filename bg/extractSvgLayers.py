@@ -31,6 +31,8 @@ if __name__ == "__main__":
 
 			# Reached the end of a new top-level group.
 			if line.startswith('</g'):
+
+				fileText += line
 				
 				# write group text to file
 				filename2 = '%02d.svg' % num
