@@ -49,7 +49,7 @@ if __name__ == "__main__":
 	print "done."
 
 	print "Creating cocoon.zip ..."
-	create_zip(['cocoon.js','img','audio','levels','paths','fonts'], 'cocoon.zip')
+	create_zip(['cocoon.js','bg','img','audio','levels','paths','fonts'], 'cocoon.zip')
 	print "done."
 
 	"""

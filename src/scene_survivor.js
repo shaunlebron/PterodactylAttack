@@ -84,6 +84,7 @@ Ptero.scene_survivor = (function() {
 
 	var time;
 	function init() {
+		Ptero.setBackground(Ptero.bg_ice);
 
 		Ptero.score.reset();
 

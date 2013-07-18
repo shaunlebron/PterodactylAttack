@@ -21,6 +21,7 @@ Ptero.BackgroundLayer = function() {
 	this.parallaxOffset = null;
 
 	this.sprites = [];
+	this.animating = true;
 };
 
 Ptero.BackgroundLayer.prototype = {
@@ -63,23 +64,29 @@ Ptero.BackgroundLayer.prototype = {
 			this.depth);
 	},
 	syncPositionToPath: function() {
-		// matching position to current position on path (paths always on near plane)
-		this.position.x = this.path.val;
+		this.setX(this.path.val);
+	},
+	setX: function(x) {
+		this.position.x = x;
 		this.position.y = 0;
 		this.position.z = Ptero.screen.getFrustum().near;
 	},
 	update: function(dt) {
 
-		// update current path
-		this.path.step(dt);
+		if (this.animating) {
 
-		// update current path
-		if (this.path == this.introPath && this.introPath.isDone()) {
-			this.path = this.idlePath;
-			this.idlePath.reset();
+			// update current path
+			this.path.step(dt);
+
+			// update current path
+			if (this.path == this.introPath && this.introPath.isDone()) {
+				this.path = this.idlePath;
+				this.idlePath.reset();
+			}
+
+			
+			this.syncPositionToPath();
 		}
-
-		this.syncPositionToPath();
 
 		this.deferSprites();
 	},
@@ -91,6 +98,12 @@ Ptero.Background = function() {
 };
 
 Ptero.Background.prototype = {
+	setAnimating: function(on) {
+		var i,len = this.layers.length;
+		for (i=0; i<len; i++) {
+			this.layers[i].animating = on;
+		}
+	},
 	getLayerFromPixel: function(x,y) {
 
 		// copy layers array
@@ -133,7 +146,6 @@ Ptero.Background.prototype = {
 				color = 'white';
 			}
 			this.layers[i].setShade(color);
-			console.log(i,j,color);
 		}
 	},
 	getLayerCollisions: function() {
@@ -253,6 +265,25 @@ Ptero.createBackgrounds = function() {
 			"bg_mountain_17",
 		]);
 		bg.loadLayersData(Ptero.assets.json["bg_mountain_layers"]);
+		return bg;
+	})();
+
+	Ptero.bg_ice = (function(){
+
+		var bg = new Ptero.Background();
+		setSprites(bg, [
+			"bg_ice_00",
+			"bg_ice_01",
+			"bg_ice_02",
+			"bg_ice_03",
+			"bg_ice_04",
+			"bg_ice_05",
+			"bg_ice_06",
+			"bg_ice_07",
+			"bg_ice_08",
+			"bg_ice_09",
+		]);
+		bg.loadLayersData(Ptero.assets.json["bg_ice_layers"]);
 		return bg;
 	})();
 };

@@ -1,5 +1,29 @@
 
-background conversion process
+FACTS:
+
+SVG paths cannot be used directly as a Path constructor argument but we can use these tools to convert them to canvas paths:
+	- http://www.omnisoftsystems.com/?returnUrl=/iTrax/Home/svg2Canvas/0
+	- http://www.professorcloud.com/svg-to-canvas/
+
+	Both tools use canvg: http://code.google.com/p/canvg/
+
+CocoonJS doesn't support:
+	Path.createLinearGradient
+		- work-around by drawing directly
+	Path.globalAlpha
+	normal alpha-blending with Path.fillStyle="rgba(...)"
+		- work-around by drawing directly
+
+HTML5 standard has Path objects which are not supported by any browser at the moment.  But CocoonJS supports a subset of it.
+	- This will split our codebase into Desktop/Mobile background drawing.
+		- We can possibly just draw the SVG on most desktop browsers using drawImage.
+		- The Path objects may prevent problems with video memory on mobile.
+
+
+
+
+BACKGROUND CONVERSION PROCESS
+
 - get svg file from johnny
 - split svg layers into separate files > i.svg
 - feed each svg into http://omniso.sslcert13.com/?returnUrl=/iTrax/Home/svg2Canvas/0 > i.js

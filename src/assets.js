@@ -36,35 +36,51 @@ Ptero.assets = (function(){
 	};
 
 	var vectorSources = {
-		"bg_mountain_00": "img/bg_mountain/00.svg",
-		"bg_mountain_01": "img/bg_mountain/01.svg",
-		"bg_mountain_02": "img/bg_mountain/02.svg",
-		"bg_mountain_03": "img/bg_mountain/03.svg",
-		"bg_mountain_04": "img/bg_mountain/04.svg",
-		"bg_mountain_05": "img/bg_mountain/05.svg",
-		"bg_mountain_06": "img/bg_mountain/06.svg",
-		"bg_mountain_07": "img/bg_mountain/07.svg",
-		"bg_mountain_08": "img/bg_mountain/08.svg",
-		"bg_mountain_09": "img/bg_mountain/09.svg",
-		"bg_mountain_10": "img/bg_mountain/10.svg",
-		"bg_mountain_11": "img/bg_mountain/11.svg",
-		"bg_mountain_12": "img/bg_mountain/12.svg",
-		"bg_mountain_13": "img/bg_mountain/13.svg",
-		"bg_mountain_14": "img/bg_mountain/14.svg",
-		"bg_mountain_15": "img/bg_mountain/15.svg",
-		"bg_mountain_16": "img/bg_mountain/16.svg",
-		"bg_mountain_17": "img/bg_mountain/17.svg",
+		"bg_mountain_00": "bg/mountain/00.svg",
+		"bg_mountain_01": "bg/mountain/01.svg",
+		"bg_mountain_02": "bg/mountain/02.svg",
+		"bg_mountain_03": "bg/mountain/03.svg",
+		"bg_mountain_04": "bg/mountain/04.svg",
+		"bg_mountain_05": "bg/mountain/05.svg",
+		"bg_mountain_06": "bg/mountain/06.svg",
+		"bg_mountain_07": "bg/mountain/07.svg",
+		"bg_mountain_08": "bg/mountain/08.svg",
+		"bg_mountain_09": "bg/mountain/09.svg",
+		"bg_mountain_10": "bg/mountain/10.svg",
+		"bg_mountain_11": "bg/mountain/11.svg",
+		"bg_mountain_12": "bg/mountain/12.svg",
+		"bg_mountain_13": "bg/mountain/13.svg",
+		"bg_mountain_14": "bg/mountain/14.svg",
+		"bg_mountain_15": "bg/mountain/15.svg",
+		"bg_mountain_16": "bg/mountain/16.svg",
+		"bg_mountain_17": "bg/mountain/17.svg",
+
+		"bg_ice_00": "bg/ice/00.svg",
+		"bg_ice_01": "bg/ice/01.svg",
+		"bg_ice_02": "bg/ice/02.svg",
+		"bg_ice_03": "bg/ice/03.svg",
+		"bg_ice_04": "bg/ice/04.svg",
+		"bg_ice_05": "bg/ice/05.svg",
+		"bg_ice_06": "bg/ice/06.svg",
+		"bg_ice_07": "bg/ice/07.svg",
+		"bg_ice_08": "bg/ice/08.svg",
+		"bg_ice_09": "bg/ice/09.svg",
 	};
 
 	var jsonSources = {
 
+		// levels
 		"level1": "levels/level1.json",
 		"fourier": "levels/fourier-level",
 		"survival01": "levels/survival01.json",
 		"survival02": "levels/survival02.json",
 		"survival03": "levels/survival03.json",
 
-		"bg_mountain_layers": "img/bg_mountain/layers.json",
+		// backgrounds
+		"bg_mountain_layers": "bg/mountain/layers.json",
+		"bg_ice_layers": "bg/ice/layers.json",
+
+		// misc paths
 		"mainmenu_paths": "paths/mainmenu.json",
 		"difficulty_paths": "paths/difficulty.json",
 		"highscores_paths": "paths/highscores.json",
