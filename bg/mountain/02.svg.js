@@ -74,7 +74,7 @@
 		},
 	];
 	return {
-		shapeCompatible: true,
+		shapeCompatible: false,
 		paths: paths,
 	};
 })();
