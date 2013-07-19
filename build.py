@@ -23,12 +23,25 @@ def cat(in_names,out_name):
 		shutil.copyfileobj(open(filename,'rb'), destination)
 	destination.close()
 
+def isIgnoredFile(filename):
+	for ext in ('.svg','.red.svg.json', '.white.svg.json','.py','.sh','.DS_Store'):
+		if filename.endswith(ext):
+			return True
+
+	if filename.startswith('bg') and filename.endswith('.js') and not filename.endswith('.svg.js'):
+		return True
+	
+	return False
+
 # Create zip file.
 def create_zip(in_names,out_name):
 	archive = zipfile.ZipFile(out_name,'w')
 	def addFile(filename):
+		if isIgnoredFile(filename):
+			return
 		archive.write(filename)
 		print "   " + filename
+
 	def addDir(dirname):
 		for dirpath,subdirs,files in os.walk(dirname):
 			for f in files:
