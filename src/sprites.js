@@ -262,6 +262,11 @@ Ptero.AnimSprite = function(dict) {
 		this.frameDuration = 1/this.mosaic.fps;
 		this.totalDuration = this.frameDuration * this.mosaic.numFrames;
 	}
+	else if (dict.vectorAnim) {
+		this.vectorAnim = dict.vectorAnim;
+		this.frameDuration = 1/this.vectorAnim.fps;
+		this.totalDuration = this.frameDuration * this.vectorAnim.frames.length;
+	}
 
 	this.time = 0;
 	this.frame = 0;
@@ -320,6 +325,10 @@ Ptero.AnimSprite.prototype = {
 		else if (this.mosaic) {
 			this.mosaic.draw(ctx,pos,this.mosaic.frame_names[this.frame]);
 		}
+		else if (this.vectorAnim) {
+			var name = this.vectorAnim.frames[this.frame];
+			Ptero.assets.vectorSprites[name].draw(ctx,pos);
+		}
 	},
 	drawBorder: function(ctx,pos,color,handle) {
 		if (this.table) {
@@ -332,6 +341,10 @@ Ptero.AnimSprite.prototype = {
 		}
 		else if (this.mosaic) {
 			return this.mosaic.billboard;
+		}
+		else if (this.vectorAnim) {
+			var name = this.vectorAnim.frames[this.frame];
+			return Ptero.assets.vectorSprites[name].billboard;
 		}
 	},
 };

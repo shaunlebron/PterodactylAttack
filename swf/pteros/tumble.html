@@ -42,13 +42,13 @@ window.onload = function() {
 			ctx.translate(-200,-300);
 			var s = 0.05;
 			ctx.scale(s,s);
-		drawImage(ctx, 'adult_ptero/'+((num+3)%9)+'.svg.js');
+		drawImage(ctx, 'adult/'+((num+3)%9)+'.svg.js');
 		ctx.restore();
 		ctx.save();
 			ctx.translate(-100,-100);
 			var s = 0.05;
 			ctx.scale(s,s);
-			drawImage(ctx, 'baby_ptero/'+num+'.svg.js');
+			drawImage(ctx, 'baby/'+num+'.svg.js');
 		ctx.restore();
 	}
 

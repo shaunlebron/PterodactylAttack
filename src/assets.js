@@ -16,14 +16,14 @@ Ptero.assets = (function(){
 		"swipe"     : "img/swipe.png",
 		"health"    : "img/health.png",
 
-		"baby"        : "img/pteros/baby.png",
+		//"baby"        : "img/pteros/baby.png",
 		"baby_green"  : "img/pteros/baby_green.png",
 		"baby_pink"   : "img/pteros/baby_pink.png",
 		"baby_purple" : "img/pteros/baby_purple.png",
 		"baby_teal"   : "img/pteros/baby_teal.png",
 		"baby_yellow" : "img/pteros/baby_yellow.png",
 
-		"adult"              : "img/pteros/adult.png",
+		//"adult"              : "img/pteros/adult.png",
 		"adult_green"        : "img/pteros/adult_green.png",
 		"adult_greenspot"    : "img/pteros/adult_greenspot.png",
 		"adult_pink"         : "img/pteros/adult_pink.png",
@@ -33,6 +33,37 @@ Ptero.assets = (function(){
 		"adult_yellow"       : "img/pteros/adult_yellow.png",
 		"adult_yellowstripe" : "img/pteros/adult_yellowstripe.png",
 
+	};
+
+	var vectorAnims = {
+		"baby": {
+			"fps": 20,
+			"frames": [
+				"baby_0",
+				"baby_1",
+				"baby_2",
+				"baby_3",
+				"baby_4",
+				"baby_5",
+				"baby_6",
+				"baby_7",
+				"baby_8",
+			],
+		},
+		"adult": {
+			"fps": 20,
+			"frames": [
+				"adult_0",
+				"adult_1",
+				"adult_2",
+				"adult_3",
+				"adult_4",
+				"adult_5",
+				"adult_6",
+				"adult_7",
+				"adult_8",
+			],
+		},
 	};
 
 	var vectorSources = {
@@ -65,6 +96,26 @@ Ptero.assets = (function(){
 		"bg_ice_07": "bg/ice/07.svg",
 		"bg_ice_08": "bg/ice/08.svg",
 		"bg_ice_09": "bg/ice/09.svg",
+
+		"baby_0": "swf/pteros/baby/0.svg",
+		"baby_1": "swf/pteros/baby/1.svg",
+		"baby_2": "swf/pteros/baby/2.svg",
+		"baby_3": "swf/pteros/baby/3.svg",
+		"baby_4": "swf/pteros/baby/4.svg",
+		"baby_5": "swf/pteros/baby/5.svg",
+		"baby_6": "swf/pteros/baby/6.svg",
+		"baby_7": "swf/pteros/baby/7.svg",
+		"baby_8": "swf/pteros/baby/8.svg",
+
+		"adult_0": "swf/pteros/adult/0.svg",
+		"adult_1": "swf/pteros/adult/1.svg",
+		"adult_2": "swf/pteros/adult/2.svg",
+		"adult_3": "swf/pteros/adult/3.svg",
+		"adult_4": "swf/pteros/adult/4.svg",
+		"adult_5": "swf/pteros/adult/5.svg",
+		"adult_6": "swf/pteros/adult/6.svg",
+		"adult_7": "swf/pteros/adult/7.svg",
+		"adult_8": "swf/pteros/adult/8.svg",
 	};
 
 	var jsonSources = {
@@ -210,6 +261,7 @@ Ptero.assets = (function(){
 		// Called after a file is loaded.
 		function handleLoad() {
 			count++;
+			//console.log(count, totalCount);
 			if (count == totalCount) {
 				handleAllDone();
 			}
@@ -221,8 +273,14 @@ Ptero.assets = (function(){
 		// Load images
 		for (name in imageSources) {
 			src = imageSources[name];
+			console.log('image',name, src);
 			img = new Image();
 			img.src = src;
+			img.onerror = (function(name){
+				return function() {
+					console.error("couldn't load image: "+ name);
+				};
+			})(name);
 			img.onload = (function(name){
 				return function() {
 					console.log("loaded image: "+ name);
@@ -277,8 +335,9 @@ Ptero.assets = (function(){
 
 	function makeAnimSprite(name) {
 
-		var table = Ptero.assets.tables[name];
-		var mosaic = Ptero.assets.mosaics[name];
+		var table = tables[name];
+		var mosaic = mosaics[name];
+		var vectorAnim = vectorAnims[name];
 
 		var spriteData = {};
 		if (table) {
@@ -286,6 +345,9 @@ Ptero.assets = (function(){
 		}
 		else if (mosaic) {
 			spriteData.mosaic = mosaic;
+		}
+		else if (vectorAnim) {
+			spriteData.vectorAnim = vectorAnim;
 		}
 
 		return new Ptero.AnimSprite(spriteData);

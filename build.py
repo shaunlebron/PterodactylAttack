@@ -30,7 +30,7 @@ def isIgnoredFile(filename):
 
 	if filename.startswith('bg') and filename.endswith('.js') and not filename.endswith('.svg.js'):
 		return True
-	
+
 	return False
 
 # Create zip file.
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 	print "done."
 
 	print "Creating cocoon.zip ..."
-	create_zip(['cocoon.js','bg','img','audio','levels','paths','fonts'], 'cocoon.zip')
+	create_zip(['cocoon.js','swf','bg','img','audio','levels','paths','fonts'], 'cocoon.zip')
 	print "done."
 
 	"""
