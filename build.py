@@ -24,12 +24,17 @@ def cat(in_names,out_name):
 	destination.close()
 
 def isIgnoredFile(filename):
-	for ext in ('.svg','.red.svg.json', '.white.svg.json','.py','.sh','.DS_Store'):
+	for ext in ('.svg','.red.svg.json', '.white.svg.json','.py','.sh','.DS_Store','notes'):
 		if filename.endswith(ext):
 			return True
 
-	if filename.startswith('bg') and filename.endswith('.js') and not filename.endswith('.svg.js'):
+	if (filename.startswith('bg') or filename.startswith('swf')) and filename.endswith('.js') and not filename.endswith('.svg.js'):
 		return True
+
+	if filename.startswith('swf'):
+		for ext in ('.html','.swf'):
+			if filename.endswith(ext):
+				return True
 
 	return False
 
