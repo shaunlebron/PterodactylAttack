@@ -28,3 +28,4 @@ Edit each svg file:
 	- remove the rectfill tag
 	- remove the first g transform tag and its closing tag.
 	- half each line width (cocoon doubles it for some reason)
+	- run ./correctHeader.py script to formalize the header so it is displayed in browsers.  (make sure XML tag is first line!)
