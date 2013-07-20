@@ -368,6 +368,15 @@ Ptero.createBackgrounds = function() {
 			bg.loadLayersData(Ptero.assets.json["bg_ice_layers"]);
 			return bg;
 		})(),
+
+		"rock": (function(){
+			var bg = new Ptero.Background();
+			setSprites(bg, [
+				"bg_rock",
+			]);
+			bg.loadLayersData(Ptero.assets.json["bg_rock_layers"]);
+			return bg;
+		})(),
 	};
 };
 

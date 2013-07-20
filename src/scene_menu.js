@@ -54,6 +54,7 @@ Ptero.scene_menu = (function(){
 	var time;
 	function init() {
 		//Ptero.background.enableDesat(false);
+		Ptero.setBackground('rock');
 
 		time = 0;
 

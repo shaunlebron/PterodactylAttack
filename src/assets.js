@@ -97,6 +97,8 @@ Ptero.assets = (function(){
 		"bg_ice_08": "bg/ice/08.svg",
 		"bg_ice_09": "bg/ice/09.svg",
 
+		"bg_rock": "bg/rock/00.svg",
+
 		"baby_0": "swf/pteros/baby/0.svg",
 		"baby_1": "swf/pteros/baby/1.svg",
 		"baby_2": "swf/pteros/baby/2.svg",
@@ -130,6 +132,7 @@ Ptero.assets = (function(){
 		// backgrounds
 		"bg_mountain_layers": "bg/mountain/layers.json",
 		"bg_ice_layers": "bg/ice/layers.json",
+		"bg_rock_layers": "bg/rock/layers.json",
 
 		// misc paths
 		"mainmenu_paths": "paths/mainmenu.json",

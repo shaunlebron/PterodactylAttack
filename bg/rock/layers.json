@@ -1,0 +1,17 @@
+[
+	{
+		"desc": "rock",
+		"images": [0],
+		"depth": 1,
+		"parallaxOffset": 0,
+		"collisionShapes": [],
+		"introPath": {
+			"values": [0, 0],
+			"deltaTimes": [ 0, 2]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
+	}
+]
