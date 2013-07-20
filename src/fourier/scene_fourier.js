@@ -15,7 +15,7 @@ Ptero.Fourier.scene_fourier = (function() {
 		//Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
 
-		Ptero.setBackground(Ptero.bg_mountain);
+		Ptero.setBackground('mountain');
 	};
 
 	function update(dt) {

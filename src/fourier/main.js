@@ -14,6 +14,17 @@ window.onload = function() {
 
 			console.log('creating backgrounds');
 			Ptero.createBackgrounds();
+
+			(function() {
+				var bgType;
+				var str="";
+				for (bgType in Ptero.backgrounds) {
+					str += "<li><a onclick=\"Ptero.setBackground('" + bgType + "')\" href=\"#\">" + bgType + "</a></li>";
+				}
+				$('#bgTypeMenu').html(str);
+			})();
+
+
 			console.log("initing input");
 			Ptero.input.init();
 			console.log("initing audio");

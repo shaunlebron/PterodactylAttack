@@ -11,7 +11,11 @@ window.onload = function() {
 
 	Ptero.assets.load(
 		function onDone() {
+			console.log('creating backgrounds');
+			Ptero.createBackgrounds();
+
 			console.log('populating enemy type menu');
+
 			(function() {
 				var enemyType;
 				var str="";
@@ -21,8 +25,16 @@ window.onload = function() {
 				$('#enemyTypeMenu').html(str);
 			})();
 
-			console.log('creating backgrounds');
-			Ptero.createBackgrounds();
+			(function() {
+				var bgType;
+				var str="";
+				for (bgType in Ptero.backgrounds) {
+					str += "<li><a onclick=\"Ptero.setBackground('" + bgType + "')\" href=\"#\">" + bgType + "</a></li>";
+				}
+				$('#bgTypeMenu').html(str);
+			})();
+
+
 			console.log("initing input");
 			Ptero.input.init();
 			console.log("initing enemy model");

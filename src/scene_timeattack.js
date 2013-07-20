@@ -83,7 +83,7 @@ Ptero.scene_timeattack = (function() {
 
 	var time;
 	function init() {
-		Ptero.setBackground(Ptero.bg_mountain);
+		Ptero.setBackground('mountain');
 
 		time = 0;
 		Ptero.score.reset();

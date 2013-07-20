@@ -324,54 +324,56 @@ Ptero.createBackgrounds = function() {
 		}
 	}
 
-	Ptero.bg_mountain = (function(){
+	Ptero.backgrounds = {
+		"mountain": (function(){
+			var bg = new Ptero.Background();
+			setSprites(bg, [
+				"bg_mountain_00",
+				"bg_mountain_01",
+				"bg_mountain_02",
+				"bg_mountain_03",
+				"bg_mountain_04",
+				"bg_mountain_05",
+				"bg_mountain_06",
+				"bg_mountain_07",
+				"bg_mountain_08",
+				"bg_mountain_09",
+				"bg_mountain_10",
+				"bg_mountain_11",
+				"bg_mountain_12",
+				"bg_mountain_13",
+				"bg_mountain_14",
+				"bg_mountain_15",
+				"bg_mountain_16",
+				"bg_mountain_17",
+			]);
+			bg.loadLayersData(Ptero.assets.json["bg_mountain_layers"]);
+			return bg;
+		})(),
 
-		var bg = new Ptero.Background();
-		setSprites(bg, [
-			"bg_mountain_00",
-			"bg_mountain_01",
-			"bg_mountain_02",
-			"bg_mountain_03",
-			"bg_mountain_04",
-			"bg_mountain_05",
-			"bg_mountain_06",
-			"bg_mountain_07",
-			"bg_mountain_08",
-			"bg_mountain_09",
-			"bg_mountain_10",
-			"bg_mountain_11",
-			"bg_mountain_12",
-			"bg_mountain_13",
-			"bg_mountain_14",
-			"bg_mountain_15",
-			"bg_mountain_16",
-			"bg_mountain_17",
-		]);
-		bg.loadLayersData(Ptero.assets.json["bg_mountain_layers"]);
-		return bg;
-	})();
-
-	Ptero.bg_ice = (function(){
-
-		var bg = new Ptero.Background();
-		setSprites(bg, [
-			"bg_ice_00",
-			"bg_ice_01",
-			"bg_ice_02",
-			"bg_ice_03",
-			"bg_ice_04",
-			"bg_ice_05",
-			"bg_ice_06",
-			"bg_ice_07",
-			"bg_ice_08",
-			"bg_ice_09",
-		]);
-		bg.loadLayersData(Ptero.assets.json["bg_ice_layers"]);
-		return bg;
-	})();
+		"ice": (function(){
+			var bg = new Ptero.Background();
+			setSprites(bg, [
+				"bg_ice_00",
+				"bg_ice_01",
+				"bg_ice_02",
+				"bg_ice_03",
+				"bg_ice_04",
+				"bg_ice_05",
+				"bg_ice_06",
+				"bg_ice_07",
+				"bg_ice_08",
+				"bg_ice_09",
+			]);
+			bg.loadLayersData(Ptero.assets.json["bg_ice_layers"]);
+			return bg;
+		})(),
+	};
 };
 
-Ptero.setBackground = function(bg) {
+Ptero.setBackground = function(bgName) {
+	var bg = Ptero.backgrounds[bgName];
 	bg.init();
 	Ptero.background = bg;
+	return bg;
 };

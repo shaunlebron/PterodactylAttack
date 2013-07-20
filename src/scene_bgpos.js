@@ -86,9 +86,8 @@ Ptero.scene_bgpos = (function(){
 	}
 
 	function init() {
-		bg = Ptero.bg_mountain;
-		Ptero.setBackground(bg);
-		Ptero.background.setAnimating(false);
+		bg = Ptero.setBackground('mountain');
+		bg.setAnimating(false);
 		initExtremes();
 
 		Ptero.input.addTouchHandler(touchHandler);
