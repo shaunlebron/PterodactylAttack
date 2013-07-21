@@ -270,9 +270,7 @@ Ptero.Background.prototype = {
 			layer.parallaxOffset = d.parallaxOffset;
 			layer.collisionShapes = d.collisionShapes;
 
-			// Set depth (use furthest depth until baklava works with new background format)
-			//layer.depth = d.depth;
-			layer.depth = frustum.far-i;
+			layer.depth = d.depth;
 
 			// build sprite array from indexes
 			var j,numImages = d.images.length;
