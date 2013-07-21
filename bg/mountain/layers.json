@@ -1,13 +1,21 @@
 [
 	{
 		"desc": "sky",
-		"images": [0],
-		"depth": 1,
+		"images": [
+			0
+		],
+		"depth": 20,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-2.1316846864520427, -2.2454803928672358],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-2.1316846864520427,
+				-2.2454803928672358
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -16,13 +24,21 @@
 	},
 	{
 		"desc": "skyblob1",
-		"images": [1],
-		"depth": 1,
+		"images": [
+			1
+		],
+		"depth": 19,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-2.2640052753069186, -1.9027700677331085],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-2.2640052753069186,
+				-1.9027700677331085
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -31,13 +47,21 @@
 	},
 	{
 		"desc": "skyblob2",
-		"images": [2],
-		"depth": 1,
+		"images": [
+			2
+		],
+		"depth": 18,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.851165038079707, -2.240187569313041],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.851165038079707,
+				-2.240187569313041
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -46,13 +70,21 @@
 	},
 	{
 		"desc": "cloud_right",
-		"images": [3],
-		"depth": 1,
+		"images": [
+			3
+		],
+		"depth": 17,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-2.3050246578519293, -2.0390602742536306],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-2.3050246578519293,
+				-2.0390602742536306
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -61,13 +93,21 @@
 	},
 	{
 		"desc": "cloud_left",
-		"images": [4],
-		"depth": 1,
+		"images": [
+			4
+		],
+		"depth": 16,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.2279350645732436, -1.3999518300845817],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.2279350645732436,
+				-1.3999518300845817
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -76,13 +116,23 @@
 	},
 	{
 		"desc": "volcano",
-		"images": [5,7,8],
-		"depth": 1,
+		"images": [
+			5,
+			7,
+			8
+		],
+		"depth": 15,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-2.2071074220993223, -2.226955510427553],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-2.2071074220993223,
+				-2.226955510427553
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -91,13 +141,21 @@
 	},
 	{
 		"desc": "cloud_volcano",
-		"images": [6],
-		"depth": 1,
+		"images": [
+			6
+		],
+		"depth": 14,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-2.8620943369309546, -2.602745982775399],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-2.8620943369309546,
+				-2.602745982775399
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -106,13 +164,21 @@
 	},
 	{
 		"desc": "back_mountains",
-		"images": [9],
-		"depth": 1,
+		"images": [
+			9
+		],
+		"depth": 13,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.786327949540818, -2.0311210389223375],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.786327949540818,
+				-2.0311210389223375
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -121,13 +187,21 @@
 	},
 	{
 		"desc": "back_cloud_left",
-		"images": [10],
-		"depth": 1,
+		"images": [
+			10
+		],
+		"depth": 12,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-2.3354583932885506, -1.501838683502836],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-2.3354583932885506,
+				-1.501838683502836
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -136,13 +210,21 @@
 	},
 	{
 		"desc": "back_cloud_right",
-		"images": [11],
-		"depth": 1,
+		"images": [
+			11
+		],
+		"depth": 11,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.796913596649208, -2.570989041450228],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.796913596649208,
+				-2.570989041450228
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -151,13 +233,21 @@
 	},
 	{
 		"desc": "mid_mountains",
-		"images": [12],
-		"depth": 1,
+		"images": [
+			12
+		],
+		"depth": 10,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.1961781232480735, -2.265328481195467],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.1961781232480735,
+				-2.265328481195467
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -166,13 +256,21 @@
 	},
 	{
 		"desc": "mid_cloud",
-		"images": [13],
-		"depth": 1,
+		"images": [
+			13
+		],
+		"depth": 9,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-2.7178648950791406, -1.8471954204140615],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-2.7178648950791406,
+				-1.8471954204140615
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -181,13 +279,21 @@
 	},
 	{
 		"desc": "front_mountains",
-		"images": [14],
-		"depth": 1,
+		"images": [
+			14
+		],
+		"depth": 8,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-0.9275673278726766, -2.205784216210773],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-0.9275673278726766,
+				-2.205784216210773
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -196,13 +302,21 @@
 	},
 	{
 		"desc": "back_hills",
-		"images": [15],
-		"depth": 1,
+		"images": [
+			15
+		],
+		"depth": 7,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-0.21568255983344659, -2.373831364056464],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-0.21568255983344659,
+				-2.373831364056464
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -211,13 +325,21 @@
 	},
 	{
 		"desc": "front_hills",
-		"images": [16],
-		"depth": 1,
+		"images": [
+			16
+		],
+		"depth": 6,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [0.3982849724531744, -2.2626820694183687],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				0.3982849724531744,
+				-2.2626820694183687
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -226,13 +348,21 @@
 	},
 	{
 		"desc": "foreground",
-		"images": [17],
-		"depth": 1,
+		"images": [
+			17
+		],
+		"depth": 1.0470349206349217,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [2.271944510638211, -2.289146187189344],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				2.271944510638211,
+				-2.289146187189344
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],

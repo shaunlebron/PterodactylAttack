@@ -1,6 +1,7 @@
 
 Ptero.Baklava.Model = function() {
-	this.enemySprite = new Ptero.AnimSprite({table:Ptero.assets.tables.baby});
+	this.adultSprite = Ptero.assets.makeAnimSprite('adult');
+	this.enemySprite = Ptero.assets.makeAnimSprite('baby');
 	this.enemyPos = {x:0,y:0,z:Ptero.screen.getFrustum().near*2};
 
 	this.collisionDraft = null;
@@ -9,6 +10,11 @@ Ptero.Baklava.Model = function() {
 
 Ptero.Baklava.Model.prototype = {
 	setMode: function(mode) {
+		// for now, we are preventing non-working modes
+		if (mode == 'collision' || mode == 'parallax') {
+			return;
+		}
+
 		this.mode = mode;
 		$("#btn-position").removeClass("active");
 		$("#btn-collision").removeClass("active");
@@ -75,19 +81,16 @@ Ptero.Baklava.Model.prototype = {
 	selectLayer: function(i) {
 		Ptero.background.setSelectedLayer(i);
 		this.selectedLayer = i;
-		this.enemySelected = false;
-	},
-	selectEnemy: function() {
-		Ptero.background.setSelectedLayer(null);
-		this.selectedLayer = null;
-		this.enemySelected = true;
 	},
 	update: function(dt) {
-		if (this.mode == "position") {
+		if (this.mode == "position" && this.selectedLayer != null) {
 			this.enemySprite.update(dt);
+			this.adultSprite.update(dt);
 			var pos = this.enemyPos;
 			var sprite = this.enemySprite;
+			var sprite2 = this.adultSprite;
 			Ptero.deferredSprites.defer(function(ctx) {
+				sprite2.draw(ctx,pos);
 				sprite.draw(ctx,pos);
 			}, this.enemyPos.z);
 		}

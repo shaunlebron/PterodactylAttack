@@ -276,6 +276,16 @@ Ptero.AnimSprite = function(dict) {
 };
 
 Ptero.AnimSprite.prototype = {
+	isPixelInside: function(pos,x,y) {
+		if (this.vectorAnim) {
+			var name = this.vectorAnim.frames[this.frame];
+			var result = Ptero.assets.vectorSprites[name].isPixelInside(pos,x,y);
+			return result;
+		}
+		else {
+			return this.getBillboard().isInsideScreenRect(x,y,pos);
+		}
+	},
 	shuffleTime: function() {
 		this.time = Math.random()*this.totalDuration;
 	},

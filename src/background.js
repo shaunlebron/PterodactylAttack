@@ -378,6 +378,12 @@ Ptero.createBackgrounds = function() {
 			return bg;
 		})(),
 	};
+
+	// Let each background know its own name.
+	var name;
+	for (name in Ptero.backgrounds) {
+		Ptero.backgrounds[name].name = name;
+	}
 };
 
 Ptero.setBackground = function(bgName) {

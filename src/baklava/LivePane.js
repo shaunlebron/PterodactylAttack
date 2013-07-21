@@ -38,36 +38,19 @@ Ptero.Baklava.LivePane.prototype = {
 
 	/* INPUT FUNCTIONS */
 
-	getNodeSelectOffset: function(x,y) {
-		var nodeSprite = Ptero.Baklava.model.enemySprite;
-		var spaceCenter = Ptero.Baklava.model.enemyPos;
-		var spaceClick = this.screenToSpace(x,y,spaceCenter.z);
-		if (nodeSprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
-			return {
-				enemy: true,
-				offset_x: spaceCenter.x - spaceClick.x,
-				offset_y: spaceCenter.y - spaceClick.y,
-			}
-		}
-	},
-
 	getNodeInfoFromCursor: function(x,y) {
 
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
 		if (mode == "position") {
-			//if (node_offset = this.getNodeSelectOffset(x,y)) {
-			//	return node_offset;
-			//}
-			//else {
-				var layer = Ptero.background.getLayerFromPixel(x,y);
-				if (layer == Ptero.Baklava.model.selectedLayer) {
-					Ptero.Baklava.model.selectLayer(null);
-				}
-				else {
-					Ptero.Baklava.model.selectLayer(layer);
-				}
-			//}
+			var layer = Ptero.background.getLayerFromPixel(x,y);
+			if (layer == Ptero.Baklava.model.selectedLayer) {
+				Ptero.Baklava.model.selectLayer(null);
+			}
+			else {
+				Ptero.Baklava.model.selectLayer(layer);
+				this.updateEnemyPos(x,y);
+			}
 		}
 		else if (mode == "collision") {
 			var collisionMode = model.collisionMode;
@@ -250,13 +233,6 @@ Ptero.Baklava.LivePane.prototype = {
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
 		if (mode == "position") {
-			if (info.enemy) {
-				Ptero.Baklava.model.selectEnemy();
-				this.selectedOffsetX = info.offset_x;
-				this.selectedOffsetY = info.offset_y;
-			}
-			else {
-			}
 		}
 		else if (mode == "collision") {
 			if (info.point) {
@@ -278,15 +254,23 @@ Ptero.Baklava.LivePane.prototype = {
 		}
 	},
 
+	updateEnemyPos: function(x,y) {
+		var layer = Ptero.background.layers[Ptero.Baklava.model.selectedLayer];
+		if (layer) {
+			var point = Ptero.Baklava.model.enemyPos;
+			point.z = layer.depth - 0.001;
+			var spaceClick = this.screenToSpace(x,y,point.z);
+			point.x = spaceClick.x;
+			point.y = spaceClick.y;
+		}
+	},
+
 	updateNodePosition: function(x,y) {
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
 		if (mode == "position") {
-			if (model.enemySelected && model.mode == "position") {
-				var point = Ptero.Baklava.model.enemyPos;
-				var spaceClick = this.screenToSpace(x,y,point.z);
-				point.x = spaceClick.x + this.selectedOffsetX;
-				point.y = spaceClick.y + this.selectedOffsetY;
+			if (model.mode == "position") {
+				this.updateEnemyPos(x,y);
 			}
 		}
 		else if (mode == "collision") {

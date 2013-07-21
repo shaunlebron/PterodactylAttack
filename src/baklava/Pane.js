@@ -227,12 +227,6 @@ Ptero.Baklava.Pane.prototype = {
 		ctx.fillText(' '+this.title+' ', this.pixelW - margin, margin);
 	},
 
-	drawEnemy: function(ctx) {
-		var pos = Ptero.Baklava.model.enemyPos;
-		var color = (Ptero.Baklava.model.enemySelected) ? "#F00" : "#333";
-		this.fillCircle(ctx, pos, this.nodeRadius, color);
-	},
-
 	drawBgLayer: function(ctx, i) {
 		ctx.strokeStyle = (i == Ptero.Baklava.model.selectedLayer) ? "#F00" : "#333";
 		ctx.lineWidth = 2;
@@ -303,20 +297,6 @@ Ptero.Baklava.Pane.prototype = {
 
 	getNodeInfoFromCursor: function(x,y) {
 		var mode = Ptero.Baklava.model.mode;
-		if (mode == "position") {
-			var pos = this.spaceToScreen(Ptero.Baklava.model.enemyPos);
-			var dx = pos.x - x;
-			var dy = pos.y - y;
-			var dist_sq = dx*dx + dy*dy;
-			var r2 = 100;
-			if (dist_sq < r2) {
-				return {
-					enemy: true,
-					offset_x: dx,
-					offset_y: dy,
-				};
-			}
-		}
 
 		var i = this.getLayerAtPos(x,y);
 		if (i != null) {
@@ -335,12 +315,8 @@ Ptero.Baklava.Pane.prototype = {
 		this.hoverSelect = false;
 		if (info.layerIndex != null) {
 			Ptero.Baklava.model.selectLayer(info.layerIndex);
+			this.updateEnemyPos();
 			this.selectedOffsetZ = info.offset_z;
-		}
-		else if (info.enemy) {
-			Ptero.Baklava.model.selectEnemy();
-			this.selectedOffsetX = info.offset_x;
-			this.selectedOffsetY = info.offset_y;
 		}
 		else {
 			this.hoverSelect = true;
@@ -353,21 +329,16 @@ Ptero.Baklava.Pane.prototype = {
 		if (layer != null) {
 			var z = this.screenToSpace(x,y).z;
 			Ptero.background.layers[layer].depth = z + this.selectedOffsetZ;
-			Ptero.Baklava.loader.backup();
+			this.updateEnemyPos();
 		}
-		else if (Ptero.Baklava.model.enemySelected) {
+	},
+	updateEnemyPos: function() {
+		var layer = Ptero.background.layers[Ptero.Baklava.model.selectedLayer];
+		if (layer) {
 			var point = Ptero.Baklava.model.enemyPos;
-			var pos = this.screenToSpace(
-				x + this.selectedOffsetX,
-				y + this.selectedOffsetY
-			);
-			var a = this.axes[0];
-			var b = this.axes[1];
-			point[a] = pos[a];
-			point[b] = pos[b];
-
-			// prevent z from going behind camera (causes some errors i haven't accounted for yet)
-			point.z = Math.max(0.0001, point.z);
+			point.x = point.x / point.z * layer.depth;
+			point.y = point.y / point.z * layer.depth;
+			point.z = layer.depth - 0.001;
 		}
 	},
 
@@ -425,9 +396,6 @@ Ptero.Baklava.Pane.prototype = {
 		}
 
 		var mode = Ptero.Baklava.model.mode;
-		if (mode == "position") {
-			this.drawEnemy(ctx);
-		}
 
 		if (this.axes[0] == 'x' && this.axes[1] == 'z') {
 			var p = Ptero.painter;

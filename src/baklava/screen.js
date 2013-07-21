@@ -3,7 +3,7 @@ Ptero.Baklava.screen = (function(){
 
 	var canvas;
 
-	var paneWidth = 300;
+	var paneWidth = 315;
 	var paneHeight = paneWidth/16*9;
 
 	var width =  paneWidth*2;
