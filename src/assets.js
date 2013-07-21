@@ -33,6 +33,16 @@ Ptero.assets = (function(){
 		"adult_yellow"       : "img/pteros/adult_yellow.png",
 		"adult_yellowstripe" : "img/pteros/adult_yellowstripe.png",
 
+		"btn_back"         : "img/buttons/btn_back.png",
+		"btn_credits"      : "img/buttons/btn_credits.png",
+		"btn_highscores"   : "img/buttons/btn_highscores.png",
+		"btn_levelselect"  : "img/buttons/btn_levelselect.png",
+		"btn_options"      : "img/buttons/btn_options.png",
+		"btn_quit"         : "img/buttons/btn_quit.png",
+		"btn_survival"     : "img/buttons/btn_survival.png",
+		"btn_timeattack"   : "img/buttons/btn_timeattack.png",
+		"btn_vibrationoff" : "img/buttons/btn_vibrationoff.png",
+		"btn_vibrationon"  : "img/buttons/btn_vibrationon.png",
 	};
 
 	var vectorAnims = {

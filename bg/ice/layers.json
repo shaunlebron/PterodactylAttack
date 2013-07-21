@@ -1,13 +1,21 @@
 [
 	{
 		"desc": "sky",
-		"images": [0],
-		"depth": 1,
+		"images": [
+			0
+		],
+		"depth": 19.872663139329806,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.4952226540600921, -1.4938994481715433],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.4952226540600921,
+				-1.4938994481715433
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -16,13 +24,21 @@
 	},
 	{
 		"desc": "skyblob1",
-		"images": [1],
-		"depth": 1,
+		"images": [
+			1
+		],
+		"depth": 18.156966490299823,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.4912530363944454, -1.3629020652052166],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.4912530363944454,
+				-1.3629020652052166
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -31,13 +47,21 @@
 	},
 	{
 		"desc": "skyblob2",
-		"images": [2],
-		"depth": 1,
+		"images": [
+			2
+		],
+		"depth": 16.441269841269843,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.2504295646785724, -1.4925762422829942],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.2504295646785724,
+				-1.4925762422829942
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -46,13 +70,21 @@
 	},
 	{
 		"desc": "soft_serve",
-		"images": [3],
-		"depth": 1,
+		"images": [
+			3
+		],
+		"depth": 14.210864197530864,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.4224463301899106, -1.4846370069517019],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.4224463301899106,
+				-1.4846370069517019
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -61,13 +93,21 @@
 	},
 	{
 		"desc": "mountain1",
-		"images": [4],
-		"depth": 1,
+		"images": [
+			4
+		],
+		"depth": 12.49516754850088,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.0360702107336746, -1.485960212840251],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.0360702107336746,
+				-1.485960212840251
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -76,13 +116,21 @@
 	},
 	{
 		"desc": "mountain2",
-		"images": [5],
-		"depth": 1,
+		"images": [
+			5
+		],
+		"depth": 11.122610229276894,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.0003436517428579, -1.4819905951746044],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.0003436517428579,
+				-1.4819905951746044
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -91,13 +139,21 @@
 	},
 	{
 		"desc": "mountain3",
-		"images": [6],
-		"depth": 1,
+		"images": [
+			6
+		],
+		"depth": 9.578483245149911,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-1.016222122405443, -1.4700817421776655],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-1.016222122405443,
+				-1.4700817421776655
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -106,13 +162,21 @@
 	},
 	{
 		"desc": "midground",
-		"images": [7],
-		"depth": 1,
+		"images": [
+			7
+		],
+		"depth": 7.176507936507936,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [-0.49355579642868513, -1.4899298305058968],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				-0.49355579642868513,
+				-1.4899298305058968
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -121,13 +185,21 @@
 	},
 	{
 		"desc": "foreground1",
-		"images": [8],
-		"depth": 1,
+		"images": [
+			8
+		],
+		"depth": 4.94610229276896,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [0.26728758948684833, -1.4846370069517025],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				0.26728758948684833,
+				-1.4846370069517025
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],
@@ -136,13 +208,21 @@
 	},
 	{
 		"desc": "foreground2",
-		"images": [9],
-		"depth": 1,
+		"images": [
+			9
+		],
+		"depth": 1.3431393298059964,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [1.4833138010631532, -1.4978690658371896],
-			"deltaTimes": [ 0, 2]
+			"values": [
+				1.4833138010631532,
+				-1.4978690658371896
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
 		},
 		"idlePath": {
 			"values": [],

@@ -123,33 +123,19 @@ Ptero.scene_menu = (function(){
 		ctx.fillText("MAIN MENU", x,y);
 
 		if (time >= 1) {
-			var size = Ptero.hud.getTextSize('menu_option');
-			ctx.font = size + "px SharkParty";
-			ctx.textBaseline = "middle";
-			ctx.textAlign = "center";
-
 			var titles = [
-				"Survivor",
-				"Time Attack",
-				"Exit",
-				"Options",
+				"survival",
+				"timeattack",
+				"quit",
+				"options",
 			];
 
 			var i;
 			for (i=0; i<4; i++) {
-				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
-				var x = p.x;
-				var y = p.y;
-				var title = titles[i];
-
-				// shadow
-				var r = 2;
-				ctx.fillStyle = "#000";
-				ctx.fillText(title, x+r,y+r);
-
-				// text
-				ctx.fillStyle = "#FFF";
-				ctx.fillText(title,x,y);
+				var pos =enemies[i].getPosition();
+				pos = frustum.projectToZ(pos, frustum.near);
+				var sprite = Ptero.assets.sprites["btn_"+titles[i]];
+				sprite.draw(ctx, pos);
 			}
 		}
 	}
