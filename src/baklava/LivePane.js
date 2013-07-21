@@ -56,13 +56,18 @@ Ptero.Baklava.LivePane.prototype = {
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
 		if (mode == "position") {
-			if (node_offset = this.getNodeSelectOffset(x,y)) {
-				return node_offset;
-			}
-			else {
+			//if (node_offset = this.getNodeSelectOffset(x,y)) {
+			//	return node_offset;
+			//}
+			//else {
 				var layer = Ptero.background.getLayerFromPixel(x,y);
-				Ptero.Baklava.model.selectLayer(layer);
-			}
+				if (layer == Ptero.Baklava.model.selectedLayer) {
+					Ptero.Baklava.model.selectLayer(null);
+				}
+				else {
+					Ptero.Baklava.model.selectLayer(layer);
+				}
+			//}
 		}
 		else if (mode == "collision") {
 			var collisionMode = model.collisionMode;
