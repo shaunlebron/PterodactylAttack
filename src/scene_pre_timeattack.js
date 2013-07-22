@@ -129,6 +129,7 @@ Ptero.scene_pre_timeattack = (function(){
 
 	function switchScene(scene) {
 		Ptero.fadeToScene(scene, 0.25);
+		Ptero.audio.getTitleSong().fadeOut(2.0);
 	}
 
 	var touchHandler = {

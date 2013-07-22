@@ -44,7 +44,7 @@ Ptero.scene_title = (function(){
 
 		Ptero.input.addTouchHandler(touchHandler);
 		song = Ptero.audio.getTitleSong();
-		//song.play();
+		song.play();
 	}
 
 	var touchHandler = {

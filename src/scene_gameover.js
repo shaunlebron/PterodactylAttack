@@ -17,7 +17,14 @@ Ptero.scene_gameover = (function(){
 		selectStageBtn.disable();
 	}
 
+	function switchScene(scene) {
+		Ptero.audio.getScoreSong().fadeOut(1.0);
+		Ptero.fadeToScene(scene,0.5);
+	}
+
 	function init() {
+		Ptero.audio.getScoreSong().play();
+
 		newHighBtn = new Ptero.TextButton({
 			hudPos: {x:0.5, y:0.33},
 			font: "SharkParty",
@@ -49,7 +56,7 @@ Ptero.scene_gameover = (function(){
 			width: 400,
 			height: 200,
 			onclick: function() {
-				Ptero.fadeToScene(getReplayScene(),0.5);
+				switchScene(getReplayScene());
 				Ptero.audio.playSelect();
 			},
 		});
@@ -64,7 +71,7 @@ Ptero.scene_gameover = (function(){
 			width: 400,
 			height: 200,
 			onclick: function() {
-				Ptero.fadeToScene(Ptero.scene_menu,0.5);
+				switchScene(Ptero.scene_menu);
 			},
 		});
 		quitBtn.enable();
@@ -80,10 +87,10 @@ Ptero.scene_gameover = (function(){
 			onclick: function() {
 				var scene = getReplayScene();
 				if (scene == Ptero.scene_timeattack) {
-					Ptero.fadeToScene(Ptero.scene_pre_timeattack,0.5);
+					switchScene(Ptero.scene_pre_timeattack);
 				}
 				else if (scene == Ptero.scene_survivor) {
-					Ptero.fadeToScene(Ptero.scene_pre_survivor,0.5);
+					switchScene(Ptero.scene_pre_survivor);
 				}
 			},
 		});

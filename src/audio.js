@@ -1,6 +1,6 @@
 
 Ptero.audio = (function() {
-	var titleSong;
+	var titleSong,scoreSong;
 	var shoot,explode,hurt;
 	var select;
 
@@ -9,7 +9,10 @@ Ptero.audio = (function() {
 		explode = new Audio("audio/explode04.wav");
 		hurt = new Audio("audio/hurt.wav");
 		select = new Audio("audio/select04.wav");
+
 		titleSong = new Ptero.Song("audio/theme3.mp3");
+
+		scoreSong = new Ptero.Song("audio/score.mp3");
 	}
 
 	function update(dt) {
@@ -24,6 +27,7 @@ Ptero.audio = (function() {
 		playExplode: function() { explode.play(); },
 		playHurt: function() { hurt.play(); },
 		getTitleSong: function() { return titleSong; },
+		getScoreSong: function() { return scoreSong; },
 	};
 })();
 
@@ -34,6 +38,20 @@ Ptero.Song = function(filepath) {
 };
 
 Ptero.Song.prototype = {
+	setLoop: function() {
+		// from: http://stackoverflow.com/a/6452884/142317
+		if (typeof this.audio.loop == 'boolean')
+		{
+			this.audio.loop = true;
+		}
+		else
+		{
+			this.audio.addEventListener('ended', function() {
+				this.currentTime = 0;
+				this.play();
+			}, false);
+		}
+	},
 	update: function(dt) {
 		if (this.volumeFader) {
 			this.volumeFader.update(dt);
