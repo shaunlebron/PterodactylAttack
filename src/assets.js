@@ -43,6 +43,9 @@ Ptero.assets = (function(){
 		"btn_timeattack"   : "img/buttons/btn_timeattack.png",
 		"btn_vibrationoff" : "img/buttons/btn_vibrationoff.png",
 		"btn_vibrationon"  : "img/buttons/btn_vibrationon.png",
+
+		"splash_fg" : "img/splash_fg.png",
+		"splash_bg" : "img/splash_bg.png",
 	};
 
 	var vectorAnims = {

@@ -386,7 +386,7 @@ Ptero.createBackgrounds = function() {
 
 Ptero.setBackground = function(bgName) {
 	var bg = Ptero.backgrounds[bgName];
-	bg.init();
+	bg && bg.init();
 	Ptero.background = bg;
 	return bg;
 };
