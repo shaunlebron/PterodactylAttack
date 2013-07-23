@@ -367,6 +367,25 @@ Ptero.createBackgrounds = function() {
 			return bg;
 		})(),
 
+		"volcano": (function(){
+			var bg = new Ptero.Background();
+			setSprites(bg, [
+				"bg_volcano_00",
+				"bg_volcano_01",
+				"bg_volcano_02",
+				"bg_volcano_03",
+				"bg_volcano_04",
+				"bg_volcano_05",
+				"bg_volcano_06",
+				"bg_volcano_07",
+				"bg_volcano_08",
+				"bg_volcano_09",
+				"bg_volcano_10",
+			]);
+			bg.loadLayersData(Ptero.assets.json["bg_volcano_layers"]);
+			return bg;
+		})(),
+
 		"rock": (function(){
 			var bg = new Ptero.Background();
 			setSprites(bg, [

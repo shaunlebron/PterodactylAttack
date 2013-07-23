@@ -156,11 +156,13 @@ Ptero.input = (function(){
 		}
 		document.addEventListener('keydown', function(e) {
 			if (e.keyCode == 13) { // enter key
+				/*
 				if (Ptero.Ptalaga || Ptero.Baklava || Ptero.Fourier) {
 				}
 				else {
 					toggleFullScreen(document.getElementsByTagName("html")[0]);
 				}
+				*/
 			}
 			else if (e.keyCode == 70) { // f
 				Ptero.executive.toggleFps();

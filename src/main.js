@@ -51,7 +51,6 @@ window.onload = function() {
 			Ptero.input.init();
 			console.log("setting scene");
 			Ptero.setScene(Ptero.scene_hygoon);
-			//Ptero.setScene(Ptero.scene_bgpos);
 			console.log("starting exec");
 			Ptero.executive.start();
 		},

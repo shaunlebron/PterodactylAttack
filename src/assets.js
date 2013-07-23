@@ -110,6 +110,18 @@ Ptero.assets = (function(){
 		"bg_ice_08": "bg/ice/08.svg",
 		"bg_ice_09": "bg/ice/09.svg",
 
+		"bg_volcano_00": "bg/volcano/00.svg",
+		"bg_volcano_01": "bg/volcano/01.svg",
+		"bg_volcano_02": "bg/volcano/02.svg",
+		"bg_volcano_03": "bg/volcano/03.svg",
+		"bg_volcano_04": "bg/volcano/04.svg",
+		"bg_volcano_05": "bg/volcano/05.svg",
+		"bg_volcano_06": "bg/volcano/06.svg",
+		"bg_volcano_07": "bg/volcano/07.svg",
+		"bg_volcano_08": "bg/volcano/08.svg",
+		"bg_volcano_09": "bg/volcano/09.svg",
+		"bg_volcano_10": "bg/volcano/10.svg",
+
 		"bg_rock": "bg/rock/00.svg",
 
 		"baby_0": "swf/pteros/baby/0.svg",
@@ -146,6 +158,7 @@ Ptero.assets = (function(){
 		"bg_mountain_layers": "bg/mountain/layers.json",
 		"bg_ice_layers": "bg/ice/layers.json",
 		"bg_rock_layers": "bg/rock/layers.json",
+		"bg_volcano_layers": "bg/volcano/layers.json",
 
 		// misc paths
 		"mainmenu_paths": "paths/mainmenu.json",

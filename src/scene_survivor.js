@@ -84,7 +84,15 @@ Ptero.scene_survivor = (function() {
 
 	var time;
 	function init() {
-		Ptero.setBackground('ice');
+		if (difficulty == 'easy') {
+			Ptero.setBackground('mountain');
+		}
+		else if (difficulty == 'medium') {
+			Ptero.setBackground('ice');
+		}
+		else if (difficulty == 'hard') {
+			Ptero.setBackground('volcano');
+		}
 
 		Ptero.score.reset();
 

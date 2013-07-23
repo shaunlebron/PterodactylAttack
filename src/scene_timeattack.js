@@ -83,7 +83,15 @@ Ptero.scene_timeattack = (function() {
 
 	var time;
 	function init() {
-		Ptero.setBackground('mountain');
+		if (difficulty == 'easy') {
+			Ptero.setBackground('mountain');
+		}
+		else if (difficulty == 'medium') {
+			Ptero.setBackground('ice');
+		}
+		else if (difficulty == 'hard') {
+			Ptero.setBackground('volcano');
+		}
 
 		time = 0;
 		Ptero.score.reset();
