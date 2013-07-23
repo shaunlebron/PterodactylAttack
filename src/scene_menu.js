@@ -41,7 +41,7 @@ Ptero.scene_menu = (function(){
 		}
 		enemies[2].afterHit = function() {
 			// exit
-			switchScene(Ptero.scene_title);
+			switchScene(Ptero.scene_hygoon);
 		}
 		enemies[3].afterHit = function() {
 			// options
