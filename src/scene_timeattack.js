@@ -82,6 +82,7 @@ Ptero.scene_timeattack = (function() {
 	}
 
 	var time;
+	var script;
 	function init() {
 		if (difficulty == 'easy') {
 			Ptero.setBackground('mountain');
@@ -123,6 +124,9 @@ Ptero.scene_timeattack = (function() {
 		Ptero.scene_options.setReturnScene(this);
 		Ptero.scene_options.setResumeOnReturn(true);
 		enableControls();
+
+		script = Ptero.stage_script;
+		script.init();
 	};
 
 	function resume() {
@@ -133,6 +137,8 @@ Ptero.scene_timeattack = (function() {
 	}
 
 	function update(dt) {
+		script.update(dt);
+
 		time += dt;
 		if (time > 2) {
 			var i;

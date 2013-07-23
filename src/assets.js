@@ -164,6 +164,20 @@ Ptero.assets = (function(){
 		"mainmenu_paths": "paths/mainmenu.json",
 		"difficulty_paths": "paths/difficulty.json",
 		"highscores_paths": "paths/highscores.json",
+
+		// stage waves
+		"A1_1D_1HP": "paths/A1_1D_1HP",
+		"A2_2D_2HP": "paths/A2_2D_2HP",
+		"A3_3D_3HP": "paths/A3_3D_3HP",
+		"A4_4D_4HP": "paths/A4_4D_4HP",
+		"A5_5D_5HP": "paths/A5_5D_5HP",
+
+		"B1_1D_2HP": "paths/B1_1D_2HP",
+		"B2_2D_4HP": "paths/B2_2D_4HP",
+		"B3_3D_6HP": "paths/B3_3D_6HP",
+		"B4_4D_8HP": "paths/B4_4D_8HP",
+		"B5_5D_10HP": "paths/B5_5D_10HP",
+		"B6_6D_12HP": "paths/B6_6D_12HP",
 	};
 
 	// Add secondary sources dependent on the primary sources listed above.

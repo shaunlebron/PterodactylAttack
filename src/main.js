@@ -41,6 +41,8 @@ window.onload = function() {
 
 	Ptero.assets.load(
 		function onDone(){
+			console.log('creating wave libraries');
+			Ptero.createWaveLibraries();
 			console.log('creating backgrounds');
 			Ptero.createBackgrounds();
 			console.log('loading high scores');
