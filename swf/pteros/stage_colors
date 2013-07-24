@@ -1,5 +1,9 @@
 
 				DARK		LIGHT
+original
+	adult		rgba(183,58,52,1.000)	rgba(206,52,52,1.000)
+	baby		rgba(60,125,117,1.000)	rgba(128,193,185,1.000)
+
 mountain
 	adult
 		red		892427		b12432
