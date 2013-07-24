@@ -1,0 +1,25 @@
+
+				DARK		LIGHT
+mountain
+	adult
+		red		892427		b12432
+		green	24894b		24b151
+	baby
+		blue	2a6598		7ebbed
+		purple	6e179e		bf56f6
+
+ice
+	adult
+		red		a52e51		d13169
+		green	2d8c6f		2fb582
+	baby
+		purple	6d1aa8		bf6efd
+		yellow	8c6b12		e8c358
+
+volcano
+	adult
+		blue	137992		1aa4bb
+		orange	bc660e		dc6a0b
+	baby
+		green	1a8037		60dd84
+		purple	403277		9887db

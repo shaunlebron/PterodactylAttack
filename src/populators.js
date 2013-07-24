@@ -49,9 +49,10 @@ Ptero.TimePopulator.prototype = {
 		}
 		// TODO: shuffle
 		return result;
-	};
+	},
 
 	populate: function() {
+		/*
 		var hpMax, hpMin;
 		var pteroMax, pteroMin;
 		var stageLimit; // TODO: get stage limit on ptero population
@@ -85,6 +86,7 @@ Ptero.TimePopulator.prototype = {
 				break;
 			}
 		}
+		*/
 	},
 };
 
