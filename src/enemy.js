@@ -1,80 +1,4 @@
-Ptero.enemyTypes = {
-	"baby": {
-		"health": 1,
-		"damage": 1,
-		"spriteName": "baby",
-	},
-	"baby_green": {
-		"health": 1,
-		"damage": 1,
-		"spriteName": "baby_green",
-	},
-	"baby_pink": {
-		"health": 1,
-		"damage": 1,
-		"spriteName": "baby_pink",
-	},
-	"baby_purple": {
-		"health": 1,
-		"damage": 1,
-		"spriteName": "baby_purple",
-	},
-	"baby_teal": {
-		"health": 1,
-		"damage": 1,
-		"spriteName": "baby_teal",
-	},
-	"baby_yellow": {
-		"health": 1,
-		"damage": 1,
-		"spriteName": "baby_yellow",
-	},
-	"adult": {
-		"health": 2,
-		"damage": 1,
-		"spriteName": "adult",
-	},
-	"adult_red": {
-		"health": 2,
-		"damage": 1,
-		"spriteName": "adult_red",
-	},
-	"adult_purple": {
-		"health": 2,
-		"damage": 1,
-		"spriteName": "adult_purple",
-	},
-	"adult_green": {
-		"health": 2,
-		"damage": 1,
-		"spriteName": "adult_green",
-	},
-	"adult_yellowstripe": {
-		"health": 2,
-		"damage": 1,
-		"spriteName": "adult_yellowstripe",
-	},
-	"adult_greenspot": {
-		"health": 3,
-		"damage": 1,
-		"spriteName": "adult_greenspot",
-	},
-	"adult_pink": {
-		"health": 3,
-		"damage": 1,
-		"spriteName": "adult_pink",
-	},
-	"adult_redspot": {
-		"health": 3,
-		"damage": 1,
-		"spriteName": "adult_redspot",
-	},
-	"adult_yellow": {
-		"health": 3,
-		"damage": 1,
-		"spriteName": "adult_yellow",
-	},
-};
+// "Ptero.enemyTypes" is now automatically defined in assets.js after loading the ptero anims.
 
 Ptero.Enemy = function() {
 
@@ -109,6 +33,7 @@ Ptero.Enemy.fromState = function(state, startTime) {
 	if (enemyType == null) {
 		enemyType = "baby";
 	}
+
 	if (isAttack == null) {
 		isAttack = false;
 	}

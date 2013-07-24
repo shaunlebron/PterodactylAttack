@@ -16,23 +16,6 @@ Ptero.assets = (function(){
 		"swipe"     : "img/swipe.png",
 		"health"    : "img/health.png",
 
-		//"baby"        : "img/pteros/baby.png",
-		"baby_green"  : "img/pteros/baby_green.png",
-		"baby_pink"   : "img/pteros/baby_pink.png",
-		"baby_purple" : "img/pteros/baby_purple.png",
-		"baby_teal"   : "img/pteros/baby_teal.png",
-		"baby_yellow" : "img/pteros/baby_yellow.png",
-
-		//"adult"              : "img/pteros/adult.png",
-		"adult_green"        : "img/pteros/adult_green.png",
-		"adult_greenspot"    : "img/pteros/adult_greenspot.png",
-		"adult_pink"         : "img/pteros/adult_pink.png",
-		"adult_purple"       : "img/pteros/adult_purple.png",
-		"adult_red"          : "img/pteros/adult_red.png",
-		"adult_redspot"      : "img/pteros/adult_redspot.png",
-		"adult_yellow"       : "img/pteros/adult_yellow.png",
-		"adult_yellowstripe" : "img/pteros/adult_yellowstripe.png",
-
 		"btn_back"         : "img/buttons/btn_back.png",
 		"btn_credits"      : "img/buttons/btn_credits.png",
 		"btn_highscores"   : "img/buttons/btn_highscores.png",
@@ -46,37 +29,6 @@ Ptero.assets = (function(){
 
 		"splash_fg" : "img/splash_fg.png",
 		"splash_bg" : "img/splash_bg.png",
-	};
-
-	var vectorAnims = {
-		"baby": {
-			"fps": 20,
-			"frames": [
-				"baby_0",
-				"baby_1",
-				"baby_2",
-				"baby_3",
-				"baby_4",
-				"baby_5",
-				"baby_6",
-				"baby_7",
-				"baby_8",
-			],
-		},
-		"adult": {
-			"fps": 20,
-			"frames": [
-				"adult_0",
-				"adult_1",
-				"adult_2",
-				"adult_3",
-				"adult_4",
-				"adult_5",
-				"adult_6",
-				"adult_7",
-				"adult_8",
-			],
-		},
 	};
 
 	var vectorSources = {
@@ -123,27 +75,56 @@ Ptero.assets = (function(){
 		"bg_volcano_10": "bg/volcano/10.svg",
 
 		"bg_rock": "bg/rock/00.svg",
-
-		"baby_0": "swf/pteros/baby/0.svg",
-		"baby_1": "swf/pteros/baby/1.svg",
-		"baby_2": "swf/pteros/baby/2.svg",
-		"baby_3": "swf/pteros/baby/3.svg",
-		"baby_4": "swf/pteros/baby/4.svg",
-		"baby_5": "swf/pteros/baby/5.svg",
-		"baby_6": "swf/pteros/baby/6.svg",
-		"baby_7": "swf/pteros/baby/7.svg",
-		"baby_8": "swf/pteros/baby/8.svg",
-
-		"adult_0": "swf/pteros/adult/0.svg",
-		"adult_1": "swf/pteros/adult/1.svg",
-		"adult_2": "swf/pteros/adult/2.svg",
-		"adult_3": "swf/pteros/adult/3.svg",
-		"adult_4": "swf/pteros/adult/4.svg",
-		"adult_5": "swf/pteros/adult/5.svg",
-		"adult_6": "swf/pteros/adult/6.svg",
-		"adult_7": "swf/pteros/adult/7.svg",
-		"adult_8": "swf/pteros/adult/8.svg",
 	};
+
+	// populated by "addPteroVectorAnim"
+	var vectorAnims = {};
+
+	// should be enemy.js, but we are just defaulting the values for now in "addPteroVectorAnim"
+	Ptero.enemyTypes = {};
+
+	// this is assuming a very specific frame structure for vectors
+	function addPteroVectorAnim(name) {
+		var numFrames = 9;
+		var i;
+		var frames = [];
+		var frame_name;
+		for (i=0; i<numFrames; i++) {
+			frame_name = name+"_"+i;
+			frames.push(frame_name);
+			vectorSources[frame_name] = "swf/pteros/"+name+"/"+i+".svg";
+		}
+		vectorAnims[name] = {
+			"fps": 20,
+			"frames": frames,
+		};
+
+		// Create enemy type
+		var health = 1;
+		if (name.match(/^adult/)) {
+			health = 2;
+		}
+		Ptero.enemyTypes[name] = {
+			"health": health,
+			"damage": 1,
+			"spriteName": name,
+		};
+	}
+
+	addPteroVectorAnim('baby');
+	addPteroVectorAnim('baby_mountain_blue');
+	addPteroVectorAnim('baby_mountain_purple');
+	addPteroVectorAnim('baby_ice_purple');
+	addPteroVectorAnim('baby_ice_yellow');
+	addPteroVectorAnim('baby_volcano_green');
+	addPteroVectorAnim('baby_volcano_purple');
+	addPteroVectorAnim('adult');
+	addPteroVectorAnim('adult_mountain_red');
+	addPteroVectorAnim('adult_mountain_green');
+	addPteroVectorAnim('adult_ice_red');
+	addPteroVectorAnim('adult_ice_green');
+	addPteroVectorAnim('adult_volcano_blue');
+	addPteroVectorAnim('adult_volcano_orange');
 
 	var jsonSources = {
 
