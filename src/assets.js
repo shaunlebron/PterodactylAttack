@@ -95,7 +95,7 @@ Ptero.assets = (function(){
 			vectorSources[frame_name] = "swf/pteros/"+name+"/"+i+".svg";
 		}
 		vectorAnims[name] = {
-			"fps": 20,
+			"fps": 12,
 			"frames": frames,
 		};
 
