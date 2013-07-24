@@ -1,0 +1,50 @@
+
+<canvas id="canvas"></canvas>
+<script>
+
+window.onload = function() {
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+
+	var w = 30000;
+	var h = 20000;
+	var s = 0.03;
+	canvas.width = w*s;
+	canvas.height = h*s;
+	canvas.style.border = "1px solid black";
+	ctx.scale(s,s);
+
+	function drawImage(filename) {
+		var req = new XMLHttpRequest();
+		req.onload = function() {
+			var data = eval(this.responseText);
+			var i,len=data.paths.length;
+			for (i=0; i<len; i++) {
+				ctx.save();
+				ctx.fillStyle = null;
+				ctx.strokeStyle = null;
+				data.paths[i](ctx);
+				if (ctx.fillStyle) {
+					ctx.fill();
+				}
+				if (ctx.strokeStyle) {
+					ctx.stroke();
+				}
+				ctx.restore();
+			}
+		};
+		req.open('GET', filename, false);
+		req.send();
+	}
+	
+	drawImage('0.svg.js');
+	drawImage('1.svg.js');
+	drawImage('2.svg.js');
+	drawImage('3.svg.js');
+	drawImage('4.svg.js');
+	drawImage('5.svg.js');
+	drawImage('6.svg.js');
+	drawImage('7.svg.js');
+	drawImage('8.svg.js');
+}
+</script>
