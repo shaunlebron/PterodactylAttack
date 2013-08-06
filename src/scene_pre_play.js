@@ -32,21 +32,6 @@ Ptero.scene_pre_play = (function(){
 		}
 
 		enemies[0].afterHit = function() {
-			// easy
-			Ptero.scene_play.setStage("mountain");
-			switchScene(Ptero.scene_play);
-		}
-		enemies[1].afterHit = function() {
-			// medium
-			Ptero.scene_play.setStage("ice");
-			switchScene(Ptero.scene_play);
-		}
-		enemies[2].afterHit = function() {
-			// hard
-			Ptero.scene_play.setStage("volcano");
-			switchScene(Ptero.scene_play);
-		}
-		enemies[3].afterHit = function() {
 			// back
 			switchScene(Ptero.scene_menu);
 		}
@@ -69,6 +54,30 @@ Ptero.scene_pre_play = (function(){
 		resetPanes();
 
 		resetHighScoreText();
+		makeFramePositions();
+	}
+
+	var framePositions;
+	function makeFramePositions() {
+		var frustum = Ptero.screen.getFrustum();
+		var x = frustum.nearRight/3*2;
+		framePositions = [
+			{
+				x: -x,
+				y: 0,
+				z: frustum.near,
+			},
+			{
+				x: 0,
+				y: 0,
+				z: frustum.near,
+			},
+			{
+				x: x,
+				y: 0,
+				z: frustum.near,
+			},
+		];
 	}
 
 	var highScore;
@@ -100,7 +109,7 @@ Ptero.scene_pre_play = (function(){
 		topPaneY = 0;
 		topPaneY2 = h/10*3;
 		botPaneY = h;
-		botPaneY2 = h/5*3;
+		botPaneY2 = h/10*7;
 	}
 	function updatePanes() {
 		topPaneY += (topPaneY2 - topPaneY) * 0.1;
@@ -123,6 +132,21 @@ Ptero.scene_pre_play = (function(){
 
 	var touchHandler = {
 		start: function(x,y) {
+			var i;
+			var names = ["mountain", "ice", "volcano"];
+			var name;
+			var sprite;
+			var pos;
+			for (i=0; i<3; i++) {
+				name = names[i];
+				sprite = Ptero.assets.sprites["frame_"+name];
+				pos = framePositions[i];
+				if (sprite.billboard.isInsideScreenRect(x,y,pos)) {
+					Ptero.scene_play.setStage(name);
+					Ptero.setScene(Ptero.scene_play);
+					break;
+				}
+			}
 		},
 		move: function(x,y) {
 		},
@@ -139,11 +163,12 @@ Ptero.scene_pre_play = (function(){
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
 			var pos = enemies[i].getPosition();
+
 			if (pos) {
 				Ptero.deferredSprites.defer(
-					(function(e) {
+					(function(enemy) {
 						return function(ctx){
-							e.draw(ctx);
+							enemy.draw(ctx);
 						};
 					})(enemies[i]),
 					pos.z);
@@ -183,14 +208,11 @@ Ptero.scene_pre_play = (function(){
 			ctx.textAlign = "center";
 
 			var titles = [
-				"easy",
-				"medium",
-				"hard",
 				"back",
 			];
 
 			var i;
-			for (i=0; i<4; i++) {
+			for (i=0; i<enemies.length; i++) {
 				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
 				var x = p.x;
 				var y = p.y;
@@ -198,13 +220,29 @@ Ptero.scene_pre_play = (function(){
 				ctx.fillText(titles[i],x,y);
 			}
 		}
+
+		for (i=0; i<3; i++) {
+			var pos = framePositions[i];
+			var sprite;
+			if (i==0) {
+				sprite = Ptero.assets.sprites["frame_mountain"];
+			}
+			else if (i==1) {
+				sprite = Ptero.assets.sprites["frame_ice"];
+			}
+			else if (i==2) {
+				sprite = Ptero.assets.sprites["frame_volcano"];
+			}
+
+			sprite.draw(ctx, pos);
+		}
 	}
 
 	return {
 		init: init,
 		update: update,
 		draw: draw,
-		cleanup:cleanup,
+		cleanup: cleanup,
 	};
 
 })();

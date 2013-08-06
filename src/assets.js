@@ -29,6 +29,10 @@ Ptero.assets = (function(){
 
 		"splash_fg" : "img/splash_fg.png",
 		"splash_bg" : "img/splash_bg.png",
+
+		"frame_mountain" : "img/frame_mountain.png",
+		"frame_ice"      : "img/frame_ice.png",
+		"frame_volcano"  : "img/frame_volcano.png",
 	};
 
 	var vectorSources = {
