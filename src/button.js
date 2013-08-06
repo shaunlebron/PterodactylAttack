@@ -51,15 +51,25 @@ Ptero.Button = function(a) {
 				startInside = isInside(x,y);
 				lastX = x;
 				lastY = y;
+				if (startInside) {
+					that.ontouchstart && that.ontouchstart(x,y);
+				}
 			},
 			move: function(x,y) {
 				lastX = x;
 				lastY = y;
+				if (isInside(x,y)) {
+					that.ontouchenter && that.ontouchenter(x,y);
+				}
+				else {
+					that.ontouchleave && that.ontouchleave(x,y);
+				}
 			},
 			end: function(x,y) {
 				if (startInside && isInside(lastX,lastY)) {
 					that.onclick && that.onclick();
 				}
+				that.ontouchend && that.ontouchend(x,y);
 			},
 			cancel: function(x,y) {
 			},

@@ -144,6 +144,7 @@ Ptero.orb = (function(){
 		charge.reset();
 		setOrigin(0,-2);
 		enableTouch();
+		enableNet(false);
 	};
 
 	function update(dt) {
@@ -214,6 +215,26 @@ Ptero.orb = (function(){
 		ctx.beginPath();
 		ctx.arc(p.x,p.y,radius, 0, 2*Math.PI);
 		ctx.fill();
+		if (isNet) {
+			ctx.strokeStyle = "#FFF";
+			ctx.lineWidth = 4;
+			ctx.beginPath();
+			var i,len=8;
+			for (i=0; i<len; i++) {
+				ctx.moveTo(p.x,p.y);
+				var a = Math.PI/(len-1)*i;
+				var x = Math.cos(a)*radius;
+				var y = Math.sin(a)*radius;
+				ctx.lineTo(p.x+x,p.y-y);
+			}
+			ctx.stroke();
+			len=4;
+			for (i=0; i<len; i++) {
+				ctx.beginPath();
+				ctx.arc(p.x,p.y,radius/len*(i+1),0,Math.PI*2);
+				ctx.stroke();
+			}
+		}
 		charge.draw(ctx,p);
 
 		if (swipePos) {
@@ -873,11 +894,17 @@ Ptero.orb = (function(){
 		tapToSelect = on;
 	};
 
+	var isNet = false;
+	function enableNet(on) {
+		isNet = on;
+	};
+
 	return {
 		init: init,
 		draw: draw,
 		setDrawCones: function(on) { shouldDrawCones = on; },
 		toggleDrawCones: function() { shouldDrawCones = !shouldDrawCones; },
+		enableNet: enableNet,
 		drawCone: drawCone,
 		setTargets: setTargets,
 		setOrigin: setOrigin,

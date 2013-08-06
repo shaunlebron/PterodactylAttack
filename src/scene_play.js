@@ -31,10 +31,12 @@ Ptero.scene_play = (function() {
 
 	function enableControls() {
 		pauseBtn.enable();
+		netBtn.enable();
 		Ptero.orb.enableTouch();
 	}
 
 	function disableControls() {
+		netBtn.disable();
 		pauseBtn.disable();
 		Ptero.orb.disableTouch();
 	}
@@ -83,9 +85,31 @@ Ptero.scene_play = (function() {
 	}
 
 	var time;
+	var netBtn;
 	function init() {
 		Ptero.setBackground(stage);
 		Ptero.refreshBounty();
+
+		netBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['net'],
+			anchor: {
+				x: "left",
+				y: "center",
+			},
+		});
+		netBtn.ontouchstart = function(x,y) {
+			Ptero.orb.enableNet(true);
+		}
+		netBtn.ontouchend = function(x,y) {
+			Ptero.orb.enableNet(false);
+		}
+		netBtn.ontouchenter = function(x,y) {
+			Ptero.orb.enableNet(true);
+		}
+		netBtn.ontouchleave = function(x,y) {
+			Ptero.orb.enableNet(false);
+		}
+
 
 		Ptero.score.reset();
 
@@ -198,6 +222,7 @@ Ptero.scene_play = (function() {
 				pauseBtn.draw(ctx);
 				Ptero.score.draw(ctx);
 				Ptero.player.drawHealth(ctx);
+				netBtn.draw(ctx);
 			}
 			//timerDisplay.draw(ctx);
 
