@@ -25,24 +25,50 @@ Ptero.Player.prototype = {
 	},
 	drawHealth: function(ctx) {
 		var pad = Ptero.hud.getBorderPad();
-		var y = 3*pad;
-		var x = Ptero.screen.getWidth() - pad;
+		var y = pad;
+		var x = pad;
+		var scale = Ptero.screen.getScale();
 
-		var spriteTable = Ptero.assets.tables["health"];
-		var scale = Ptero.screen.getScale() * spriteTable.scale;
-		var w = spriteTable.tileWidth * scale;
-		var h = spriteTable.tileHeight * scale;
+		var w = 50 * this.maxHealth * scale;
+		var h = 50 * scale;
 
-		var i,len=this.maxHealth;
-		for (i=0; i<len; i++) {
-			var pos = Ptero.screen.screenToSpace({ x: x-w/2, y: y+h/2 });
-			if (i <= this.health-1) {
-				spriteTable.draw(ctx, pos, 0);
+		// create backdrop for both health and bounty
+		ctx.fillStyle = "rgba(0,0,0,0.5)";
+		ctx.fillRect(0,0,w+pad*2,h*2+pad*3);
+		
+		// draw health border
+		ctx.strokeStyle = "#FFF";
+		ctx.lineWidth = 2;
+		ctx.strokeRect(x,y,w,h);
+		ctx.fillStyle = "#FFF";
+		ctx.fillRect(x,y,w / this.maxHealth * this.health, h);
+
+		// draw bounty
+		var bounty = Ptero.bounty;
+		(function(){
+			var i;
+			var r_small = h/4;
+			var r_big = h/2;
+			var space = 3*scale + r_big*2;
+			var bx = x+r_big;
+			var by = y + h + pad + h/2;
+			for (i=0; i<bounty.size; i++) {
+				var j = bounty.items[i];
+				var r = bounty.caught[i] ? r_small : r_big;
+
+				// draw circle
+				ctx.beginPath();
+				ctx.arc(bx,by,r,0,Math.PI*2);
+				ctx.fillStyle = bounty.colors[j];
+				ctx.fill();
+
+				// darken circle if caught
+				if (bounty.caught[i]) {
+					ctx.fillStyle = "rgba(0,0,0,0.7)";
+					ctx.fill();
+				}
+				bx += space;
 			}
-			else {
-				spriteTable.draw(ctx, pos, 1);
-			}
-			x -= w;
-		}
+		})();
 	},
 };

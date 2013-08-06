@@ -14,7 +14,6 @@ Ptero.assets = (function(){
 		"timertype" : "img/timertype.png",
 		"scoretype" : "img/scoretype.png",
 		"swipe"     : "img/swipe.png",
-		"health"    : "img/health.png",
 
 		"btn_back"         : "img/buttons/btn_back.png",
 		"btn_credits"      : "img/buttons/btn_credits.png",

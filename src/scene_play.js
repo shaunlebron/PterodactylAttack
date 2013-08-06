@@ -85,6 +85,7 @@ Ptero.scene_play = (function() {
 	var time;
 	function init() {
 		Ptero.setBackground(stage);
+		Ptero.refreshBounty();
 
 		Ptero.score.reset();
 
@@ -216,7 +217,7 @@ Ptero.scene_play = (function() {
 
 	var stage;
 	function getStage() {
-		return level;
+		return stage;
 	}
 	function setStage(d) {
 		stage = d;
