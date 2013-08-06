@@ -17,6 +17,10 @@ Ptero.VectorSprite = function(dict) {
 		for (i=0; i<len; i++) {
 			var path = new Path();
 			this.paths[i](path);
+			// compensate for cocoon's erroneous doubling of line width
+			if (path.lineWidth) {
+				path.lineWidth /= 2;
+			}
 			this.shape.addPath(path);
 		}
 	}
