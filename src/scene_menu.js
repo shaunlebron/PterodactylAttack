@@ -32,29 +32,22 @@ Ptero.scene_menu = (function(){
 		}
 
 		enemies[0].afterHit = function() {
-			// start survivor mode
-			switchScene(Ptero.scene_pre_survivor);
+			switchScene(Ptero.scene_pre_play);
 		}
 		enemies[1].afterHit = function() {
-			// start time attack mode
-			switchScene(Ptero.scene_pre_timeattack);
-		}
-		enemies[2].afterHit = function() {
-			// exit
-			switchScene(Ptero.scene_hygoon);
-		}
-		enemies[3].afterHit = function() {
 			// options
 			Ptero.scene_options.setReturnScene(Ptero.scene_menu);
 			Ptero.scene_options.setResumeOnReturn(false);
 			switchScene(Ptero.scene_options);
 		}
+		enemies[2].afterHit = function() {
+			// exit
+			switchScene(Ptero.scene_hygoon);
+		}
 	}
 
 	var time;
 	function init() {
-		//Ptero.background.enableDesat(false);
-		Ptero.setBackground('rock');
 
 		time = 0;
 
@@ -123,19 +116,24 @@ Ptero.scene_menu = (function(){
 		ctx.fillText("MAIN MENU", x,y);
 
 		if (time >= 1) {
+			var size = Ptero.hud.getTextSize('menu_option');
+			ctx.font = size + "px SharkParty";
+			ctx.fillStyle = "#FFF";
+			ctx.textBaseline = "middle";
+			ctx.textAlign = "center";
 			var titles = [
-				"survival",
-				"timeattack",
-				"quit",
+				"start",
 				"options",
+				"quit",
 			];
 
 			var i;
-			for (i=0; i<4; i++) {
-				var pos =enemies[i].getPosition();
-				pos = frustum.projectToZ(pos, frustum.near);
-				var sprite = Ptero.assets.sprites["btn_"+titles[i]];
-				sprite.draw(ctx, pos);
+			for (i=0; i<3; i++) {
+				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
+				var x = p.x;
+				var y = p.y;
+				var title = titles[i];
+				ctx.fillText(title,x,y);
 			}
 		}
 	}

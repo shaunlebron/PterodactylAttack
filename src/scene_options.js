@@ -34,12 +34,16 @@ Ptero.scene_options = (function(){
 		}
 
 		enemies[0].afterHit = function() {
-			// high score
-			switchScene(Ptero.scene_highscores);
-		}
-		enemies[1].afterHit = function() {
 			// credits
 			//switchScene(Ptero.scene_credits);
+			enemies[0].init();
+		}
+		enemies[1].whenHit = function() {
+			vibrate = !vibrate;
+			Ptero.screen.shake();
+		}
+		enemies[1].afterHit = function() {
+			// vibration
 			enemies[1].init();
 		}
 		enemies[2].afterHit = function() {
@@ -50,14 +54,6 @@ Ptero.scene_options = (function(){
 			else {
 				switchScene(returnScene);
 			}
-		}
-		enemies[3].whenHit = function() {
-			vibrate = !vibrate;
-			Ptero.screen.shake();
-		}
-		enemies[3].afterHit = function() {
-			// vibration
-			enemies[3].init();
 		}
 	}
 
@@ -137,19 +133,18 @@ Ptero.scene_options = (function(){
 			ctx.textAlign = "center";
 
 			var titles = [
-				"High Scores",
 				"Credits",
-				"Back",
 				"Vibration",
+				"Back",
 			];
 
 			var i;
-			for (i=0; i<4; i++) {
+			for (i=0; i<3; i++) {
 				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
 				var x = p.x;
 				var y = p.y;
 				var title = titles[i];
-				if (i == 3) {
+				if (i == 1) {
 					title += ": ";
 					title += vibrate ? "ON" : "OFF";
 				}

@@ -1,5 +1,5 @@
 
-Ptero.scene_timeattack = (function() {
+Ptero.scene_play = (function() {
 	var enemies = [];
 	var numEnemies;
 
@@ -24,10 +24,8 @@ Ptero.scene_timeattack = (function() {
 		}
 	}
 
-	var pauseBtn,playBtn,timerDisplay;
+	var pauseBtn,timerDisplay;
 	function cleanup() {
-		pauseBtn.disable();
-		Ptero.orb.disableTouch();
 		Ptero.bulletpool.clear();
 	}
 
@@ -41,6 +39,7 @@ Ptero.scene_timeattack = (function() {
 		Ptero.orb.disableTouch();
 	}
 
+	var levelCount = 0;
 	function setLevel(level) {
 		enemies.length = 0;
 
@@ -77,24 +76,16 @@ Ptero.scene_timeattack = (function() {
 
 		// create a timer to countdown to the last moment
 		timerDisplay = new Ptero.TimerDisplay(maxTime);
+		time = 2;
+
 
 		numEnemies = enemies.length;
 	}
 
 	var time;
-	var script;
 	function init() {
-		if (difficulty == 'easy') {
-			Ptero.setBackground('mountain');
-		}
-		else if (difficulty == 'medium') {
-			Ptero.setBackground('ice');
-		}
-		else if (difficulty == 'hard') {
-			Ptero.setBackground('volcano');
-		}
+		Ptero.setBackground(stage);
 
-		time = 0;
 		Ptero.score.reset();
 
 		Ptero.orb.allowTapToSelect(true);
@@ -111,7 +102,11 @@ Ptero.scene_timeattack = (function() {
 
 		Ptero.player = new Ptero.Player();
 
-		setLevel(Ptero.assets.json["fourier"]);
+		setLevel(Ptero.assets.json["survival01"]);
+		levelCount++;
+
+		time = 0;
+
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
@@ -124,9 +119,6 @@ Ptero.scene_timeattack = (function() {
 		Ptero.scene_options.setReturnScene(this);
 		Ptero.scene_options.setResumeOnReturn(true);
 		enableControls();
-
-		script = Ptero.stage_script;
-		script.init();
 	};
 
 	function resume() {
@@ -137,32 +129,37 @@ Ptero.scene_timeattack = (function() {
 	}
 
 	function update(dt) {
-		script.update(dt);
+		if (Ptero.player.health <= 0) {
+			Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+		}
+		else {
 
-		time += dt;
-		if (time > 2) {
-			var i;
-			for (i=0; i<numEnemies; i++) {
-				enemies[i].update(dt);
-				var pos = enemies[i].getPosition();
-				if (pos) {
-					Ptero.deferredSprites.defer(
-						(function(e) {
-							return function(ctx){
-								e.draw(ctx);
-							};
-						})(enemies[i]),
-						pos.z);
+			time += dt;
+			if (time > 2) {
+				var i;
+				for (i=0; i<numEnemies; i++) {
+					enemies[i].update(dt);
+					var pos = enemies[i].getPosition();
+					if (pos) {
+						Ptero.deferredSprites.defer(
+							(function(e) {
+								return function(ctx){
+									e.draw(ctx);
+								};
+							})(enemies[i]),
+							pos.z);
+					}
 				}
-			}
-			Ptero.orb.update(dt);
-			Ptero.bulletpool.deferBullets();
-			Ptero.score.update(dt);
+				Ptero.orb.update(dt);
+				Ptero.bulletpool.deferBullets();
+				Ptero.score.update(dt);
 
-			timerDisplay.update(dt);
-			if (timerDisplay.isDone()) {
-				Ptero.scene_gameover.setReplayScene(this);
-				Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+				timerDisplay.update(dt);
+				if (timerDisplay.isDone()) {
+					var l = (levelCount%3)+1;
+					setLevel(Ptero.assets.json["survival0"+l]);
+					levelCount++;
+				}
 			}
 		}
 	};
@@ -199,14 +196,15 @@ Ptero.scene_timeattack = (function() {
 			if (time > 2) {
 				pauseBtn.draw(ctx);
 				Ptero.score.draw(ctx);
-				timerDisplay.draw(ctx);
+				Ptero.player.drawHealth(ctx);
 			}
+			//timerDisplay.draw(ctx);
 
 			if (time < 2) {
-				drawText("Kill as many as you can!");
+				drawText("Survive as long as you can!");
 			}
 			else if (time < 4) {
-				//drawText("GO!");
+				drawText("New wave approaching!");
 			}
 		}
 		else {
@@ -216,12 +214,12 @@ Ptero.scene_timeattack = (function() {
 
 	};
 
-	var difficulty;
-	function getDifficulty() {
-		return difficulty;
+	var stage;
+	function getStage() {
+		return level;
 	}
-	function setDifficulty(d) {
-		difficulty = d;
+	function setStage(d) {
+		stage = d;
 	}
 
 	return {
@@ -232,7 +230,7 @@ Ptero.scene_timeattack = (function() {
 		cleanup:cleanup,
 		disableControls: disableControls,
 		enableControls: enableControls,
-		getDifficulty: getDifficulty,
-		setDifficulty: setDifficulty,
+		getStage: getStage,
+		setStage: setStage,
 	};
 })();

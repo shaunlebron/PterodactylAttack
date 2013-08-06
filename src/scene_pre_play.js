@@ -1,10 +1,9 @@
 
-Ptero.scene_highscores = (function(){
+Ptero.scene_pre_play = (function(){
 
+	var song;
 	var paths;
 	var enemies = [];
-
-	var vibrate = true;
 
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
@@ -13,7 +12,7 @@ Ptero.scene_highscores = (function(){
 	}
 
 	function createPteros() {
-		var wave = Ptero.assets.json["highscores_paths"];
+		var wave = Ptero.assets.json["difficulty_paths"];
 
 		var models = wave.models;
 		var numModels = models.length;
@@ -33,21 +32,30 @@ Ptero.scene_highscores = (function(){
 		}
 
 		enemies[0].afterHit = function() {
-			// exit
-			switchScene(Ptero.scene_options);
+			// easy
+			Ptero.scene_play.setStage("mountain");
+			switchScene(Ptero.scene_play);
 		}
-		enemies[1].whenHit = function() {
-			Ptero.screen.shake();
-			Ptero.score.resetHighScores();
-		};
 		enemies[1].afterHit = function() {
-			// reset scores
-			enemies[1].init();
+			// medium
+			Ptero.scene_play.setStage("ice");
+			switchScene(Ptero.scene_play);
+		}
+		enemies[2].afterHit = function() {
+			// hard
+			Ptero.scene_play.setStage("volcano");
+			switchScene(Ptero.scene_play);
+		}
+		enemies[3].afterHit = function() {
+			// back
+			switchScene(Ptero.scene_menu);
 		}
 	}
 
 	var time;
 	function init() {
+		//Ptero.background.enableDesat(true);
+
 		time = 0;
 
 		Ptero.input.addTouchHandler(touchHandler);
@@ -58,10 +66,59 @@ Ptero.scene_highscores = (function(){
 		Ptero.orb.init();
 		Ptero.orb.setTargets(enemies);
         Ptero.orb.setNextOrigin(0,-1);
+		resetPanes();
+
+		resetHighScoreText();
+	}
+
+	var highScore;
+	function resetHighScoreText() {
+		highScore = null;
+	}
+	function drawHighScoreText(ctx) {
+		if (highScore != null) {
+			var size = Ptero.hud.getTextSize('menu_option');
+			ctx.font = size +"px SharkParty";
+			ctx.fillStyle = "rgba(0,0,0,0.5)";
+			ctx.textBaseline = "bottom";
+			ctx.textAlign = "right";
+			var pad = Ptero.hud.getBorderPad();
+			var y = topPaneY;
+			var x = Ptero.screen.getWidth() - pad;
+			var p = Ptero.screen.screenToSpace({ x: x, y: y });
+			p = Ptero.screen.spaceToScreen(p); // to get it shaking
+			ctx.fillText("high: " + highScore, p.x, p.y);
+		}
+	}
+
+	var topPaneY;
+	var botPaneY;
+	var topPaneY2;
+	var botPaneY2;
+	function resetPanes() {
+		var h = Ptero.screen.getHeight();
+		topPaneY = 0;
+		topPaneY2 = h/10*3;
+		botPaneY = h;
+		botPaneY2 = h/5*3;
+	}
+	function updatePanes() {
+		topPaneY += (topPaneY2 - topPaneY) * 0.1;
+		botPaneY += (botPaneY2 - botPaneY) * 0.1;
+	}
+	function drawPanes(ctx) {
+		var w = Ptero.screen.getWidth();
+		var h = Ptero.screen.getHeight();
+
+		ctx.fillStyle = "rgba(255,255,255,0.5)";
+
+		ctx.fillRect(0,0,w,topPaneY);
+		ctx.fillRect(0,botPaneY,w,h);
 	}
 
 	function switchScene(scene) {
 		Ptero.fadeToScene(scene, 0.25);
+		Ptero.audio.getTitleSong().fadeOut(2.0);
 	}
 
 	var touchHandler = {
@@ -95,76 +152,28 @@ Ptero.scene_highscores = (function(){
 
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
+		updatePanes();
 	}
 
 	function draw(ctx) {
 		Ptero.assets.keepExplosionsCached(ctx);
 		Ptero.deferredSprites.draw(ctx);
 
+		drawPanes(ctx);
 		Ptero.orb.draw(ctx);
+
+		drawHighScoreText(ctx);
 
 		var size = Ptero.hud.getTextSize('menu_title');
 		ctx.font = size + "px SharkParty";
-		ctx.fillStyle = "rgba(255,255,255,0.25)";
+		ctx.fillStyle = "#000";
 		ctx.textBaseline = "middle";
 		ctx.textAlign = "center";
 		var frustum = Ptero.screen.getFrustum();
 		var p = Ptero.screen.spaceToScreen({x:0, y:frustum.nearTop/4*3, z:frustum.near});
 		var x = p.x;
 		var y = p.y;
-		ctx.fillText("HIGH SCORES", x,y);
-
-		size = Ptero.hud.getTextSize('menu_option');
-		ctx.font = size + "px SharkParty";
-		ctx.fillStyle = "rgba(255,255,255,0.7)";
-		ctx.textBaseline = "middle";
-		ctx.textAlign = "center";
-		var highScores = Ptero.score.getHighScores();
-		
-		var topy = frustum.nearTop/3;
-
-		p = Ptero.screen.spaceToScreen({x:frustum.nearLeft/2, y:topy, z:frustum.near});
-		var x = p.x;
-		var y = p.y;
-		var h = size*1.25;
-		y += h;
-		ctx.fillText("easy", x,y);
-		y += h;
-		ctx.fillText("medium", x,y);
-		y += h;
-		ctx.fillText("hard", x,y);
-		y += h;
-
-		p = Ptero.screen.spaceToScreen({x:0, y:topy, z:frustum.near});
-		var x = p.x;
-		var y = p.y;
-		var h = size*1.25;
-		ctx.fillStyle = "rgba(255,255,255,0.7)";
-		ctx.fillText("survivor", x,y);
-		y += h;
-		ctx.fillStyle = "#FFF";
-		ctx.fillText(highScores["survivor_easy"], x,y);
-		y += h;
-		ctx.fillText(highScores["survivor_medium"], x,y);
-		y += h;
-		ctx.fillText(highScores["survivor_hard"], x,y);
-		y += h;
-
-		p = Ptero.screen.spaceToScreen({x:frustum.nearRight/2, y:topy, z:frustum.near});
-		var x = p.x;
-		var y = p.y;
-		var h = size*1.25;
-		ctx.fillStyle = "rgba(255,255,255,0.7)";
-		ctx.fillText("time attack", x,y);
-		y += h;
-		ctx.fillStyle = "#FFF";
-		ctx.fillText(highScores["timeattack_easy"], x,y);
-		y += h;
-		ctx.fillText(highScores["timeattack_medium"], x,y);
-		y += h;
-		ctx.fillText(highScores["timeattack_hard"], x,y);
-		y += h;
-
+		ctx.fillText("Select stage", x,y);
 
 		if (time >= 1) {
 			var size = Ptero.hud.getTextSize('menu_option');
@@ -174,28 +183,21 @@ Ptero.scene_highscores = (function(){
 			ctx.textAlign = "center";
 
 			var titles = [
-				"Back",
-				"Reset Scores",
+				"easy",
+				"medium",
+				"hard",
+				"back",
 			];
 
 			var i;
-			for (i=0; i<enemies.length; i++) {
+			for (i=0; i<4; i++) {
 				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
 				var x = p.x;
 				var y = p.y;
 				var title = titles[i];
-				ctx.fillText(title,x,y);
+				ctx.fillText(titles[i],x,y);
 			}
 		}
-	}
-
-	var returnScene;
-	var resumeOnReturn;
-	function setReturnScene(scene) {
-		returnScene = scene;
-	}
-	function setResumeOnReturn(on) {
-		resumeOnReturn = on;
 	}
 
 	return {
@@ -203,9 +205,6 @@ Ptero.scene_highscores = (function(){
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
-		setReturnScene: setReturnScene,
-		setResumeOnReturn: setResumeOnReturn,
-		isVibrate: function() { return vibrate; },
 	};
 
 })();

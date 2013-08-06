@@ -3,14 +3,6 @@ Ptero.scene_gameover = (function(){
 
 	var scoreBtn,playBtn,quitBtn,selectStageBtn,newHighBtn;
 
-	var replayScene;
-	function getReplayScene() {
-		return replayScene;
-	}
-	function setReplayScene(s) {
-		replayScene = s;
-	}
-
 	function cleanup() {
 		playBtn.disable();
 		quitBtn.disable();
@@ -56,7 +48,7 @@ Ptero.scene_gameover = (function(){
 			width: 400,
 			height: 200,
 			onclick: function() {
-				switchScene(getReplayScene());
+				switchScene(Ptero.scene_play);
 				Ptero.audio.playSelect();
 			},
 		});
@@ -85,13 +77,7 @@ Ptero.scene_gameover = (function(){
 			width: 400,
 			height: 200,
 			onclick: function() {
-				var scene = getReplayScene();
-				if (scene == Ptero.scene_timeattack) {
-					switchScene(Ptero.scene_pre_timeattack);
-				}
-				else if (scene == Ptero.scene_survivor) {
-					switchScene(Ptero.scene_pre_survivor);
-				}
+				switchScene(Ptero.scene_pre_play);
 			},
 		});
 		selectStageBtn.enable();
@@ -104,24 +90,14 @@ Ptero.scene_gameover = (function(){
 	var newHighScore;
 	function commitHighScore() {
 		newHighScore = false;
-		var highScores = Ptero.score.getHighScores();
-		var scene = getReplayScene();
-		function setScore(name) {
-			name += "_" + scene.getDifficulty();
-			var currentHigh = highScores[name] || 0;
-			var currentScore = Ptero.score.getTotal();
-			if (currentScore > currentHigh) {
-				// TODO: trigger new high score animation
-				highScores[name] = currentScore;
-				newHighScore = true;
-				Ptero.score.commitHighScores();
-			}
-		}
-		if (scene == Ptero.scene_survivor) {
-			setScore("survivor");
-		}
-		else if (scene == Ptero.scene_timeattack) {
-			setScore("timeattack");
+		var highScore = Ptero.score.getHighScore();
+		var currentHigh = highScore || 0;
+		var currentScore = Ptero.score.getTotal();
+		if (currentScore > currentHigh) {
+			// TODO: trigger new high score animation
+			highScore = currentScore;
+			newHighScore = true;
+			Ptero.score.commitHighScore();
 		}
 	}
 
@@ -146,6 +122,5 @@ Ptero.scene_gameover = (function(){
 		draw:draw,
 		update:update,
 		cleanup: cleanup,
-		setReplayScene: setReplayScene,
 	};
 })();

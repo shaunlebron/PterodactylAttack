@@ -52,12 +52,7 @@ Ptero.pause_menu = (function(){
 			onclick: function() {
 				Ptero.executive.togglePause();
 				cleanup();
-				if (Ptero.scene == Ptero.scene_survivor) {
-					Ptero.fadeToScene(Ptero.scene_pre_survivor, 0.25);
-				}
-				else if (Ptero.scene == Ptero.scene_timeattack) {
-					Ptero.fadeToScene(Ptero.scene_pre_timeattack, 0.25);
-				}
+				Ptero.fadeToScene(Ptero.scene_pre_play, 0.25);
 			}
 		});
 		quitBtn = new Ptero.TextButton({

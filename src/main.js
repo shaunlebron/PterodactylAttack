@@ -41,12 +41,10 @@ window.onload = function() {
 
 	Ptero.assets.load(
 		function onDone(){
-			console.log('creating wave libraries');
-			Ptero.createWaveLibraries();
 			console.log('creating backgrounds');
 			Ptero.createBackgrounds();
-			console.log('loading high scores');
-			Ptero.score.loadHighScores();
+			console.log('loading high score');
+			Ptero.score.loadHighScore();
 			console.log("initing audio");
 			Ptero.audio.init();
 			console.log("initing input");

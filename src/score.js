@@ -11,44 +11,34 @@ Ptero.score = (function(){
 		return result;
 	}
 
-	var highScores;
+	var highScore;
 
 	var total = 0;
 	var pointQueue = [];
 	var pointDuration = 2.0;
 
 	return {
-		resetHighScores: function() {
-			highScores = {
-				"survivor_easy": 0,
-				"survivor_medium": 0,
-				"survivor_hard": 0,
-				"timeattack_easy": 0,
-				"timeattack_medium": 0,
-				"timeattack_hard": 0,
-			};
-			this.commitHighScores();
+		resetHighScore: function() {
+			highScore = 0;
+			this.commitHighScore();
 		},
-		getHighScores: function() {
-			return highScores;
+		getHighScore: function() {
+			return highScore;
 		},
-		commitHighScores: function() {
-			localStorage.highScores = JSON.stringify(highScores);
+		commitHighScore: function() {
+			localStorage.highScore = highScore;
 		},
-		loadHighScores: function() {
-			highScores = null;
+		loadHighScore: function() {
+			highScore = null;
 			try {
-				highScores = JSON.parse(localStorage.highScores);
+				highScore = JSON.parse(localStorage.highScore);
 			}
 			catch (e) {
 			}
-			if (!highScores) {
-				this.resetHighScores();
+			if (!highScore) {
+				this.resetHighScore();
 			}
-			var name;
-			for (name in highScores) {
-				console.log(name + " = " + highScores[name]);
-			}
+			console.log("highscore = " + highScore);
 		},
 		reset: function() {
 			pointQueue.length = 0;
