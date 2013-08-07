@@ -811,6 +811,8 @@ Ptero.orb = (function(){
 	// Create touch controls.
 	var touchHandler = (function(){
 		var startIn = false;
+		var startIndex = null;
+
 		// Determine if the given point is in the orb's touch surface.
 		function isInside(nearPoint) {
 			var r = getSpaceRadius();
@@ -818,20 +820,33 @@ Ptero.orb = (function(){
 		};
 
 		// Start the charge if touch starts inside the orb.
-		function start(nearPoint,screenPoint) {
+		function start(nearPoint,screenPoint,i) {
+			console.log('start: '+i+'/'+startIndex);
+
+			if (startIndex != null) {
+				return;
+			}
+
 			if (isInside(nearPoint)) {
 				charge.start();
 				startOrigin = nearPoint;
 				startIn = true;
+				startIndex = i;
 			}
 			else {
 				startIn = false;
+				startIndex = null;
 				toggleTargetAt(screenPoint.x, screenPoint.y);
 			}
 		};
 
 		// Shoot a bullet when the touch point exits the orb.
-		function move(nearPoint,screenPoint) {
+		function move(nearPoint,screenPoint,i) {
+			console.log('move: '+i+'/'+startIndex);
+			if (startIndex != i) {
+				return;
+			}
+
 			if (charge.isOn()) {
 				if (!isInside(nearPoint)) {
 					charge.reset();
@@ -849,7 +864,12 @@ Ptero.orb = (function(){
 			}
 		};
 
-		function endAndCancel(nearPoint) {
+		function endAndCancel(nearPoint,screenPoint,i) {
+			console.log('end: '+i+'/'+startIndex);
+			if (startIndex != i) {
+				return;
+			}
+
 			charge.reset();
 			startOrigin = null;
 			if (isInside(nearPoint)) {
@@ -857,22 +877,24 @@ Ptero.orb = (function(){
 					deselectAllTargets();
 				}
 			}
+
+			startIndex = null;
 		};
 
 		// Stop charging if touch point is released or canceled.
-		function end(nearPoint) {
-			endAndCancel(nearPoint);
+		function end(nearPoint,screenPoint,i) {
+			endAndCancel(nearPoint,screenPoint,i);
 		};
-		function cancel(nearPoint) {
-			endAndCancel(nearPoint);
+		function cancel(nearPoint,screenPoint,i) {
+			endAndCancel(nearPoint,screenPoint,i);
 		};
 
 		// Convert the incoming xy coords from screen to space.
 		function wrapFunc(f) {
-			return function screenToSpaceWrapper(x,y) {
+			return function screenToSpaceWrapper(x,y,i) {
 				var screenPoint = {x:x,y:y};
 				var nearPoint = Ptero.screen.screenToSpace({x:x,y:y});
-				f(nearPoint,screenPoint);
+				f(nearPoint,screenPoint,i);
 			};
 		};
 		return {
@@ -882,11 +904,19 @@ Ptero.orb = (function(){
 			cancel: wrapFunc(cancel),
 		};
 	})();
+
+	var touchEnabled = false;
 	function enableTouch() {
-		Ptero.input.addTouchHandler(touchHandler);
+		if (!touchEnabled) {
+			Ptero.input.addTouchHandler(touchHandler);
+			touchEnabled = true;
+		}
 	};
 	function disableTouch() {
-		Ptero.input.removeTouchHandler(touchHandler);
+		if (touchEnabled) {
+			Ptero.input.removeTouchHandler(touchHandler);
+			touchEnabled = false;
+		}
 	};
 
 	var tapToSelect = true;

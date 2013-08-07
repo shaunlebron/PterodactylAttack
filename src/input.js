@@ -2,14 +2,19 @@
 Ptero.input = (function(){
 
 	// A touch handler is a dictionary of callback functions for each touch event.
+	//
+	// x = canvas coordinate x
+	// y = canvas coordinate y
+	// i = touch index (for identifying multiple touch points)
+	//
 	//		var touchHandler = {
-	//			start: function(x,y) {
+	//			start: function(x,y,i) {
 	//			},
-	//			move: function(x,y) {
+	//			move: function(x,y,i) {
 	//			},
-	//			end: function(x,y) {
+	//			end: function(x,y,i) {
 	//			},
-	//			cancel: function(x,y) {
+	//			cancel: function(x,y,i) {
 	//			},
 	//		};
 	var touchHandlers = [];
@@ -36,34 +41,34 @@ Ptero.input = (function(){
 	var point = {}; // current touch point.
 
 	// Main dispatch functions for each touch event.
-	function touchStart(x,y) {
+	function touchStart(x,y,i) {
 		touched = true;
 		point.x = x;
 		point.y = y;
 		forEachTouchHandler(function(h) {
-			h.start && h.start(x,y);
+			h.start && h.start(x,y,i);
 		});
 	};
-	function touchMove(x,y) {
+	function touchMove(x,y,i) {
 		if (!touched) {
 			return;
 		}
 		point.x = x;
 		point.y = y;
 		forEachTouchHandler(function(h) {
-			h.move && h.move(x,y);
+			h.move && h.move(x,y,i);
 		});
 	};
-	function touchEnd(x,y) {
+	function touchEnd(x,y,i) {
 		touched = false;
 		forEachTouchHandler(function(h) {
-			h.end && h.end(x,y);
+			h.end && h.end(x,y,i);
 		});
 	};
-	function touchCancel(x,y) {
+	function touchCancel(x,y,i) {
 		touched = false;
 		forEachTouchHandler(function(h) {
-			h.cancel && h.cancel(x,y);
+			h.cancel && h.cancel(x,y,i);
 		});
 	};
 	function scroll(x,y,delta,deltaX,deltaY) {
@@ -81,19 +86,20 @@ Ptero.input = (function(){
 			return function(evt) {
 				var canvasPos = Ptero.screen.getCanvasPos();
 				var p = {x:canvasPos.x, y:canvasPos.y};
-				var x,y;
-				if (evt.touches && evt.touches.length > 0) {
-					x = evt.touches[0].pageX;
-					y = evt.touches[0].pageY;
+				function passCoordToEvent(x,y,index) {
+					f(x-p.x, y-p.y, index);
+				}
+				var touches = evt.changedTouches;
+				if (touches && touches.length > 0) {
+					var i;
+					for (i=0; i<touches.length; i++) {
+						var t = touches[i];
+						passCoordToEvent(t.pageX, t.pageY, t.identifier);
+					}
 				}
 				else {
-					x = evt.pageX;
-					y = evt.pageY;
+					passCoordToEvent(evt.pageX, evt.pageY, 0);
 				}
-				p.x = x - p.x;
-				p.y = y - p.y;
-				f(p.x,p.y);
-
 				evt.preventDefault();
 			};
 		};
@@ -124,10 +130,12 @@ Ptero.input = (function(){
 				scroll(p.x,p.y,delta,deltaX,deltaY);
 			});
 		}
-		canvas.addEventListener('mousedown',	wrapFunc(touchStart));
-		canvas.addEventListener('mousemove',	wrapFunc(touchMove));
-		canvas.addEventListener('mouseup',		wrapFunc(touchEnd));
-		canvas.addEventListener('mouseout',		wrapFunc(touchCancel));
+		if (!navigator.isCocoonJS) {
+			canvas.addEventListener('mousedown',	wrapFunc(touchStart));
+			canvas.addEventListener('mousemove',	wrapFunc(touchMove));
+			canvas.addEventListener('mouseup',		wrapFunc(touchEnd));
+			canvas.addEventListener('mouseout',		wrapFunc(touchCancel));
+		}
 		canvas.addEventListener('touchstart',	wrapFunc(touchStart));
 		canvas.addEventListener('touchmove',	wrapFunc(touchMove));
 		canvas.addEventListener('touchend',		wrapFunc(touchEnd));

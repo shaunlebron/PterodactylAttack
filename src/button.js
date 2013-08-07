@@ -46,32 +46,55 @@ Ptero.Button = function(a) {
 		function isInside(x,y) {
 			return that.billboard.isInsideScreenRect(x,y,that.pos);
 		}
+		var startIndex = null;
 		return {
-			start: function(x,y) {
+			start: function(x,y,i) {
+				if (startIndex != null) {
+					return;
+				}
+
 				startInside = isInside(x,y);
 				lastX = x;
 				lastY = y;
 				if (startInside) {
+					startIndex = i;
 					that.ontouchstart && that.ontouchstart(x,y);
 				}
+				else {
+					startIndex = null;
+				}
 			},
-			move: function(x,y) {
+			move: function(x,y,i) {
+				if (startIndex != i) {
+					return;
+				}
+
 				lastX = x;
 				lastY = y;
-				if (isInside(x,y)) {
-					that.ontouchenter && that.ontouchenter(x,y);
-				}
-				else {
-					that.ontouchleave && that.ontouchleave(x,y);
+				if (startInside) {
+					if (isInside(x,y,i)) {
+						that.ontouchenter && that.ontouchenter(x,y);
+					}
+					else {
+						that.ontouchleave && that.ontouchleave(x,y);
+					}
 				}
 			},
-			end: function(x,y) {
-				if (startInside && isInside(lastX,lastY)) {
-					that.onclick && that.onclick();
+			end: function(x,y,i) {
+				if (startIndex != i) {
+					return;
 				}
-				that.ontouchend && that.ontouchend(x,y);
+
+				if (startInside) {
+					if (isInside(lastX,lastY)) {
+						that.onclick && that.onclick();
+					}
+					that.ontouchend && that.ontouchend(x,y);
+				}
+
+				startIndex = null;
 			},
-			cancel: function(x,y) {
+			cancel: function(x,y,i) {
 			},
 		};
 	})();
