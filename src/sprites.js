@@ -70,6 +70,7 @@ Ptero.VectorSprite.prototype = {
 	draw: function(ctx,pos,color) {
 
 		if (this.sprite) {
+			// draw bitmap (see assets.js:postProcessVector)
 			if (this.redSprite && color == 'red') {
 				this.redSprite.draw(ctx,pos);
 			}
@@ -81,6 +82,7 @@ Ptero.VectorSprite.prototype = {
 			}
 		}
 		else {
+			// draw vector
 			ctx.save();
 			this.billboard.transform(ctx, pos);
 
@@ -90,8 +92,13 @@ Ptero.VectorSprite.prototype = {
 			else if (this.paths) {
 				var i,len=this.paths.length;
 				for (i=0; i<len; i++) {
+					ctx.save();
 					this.paths[i](ctx);
+					if (ctx.strokeStyle) {
+						ctx.stroke();
+					}
 					ctx.fill();
+					ctx.restore();
 				}
 			}
 

@@ -246,8 +246,14 @@ Ptero.assets = (function(){
 		// Create the vector sprite structure
 		var vectorSprite = vectorSprites[name] = new Ptero.VectorSprite(meta);
 
-		// Add information on the SVG version for faster drawing outside of Cocoon
-		if (!navigator.isCocoonJS) {
+		// duck-type detection of Firefox browser: http://stackoverflow.com/a/9851769/142317
+		var isFirefox = typeof InstallTrigger !== 'undefined';
+		if (navigator.isCocoonJS || isFirefox) {
+			// do not use SVG files directly for Cocoon or Firefox
+			// (firefox has poor support for large SVGs)
+		}
+		else {
+			// use SVG files directly
 			vectorSprite.sprite = sprites[name];
 			if (sprites[name+"_red"]) {
 				vectorSprite.redSprite = sprites[name+"_red"];

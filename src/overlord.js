@@ -24,7 +24,6 @@ Ptero.OverlordRandom.prototype = {
 		var max = 7;
 		var min = 2;
 		var t = Math.floor(Math.random()*(max-min))+min;
-		console.log('next delay time',t);
 		return t;
 	},
 	init: function() {
