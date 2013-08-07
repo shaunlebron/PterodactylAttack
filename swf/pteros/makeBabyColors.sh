@@ -26,6 +26,8 @@ function makeColors {
 	cd -
 }
 
+makeColors baby_white '#ffffff' '#ffffff'
+
 makeColors baby_mountain_blue '#2A6598' '#7EBBED'
 makeColors baby_mountain_purple '#6E179E' '#BF56F6'
 

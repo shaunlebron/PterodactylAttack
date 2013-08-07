@@ -26,6 +26,8 @@ function makeColors {
 	cd -
 }
 
+makeColors adult_white '#ffffff' '#ffffff'
+
 makeColors adult_mountain_red '#892427' '#B12432'
 makeColors adult_mountain_green '#24894B' '#24B151'
 

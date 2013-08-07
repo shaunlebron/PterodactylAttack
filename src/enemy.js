@@ -21,6 +21,9 @@ Ptero.Enemy = function() {
 	this.init();
 
 	this.life = 0;
+
+	// time to flash white (used to indicate when this enemy is hit)
+	this.flashTime = 0;
 };
 
 Ptero.Enemy.fromState = function(state, startTime) {
@@ -71,6 +74,14 @@ Ptero.Enemy.prototype = {
 		this.health = this.typeData.health;
 
 		this.sprite = this.makeAnimSprite();
+		if (this.typeName.match(/^adult/)) {
+			this.whiteSprite = Ptero.assets.makeAnimSprite('adult_white');
+		}
+		else {
+			this.whiteSprite = Ptero.assets.makeAnimSprite('baby_white');
+		}
+
+		this.whiteSprite.time = this.sprite.time;
 	},
 	randomizeBoom: function randomizeBoom() {
 		var numBooms = this.boomSprites.length;
@@ -104,6 +115,8 @@ Ptero.Enemy.prototype = {
 		}
 		else {
 			Ptero.audio.playHurt();
+
+			this.flashTime = 0.1;
 		}
 	},
 	createCaptureAndReleasePaths: function() {
@@ -245,6 +258,9 @@ Ptero.Enemy.prototype = {
 				this.path.step(dt);
 			}
 
+			// update flash time (hit indicator)
+			this.flashTime = Math.max(0, this.flashTime-dt);
+
 			if (this.path.isDone()) {
 				if (this.path == this.attackPath) {
 					// HIT SCREEN
@@ -270,6 +286,7 @@ Ptero.Enemy.prototype = {
 				else {
 					// update animation
 					this.sprite.update(dt);
+					this.whiteSprite.update(dt);
 				}
 			}
 		}
@@ -287,7 +304,12 @@ Ptero.Enemy.prototype = {
 		else if (this.path.isDone()) {
 		}
 		else {
-			this.sprite.draw(ctx, pos);
+			if (this.flashTime) {
+				this.whiteSprite.draw(ctx, pos);
+			}
+			else {
+				this.sprite.draw(ctx, pos);
+			}
 			if (this.selected) {
 				this.sprite.drawBorder(ctx, pos, "#0FF");
 			}

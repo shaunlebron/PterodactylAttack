@@ -126,6 +126,7 @@ Ptero.assets = (function(){
 	}
 
 	addPteroVectorAnim('baby');
+	addPteroVectorAnim('baby_white');
 	addPteroVectorAnim('baby_mountain_blue');
 	addPteroVectorAnim('baby_mountain_purple');
 	addPteroVectorAnim('baby_ice_purple');
@@ -133,6 +134,7 @@ Ptero.assets = (function(){
 	addPteroVectorAnim('baby_volcano_green');
 	addPteroVectorAnim('baby_volcano_purple');
 	addPteroVectorAnim('adult');
+	addPteroVectorAnim('adult_white');
 	addPteroVectorAnim('adult_mountain_red');
 	addPteroVectorAnim('adult_mountain_green');
 	addPteroVectorAnim('adult_ice_red');
