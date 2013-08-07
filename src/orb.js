@@ -442,6 +442,9 @@ Ptero.orb = (function(){
 					bullet = createBulletFromCone(cone, aim_vector);
 					bullet.collideTime = t;
 					bullet.collideTarget = target;
+					if (isNet) {
+						bullet.damage = -1; // negative damage is arbitrarily meant to signal a capture net
+					}
 					//target.isGoingToDie = true;
 					collideBulletWithBg(bullet);
 					Ptero.bulletpool.add(bullet);
@@ -468,6 +471,9 @@ Ptero.orb = (function(){
 			bullet = createBulletFromCone(cone, aim_vector);
 		}
 		collideBulletWithBg(bullet);
+		if (isNet) {
+			bullet.damage = -1; // negative damage is arbitrarily meant to signal a capture net
+		}
 		Ptero.bulletpool.add(bullet);
 		Ptero.audio.playShoot();
 	}

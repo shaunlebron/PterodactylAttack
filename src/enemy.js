@@ -49,7 +49,7 @@ Ptero.Enemy.fromState = function(state, startTime) {
 	for (i=1; i<len; i++) {
 		delta_times.push(points[i].t - points[i-1].t);
 	}
-	enemy.path = new Ptero.Path(
+	enemy.path = enemy.attackPath = new Ptero.Path(
 		Ptero.makeHermiteInterpForObjs(
 			points,
 			['x','y','z','angle'],
@@ -106,28 +106,85 @@ Ptero.Enemy.prototype = {
 			Ptero.audio.playHurt();
 		}
 	},
+	createCaptureAndReleasePaths: function() {
+		// get current position (should be from the attackPath)
+		var currentPos = this.getPosition();
+
+		var frustum = Ptero.screen.getFrustum();
+		
+		var p0 = {
+			x: currentPos.x,
+			y: currentPos.y,
+			z: currentPos.z,
+		};
+		var p1 = {
+			x: p0.x,
+			y: p0.y+frustum.nearHeight/2,
+			z: p0.z,
+		};
+		var t1 = 0.25;
+		var p2 = {
+			x: frustum.nearLeft*2,
+			y: 0,
+			z: frustum.near,
+		};
+		var t2 = 0.5;
+		p2 = frustum.projectToZ(p2, p0.z);
+
+		this.capturePath = new Ptero.Path(
+			Ptero.makeHermiteInterpForObjs(
+				[p0,p1,p2],
+				['x','y','z'],
+				[0,t1,t2]));
+
+		this.releasePath = new Ptero.Path(
+			Ptero.makeHermiteInterpForObjs(
+				[p2,p1,p0],
+				['x','y','z'],
+				[0,t2,t1]));
+	},
 	onHit: function onHit(damage) {
 		if (!this.isHittable()) {
 			return;
 		}
 		this.whenHit && this.whenHit();
 
+		// this variable was set to eliminate the targetting of an object already struck
 		this.lockedon = false;
 
-		// update score
-		if (Ptero.score) {
-			Ptero.score.addPoints(100);
-		}
-		// scene.score += 100 + scene.getStreakBonus();
-		// scene.streakCount++;
+		if (damage < 0) {
+			// negative damage is arbitrarily used to signal a capture
 
-		this.applyDamage(damage);
+			this.createCaptureAndReleasePaths();
+			this.path = this.capturePath;
+		}
+		else {
+			// update score
+			if (Ptero.score) {
+				Ptero.score.addPoints(100);
+			}
+			// scene.score += 100 + scene.getStreakBonus();
+			// scene.streakCount++;
+
+			this.applyDamage(damage);
+		}
 	},
 	init: function() {
 		this.health = this.typeData.health;
+
+		// might want to refactor into a state machine to better manage the state indicated by these variabes:
 		this.isHit = false;
 		this.isGoingToDie = false;
 		this.isDead = false;
+
+		// active path
+		this.path = null;
+
+		// available paths
+		this.attackPath = null;
+		this.capturePath = null;
+		this.releasePath = null;
+
 		this.randomizeBoom();
 	},
 	die: function() {
@@ -139,7 +196,7 @@ Ptero.Enemy.prototype = {
 		}
 	},
 	isHittable: function() {
-		if (!this.path.isPresent() || this.isHit) {
+		if (!this.path.isPresent() || this.isHit || this.path == this.capturePath) {
 			return false;
 		}
 
@@ -169,15 +226,22 @@ Ptero.Enemy.prototype = {
 			}
 		}
 		else if (this.path.isDone()) {
-			// HIT SCREEN
-			if (this.isAttack) {
-				Ptero.player.applyDamage(this.typeData.damage);
+			if (this.path == this.attackPath) {
+				// HIT SCREEN
+				if (this.isAttack) {
+					Ptero.player.applyDamage(this.typeData.damage);
+				}
+				this.die();
 			}
-
-			this.die();
+			else if (this.path == this.capturePath) {
+				// if capture path is done, nothing to do.
+				// ptero either dies from bounty completion, or gets thrown out on bounty failure
+			}
+			else if (this.path == this.releasePath) {
+				this.path = this.attackPath;
+			}
 		}
 		else {
-
 			// Deselect target if it has gone offscreen
 			if (!this.isHittable()) {
 				if (this.selected) {
@@ -192,8 +256,13 @@ Ptero.Enemy.prototype = {
 				this.path.step(dt);
 			}
 
-			// update animation
-			this.sprite.update(dt);
+			if (this.path == this.capturePath) {
+				// freeze animation while ptero is being captured
+			}
+			else {
+				// update animation
+				this.sprite.update(dt);
+			}
 		}
 	},
 	drawBorder: function(ctx, color) {
@@ -215,6 +284,10 @@ Ptero.Enemy.prototype = {
 			}
 			if (this.lockedon) {
 				this.sprite.drawBorder(ctx, pos, "#F0F");
+			}
+			if (this.path == this.capturePath) {
+				var sprite = Ptero.assets.sprites["netbullet"];
+				sprite.draw(ctx, pos);
 			}
 		}
 

@@ -56,6 +56,7 @@ Ptero.Bullet = function() {
 	this.collideTime = null;
 	this.collideTarget = null;
 	this.sprite = Ptero.assets.sprites.bullet;
+	this.netsprite = Ptero.assets.sprites.netbullet;
 
 	this.prevPos = null;
 };
@@ -81,7 +82,12 @@ Ptero.Bullet.prototype = {
 		var finalZ = this.pos.z + this.dir.z * this.speed * this.collideTime;
 	},
 	draw: function draw(ctx) {
-		this.sprite.draw(ctx, this.pos);
+		if (this.damage < 0) {
+			this.netsprite.draw(ctx, this.pos);
+		}
+		else {
+			this.sprite.draw(ctx, this.pos);
+		}
 		if (this.prevPos) {
 			var r0 = this.sprite.billboard.getScreenRect(this.pos);
 			var r1 = this.sprite.billboard.getScreenRect(this.prevPos);
@@ -91,7 +97,12 @@ Ptero.Bullet.prototype = {
 			ctx.lineTo(r1.x+r1.w, r1.centerY);
 			ctx.lineTo(r1.x, r1.centerY);
 			ctx.closePath();
-			ctx.fillStyle = "rgba(255,0,0,0.25)";
+			if (this.damage < 0) {
+				ctx.fillStyle = "rgba(255,255,255,0.25)";
+			}
+			else {
+				ctx.fillStyle = "rgba(255,0,0,0.25)";
+			}
 			ctx.fill();
 		}
 	},

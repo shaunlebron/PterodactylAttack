@@ -7,6 +7,7 @@ Ptero.assets = (function(){
 		"boom3": "img/boom3.png",
 
 		"bullet": "img/bullet.png",
+		"netbullet": "img/netbullet.png",
 
 		"play"      : "img/play.png",
 		"pause"     : "img/pause.png",
