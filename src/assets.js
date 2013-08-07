@@ -144,13 +144,6 @@ Ptero.assets = (function(){
 
 	var jsonSources = {
 
-		// levels
-		"level1": "levels/level1.json",
-		"fourier": "levels/fourier-level",
-		"survival01": "levels/survival01.json",
-		"survival02": "levels/survival02.json",
-		"survival03": "levels/survival03.json",
-
 		// backgrounds
 		"bg_mountain_layers": "bg/mountain/layers.json",
 		"bg_ice_layers": "bg/ice/layers.json",
