@@ -9,6 +9,9 @@ Ptero.Player.prototype = {
 	reset: function() {
 		this.health = this.initHealth;
 	},
+	earnHealth: function(hp) {
+		this.health = Math.min(this.maxHealth, this.health+hp);
+	},
 	applyDamage: function(dmg) {
 		if (this.health > 0) {
 			if (Ptero.scene_options.isVibrate()) {

@@ -139,9 +139,13 @@ Ptero.Enemy.prototype = {
 
 		this.releasePath = new Ptero.Path(
 			Ptero.makeHermiteInterpForObjs(
-				[p2,p1,p0],
+				[p2,p0],
 				['x','y','z'],
-				[0,t2,t1]));
+				[0,1]));
+	},
+	release: function() {
+		this.isCaught = false;
+		this.path = this.releasePath;
 	},
 	onHit: function onHit(damage) {
 		if (!this.isHittable()) {
@@ -154,7 +158,7 @@ Ptero.Enemy.prototype = {
 
 		if (damage < 0) {
 			// negative damage is arbitrarily used to signal a capture
-
+			Ptero.audio.playNet();
 			this.createCaptureAndReleasePaths();
 			this.path = this.capturePath;
 		}
@@ -176,6 +180,7 @@ Ptero.Enemy.prototype = {
 		this.isHit = false;
 		this.isGoingToDie = false;
 		this.isDead = false;
+		this.isCaught = false;
 
 		// active path
 		this.path = null;
@@ -225,22 +230,6 @@ Ptero.Enemy.prototype = {
 				this.afterHit && this.afterHit();
 			}
 		}
-		else if (this.path.isDone()) {
-			if (this.path == this.attackPath) {
-				// HIT SCREEN
-				if (this.isAttack) {
-					Ptero.player.applyDamage(this.typeData.damage);
-				}
-				this.die();
-			}
-			else if (this.path == this.capturePath) {
-				// if capture path is done, nothing to do.
-				// ptero either dies from bounty completion, or gets thrown out on bounty failure
-			}
-			else if (this.path == this.releasePath) {
-				this.path = this.attackPath;
-			}
-		}
 		else {
 			// Deselect target if it has gone offscreen
 			if (!this.isHittable()) {
@@ -256,12 +245,32 @@ Ptero.Enemy.prototype = {
 				this.path.step(dt);
 			}
 
-			if (this.path == this.capturePath) {
-				// freeze animation while ptero is being captured
+			if (this.path.isDone()) {
+				if (this.path == this.attackPath) {
+					// HIT SCREEN
+					if (this.isAttack) {
+						Ptero.player.applyDamage(this.typeData.damage);
+					}
+					this.die();
+				}
+				else if (this.path == this.capturePath) {
+					if (!this.isCaught) {
+						Ptero.bounty.addEnemy(this);
+						this.isCaught = true;
+					}
+				}
+				else if (this.path == this.releasePath) {
+					this.path = this.attackPath;
+				}
 			}
 			else {
-				// update animation
-				this.sprite.update(dt);
+				if (this.path == this.capturePath) {
+					// freeze animation while ptero is being captured
+				}
+				else {
+					// update animation
+					this.sprite.update(dt);
+				}
 			}
 		}
 	},
