@@ -5,6 +5,8 @@ Ptero.scene_play = (function() {
 
 	var KEY_SPACE = 32;
 	var KEY_SHIFT = 16;
+	var KEY_CTRL = 17;
+	var KEY_ALT = 18;
 	var KEY_A = 65;
 	function onKeyDown(e) {
 		if (e.keyCode == KEY_SPACE) {
@@ -16,11 +18,18 @@ Ptero.scene_play = (function() {
 		else if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.slowmo();
 		}
+		else if (e.keyCode == KEY_ALT) {
+			Ptero.orb.enableNet(true);
+			e.preventDefault();
+		}
 	}
 	
 	function onKeyUp(e) {
 		if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.regmo();
+		}
+		else if (e.keyCode == KEY_ALT) {
+			Ptero.orb.enableNet(false);
 		}
 	}
 

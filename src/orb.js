@@ -821,7 +821,6 @@ Ptero.orb = (function(){
 
 		// Start the charge if touch starts inside the orb.
 		function start(nearPoint,screenPoint,i) {
-			console.log('start: '+i+'/'+startIndex);
 
 			if (startIndex != null) {
 				return;
@@ -842,7 +841,6 @@ Ptero.orb = (function(){
 
 		// Shoot a bullet when the touch point exits the orb.
 		function move(nearPoint,screenPoint,i) {
-			console.log('move: '+i+'/'+startIndex);
 			if (startIndex != i) {
 				return;
 			}
@@ -865,7 +863,6 @@ Ptero.orb = (function(){
 		};
 
 		function endAndCancel(nearPoint,screenPoint,i) {
-			console.log('end: '+i+'/'+startIndex);
 			if (startIndex != i) {
 				return;
 			}
