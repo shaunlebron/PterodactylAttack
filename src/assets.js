@@ -106,8 +106,16 @@ Ptero.assets = (function(){
 
 		// Create enemy type
 		var health = 1;
-		if (name.match(/^adult/)) {
-			health = 2;
+		if (name == "baby") {
+			// we're using these for the menu options only
+			// that way selecting a menu option only takes one hit
+			health = 1;
+		}
+		else if (name.match(/^baby_/)) {
+			health = 3;
+		}
+		else if (name.match(/^adult/)) {
+			health = 6;
 		}
 		Ptero.enemyTypes[name] = {
 			"health": health,
@@ -151,19 +159,17 @@ Ptero.assets = (function(){
 		"difficulty_paths": "paths/difficulty.json",
 		"highscores_paths": "paths/highscores.json",
 
-		// stage waves
-		//"A1_1D_1HP": "paths/A1_1D_1HP",
-		//"A2_2D_2HP": "paths/A2_2D_2HP",
-		//"A3_3D_3HP": "paths/A3_3D_3HP",
-		//"A4_4D_4HP": "paths/A4_4D_4HP",
-		//"A5_5D_5HP": "paths/A5_5D_5HP",
-
-		//"B1_1D_2HP": "paths/B1_1D_2HP",
-		//"B2_2D_4HP": "paths/B2_2D_4HP",
-		//"B3_3D_6HP": "paths/B3_3D_6HP",
-		//"B4_4D_8HP": "paths/B4_4D_8HP",
-		//"B5_5D_10HP": "paths/B5_5D_10HP",
-		//"B6_6D_12HP": "paths/B6_6D_12HP",
+		// stage paths
+		"mountain_path00": "paths/mountain/path00.json",
+		"mountain_path01": "paths/mountain/path01.json",
+		"mountain_path02": "paths/mountain/path02.json",
+		"mountain_path03": "paths/mountain/path03.json",
+		"mountain_path04": "paths/mountain/path04.json",
+		"mountain_path05": "paths/mountain/path05.json",
+		"mountain_path06": "paths/mountain/path06.json",
+		"mountain_path07": "paths/mountain/path07.json",
+		"mountain_path08": "paths/mountain/path08.json",
+		"mountain_path09": "paths/mountain/path09.json",
 	};
 
 	// Add secondary sources dependent on the primary sources listed above.

@@ -1,7 +1,6 @@
 
 Ptero.scene_play = (function() {
-	var enemies = [];
-	var numEnemies;
+	var overlord;
 
 	var KEY_SPACE = 32;
 	var KEY_SHIFT = 16;
@@ -33,7 +32,7 @@ Ptero.scene_play = (function() {
 		}
 	}
 
-	var pauseBtn,timerDisplay;
+	var pauseBtn;
 	function cleanup() {
 		Ptero.bulletpool.clear();
 	}
@@ -50,55 +49,32 @@ Ptero.scene_play = (function() {
 		Ptero.orb.disableTouch();
 	}
 
-	var levelCount = 0;
-	function setLevel(level) {
-		enemies.length = 0;
-
-		var waves = level.waves;
-		var numWaves = waves.length;
-		var i,wave,t;
-		var j;
-		var maxTime = 0;
-		var models, numModels;
-
-		// iterate each wave
-		for (i=0; i<numWaves; i++) {
-
-			// get starting time of this wave
-			t = waves[i].startTime;
-
-			// get this wave (group of enemies)
-			models = waves[i].models;
-			numModels = models.length;
-
-			// iterate each enemy in wave
-			for (j=0; j<numModels; j++) {
-
-				// create enemy
-				var e = Ptero.Enemy.fromState(models[j], t);
-
-				// add enemy to this scene's enemies
-				enemies.push(e);
-
-				// consolidate max time
-				maxTime = Math.max(maxTime, e.path.totalTime);
-			}
-		}
-
-		// create a timer to countdown to the last moment
-		timerDisplay = new Ptero.TimerDisplay(maxTime);
-		time = 2;
-
-
-		numEnemies = enemies.length;
-	}
-
 	var time;
 	var netBtn;
 	function init() {
+
+		// set the background
 		Ptero.setBackground(stage);
+
+		// create a random bounty
 		Ptero.refreshBounty();
 
+		// create the overlord to manage the enemies
+		overlord = new Ptero.OverlordRandom([
+			Ptero.assets.json["mountain_path00"],
+			Ptero.assets.json["mountain_path01"],
+			Ptero.assets.json["mountain_path02"],
+			Ptero.assets.json["mountain_path03"],
+			Ptero.assets.json["mountain_path04"],
+			Ptero.assets.json["mountain_path05"],
+			Ptero.assets.json["mountain_path06"],
+			Ptero.assets.json["mountain_path07"],
+			Ptero.assets.json["mountain_path08"],
+			Ptero.assets.json["mountain_path09"],
+		]);
+		overlord.init();
+
+		// create the capture net button
 		netBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['net'],
 			anchor: {
@@ -119,11 +95,13 @@ Ptero.scene_play = (function() {
 			Ptero.orb.enableNet(false);
 		}
 
-
+		// reset the score
 		Ptero.score.reset();
 
-		Ptero.orb.allowTapToSelect(true);
+		// disallow ability to tap enemies to select them
+		Ptero.orb.allowTapToSelect(false);
 
+		// create the pause button
 		pauseBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites["pause"],
 			anchor: {x:"right",y:"bottom"},
@@ -134,24 +112,29 @@ Ptero.scene_play = (function() {
 			},
 		});
 
+		// create a player to hold player attributes such as health.
 		Ptero.player = new Ptero.Player();
 
-		setLevel(Ptero.assets.json["survival01"]);
-		levelCount++;
-
+		// initialize our clock for internal events
 		time = 0;
 
+		// initialize orb
 		Ptero.orb.init();
-		Ptero.orb.setTargets(enemies);
+		Ptero.orb.setTargets(overlord.enemies);
         Ptero.orb.setNextOrigin(0,-1);
 
+		// add keyboard events
 		window.addEventListener("keydown", onKeyDown);
 		window.addEventListener("keyup", onKeyUp);
 
+		// initialize pause menu
 		Ptero.pause_menu.init();
 
+		// initialize options screen attributes
 		Ptero.scene_options.setReturnScene(this);
 		Ptero.scene_options.setResumeOnReturn(true);
+
+		// enable input
 		enableControls();
 	};
 
@@ -159,7 +142,7 @@ Ptero.scene_play = (function() {
 		//on resume, renable the pause menu
 		Ptero.executive.togglePause();
 		Ptero.pause_menu.enable();
-		Ptero.orb.setTargets(enemies);
+		Ptero.orb.setTargets(overlord.enemies);
 	}
 
 	function update(dt) {
@@ -170,30 +153,10 @@ Ptero.scene_play = (function() {
 
 			time += dt;
 			if (time > 2) {
-				var i;
-				for (i=0; i<numEnemies; i++) {
-					enemies[i].update(dt);
-					var pos = enemies[i].getPosition();
-					if (pos) {
-						Ptero.deferredSprites.defer(
-							(function(e) {
-								return function(ctx){
-									e.draw(ctx);
-								};
-							})(enemies[i]),
-							pos.z);
-					}
-				}
+				overlord.update(dt);
 				Ptero.orb.update(dt);
 				Ptero.bulletpool.deferBullets();
 				Ptero.score.update(dt);
-
-				timerDisplay.update(dt);
-				if (timerDisplay.isDone()) {
-					var l = (levelCount%3)+1;
-					setLevel(Ptero.assets.json["survival0"+l]);
-					levelCount++;
-				}
 			}
 		}
 	};
@@ -233,13 +196,12 @@ Ptero.scene_play = (function() {
 				Ptero.player.drawHealth(ctx);
 				netBtn.draw(ctx);
 			}
-			//timerDisplay.draw(ctx);
 
 			if (time < 2) {
 				drawText("Survive as long as you can!");
 			}
 			else if (time < 4) {
-				drawText("New wave approaching!");
+				//drawText("New wave approaching!");
 			}
 		}
 		else {
