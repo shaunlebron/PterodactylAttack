@@ -82,7 +82,6 @@ Ptero.assets = (function(){
 		"bg_volcano_09": "bg/volcano/09.svg",
 		"bg_volcano_10": "bg/volcano/10.svg",
 
-		"bg_rock": "bg/rock/00.svg",
 	};
 
 	// populated by "addPteroVectorAnim"
@@ -128,6 +127,7 @@ Ptero.assets = (function(){
 	}
 
 	addPteroVectorAnim('baby');
+	addPteroVectorAnim('adult');
 	addPteroVectorAnim('baby_white');
 	addPteroVectorAnim('baby_mountain_blue');
 	addPteroVectorAnim('baby_mountain_purple');
@@ -135,7 +135,6 @@ Ptero.assets = (function(){
 	addPteroVectorAnim('baby_ice_yellow');
 	addPteroVectorAnim('baby_volcano_green');
 	addPteroVectorAnim('baby_volcano_purple');
-	addPteroVectorAnim('adult');
 	addPteroVectorAnim('adult_white');
 	addPteroVectorAnim('adult_mountain_red');
 	addPteroVectorAnim('adult_mountain_green');
@@ -149,7 +148,6 @@ Ptero.assets = (function(){
 		// backgrounds
 		"bg_mountain_layers": "bg/mountain/layers.json",
 		"bg_ice_layers": "bg/ice/layers.json",
-		"bg_rock_layers": "bg/rock/layers.json",
 		"bg_volcano_layers": "bg/volcano/layers.json",
 
 		// misc paths

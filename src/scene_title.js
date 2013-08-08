@@ -42,7 +42,7 @@ Ptero.scene_title = (function(){
 		};
 		titleMover.update(0);
 
-		//Ptero.input.addTouchHandler(touchHandler);
+		Ptero.input.addTouchHandler(touchHandler);
 		song = Ptero.audio.getTitleSong();
 		song.play();
 	}

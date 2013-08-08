@@ -386,14 +386,6 @@ Ptero.createBackgrounds = function() {
 			return bg;
 		})(),
 
-		"rock": (function(){
-			var bg = new Ptero.Background();
-			setSprites(bg, [
-				"bg_rock",
-			]);
-			bg.loadLayersData(Ptero.assets.json["bg_rock_layers"]);
-			return bg;
-		})(),
 	};
 
 	// Let each background know its own name.

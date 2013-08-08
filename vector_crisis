@@ -1,0 +1,20 @@
+
+Vectors have to be handled differently on multiple platforms:
+	- Webkit browsers prefer SVG
+	- Firefox browsers prefer Paths, but result in slower performance
+	- Cocoon prefers Paths
+
+Change the colors of the pterodactyls is tricky.
+	- We can generate .js files for the paths
+	- We can either multiple the storage requirements by 12
+
+Webkit:
+	- generate the SVGs at build time
+
+Firefox:
+	- generate the JS paths 
+
+Cocoon:
+	- must dynamically generate the colors at runtime because
+		- too many 'eval's breaks on iphone
+		- loading too many generated JS paths crashes android
