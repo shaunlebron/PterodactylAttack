@@ -113,10 +113,10 @@ Ptero.assets = (function(){
 			health = 1;
 		}
 		else if (name.match(/^baby_/)) {
-			health = 3;
+			health = 1;
 		}
 		else if (name.match(/^adult/)) {
-			health = 6;
+			health = 2;
 		}
 		Ptero.enemyTypes[name] = {
 			"health": health,

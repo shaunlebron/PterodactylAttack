@@ -60,18 +60,7 @@ Ptero.scene_play = (function() {
 		Ptero.refreshBounty();
 
 		// create the overlord to manage the enemies
-		overlord = new Ptero.OverlordRandom([
-			Ptero.assets.json["mountain_path00"],
-			Ptero.assets.json["mountain_path01"],
-			Ptero.assets.json["mountain_path02"],
-			Ptero.assets.json["mountain_path03"],
-			Ptero.assets.json["mountain_path04"],
-			Ptero.assets.json["mountain_path05"],
-			Ptero.assets.json["mountain_path06"],
-			Ptero.assets.json["mountain_path07"],
-			Ptero.assets.json["mountain_path08"],
-			Ptero.assets.json["mountain_path09"],
-		]);
+		overlord = Ptero.makeOverlord();
 		overlord.init();
 
 		// create the capture net button
