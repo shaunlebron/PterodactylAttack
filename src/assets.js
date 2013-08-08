@@ -200,8 +200,6 @@ Ptero.assets = (function(){
 
 	})();
 
-	var vectorPathData = {};
-
 	var json = {};
 
 	// "Image" objects, actual image file data
@@ -237,7 +235,11 @@ Ptero.assets = (function(){
 		var meta = json[name];
 
 		// append metadata with the vector path data
-		meta.vectorPathData = vectorPathData[name];
+
+		if (!Ptero.vectorPathData[name]) {
+			console.error('vector path data not found for',name);
+		}
+		meta.vectorPathData = Ptero.vectorPathData[name];
 
 		// Create the vector sprite structure
 		var vectorSprite = vectorSprites[name] = new Ptero.VectorSprite(meta);
@@ -277,13 +279,16 @@ Ptero.assets = (function(){
 
 	function load(onDone,onProgress) {
 
+		// FIXME: temporarily skipping this to help isolate iphone crash
+		//onDone = null;
+		//onProgress = null;
+
 		// Call onprogress for first time.
 		onProgress && onProgress(0);
 
 		// Determine the number of files we are loading.
 		var totalCount = 0;
 		for (name in imageSources) { totalCount++; }
-		for (name in vectorSources) { totalCount++; }
 		for (name in jsonSources) { totalCount++; }
 
 		// Running count of how many files have been loaded.
@@ -325,21 +330,6 @@ Ptero.assets = (function(){
 				};
 			})(name);
 			images[name] = img;
-		}
-
-		// Load vector path data
-		for (name in vectorSources) {
-			src = vectorSources[name] + ".js";
-			req = new XMLHttpRequest();
-			req.onload = (function(name){
-				return function() {
-					vectorPathData[name] = eval(this.responseText);
-					console.log("loaded js: "+ name);
-					handleLoad();
-				};
-			})(name);
-			req.open('GET', src, true);
-			req.send();
 		}
 
 		// Load json data.

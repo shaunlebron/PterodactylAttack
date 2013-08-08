@@ -28,7 +28,7 @@ def isIgnoredFile(filename):
 		if filename.endswith(ext):
 			return True
 
-	if (filename.startswith('bg') or filename.startswith('swf')) and filename.endswith('.js') and not filename.endswith('.svg.js'):
+	if (filename.startswith('bg') or filename.startswith('swf')) and filename.endswith('.js'):
 		return True
 
 	return False
