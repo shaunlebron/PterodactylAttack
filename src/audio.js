@@ -6,7 +6,11 @@ Ptero.audio = (function() {
 	var net;
 	var select;
 
+	var initialized = false;
+
 	function init() {
+		initialized = true;
+
 		shoot   = new Audio("audio/shoot04.wav");
 		explode = new Audio("audio/explode04.wav");
 		hurt    = new Audio("audio/hurt.wav");
@@ -24,7 +28,9 @@ Ptero.audio = (function() {
 	}
 
 	function update(dt) {
-		titleSong.update(dt);
+		if (initialized) {
+			titleSong.update(dt);
+		}
 	}
 
 	return {

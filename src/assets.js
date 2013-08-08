@@ -34,6 +34,8 @@ Ptero.assets = (function(){
 		"frame_ice"      : "img/frame_ice.png",
 		"frame_volcano"  : "img/frame_volcano.png",
 
+		"title" : "img/title.png",
+
 		"net": "img/net.png",
 	};
 
@@ -277,74 +279,105 @@ Ptero.assets = (function(){
 		}
 	};
 
-	function load(onDone,onProgress) {
+	function load(d) {
 
-		// FIXME: temporarily skipping this to help isolate iphone crash
-		//onDone = null;
-		//onProgress = null;
+		var loadingImageName = d.loadingImageName;
+		var onStart = d.onStart;
+		var onDone = d.onDone;
 
-		// Call onprogress for first time.
-		onProgress && onProgress(0);
+		// Load the loading image first.
+		var name = loadingImageName;
+		var src = imageSources[name];
+		var img = new Image();
+		img.src = src;
+		img.onerror = function() {
+			console.error("couldn't load image: "+ name);
+		};
+		img.onload = function() {
+			console.log("loaded image: "+ name);
+			var jsonSrc = jsonSources[name];
+			var req = new XMLHttpRequest();
+			req.onload = function() {
+				json[name] = JSON.parse(this.responseText);
+				console.log("loaded json: "+ name);
 
-		// Determine the number of files we are loading.
-		var totalCount = 0;
-		for (name in imageSources) { totalCount++; }
-		for (name in jsonSources) { totalCount++; }
+				// process the loading image
+				postProcessImage(name);
 
-		// Running count of how many files have been loaded.
-		var count = 0;
+				// signal to the caller that the loading image is ready to use
+				onStart && onStart();
 
-		// Called when all files are loaded.
-		function handleAllDone() {
-			postProcess();
-			onDone && onDone();
-		}
-
-		// Called after a file is loaded.
-		function handleLoad() {
-			count++;
-			//console.log(count, totalCount);
-			if (count == totalCount) {
-				handleAllDone();
-			}
-			onProgress && onProgress(count/totalCount);
-		}
-
-		var img,name,src,req;
-
-		// Load images
-		for (name in imageSources) {
-			src = imageSources[name];
-			console.log('image',name, src);
-			img = new Image();
-			img.src = src;
-			img.onerror = (function(name){
-				return function() {
-					console.error("couldn't load image: "+ name);
-				};
-			})(name);
-			img.onload = (function(name){
-				return function() {
-					console.log("loaded image: "+ name);
-					handleLoad();
-				};
-			})(name);
-			images[name] = img;
-		}
-
-		// Load json data.
-		for (name in jsonSources) {
-			src = jsonSources[name];
-			req = new XMLHttpRequest();
-			req.onload = (function(name){
-				return function() {
-					json[name] = JSON.parse(this.responseText);
-					console.log("loaded json: "+ name);
-					handleLoad();
-				};
-			})(name);
-			req.open('GET', src, true);
+				// load the rest of the resources
+				loadRest();
+			};
+			req.open('GET', jsonSrc, true);
 			req.send();
+		};
+		images[name] = img;
+
+		function loadRest() {
+
+			// Determine the number of files we are loading.
+			var totalCount = 0;
+			for (name in imageSources) { totalCount++; }
+			for (name in jsonSources) { totalCount++; }
+
+			// Running count of how many files have been loaded.
+			var count = 2; // already loaded "loading" image and json
+
+			// Called when all files are loaded.
+			function handleAllDone() {
+				postProcess();
+				onDone && onDone();
+			}
+
+			// Called after a file is loaded.
+			function handleLoad() {
+				count++;
+				//console.log(count, totalCount);
+				if (count == totalCount) {
+					handleAllDone();
+				}
+			}
+
+			// Load images
+			var img,name,src,req;
+			for (name in imageSources) {
+				if (name == loadingImageName) {
+					continue;
+				}
+				src = imageSources[name];
+				console.log('image',name, src);
+				img = new Image();
+				img.src = src;
+				img.onerror = (function(name){
+					return function() {
+						console.error("couldn't load image: "+ name);
+					};
+				})(name);
+				img.onload = (function(name){
+					return function() {
+						console.log("loaded image: "+ name);
+						handleLoad();
+					};
+				})(name);
+				images[name] = img;
+			}
+
+			// Load json data.
+			for (name in jsonSources) {
+				src = jsonSources[name];
+				req = new XMLHttpRequest();
+				req.onload = (function(name){
+					return function() {
+						json[name] = JSON.parse(this.responseText);
+						console.log("loaded json: "+ name);
+						handleLoad();
+					};
+				})(name);
+				req.open('GET', src, true);
+				req.send();
+			}
 		}
 	};
 

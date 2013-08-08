@@ -34,16 +34,11 @@ Ptero.screen = (function(){
 		shakeTime = shakeMaxTime;
 	};
 
-	function setStartSize(w,h) {
-		width = w;
-		height = h;
-	};
-
-	function init(_canvas) {
+	function init(_canvas,w,h) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		setSize(width,height);
+		setSize(w,h);
 		establishScale();
 
 		var fov = 30*Math.PI/180;
@@ -125,7 +120,6 @@ Ptero.screen = (function(){
 		getCanvas:	function() { return canvas; },
 		getCtx:		function() { return ctx; },
 		getFrustum: function() { return frustum; },
-		setStartSize: setStartSize,
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
         getScreenToSpaceRatio: getScreenToSpaceRatio,
