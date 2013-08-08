@@ -62,7 +62,6 @@ Ptero.scene_options = (function(){
 		time = 0;
 
 		Ptero.input.addTouchHandler(touchHandler);
-		Ptero.orb.allowTapToSelect(false);
 
 		createPteros();
 

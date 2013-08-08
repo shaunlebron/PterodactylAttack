@@ -44,7 +44,6 @@ Ptero.scene_pre_play = (function(){
 		time = 0;
 
 		Ptero.input.addTouchHandler(touchHandler);
-		Ptero.orb.allowTapToSelect(false);
 
 		createPteros();
 

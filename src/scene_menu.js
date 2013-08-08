@@ -52,7 +52,7 @@ Ptero.scene_menu = (function(){
 		time = 0;
 
 		Ptero.input.addTouchHandler(touchHandler);
-		Ptero.orb.allowTapToSelect(false);
+		Ptero.orb.enableGuide(true);
 
 		createPteros();
 

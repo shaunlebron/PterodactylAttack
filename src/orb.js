@@ -1,5 +1,11 @@
 Ptero.orb = (function(){
 
+	// enable guide that shows you how to attack enemies
+	var showGuide;
+	function enableGuide(on) {
+		showGuide = on;
+	}
+
 	var swipePos;
 	var swipeAnimInterp;
 	var swipeAlpha;
@@ -766,17 +772,7 @@ Ptero.orb = (function(){
 
 		if (closest_index != null) {
 			target = targets[closest_index];
-			if (tapToSelect) {
-				/* disabling missiles for now
-				if (target.selected) {
-					deselectTarget(target);
-				}
-				else {
-					selectTarget(target);
-				}
-				*/
-			}
-			else {
+			if (showGuide) {
 				target.onTap && target.onTap();
 				var targetPos = Ptero.screen.getFrustum().projectToNear(target.getPosition());
 				blink();
@@ -800,16 +796,7 @@ Ptero.orb = (function(){
 				continue;
 			}
 			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
-				if (tapToSelect) {
-					/* disabling missiles for now
-					if (!target.selected) {
-						selectTarget(target);
-					}
-					*/
-				}
-				else {
-					//blink();
-				}
+				//blink();
 			}
 		}
 	};
@@ -922,11 +909,6 @@ Ptero.orb = (function(){
 		}
 	};
 
-	var tapToSelect = true;
-	function allowTapToSelect(on) {
-		tapToSelect = on;
-	};
-
 	var isNet = false;
 	function enableNet(on) {
 		isNet = on;
@@ -946,6 +928,6 @@ Ptero.orb = (function(){
 		enableTouch: enableTouch,
 		disableTouch: disableTouch,
 		deselectTarget: deselectTarget,
-		allowTapToSelect: allowTapToSelect,
+		enableGuide: enableGuide,
 	};
 })();

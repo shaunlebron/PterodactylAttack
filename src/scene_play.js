@@ -53,6 +53,8 @@ Ptero.scene_play = (function() {
 	var netBtn;
 	function init() {
 
+		Ptero.orb.enableGuide(false);
+
 		// set the background
 		Ptero.setBackground(stage);
 
@@ -86,9 +88,6 @@ Ptero.scene_play = (function() {
 
 		// reset the score
 		Ptero.score.reset();
-
-		// disallow ability to tap enemies to select them
-		Ptero.orb.allowTapToSelect(false);
 
 		// create the pause button
 		pauseBtn = new Ptero.SpriteButton({
