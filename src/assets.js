@@ -364,6 +364,9 @@ Ptero.assets = (function(){
 
 			// Load json data.
 			for (name in jsonSources) {
+				if (name == loadingImageName) {
+					continue;
+				}
 				src = jsonSources[name];
 				req = new XMLHttpRequest();
 				req.onload = (function(name){
