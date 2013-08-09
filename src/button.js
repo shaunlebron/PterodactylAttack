@@ -123,6 +123,35 @@ Ptero.Button.prototype = {
 Ptero.SpriteButton = function(a) {
 	this.sprite = a.sprite;
 	a.billboard = a.sprite.billboard;
+
+	var ontouchstart = a.ontouchstart;
+	var ontouchend = a.ontouchend;
+	var ontouchenter = a.ontouchenter;
+	var ontouchleave = a.ontouchleave;
+
+	var origScale = a.sprite.billboard.scale;
+	var focusScale = origScale * 1.1;
+	function setScale(s) {
+		a.sprite.billboard.scale = s;
+	}
+	
+	a.ontouchstart = function() {
+		ontouchstart && ontouchstart();
+		setScale(focusScale);
+	};
+	a.ontouchend = function() {
+		ontouchend && ontouchend();
+		setScale(origScale);
+	};
+	a.ontouchenter = function() {
+		ontouchenter && ontouchenter();
+		setScale(focusScale);
+	};
+	a.ontouchleave = function() {
+		ontouchleave && ontouchleave();
+		setScale(origScale);
+	};
+
 	Ptero.Button.call(this,a);
 };
 Ptero.SpriteButton.prototype = newChildObject(Ptero.Button.prototype, {

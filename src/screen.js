@@ -85,6 +85,13 @@ Ptero.screen = (function(){
 			frustum.near);
 	};
 
+	function screenFracToSpace(xf,yf) {
+		return screenToSpace({
+			x: xf * width,
+			y: yf * height,
+		});
+	};
+
     function getScreenToSpaceRatio() {
         return (width) / frustum.nearWidth;
     };
@@ -122,6 +129,7 @@ Ptero.screen = (function(){
 		getFrustum: function() { return frustum; },
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
+		screenFracToSpace: screenFracToSpace,
         getScreenToSpaceRatio: getScreenToSpaceRatio,
 		getCanvasPos: getCanvasPos,
 		update: update,
