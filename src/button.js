@@ -93,7 +93,14 @@ Ptero.Button = function(a) {
 
 				if (startInside) {
 					if (isInside(lastX,lastY)) {
-						that.onclick && that.onclick();
+						if (a.isClickDelay) {
+							setTimeout(function(){
+								that.onclick && that.onclick();
+							}, 250);
+						}
+						else {
+							that.onclick && that.onclick();
+						}
 					}
 					that.ontouchend && that.ontouchend(x,y);
 				}
