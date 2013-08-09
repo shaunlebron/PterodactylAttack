@@ -28,7 +28,7 @@ Ptero.scene_pre_play = (function(){
 
 		makeFramePositions();
 
-		titleSprite = Ptero.assets.sprites['menu_stages'];
+		titleSprite = Ptero.assets.sprites['menu_whereto'];
 		titlePos = Ptero.screen.screenFracToSpace(0.5, 0.15);
 
 		mountainBtn = new Ptero.SpriteButton({
@@ -110,7 +110,7 @@ Ptero.scene_pre_play = (function(){
 		var w = Ptero.screen.getWidth();
 		var h = Ptero.screen.getHeight();
 
-		ctx.fillStyle = "rgba(255,255,255,0.7)";
+		ctx.fillStyle = "rgba(255,255,255,0.6)";
 
 		ctx.fillRect(0,0,w,topPaneY);
 		ctx.fillRect(0,botPaneY,w,h);
@@ -127,7 +127,7 @@ Ptero.scene_pre_play = (function(){
 
 		drawPanes(ctx);
 
-		//titleSprite.draw(ctx, titlePos);
+		titleSprite.draw(ctx, titlePos);
 
 		mountainBtn.draw(ctx);
 		iceBtn.draw(ctx);

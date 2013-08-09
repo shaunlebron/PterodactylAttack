@@ -11,6 +11,7 @@ Ptero.assets = (function(){
 		"menu_tutorial_on"  : "img/menu/menu_tutorial_on.png",
 		"menu_tutorial_off" : "img/menu/menu_tutorial_off.png",
 		"menu_credits"      : "img/menu/menu_credits.png",
+		"menu_whereto"      : "img/menu/menu_whereto.png",
 
 		"boom1": "img/boom1.png",
 		"boom2": "img/boom2.png",
