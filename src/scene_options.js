@@ -119,7 +119,9 @@ Ptero.scene_options = (function(){
 			sprite: Ptero.assets.sprites['btn_back'],
 			hudPos: { x: 0.5, y:0.8 },
 			onclick: function() {
-				Ptero.setScene(Ptero.scene_menu);
+				setTimeout(function(){
+					Ptero.setScene(Ptero.scene_menu);
+				}, 250);
 			},
 		});
 		backBtn.enable();

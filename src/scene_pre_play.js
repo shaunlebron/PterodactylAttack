@@ -35,7 +35,9 @@ Ptero.scene_pre_play = (function(){
 			sprite: Ptero.assets.sprites['frame_mountain'],
 			hudPos: { x: 0.2, y:0.5 },
 			onclick: function() {
-				startGame('mountain');
+				setTimeout(function(){
+					startGame('mountain');
+				}, 250);
 			},
 		});
 		mountainBtn.enable();
@@ -44,7 +46,9 @@ Ptero.scene_pre_play = (function(){
 			sprite: Ptero.assets.sprites['frame_ice'],
 			hudPos: { x: 0.5, y:0.5 },
 			onclick: function() {
-				startGame('ice');
+				setTimeout(function(){
+					startGame('ice');
+				}, 250);
 			},
 		});
 		iceBtn.enable();
@@ -53,7 +57,9 @@ Ptero.scene_pre_play = (function(){
 			sprite: Ptero.assets.sprites['frame_volcano'],
 			hudPos: { x: 0.8, y:0.5 },
 			onclick: function() {
-				startGame('volcano');
+				setTimeout(function(){
+					startGame('volcano');
+				}, 250);
 			},
 		});
 		volcanoBtn.enable();
@@ -62,7 +68,9 @@ Ptero.scene_pre_play = (function(){
 			sprite: Ptero.assets.sprites['btn_back'],
 			hudPos: { x: 0.5, y:0.85 },
 			onclick: function() {
-				Ptero.setScene(Ptero.scene_menu);
+				setTimeout(function(){
+					Ptero.setScene(Ptero.scene_menu);
+				}, 250);
 			},
 		});
 		backBtn.enable();
