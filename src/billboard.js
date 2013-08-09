@@ -148,4 +148,9 @@ Ptero.Billboard.prototype = {
 		var scale = screenRect.w / this.w;
 		ctx.scale(scale, scale);
 	},
+
+	fill: function(ctx,pos) {
+		var r = this.getScreenRect(pos);
+		ctx.fillRect(r.x,r.y,r.w,r.h);
+	},
 };

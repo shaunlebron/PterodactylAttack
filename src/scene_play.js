@@ -118,10 +118,6 @@ Ptero.scene_play = (function() {
 		// initialize pause menu
 		Ptero.pause_menu.init();
 
-		// initialize options screen attributes
-		Ptero.scene_options.setReturnScene(this);
-		Ptero.scene_options.setResumeOnReturn(true);
-
 		// enable input
 		enableControls();
 	};

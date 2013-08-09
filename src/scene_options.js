@@ -1,164 +1,163 @@
 
 Ptero.scene_options = (function(){
 
-	var song;
-	var paths;
-	var enemies = [];
+	var backplate;
+	var pos;
 
-	var vibrate = true;
+	var soundOnBtn;
+	var soundOffBtn;
+	var vibrateOnBtn;
+	var vibrateOffBtn;
+	var tutorialOnBtn;
+	var tutorialOffBtn;
+	var backBtn;
 
 	function cleanup() {
-		Ptero.input.removeTouchHandler(touchHandler);
-		Ptero.orb.disableTouch();
-		Ptero.bulletpool.clear();
-	}
-
-	function createPteros() {
-		var wave = Ptero.assets.json["mainmenu_paths"];
-
-		var models = wave.models;
-		var numModels = models.length;
-
-		enemies.length = 0;
-
-		// iterate each enemy in wave
-		for (j=0; j<numModels; j++) {
-
-			// create enemy
-			var e = Ptero.Enemy.fromState(models[j]);
-			e.path.freezeAtEnd = true;
-			e.whenHit = function() { Ptero.screen.shake(); };
-
-			// add enemy to this scene's enemies
-			enemies.push(e);
-		}
-
-		enemies[0].afterHit = function() {
-			// credits
-			//switchScene(Ptero.scene_credits);
-			enemies[0].init();
-		}
-		enemies[1].whenHit = function() {
-			vibrate = !vibrate;
-			Ptero.screen.shake();
-		}
-		enemies[1].afterHit = function() {
-			// vibration
-			enemies[1].init();
-		}
-		enemies[2].afterHit = function() {
-			// back
-			if (resumeOnReturn) {
-				Ptero.resumeScene(returnScene);
-			}
-			else {
-				switchScene(returnScene);
-			}
-		}
+		soundOnBtn.disable();
+		soundOffBtn.disable();
+		vibrateOnBtn.disable();
+		vibrateOffBtn.disable();
+		tutorialOnBtn.disable();
+		tutorialOffBtn.disable();
+		backBtn.disable();
 	}
 
 	var time;
 	function init() {
 		time = 0;
+		var w = 600;
+		var h = 720;
+		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
+		var frustum = Ptero.screen.getFrustum();
+		pos = {
+			x: 0,
+			y: 0,
+			z: frustum.near,
+		};
 
-		Ptero.input.addTouchHandler(touchHandler);
+		var y = 0.2;
+		var dy = 0.17;
 
-		createPteros();
+		var soundPos = {
+			x: 0.5,
+			y: y,
+		};
+		soundOnBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_sound_on'],
+			hudPos: soundPos,
+			onclick: function() {
+				// turn sound off
+				soundOffBtn.enable();
+				soundOnBtn.disable();
+			},
+		});
+		soundOffBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_sound_off'],
+			hudPos: soundPos,
+			onclick: function() {
+				// turn sound on
+				soundOnBtn.enable();
+				soundOffBtn.disable();
+			},
+		});
 
-		Ptero.orb.init();
-		Ptero.orb.setTargets(enemies);
-        Ptero.orb.setNextOrigin(0,-1);
+		soundOnBtn.enable();
+
+		y += dy;
+		var vibratePos = {
+			x: 0.5,
+			y: y,
+		};
+		vibrateOnBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_vibrate_on'],
+			hudPos: vibratePos,
+			onclick: function() {
+				// turn vibrate off
+				vibrateOffBtn.enable();
+				vibrateOnBtn.disable();
+			},
+		});
+		vibrateOffBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_vibrate_off'],
+			hudPos: vibratePos,
+			onclick: function() {
+				// turn vibrate on
+				vibrateOnBtn.enable();
+				vibrateOffBtn.disable();
+			},
+		});
+
+		vibrateOnBtn.enable();
+
+		y += dy;
+		var tutorialPos = {
+			x: 0.5,
+			y: y,
+		};
+		tutorialOnBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_tutorial_on'],
+			hudPos: tutorialPos,
+			onclick: function() {
+				// turn tutorial off
+				tutorialOffBtn.enable();
+				tutorialOnBtn.disable();
+			},
+		});
+		tutorialOffBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_tutorial_off'],
+			hudPos: tutorialPos,
+			onclick: function() {
+				// turn tutorial on
+				tutorialOnBtn.enable();
+				tutorialOffBtn.disable();
+			},
+		});
+
+		tutorialOnBtn.enable();
+
+		backBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['btn_back'],
+			hudPos: { x: 0.5, y:0.8 },
+			onclick: function() {
+				Ptero.setScene(Ptero.scene_menu);
+			},
+		});
+		backBtn.enable();
 	}
-
-	function switchScene(scene) {
-		Ptero.fadeToScene(scene, 0.25);
-	}
-
-	var touchHandler = {
-		start: function(x,y) {
-		},
-		move: function(x,y) {
-		},
-		end: function(x,y) {
-		},
-		cancel: function(x,y) {
-		},
-	};
 
 	function update(dt) {
 		time += dt;
-
-		var i,numEnemies = enemies.length;
-		for (i=0; i<numEnemies; i++) {
-			enemies[i].update(dt);
-			var pos = enemies[i].getPosition();
-			if (pos) {
-				Ptero.deferredSprites.defer(
-					(function(e) {
-						return function(ctx){
-							e.draw(ctx);
-						};
-					})(enemies[i]),
-					pos.z);
-			}
-		}
-
-		Ptero.orb.update(dt);
-		Ptero.bulletpool.deferBullets();
 	}
 
 	function draw(ctx) {
-		Ptero.assets.keepExplosionsCached(ctx);
 		Ptero.deferredSprites.draw(ctx);
 
-		Ptero.orb.draw(ctx);
+		ctx.fillStyle = "rgba(0,0,0,0.7)";
+		backplate.fill(ctx,pos);
 
-		var size = Ptero.hud.getTextSize('menu_title');
-		ctx.font = size + "px SharkParty";
-		ctx.fillStyle = "rgba(255,255,255,0.25)";
-		ctx.textBaseline = "middle";
-		ctx.textAlign = "center";
-		var frustum = Ptero.screen.getFrustum();
-		var p = Ptero.screen.spaceToScreen({x:0, y:frustum.nearTop/4*3, z:frustum.near});
-		var x = p.x;
-		var y = p.y;
-		ctx.fillText("OPTIONS", x,y);
-
-		if (time >= 1) {
-			var size = Ptero.hud.getTextSize('menu_option');
-			ctx.font = size + "px SharkParty";
-			ctx.fillStyle = "#FFF";
-			ctx.textBaseline = "middle";
-			ctx.textAlign = "center";
-
-			var titles = [
-				"Credits",
-				"Vibration",
-				"Back",
-			];
-
-			var i;
-			for (i=0; i<3; i++) {
-				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
-				var x = p.x;
-				var y = p.y;
-				var title = titles[i];
-				if (i == 1) {
-					title += ": ";
-					title += vibrate ? "ON" : "OFF";
-				}
-				ctx.fillText(title,x,y);
-			}
+		if (soundOnBtn.isEnabled) {
+			soundOnBtn.draw(ctx);
 		}
-	}
+		else {
+			soundOffBtn.draw(ctx);
+		}
 
-	var returnScene;
-	var resumeOnReturn;
-	function setReturnScene(scene) {
-		returnScene = scene;
-	}
-	function setResumeOnReturn(on) {
-		resumeOnReturn = on;
+		if (vibrateOnBtn.isEnabled) {
+			vibrateOnBtn.draw(ctx);
+		}
+		else {
+			vibrateOffBtn.draw(ctx);
+		}
+
+		if (tutorialOnBtn.isEnabled) {
+			tutorialOnBtn.draw(ctx);
+		}
+		else {
+			tutorialOffBtn.draw(ctx);
+		}
+
+
+		backBtn.draw(ctx);
 	}
 
 	return {
@@ -166,8 +165,6 @@ Ptero.scene_options = (function(){
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
-		setReturnScene: setReturnScene,
-		setResumeOnReturn: setResumeOnReturn,
 		isVibrate: function() { return vibrate; },
 	};
 

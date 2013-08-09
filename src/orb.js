@@ -154,7 +154,7 @@ Ptero.orb = (function(){
 	};
 
 	function update(dt) {
-		origin.ease_to(next_origin, 0.1);
+		origin.ease_to(next_origin, 0.3);
 		Ptero.bulletpool.update(dt);
 		charge.update(dt);
 		updateBlinkTimer(dt);

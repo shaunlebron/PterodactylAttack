@@ -101,6 +101,12 @@ Ptero.Enemy.prototype = {
 	getBillboard: function() {
 		return this.sprite.getBillboard();
 	},
+	explode: function() {
+		// register hit to begin explosion
+		this.isHit = true;
+		this.health = 0;
+		Ptero.audio.playExplode();
+	},
 	applyDamage: function(damage) {
 		if (this.health <= 0) {
 			return;
@@ -108,10 +114,7 @@ Ptero.Enemy.prototype = {
 		this.health -= damage;
 
 		if (this.health <= 0) {
-
-			// register hit to begin explosion
-			this.isHit = true;
-			Ptero.audio.playExplode();
+			this.explode();
 		}
 		else {
 			Ptero.audio.playHurt();

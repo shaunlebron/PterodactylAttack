@@ -11,6 +11,8 @@ Ptero.Button = function(a) {
 			y: a.hudPos.y * Ptero.screen.getHeight(),
 	});
 
+	this.isEnabled = false;
+
 	// get position or calculate it from the given anchor and margin.
 	this.pos = a.pos || hudPos || (function(){
 		var size = this.billboard.getScreenSize();
@@ -37,6 +39,10 @@ Ptero.Button = function(a) {
 		return Ptero.screen.screenToSpace(screenPos);
 	}).call(this);
 	this.onclick = a.onclick;
+	this.ontouchstart = a.ontouchstart;
+	this.ontouchend = a.ontouchend;
+	this.ontouchenter = a.ontouchenter;
+	this.ontouchleave = a.ontouchleave;
 
 	// Create touch handler
 	var that = this;
@@ -101,10 +107,16 @@ Ptero.Button = function(a) {
 };
 Ptero.Button.prototype = {
 	enable: function() {
-		Ptero.input.addTouchHandler(this.touchHandler);
+		if (!this.isEnabled) {
+			Ptero.input.addTouchHandler(this.touchHandler);
+			this.isEnabled = true;
+		}
 	},
 	disable: function() {
-		Ptero.input.removeTouchHandler(this.touchHandler);
+		if (this.isEnabled) {
+			Ptero.input.removeTouchHandler(this.touchHandler);
+			this.isEnabled = false;
+		}
 	},
 };
 

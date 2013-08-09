@@ -2,6 +2,15 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
+		"menu_start"        : "img/menu/menu_start.png",
+		"menu_options"      : "img/menu/menu_options.png",
+		"menu_sound_on"     : "img/menu/menu_sound_on.png",
+		"menu_sound_off"    : "img/menu/menu_sound_off.png",
+		"menu_vibrate_on"   : "img/menu/menu_vibrate_on.png",
+		"menu_vibrate_off"  : "img/menu/menu_vibrate_off.png",
+		"menu_tutorial_on"  : "img/menu/menu_tutorial_on.png",
+		"menu_tutorial_off" : "img/menu/menu_tutorial_off.png",
+		"menu_credits"      : "img/menu/menu_credits.png",
 
 		"boom1": "img/boom1.png",
 		"boom2": "img/boom2.png",

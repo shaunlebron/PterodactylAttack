@@ -5,6 +5,8 @@ Ptero.scene_menu = (function(){
 	var paths;
 	var enemies = [];
 
+	var spriteStart, spriteOptions;
+
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
 		Ptero.orb.disableTouch();
@@ -25,24 +27,18 @@ Ptero.scene_menu = (function(){
 			// create enemy
 			var e = Ptero.Enemy.fromState(models[j]);
 			e.path.freezeAtEnd = true;
-			e.whenHit = function() { Ptero.screen.shake(); };
+			e.whenHit = (function(e){ return function() { e.explode(); Ptero.screen.shake(); }; })(e);
 
 			// add enemy to this scene's enemies
 			enemies.push(e);
 		}
 
 		enemies[0].afterHit = function() {
-			switchScene(Ptero.scene_pre_play);
-		}
-		enemies[1].afterHit = function() {
 			// options
-			Ptero.scene_options.setReturnScene(Ptero.scene_menu);
-			Ptero.scene_options.setResumeOnReturn(false);
 			switchScene(Ptero.scene_options);
 		}
-		enemies[2].afterHit = function() {
-			// exit
-			switchScene(Ptero.scene_hygoon);
+		enemies[1].afterHit = function() {
+			switchScene(Ptero.scene_pre_play);
 		}
 	}
 
@@ -50,6 +46,9 @@ Ptero.scene_menu = (function(){
 	function init() {
 
 		time = 0;
+
+		spriteStart = Ptero.assets.sprites['menu_start'];
+		spriteOptions = Ptero.assets.sprites['menu_options'];
 
 		Ptero.input.addTouchHandler(touchHandler);
 		Ptero.orb.enableGuide(true);
@@ -104,26 +103,17 @@ Ptero.scene_menu = (function(){
 
 		Ptero.orb.draw(ctx);
 
-		if (time >= 1) {
-			var size = Ptero.hud.getTextSize('menu_option');
-			ctx.font = size + "px SharkParty";
-			ctx.fillStyle = "#FFF";
-			ctx.textBaseline = "middle";
-			ctx.textAlign = "center";
-			var titles = [
-				"start",
-				"options",
-				"quit",
-			];
+		var frustum = Ptero.screen.getFrustum();
 
-			var i;
-			for (i=0; i<3; i++) {
-				var p = Ptero.screen.spaceToScreen(enemies[i].getPosition());
-				var x = p.x;
-				var y = p.y;
-				var title = titles[i];
-				ctx.fillText(title,x,y);
-			}
+		if (time >= 1) {
+			var p;
+			p = enemies[0].getPosition();
+			p = frustum.projectToNear(p);
+			spriteOptions.draw(ctx,p);
+
+			p = enemies[1].getPosition();
+			p = frustum.projectToNear(p);
+			spriteStart.draw(ctx,p);
 		}
 	}
 
