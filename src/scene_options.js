@@ -22,6 +22,40 @@ Ptero.scene_options = (function(){
 		backBtn.disable();
 	}
 
+	function enableSound(on) {
+		Ptero.settings.enableSound(on);
+		soundOnBtn.disable();
+		soundOffBtn.disable();
+		if (on) {
+			soundOnBtn.enable();
+		}
+		else {
+			soundOffBtn.enable();
+		}
+	}
+	function enableVibrate(on) {
+		Ptero.settings.enableVibrate(on);
+		vibrateOnBtn.disable();
+		vibrateOffBtn.disable();
+		if (on) {
+			vibrateOnBtn.enable();
+		}
+		else {
+			vibrateOffBtn.enable();
+		}
+	}
+	function enableTutorial(on) {
+		Ptero.settings.enableTutorial(on);
+		tutorialOnBtn.disable();
+		tutorialOffBtn.disable();
+		if (on) {
+			tutorialOnBtn.enable();
+		}
+		else {
+			tutorialOffBtn.enable();
+		}
+	}
+
 	var time;
 	function init() {
 		time = 0;
@@ -38,82 +72,47 @@ Ptero.scene_options = (function(){
 		var y = 0.2;
 		var dy = 0.17;
 
-		var soundPos = {
-			x: 0.5,
-			y: y,
-		};
+		var soundPos = { x: 0.5, y: y, };
 		soundOnBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_sound_on'],
 			hudPos: soundPos,
-			onclick: function() {
-				// turn sound off
-				soundOffBtn.enable();
-				soundOnBtn.disable();
-			},
+			onclick: function() { enableSound(false); },
 		});
 		soundOffBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_sound_off'],
 			hudPos: soundPos,
-			onclick: function() {
-				// turn sound on
-				soundOnBtn.enable();
-				soundOffBtn.disable();
-			},
+			onclick: function() { enableSound(true); },
 		});
 
-		soundOnBtn.enable();
-
 		y += dy;
-		var vibratePos = {
-			x: 0.5,
-			y: y,
-		};
+		var vibratePos = { x: 0.5, y: y, };
 		vibrateOnBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_vibrate_on'],
 			hudPos: vibratePos,
-			onclick: function() {
-				// turn vibrate off
-				vibrateOffBtn.enable();
-				vibrateOnBtn.disable();
-			},
+			onclick: function() { enableVibrate(false); },
 		});
 		vibrateOffBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_vibrate_off'],
 			hudPos: vibratePos,
-			onclick: function() {
-				// turn vibrate on
-				vibrateOnBtn.enable();
-				vibrateOffBtn.disable();
-			},
+			onclick: function() { enableVibrate(true); },
 		});
 
-		vibrateOnBtn.enable();
-
 		y += dy;
-		var tutorialPos = {
-			x: 0.5,
-			y: y,
-		};
+		var tutorialPos = { x: 0.5, y: y, };
 		tutorialOnBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_tutorial_on'],
 			hudPos: tutorialPos,
-			onclick: function() {
-				// turn tutorial off
-				tutorialOffBtn.enable();
-				tutorialOnBtn.disable();
-			},
+			onclick: function() { enableTutorial(false); },
 		});
 		tutorialOffBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_tutorial_off'],
 			hudPos: tutorialPos,
-			onclick: function() {
-				// turn tutorial on
-				tutorialOnBtn.enable();
-				tutorialOffBtn.disable();
-			},
+			onclick: function() { enableTutorial(true); },
 		});
 
-		tutorialOnBtn.enable();
+		enableSound(Ptero.settings.isSoundEnabled());
+		enableVibrate(Ptero.settings.isVibrateEnabled());
+		enableTutorial(Ptero.settings.isTutorialEnabled());
 
 		backBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['btn_back'],

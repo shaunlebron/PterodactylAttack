@@ -14,7 +14,7 @@ Ptero.Player.prototype = {
 	},
 	applyDamage: function(dmg) {
 		if (this.health > 0) {
-			if (Ptero.scene_options.isVibrate()) {
+			if (Ptero.settings.isVibrateEnabled()) {
 				navigator.vibrate && navigator.vibrate(200);
 			}
 			Ptero.screen.shake();

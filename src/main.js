@@ -49,6 +49,8 @@ window.onload = function() {
 			Ptero.executive.start();
 		},
 		onDone: function() {
+			console.log('loading settings');
+			Ptero.settings.load();
 			console.log('creating backgrounds');
 			Ptero.createBackgrounds();
 			console.log('loading high score');
