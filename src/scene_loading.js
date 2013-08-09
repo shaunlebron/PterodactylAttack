@@ -44,18 +44,22 @@ Ptero.scene_loading = (function(){
 			var r = wheelRadius;
 			ctx.translate(r,r);
 
-			var i,len=9;
+			var i,len=16;
 			var dx,dy;
 			var da = Math.PI*2/len;
+			ctx.lineWidth = 12;
 			for (i=0; i<len; i++) {
 				var a = da*i;
 				ctx.beginPath();
 				ctx.moveTo(0,0);
-				ctx.arc(0,0,r*0.8,a,a+da);
-				ctx.closePath();
+				dx = Math.cos(a);
+				dy = Math.sin(a);
+				ctx.beginPath();
+				ctx.moveTo(dx*r*0.5, dy*r*0.5);
+				ctx.lineTo(dx*r, dy*r);
 				var alpha = 1.0 -((Math.floor(time/0.1)+i) % len)/len;
-				ctx.fillStyle = "rgba(255,255,255,"+alpha+")";
-				ctx.fill();
+				ctx.strokeStyle = "rgba(255,255,255,"+alpha+")";
+				ctx.stroke();
 			}
 
 			ctx.restore();

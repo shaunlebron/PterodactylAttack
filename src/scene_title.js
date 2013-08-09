@@ -9,14 +9,19 @@ Ptero.scene_title = (function(){
 	var paths;
 	var enemies = [];
 
+	var movingOut;
+
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
 	}
 
 	function init() {
 
+		movingOut = false;
+
 		// set title background environment
 		Ptero.setBackground('mountain');
+		Ptero.background.goToIdle();
 
 		titleSprite = Ptero.assets.sprites["logo"];
 
@@ -27,20 +32,23 @@ Ptero.scene_title = (function(){
 
 		titlePos = {
 			x: 0,
+			y: endY,
 			z: frustum.near,
 		};
 		titleMover = {
 			t:0,
-			interp: Ptero.makeHermiteInterp([startY, midY, endY], [1.0, 0.3, 0.5]),
+			interp: Ptero.makeHermiteInterp([endY, midY, startY], [0, 0.2, 0.2]),
 			update: function(dt) {
 				this.t += dt;
 				var y = this.interp(this.t);
 				if (y != null) {
 					titlePos.y = y;
 				}
+				else {
+					Ptero.setScene(Ptero.scene_menu);
+				}
 			},
 		};
-		titleMover.update(0);
 
 		Ptero.input.addTouchHandler(touchHandler);
 		song = Ptero.audio.getTitleSong();
@@ -49,7 +57,7 @@ Ptero.scene_title = (function(){
 
 	var touchHandler = {
 		start: function(x,y) {
-			Ptero.fadeToScene(Ptero.scene_menu, 0.25);
+			movingOut = true;
 		},
 		move: function(x,y) {
 		},
@@ -60,14 +68,15 @@ Ptero.scene_title = (function(){
 	};
 
 	function update(dt) {
-		titleMover.update(dt);
+		if (movingOut) {
+			titleMover.update(dt);
+		}
 	}
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
 
 		titleSprite.draw(ctx,titlePos);
-
 	}
 
 	return {

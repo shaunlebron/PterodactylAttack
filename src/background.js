@@ -34,6 +34,16 @@ Ptero.BackgroundLayer.prototype = {
 		this.path = this.introPath;
 		this.syncPositionToPath();
 	},
+	goToIdle: function() {
+		if (this.idlePath) {
+			this.path = this.idlePath;
+		}
+		else {
+			this.path = this.introPath;
+			this.path.setTime(this.path.totalTime);
+		}
+		this.syncPositionToPath();
+	},
 	isPixelInside: function(x,y) {
 		var i,len=this.sprites.length;
 		for (i=0; i<len; i++) {
@@ -102,6 +112,12 @@ Ptero.Background.prototype = {
 		var i,len = this.layers.length;
 		for (i=0; i<len; i++) {
 			this.layers[i].animating = on;
+		}
+	},
+	goToIdle: function() {
+		var i,len = this.layers.length;
+		for (i=0; i<len; i++) {
+			this.layers[i].goToIdle();
 		}
 	},
 	getLayerFromPixel: function(x,y) {
