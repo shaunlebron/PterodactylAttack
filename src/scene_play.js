@@ -146,21 +146,6 @@ Ptero.scene_play = (function() {
 	};
 
 	function draw(ctx) {
-		function drawText(text) {
-			var size = Ptero.hud.getTextSize('menu_option');
-			ctx.font = size + "px SharkParty";
-			ctx.fillStyle = "#FFF";
-			ctx.textBaseline = "middle";
-			ctx.textAlign = "center";
-			var frustum = Ptero.screen.getFrustum();
-			var p = Ptero.screen.spaceToScreen({
-				x: 0,
-				y: frustum.nearTop/2,
-				z: frustum.near,
-			});
-			ctx.fillText(text, p.x, p.y);
-		}
-
 		if (!Ptero.executive.isPaused()) {
 			Ptero.assets.keepExplosionsCached(ctx);
 			//Ptero.background.draw(ctx);
@@ -179,13 +164,6 @@ Ptero.scene_play = (function() {
 				Ptero.score.draw(ctx);
 				Ptero.player.drawHealth(ctx);
 				netBtn.draw(ctx);
-			}
-
-			if (time < 2) {
-				drawText("Survive as long as you can!");
-			}
-			else if (time < 4) {
-				//drawText("New wave approaching!");
 			}
 		}
 		else {

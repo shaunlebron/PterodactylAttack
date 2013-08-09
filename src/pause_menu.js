@@ -1,100 +1,132 @@
 
 Ptero.pause_menu = (function(){
 
-	var playBtn, optionsBtn, stageSelectBtn, quitBtn;
+	var backplate;
+	var backplatePos;
+
+	var soundOnBtn;
+	var soundOffBtn;
+	var vibrateOnBtn;
+	var vibrateOffBtn;
+	var resumeBtn;
+	var quitBtn;
+
+	function enableSound(on) {
+		Ptero.settings.enableSound(on);
+		soundOnBtn.disable();
+		soundOffBtn.disable();
+		if (on) {
+			soundOnBtn.enable();
+		}
+		else {
+			soundOffBtn.enable();
+		}
+	}
+	function enableVibrate(on) {
+		Ptero.settings.enableVibrate(on);
+		vibrateOnBtn.disable();
+		vibrateOffBtn.disable();
+		if (on) {
+			vibrateOnBtn.enable();
+		}
+		else {
+			vibrateOffBtn.enable();
+		}
+	}
 
 	function init() {
-		var font = "SharkParty";
-		var fontSize = Ptero.hud.getTextSize('menu_option');
-		var textColor = "#FFF";
-		var w = 400;
-		var h = 125;
+		var w = 600;
+		var h = 720;
+		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
+		var frustum = Ptero.screen.getFrustum();
+		backplatePos = {
+			x: 0,
+			y: 0,
+			z: frustum.near,
+		};
+
 		var dy = 1/5;
-		playBtn = new Ptero.TextButton({
+		resumeBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_resume'],
 			hudPos: { x: 0.5, y: dy },
-			text: "Resume",
-			textAlign: "center",
-			textColor: textColor,
-			font: font,
-			fontSize: fontSize,
-			width: w,
-			height: h,
 			onclick: function() {
 				Ptero.executive.togglePause();
 				cleanup();
 				Ptero.scene.enableControls();
 			}
 		});
-		optionsBtn = new Ptero.TextButton({
-			hudPos: { x: 0.5, y: dy*2 },
-			text: "Options",
-			textAlign: "center",
-			textColor: textColor,
-			font: font,
-			fontSize: fontSize,
-			width: w,
-			height: h,
-			onclick: function() {
-				Ptero.executive.togglePause();
-				cleanup();
-				Ptero.fadeToScene(Ptero.scene_options, 0.25);
-			}
-		});
-		stageSelectBtn = new Ptero.TextButton({
-			hudPos: { x: 0.5, y: dy*3 },
-			text: "Select Stage",
-			textAlign: "center",
-			textColor: textColor,
-			font: font,
-			fontSize: fontSize,
-			width: w,
-			height: h,
-			onclick: function() {
-				Ptero.executive.togglePause();
-				cleanup();
-				Ptero.fadeToScene(Ptero.scene_pre_play, 0.25);
-			}
-		});
-		quitBtn = new Ptero.TextButton({
+		quitBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_quit'],
 			hudPos: { x: 0.5, y: dy*4 },
-			text: "Quit",
-			textAlign: "center",
-			textColor: textColor,
-			font: font,
-			fontSize: fontSize,
-			width: w,
-			height: h,
 			onclick: function() {
 				Ptero.executive.togglePause();
 				cleanup();
-				Ptero.fadeToScene(Ptero.scene_menu, 0.25);
+				Ptero.setScene(Ptero.scene_pre_play);
 			}
 		});
+
+		var soundPos = { x: 0.5, y: dy*2, };
+		soundOnBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_sound_on'],
+			hudPos: soundPos,
+			onclick: function() { enableSound(false); },
+		});
+		soundOffBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_sound_off'],
+			hudPos: soundPos,
+			onclick: function() { enableSound(true); },
+		});
+
+		var vibratePos = { x: 0.5, y: dy*3, };
+		vibrateOnBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_vibrate_on'],
+			hudPos: vibratePos,
+			onclick: function() { enableVibrate(false); },
+		});
+		vibrateOffBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_vibrate_off'],
+			hudPos: vibratePos,
+			onclick: function() { enableVibrate(true); },
+		});
+
+		enableSound(Ptero.settings.isSoundEnabled());
+		enableVibrate(Ptero.settings.isVibrateEnabled());
 	}
 
 	function draw(ctx) {
-		var w = Ptero.screen.getWidth();
-		var h = Ptero.screen.getHeight();
-		ctx.fillStyle = "rgba(0,0,0,0.5)";
-		ctx.fillRect(0,0,w,h);
+		ctx.fillStyle = "rgba(0,0,0,0.7)";
+		backplate.fill(ctx, backplatePos);
 
-		playBtn.draw(ctx);
-		optionsBtn.draw(ctx);
-		stageSelectBtn.draw(ctx);
+		if (soundOnBtn.isEnabled) {
+			soundOnBtn.draw(ctx);
+		}
+		else {
+			soundOffBtn.draw(ctx);
+		}
+
+		if (vibrateOnBtn.isEnabled) {
+			vibrateOnBtn.draw(ctx);
+		}
+		else {
+			vibrateOffBtn.draw(ctx);
+		}
+		resumeBtn.draw(ctx);
 		quitBtn.draw(ctx);
 	}
 
 	function cleanup() {
-		playBtn.disable();
-		optionsBtn.disable();
-		stageSelectBtn.disable();
+		soundOnBtn.disable();
+		soundOffBtn.disable();
+		vibrateOnBtn.disable();
+		vibrateOffBtn.disable();
+		resumeBtn.disable();
 		quitBtn.disable();
 	}
 
 	function enable() {
-		playBtn.enable();
-		optionsBtn.enable();
-		stageSelectBtn.enable();
+		enableSound(Ptero.settings.isSoundEnabled());
+		enableVibrate(Ptero.settings.isVibrateEnabled());
+		resumeBtn.enable();
 		quitBtn.enable();
 		Ptero.scene.disableControls();
 	}

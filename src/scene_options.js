@@ -2,7 +2,7 @@
 Ptero.scene_options = (function(){
 
 	var backplate;
-	var pos;
+	var backplatePos;
 
 	var soundOnBtn;
 	var soundOffBtn;
@@ -59,11 +59,12 @@ Ptero.scene_options = (function(){
 	var time;
 	function init() {
 		time = 0;
+
 		var w = 600;
 		var h = 720;
 		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
 		var frustum = Ptero.screen.getFrustum();
-		pos = {
+		backplatePos = {
 			x: 0,
 			y: 0,
 			z: frustum.near,
@@ -132,7 +133,7 @@ Ptero.scene_options = (function(){
 		Ptero.deferredSprites.draw(ctx);
 
 		ctx.fillStyle = "rgba(0,0,0,0.7)";
-		backplate.fill(ctx,pos);
+		backplate.fill(ctx, backplatePos);
 
 		if (soundOnBtn.isEnabled) {
 			soundOnBtn.draw(ctx);
