@@ -104,17 +104,6 @@ Ptero.scene_menu = (function(){
 
 		Ptero.orb.draw(ctx);
 
-		var size = Ptero.hud.getTextSize('menu_title');
-		ctx.font = size + "px SharkParty";
-		ctx.fillStyle = "rgba(255,255,255,0.25)";
-		ctx.textBaseline = "middle";
-		ctx.textAlign = "center";
-		var frustum = Ptero.screen.getFrustum();
-		var p = Ptero.screen.spaceToScreen({x:0, y:frustum.nearTop/4*3, z:frustum.near});
-		var x = p.x;
-		var y = p.y;
-		ctx.fillText("MAIN MENU", x,y);
-
 		if (time >= 1) {
 			var size = Ptero.hud.getTextSize('menu_option');
 			ctx.font = size + "px SharkParty";

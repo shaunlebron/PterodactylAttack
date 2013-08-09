@@ -17,8 +17,7 @@ Ptero.Ptalaga.screen = (function(){
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		Ptero.screen.setStartSize(paneWidth,paneHeight);
-		Ptero.screen.init(canvas);
+		Ptero.screen.init(canvas,paneWidth,paneHeight);
 		canvas.width = width;
 		canvas.height = height;
 		setAspect(16,9);

@@ -15,8 +15,7 @@ Ptero.Baklava.screen = (function(){
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		Ptero.screen.setStartSize(2*paneWidth,2*paneHeight);
-		Ptero.screen.init(canvas);
+		Ptero.screen.init(canvas,2*paneWidth,2*paneHeight);
 		canvas.width = width;
 		canvas.height = height;
 		setAspect(16,9);

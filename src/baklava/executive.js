@@ -17,7 +17,9 @@ Ptero.Baklava.executive = (function(){
 			lastTime = time;
 
 			Ptero.deferredSprites.clear();
-			Ptero.background.update(dt);
+			if (Ptero.background) {
+				Ptero.background.update(dt);
+			}
 			var scene = Ptero.scene;
 			if (!isPaused) {
 				scene.update(dt);
