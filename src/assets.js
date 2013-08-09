@@ -2,6 +2,7 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
+
 		"boom1": "img/boom1.png",
 		"boom2": "img/boom2.png",
 		"boom3": "img/boom3.png",

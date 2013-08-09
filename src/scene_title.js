@@ -9,15 +9,13 @@ Ptero.scene_title = (function(){
 	var paths;
 	var enemies = [];
 
-	var movingOut;
-
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
 	}
 
+	var time;
 	function init() {
-
-		movingOut = false;
+		time = 0;
 
 		// set title background environment
 		Ptero.setBackground('mountain');
@@ -57,7 +55,6 @@ Ptero.scene_title = (function(){
 
 	var touchHandler = {
 		start: function(x,y) {
-			movingOut = true;
 		},
 		move: function(x,y) {
 		},
@@ -68,7 +65,9 @@ Ptero.scene_title = (function(){
 	};
 
 	function update(dt) {
-		if (movingOut) {
+		time += dt;
+
+		if (time > 0.1) {
 			titleMover.update(dt);
 		}
 	}
