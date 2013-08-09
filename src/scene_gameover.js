@@ -1,12 +1,14 @@
 
 Ptero.scene_gameover = (function(){
 
-	var scoreBtn,playBtn,quitBtn,selectStageBtn,newHighBtn;
+	var backplate;
+	var backplatePos;
+
+	var replayBtn,quitBtn;
 
 	function cleanup() {
-		playBtn.disable();
+		replayBtn.disable();
 		quitBtn.disable();
-		selectStageBtn.disable();
 	}
 
 	function switchScene(scene) {
@@ -16,71 +18,36 @@ Ptero.scene_gameover = (function(){
 
 	function init() {
 		Ptero.audio.getScoreSong().play();
+		Ptero.overlord.stopScript();
 
-		newHighBtn = new Ptero.TextButton({
-			hudPos: {x:0.5, y:0.33},
-			font: "SharkParty",
-			fontSize: Ptero.hud.getBaseTextSize()/2,
-			textAlign: "center",
-			textColor: "#F00",
-			text: "High Score!",
-			width: 400,
-			height: 200,
-		});
+		var w = 600;
+		var h = 720;
+		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
+		var frustum = Ptero.screen.getFrustum();
+		backplatePos = {
+			x: 0,
+			y: 0,
+			z: frustum.near,
+		};
 
-		scoreBtn = new Ptero.TextButton({
-			hudPos: {x:0.5, y:0.25},
-			font: "SharkParty",
-			fontSize: Ptero.hud.getBaseTextSize()*2,
-			textAlign: "center",
-			textColor: "#FFF",
-			text: ""+Ptero.score.getTotal(),
-			width: 400,
-			height: 200,
-		});
-
-		playBtn = new Ptero.TextButton({
-			hudPos: {x:0.25, y:0.5},
-			font: "SharkParty",
-			textAlign: "center",
-			textColor: "#FFF",
-			text: "Play again",
-			width: 400,
-			height: 200,
+		replayBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_replay'],
+			hudPos: {x:0.5, y:0.5},
 			onclick: function() {
 				switchScene(Ptero.scene_play);
-				Ptero.audio.playSelect();
+				//Ptero.audio.playSelect();
 			},
 		});
-		playBtn.enable();
+		replayBtn.enable();
 
-		quitBtn = new Ptero.TextButton({
-			hudPos: {x:0.75, y:0.5},
-			font: "SharkParty",
-			textAlign: "center",
-			textColor: "#FFF",
-			text: "Quit to Title",
-			width: 400,
-			height: 200,
-			onclick: function() {
-				switchScene(Ptero.scene_menu);
-			},
-		});
-		quitBtn.enable();
-
-		selectStageBtn = new Ptero.TextButton({
-			hudPos: {x:0.5, y:0.75},
-			font: "SharkParty",
-			textAlign: "center",
-			textColor: "#FFF",
-			text: "Select Stage",
-			width: 400,
-			height: 200,
+		quitBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_quit'],
+			hudPos: {x:0.5, y:0.7},
 			onclick: function() {
 				switchScene(Ptero.scene_pre_play);
 			},
 		});
-		selectStageBtn.enable();
+		quitBtn.enable();
 
 		commitHighScore();
 
@@ -103,18 +70,21 @@ Ptero.scene_gameover = (function(){
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
+
+		ctx.fillStyle = "rgba(0,0,0,0.7)";
+		backplate.fill(ctx, backplatePos);
+
 		Ptero.orb.draw(ctx);
-		scoreBtn.draw(ctx);
-		playBtn.draw(ctx);
+		replayBtn.draw(ctx);
 		quitBtn.draw(ctx);
-		selectStageBtn.draw(ctx);
 		if (newHighScore) {
-			newHighBtn.draw(ctx);
+			//newHighBtn.draw(ctx);
 		}
 	}
 
 	function update(dt) {
 		Ptero.orb.update(dt);
+		Ptero.overlord.update(dt);
 	}
 
 	return {

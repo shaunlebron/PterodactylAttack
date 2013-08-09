@@ -26,9 +26,13 @@ Ptero.OverlordPattern = function(paths) {
 	this.paths = paths;
 	this.enemies = [];
 	this.createScript();
+	this.stopped = false;
 };
 
 Ptero.OverlordPattern.prototype = {
+	stopScript: function() {
+		this.stopped = true;
+	},
 	createScript: function() {
 
 		var t = 0;
@@ -100,7 +104,9 @@ Ptero.OverlordPattern.prototype = {
 	},
 	update: function(dt) {
 
-		this.script.update(dt);
+		if (!this.stopped) {
+			this.script.update(dt);
+		}
 
 		// update enemies
 		var e,pos;

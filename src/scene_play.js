@@ -62,7 +62,7 @@ Ptero.scene_play = (function() {
 		Ptero.refreshBounty();
 
 		// create the overlord to manage the enemies
-		overlord = Ptero.makeOverlord();
+		Ptero.overlord = overlord = Ptero.makeOverlord();
 		overlord.init();
 
 		// create the capture net button

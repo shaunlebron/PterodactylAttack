@@ -5,6 +5,8 @@ Ptero.assets = (function(){
 		"menu_start"        : "img/menu/menu_start.png",
 		"menu_resume"       : "img/menu/menu_resume.png",
 		"menu_quit"         : "img/menu/menu_quit.png",
+		"menu_replay"       : "img/menu/menu_replay.png",
+		"menu_highscore"    : "img/menu/menu_highscore.png",
 		"menu_options"      : "img/menu/menu_options.png",
 		"menu_sound_on"     : "img/menu/menu_sound_on.png",
 		"menu_sound_off"    : "img/menu/menu_sound_off.png",
