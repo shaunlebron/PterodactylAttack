@@ -3,6 +3,7 @@ Ptero.Baklava.scene_parallax = (function() {
 
 	function init() {
 		Ptero.setBackground('mountain');
+		Ptero.background.goToIdle();
 	};
 
 	function update(dt) {

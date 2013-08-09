@@ -6,6 +6,7 @@ Ptero.Ptalaga.scene_crater = (function() {
 		Ptero.orb.disableTouch();
 		Ptero.orb.setOrigin(0,-1);
 		Ptero.setBackground('mountain');
+		Ptero.background.goToIdle();
 	};
 
 	function update(dt) {
