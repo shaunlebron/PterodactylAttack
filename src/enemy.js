@@ -162,6 +162,7 @@ Ptero.Enemy.prototype = {
 	release: function() {
 		this.isCaught = false;
 		this.path = this.releasePath;
+		console.log('release');
 	},
 	onHit: function onHit(damage) {
 		if (!this.isHittable()) {
@@ -177,6 +178,7 @@ Ptero.Enemy.prototype = {
 			Ptero.audio.playNet();
 			this.createCaptureAndReleasePaths();
 			this.path = this.capturePath;
+		console.log('capture');
 		}
 		else {
 			// update score
@@ -199,10 +201,9 @@ Ptero.Enemy.prototype = {
 		this.isCaught = false;
 
 		// active path
-		this.path = null;
+		this.path = this.attackPath;
 
 		// available paths
-		this.attackPath = null;
 		this.capturePath = null;
 		this.releasePath = null;
 
