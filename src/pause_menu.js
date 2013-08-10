@@ -4,12 +4,51 @@ Ptero.pause_menu = (function(){
 	var backplate;
 	var backplatePos;
 
+	var resumeBtn;
+	var quitBtn;
+
 	var soundOnBtn;
 	var soundOffBtn;
 	var vibrateOnBtn;
 	var vibrateOffBtn;
-	var resumeBtn;
-	var quitBtn;
+	var tutorialOnBtn;
+	var tutorialOffBtn;
+	var lefthandBtn;
+	var righthandBtn;
+
+	var contentButtons;
+
+	function cleanup() {
+		var i,b,len=contentButtons.length;
+		for (i=0; i<len; i++) {
+			b = contentButtons[i];
+			b.disable();
+		}
+		resumeBtn.disable();
+		quitBtn.disable();
+	}
+
+	function enable() {
+		enableSound(Ptero.settings.isSoundEnabled());
+		enableVibrate(Ptero.settings.isVibrateEnabled());
+		setHand(Ptero.settings.getHand());
+
+		resumeBtn.enable();
+		quitBtn.enable();
+		Ptero.scene.disableControls();
+	}
+
+	function setHand(hand) {
+		Ptero.settings.setHand(hand);
+		lefthandBtn.disable();
+		righthandBtn.disable();
+		if (hand == 'left') {
+			lefthandBtn.enable();
+		}
+		else if (hand == 'right') {
+			righthandBtn.enable();
+		}
+	}
 
 	function enableSound(on) {
 		Ptero.settings.enableSound(on);
@@ -35,6 +74,8 @@ Ptero.pause_menu = (function(){
 	}
 
 	function init() {
+
+		// create backplate
 		var w = 600;
 		var h = 720;
 		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
@@ -45,7 +86,8 @@ Ptero.pause_menu = (function(){
 			z: frustum.near,
 		};
 
-		var dy = 1/5;
+		// create resume and quit buttons
+		var dy = 1/6;
 		resumeBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_resume'],
 			hudPos: { x: 0.5, y: dy },
@@ -57,7 +99,7 @@ Ptero.pause_menu = (function(){
 		});
 		quitBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_quit'],
-			hudPos: { x: 0.5, y: dy*4 },
+			hudPos: { x: 0.5, y: dy*5 },
 			onclick: function() {
 				Ptero.executive.togglePause();
 				cleanup();
@@ -65,6 +107,7 @@ Ptero.pause_menu = (function(){
 			}
 		});
 
+		// create settings buttons
 		var soundPos = { x: 0.5, y: dy*2, };
 		soundOnBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['menu_sound_on'],
@@ -89,46 +132,46 @@ Ptero.pause_menu = (function(){
 			onclick: function() { enableVibrate(true); },
 		});
 
-		enableSound(Ptero.settings.isSoundEnabled());
-		enableVibrate(Ptero.settings.isVibrateEnabled());
+		var handPos = { x: 0.5, y: dy*4, };
+		lefthandBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_lefthanded'],
+			hudPos: handPos,
+			onclick: function() {
+				setHand('right');
+				Ptero.scene_play.createNetBtn();
+			},
+		});
+		righthandBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['menu_righthanded'],
+			hudPos: handPos,
+			onclick: function() {
+				setHand('left');
+				Ptero.scene_play.createNetBtn();
+			},
+		});
+
+		contentButtons = [
+			soundOnBtn,
+			soundOffBtn,
+			vibrateOnBtn,
+			vibrateOffBtn,
+			lefthandBtn,
+			righthandBtn,
+		];
 	}
 
 	function draw(ctx) {
 		ctx.fillStyle = "rgba(0,0,0,0.7)";
 		backplate.fill(ctx, backplatePos);
 
-		if (soundOnBtn.isEnabled) {
-			soundOnBtn.draw(ctx);
-		}
-		else {
-			soundOffBtn.draw(ctx);
+		var i,b,len=contentButtons.length;
+		for (i=0; i<len; i++) {
+			b = contentButtons[i];
+			b.isEnabled && b.draw(ctx);
 		}
 
-		if (vibrateOnBtn.isEnabled) {
-			vibrateOnBtn.draw(ctx);
-		}
-		else {
-			vibrateOffBtn.draw(ctx);
-		}
 		resumeBtn.draw(ctx);
 		quitBtn.draw(ctx);
-	}
-
-	function cleanup() {
-		soundOnBtn.disable();
-		soundOffBtn.disable();
-		vibrateOnBtn.disable();
-		vibrateOffBtn.disable();
-		resumeBtn.disable();
-		quitBtn.disable();
-	}
-
-	function enable() {
-		enableSound(Ptero.settings.isSoundEnabled());
-		enableVibrate(Ptero.settings.isVibrateEnabled());
-		resumeBtn.enable();
-		quitBtn.enable();
-		Ptero.scene.disableControls();
 	}
 
 	return {

@@ -49,6 +49,28 @@ Ptero.scene_play = (function() {
 		Ptero.orb.disableTouch();
 	}
 
+	function createNetBtn() {
+		netBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['net'],
+			anchor: {
+				x: Ptero.settings.getHand() == 'right' ? 'left' : 'right',
+				y: "center",
+			},
+			ontouchstart: function(x,y) {
+				Ptero.orb.enableNet(true);
+			},
+			ontouchend: function(x,y) {
+				Ptero.orb.enableNet(false);
+			},
+			ontouchenter: function(x,y) {
+				Ptero.orb.enableNet(true);
+			},
+			ontouchleave: function(x,y) {
+				Ptero.orb.enableNet(false);
+			},
+		});
+	}
+
 	var time;
 	var netBtn;
 	function init() {
@@ -66,25 +88,7 @@ Ptero.scene_play = (function() {
 		overlord.init();
 
 		// create the capture net button
-		netBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['net'],
-			anchor: {
-				x: "left",
-				y: "center",
-			},
-		});
-		netBtn.ontouchstart = function(x,y) {
-			Ptero.orb.enableNet(true);
-		}
-		netBtn.ontouchend = function(x,y) {
-			Ptero.orb.enableNet(false);
-		}
-		netBtn.ontouchenter = function(x,y) {
-			Ptero.orb.enableNet(true);
-		}
-		netBtn.ontouchleave = function(x,y) {
-			Ptero.orb.enableNet(false);
-		}
+		createNetBtn();
 
 		// reset the score
 		Ptero.score.reset();
@@ -186,6 +190,7 @@ Ptero.scene_play = (function() {
 		resume: resume,
 		update: update,
 		draw: draw,
+		createNetBtn: createNetBtn,
 		cleanup:cleanup,
 		disableControls: disableControls,
 		enableControls: enableControls,
