@@ -73,7 +73,7 @@ Ptero.scene_highscore = (function(){
 		// back button
 		backBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['btn_back'],
-			hudPos: { x: 0.5, y:0.8 },
+			hudPos: { x: 0.5, y:0.85 },
 			isClickDelay: true,
 			onclick: function() {
 				Ptero.setScene(Ptero.scene_menu);

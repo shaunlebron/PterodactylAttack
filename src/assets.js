@@ -2,10 +2,11 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
-		"menu_wrench"        : "img/menu/menu_wrench.png",
-		"menu_strong"        : "img/menu/menu_strong.png",
-		"menu_scroll"        : "img/menu/menu_scroll.png",
-
+		"menu_righthanded"  : "img/menu/menu_righthanded.png",
+		"menu_lefthanded"   : "img/menu/menu_lefthanded.png",
+		"menu_wrench"       : "img/menu/menu_wrench.png",
+		"menu_strong"       : "img/menu/menu_strong.png",
+		"menu_scroll"       : "img/menu/menu_scroll.png",
 		"menu_start"        : "img/menu/menu_start.png",
 		"menu_resume"       : "img/menu/menu_resume.png",
 		"menu_quit"         : "img/menu/menu_quit.png",

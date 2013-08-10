@@ -7,6 +7,7 @@ Ptero.settings = (function(){
 			"soundOn": true,
 			"vibrateOn": true,
 			"tutorialOn": true,
+			"hand": 'right',
 		};
 	}
 	initValues();
@@ -42,6 +43,10 @@ Ptero.settings = (function(){
 			values['tutorialOn'] = on;
 			this.save();
 		},
+		setHand: function(hand) {
+			values['hand'] = hand;
+			this.save();
+		},
 		isSoundEnabled: function() {
 			return values['soundOn'];
 		},
@@ -50,6 +55,9 @@ Ptero.settings = (function(){
 		},
 		isTutorialEnabled: function() {
 			return values['tutorialOn'];
+		},
+		getHand: function() {
+			return values['hand'];
 		},
 	};
 })();

@@ -92,6 +92,7 @@ Ptero.Button = function(a) {
 				}
 
 				if (startInside) {
+					that.ontouchend && that.ontouchend(x,y);
 					if (isInside(lastX,lastY)) {
 						if (a.isClickDelay) {
 							setTimeout(function(){
@@ -102,7 +103,6 @@ Ptero.Button = function(a) {
 							that.onclick && that.onclick();
 						}
 					}
-					that.ontouchend && that.ontouchend(x,y);
 				}
 
 				startIndex = null;
@@ -143,21 +143,22 @@ Ptero.SpriteButton = function(a) {
 	}
 	
 	a.ontouchstart = function() {
-		ontouchstart && ontouchstart();
 		setScale(focusScale);
+		ontouchstart && ontouchstart();
 	};
 	a.ontouchend = function() {
-		ontouchend && ontouchend();
 		setScale(origScale);
+		ontouchend && ontouchend();
 	};
 	a.ontouchenter = function() {
-		ontouchenter && ontouchenter();
 		setScale(focusScale);
+		ontouchenter && ontouchenter();
 	};
 	a.ontouchleave = function() {
-		ontouchleave && ontouchleave();
 		setScale(origScale);
+		ontouchleave && ontouchleave();
 	};
+
 
 	Ptero.Button.call(this,a);
 };
