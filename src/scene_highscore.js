@@ -32,7 +32,7 @@ Ptero.scene_highscore = (function(){
 		// create a billboard of that size of the desired scale
 		scoreBoard = new Ptero.Billboard(w/2,h/2,w,h,2);
 
-		scorePos = Ptero.screen.screenFracToSpace(0.5, 0.2 );
+		scorePos = Ptero.screen.screenFracToSpace(0.5, 0.5 );
 	}
 
 	function cleanup() {

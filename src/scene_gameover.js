@@ -93,8 +93,6 @@ Ptero.scene_gameover = (function(){
 		var currentHigh = highScore || 0;
 		var currentScore = Ptero.score.getTotal();
 		if (currentScore > currentHigh) {
-			// TODO: trigger new high score animation
-			highScore = currentScore;
 			newHighScore = true;
 			Ptero.score.commitHighScore();
 		}

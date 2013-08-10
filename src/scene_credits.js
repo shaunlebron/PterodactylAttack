@@ -4,6 +4,8 @@ Ptero.scene_credits = (function(){
 	var backplate;
 	var backplatePos;
 
+	var creditsSprite, creditsPos;
+
 	var backBtn;
 
 	var wrenchBtn;
@@ -23,6 +25,9 @@ Ptero.scene_credits = (function(){
 	var time;
 	function init() {
 		time = 0;
+
+		creditsSprite = Ptero.assets.sprites['credits'];
+		creditsPos = Ptero.screen.screenFracToSpace(0.5, 0.4);
 
 		// backplate
 		var w = 600;
@@ -93,6 +98,8 @@ Ptero.scene_credits = (function(){
 
 		ctx.fillStyle = "rgba(0,0,0,0.7)";
 		backplate.fill(ctx, backplatePos);
+
+		creditsSprite.draw(ctx, creditsPos);
 
 		var alpha = 0.8;
 

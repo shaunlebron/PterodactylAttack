@@ -2,6 +2,8 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
+		"credits": "img/credits.png",
+
 		"menu_righthanded"  : "img/menu/menu_righthanded.png",
 		"menu_lefthanded"   : "img/menu/menu_lefthanded.png",
 		"menu_wrench"       : "img/menu/menu_wrench.png",

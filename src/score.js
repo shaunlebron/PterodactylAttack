@@ -26,6 +26,7 @@ Ptero.score = (function(){
 			return highScore;
 		},
 		commitHighScore: function() {
+			highScore = Math.max(total, highScore)
 			localStorage.highScore = highScore;
 		},
 		loadHighScore: function() {
