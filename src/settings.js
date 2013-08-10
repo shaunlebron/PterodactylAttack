@@ -2,13 +2,23 @@
 Ptero.settings = (function(){
 
 	var values;
+	var defaultValues = {
+		"soundOn": true,
+		"vibrateOn": true,
+		"tutorialOn": true,
+		"hand": 'right',
+	};
 	function initValues() {
-		values = {
-			"soundOn": true,
-			"vibrateOn": true,
-			"tutorialOn": true,
-			"hand": 'right',
-		};
+		if (!values) {
+			values = {};
+		}
+
+		var name;
+		for (name in defaultValues) {
+			if (values[name] == undefined) {
+				values[name] = defaultValues[name];
+			}
+		}
 	}
 	initValues();
 
@@ -22,10 +32,7 @@ Ptero.settings = (function(){
 			}
 			catch (e) {
 			}
-
-			if (!values) {
-				initValues();
-			}
+			initValues();
 			console.log(values);
 		},
 		save: function() {

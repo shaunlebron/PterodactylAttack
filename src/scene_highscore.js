@@ -10,6 +10,31 @@ Ptero.scene_highscore = (function(){
 	var strongBtn;
 	var scrollBtn;
 
+	var highScoreSprite, highScorePos;
+
+	var scoreBoard,digits;
+	var scorePos;
+	function makeScoreBoard() {
+		var m = Ptero.assets.mosaics['timertype'];
+		
+		digits = Ptero.score.getHighScore() + "";
+
+		// get the total width of the score
+		var i,len=digits.length;
+		var d;
+		var w=0,h;
+		for (i=0; i<len; i++) {
+			d = digits[i]
+			h = m.frames[d].origSize.height;
+			w += m.frames[d].origSize.width;
+		}
+
+		// create a billboard of that size of the desired scale
+		scoreBoard = new Ptero.Billboard(w/2,h/2,w,h,2);
+
+		scorePos = Ptero.screen.screenFracToSpace(0.5, 0.2 );
+	}
+
 	function cleanup() {
 
 		wrenchBtn.disable();
@@ -22,6 +47,11 @@ Ptero.scene_highscore = (function(){
 	var time;
 	function init() {
 		time = 0;
+
+		makeScoreBoard();
+
+		highScoreSprite = Ptero.assets.sprites['menu_highscore'];
+		highScorePos = Ptero.screen.screenFracToSpace(0.5, 0.3);
 
 		// backplate
 		var w = 600;
@@ -92,6 +122,42 @@ Ptero.scene_highscore = (function(){
 
 		ctx.fillStyle = "rgba(0,0,0,0.7)";
 		backplate.fill(ctx, backplatePos);
+
+		// draw score
+		ctx.save();
+		scoreBoard.transform(ctx, scorePos);
+		var m = Ptero.assets.mosaics['timertype'];
+		var j,len=digits.length;
+		var d;
+		var x=0,y=0;
+		for (j=0; j<len; j++) { // each digit
+			d = digits[j];
+
+			var frame = m.frames[d];
+			var size = frame.origSize;
+
+			var tiles = frame.tiles;
+			var i,numTiles = tiles.length;
+			var sx,sy,w,h,dx,dy;
+			var tile;
+			for (i=0; i<numTiles; i++) { // each segment of digit
+				tile = tiles[i];
+
+				sx = tile.x;
+				sy = tile.y;
+				w = tile.w;
+				h = tile.h;
+				dx = x+tile.origX;
+				dy = tile.origY;
+
+				ctx.drawImage(m.img, sx,sy,w,h,dx,dy,w,h);
+			}
+
+			x += size.width;
+		}
+		ctx.restore();
+
+		highScoreSprite.draw(ctx, highScorePos);
 
 		var alpha = 0.8;
 
