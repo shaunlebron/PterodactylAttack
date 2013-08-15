@@ -2,6 +2,17 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
+		"msg_complete"   : "img/msg/msg_complete.png",
+		"msg_tut1"       : "img/msg/msg_tut1.png",
+		"msg_tut2"       : "img/msg/msg_tut2.png",
+		"msg_tut3"       : "img/msg/msg_tut3.png",
+		"msg_tut4"       : "img/msg/msg_tut4.png",
+		"msg_tut5"       : "img/msg/msg_tut5.png",
+		"msg_helpbounty" : "img/msg/msg_helpbounty.png",
+		"msg_helpnet"    : "img/msg/msg_helpnet.png",
+		"msg_tryagain"   : "img/msg/msg_tryagain.png",
+		"msg_ready"      : "img/msg/msg_ready.png",
+
 		"credits": "img/credits.png",
 
 		"menu_righthanded"  : "img/menu/menu_righthanded.png",

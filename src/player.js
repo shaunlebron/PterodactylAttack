@@ -3,6 +3,7 @@ Ptero.Player = function() {
 	this.initHealth = 3;
 
 	this.reset();
+
 };
 
 Ptero.Player.prototype = {
@@ -26,7 +27,7 @@ Ptero.Player.prototype = {
 	},
 	die: function() {
 	},
-	drawHealth: function(ctx) {
+	drawHealth: function(ctx,shouldDrawBounty) {
 		var pad = Ptero.hud.getBorderPad();
 		var y = pad;
 		var x = pad;
@@ -47,31 +48,33 @@ Ptero.Player.prototype = {
 		ctx.fillRect(x,y,w / this.maxHealth * this.health, h);
 
 		// draw bounty
-		var bounty = Ptero.bounty;
-		(function(){
-			var i;
-			var r_small = h/4;
-			var r_big = h/2;
-			var space = 3*scale + r_big*2;
-			var bx = x+r_big;
-			var by = y + h + pad + h/2;
-			for (i=0; i<bounty.size; i++) {
-				var j = bounty.items[i];
-				var r = bounty.caught[i] ? r_small : r_big;
+		if (shouldDrawBounty) {
+			var bounty = Ptero.bounty;
+			(function(){
+				var i;
+				var r_small = h/4;
+				var r_big = h/2;
+				var space = 3*scale + r_big*2;
+				var bx = x+r_big;
+				var by = y + h + pad + h/2;
+				for (i=0; i<bounty.size; i++) {
+					var j = bounty.items[i];
+					var r = bounty.caught[i] ? r_small : r_big;
 
-				// draw circle
-				ctx.beginPath();
-				ctx.arc(bx,by,r,0,Math.PI*2);
-				ctx.fillStyle = bounty.colors[j];
-				ctx.fill();
-
-				// darken circle if caught
-				if (bounty.caught[i]) {
-					ctx.fillStyle = "rgba(0,0,0,0.7)";
+					// draw circle
+					ctx.beginPath();
+					ctx.arc(bx,by,r,0,Math.PI*2);
+					ctx.fillStyle = bounty.colors[j];
 					ctx.fill();
+
+					// darken circle if caught
+					if (bounty.caught[i]) {
+						ctx.fillStyle = "rgba(0,0,0,0.7)";
+						ctx.fill();
+					}
+					bx += space;
 				}
-				bx += space;
-			}
-		})();
+			})();
+		}
 	},
 };

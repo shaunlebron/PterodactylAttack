@@ -162,7 +162,6 @@ Ptero.Enemy.prototype = {
 	release: function() {
 		this.isCaught = false;
 		this.path = this.releasePath;
-		console.log('release');
 	},
 	onHit: function onHit(damage) {
 		if (!this.isHittable()) {
@@ -178,7 +177,6 @@ Ptero.Enemy.prototype = {
 			Ptero.audio.playNet();
 			this.createCaptureAndReleasePaths();
 			this.path = this.capturePath;
-		console.log('capture');
 		}
 		else {
 			// update score
@@ -270,12 +268,14 @@ Ptero.Enemy.prototype = {
 					// HIT SCREEN
 					if (this.isAttack) {
 						Ptero.player.applyDamage(this.typeData.damage);
+						this.onAttack && this.onAttack();
 					}
 					this.die();
 				}
 				else if (this.path == this.capturePath) {
 					if (!this.isCaught) {
 						Ptero.bounty.addEnemy(this);
+						this.onCaught && this.onCaught();
 						this.isCaught = true;
 					}
 				}

@@ -1,6 +1,12 @@
 
 Ptero.scene_play = (function() {
-	var overlord;
+
+	var netFlashTime = 0;
+	var netFlashPeriod = 0.1;
+	var netFlashLen = netFlashPeriod*2*5;
+	function flashNet() {
+		netFlashTime = netFlashLen;
+	}
 
 	var KEY_SPACE = 32;
 	var KEY_SHIFT = 16;
@@ -18,7 +24,9 @@ Ptero.scene_play = (function() {
 			Ptero.executive.slowmo();
 		}
 		else if (e.keyCode == KEY_ALT) {
-			Ptero.orb.enableNet(true);
+			if (isNetEnabled) {
+				Ptero.orb.enableNet(true);
+			}
 			e.preventDefault();
 		}
 	}
@@ -39,7 +47,9 @@ Ptero.scene_play = (function() {
 
 	function enableControls() {
 		pauseBtn.enable();
-		netBtn.enable();
+		if (isNetEnabled) {
+			netBtn.enable();
+		}
 		Ptero.orb.enableTouch();
 	}
 
@@ -83,10 +93,6 @@ Ptero.scene_play = (function() {
 		// create a random bounty
 		Ptero.refreshBounty();
 
-		// create the overlord to manage the enemies
-		Ptero.overlord = overlord = Ptero.makeOverlord();
-		overlord.init();
-
 		// create the capture net button
 		createNetBtn();
 
@@ -110,9 +116,14 @@ Ptero.scene_play = (function() {
 		// initialize our clock for internal events
 		time = 0;
 
+		// create the overlord to manage the enemies
+		Ptero.overlord = Ptero.makeOverlord();
+		Ptero.overlord.init();
+
+
 		// initialize orb
 		Ptero.orb.init();
-		Ptero.orb.setTargets(overlord.enemies);
+		Ptero.orb.setTargets(Ptero.overlord.enemies);
         Ptero.orb.setNextOrigin(0,-1);
 
 		// add keyboard events
@@ -130,7 +141,7 @@ Ptero.scene_play = (function() {
 		//on resume, renable the pause menu
 		Ptero.executive.togglePause();
 		Ptero.pause_menu.enable();
-		Ptero.orb.setTargets(overlord.enemies);
+		Ptero.orb.setTargets(Ptero.overlord.enemies);
 	}
 
 	function update(dt) {
@@ -138,13 +149,13 @@ Ptero.scene_play = (function() {
 			Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
 		}
 		else {
-
 			time += dt;
 			if (time > 2) {
-				overlord.update(dt);
+				Ptero.overlord.update(dt);
 				Ptero.orb.update(dt);
 				Ptero.bulletpool.deferBullets();
 				Ptero.score.update(dt);
+				netFlashTime = Math.max(0, netFlashTime-dt);
 			}
 		}
 	};
@@ -166,8 +177,12 @@ Ptero.scene_play = (function() {
 			if (time > 2) {
 				pauseBtn.draw(ctx);
 				Ptero.score.draw(ctx);
-				Ptero.player.drawHealth(ctx);
-				netBtn.draw(ctx);
+				var isNetShown = isNetEnabled && (Math.floor(netFlashTime / netFlashPeriod) % 2 == 0);
+				Ptero.player.drawHealth(ctx, isNetShown);
+				if (isNetShown) {
+					netBtn.draw(ctx);
+				}
+				Ptero.overlord.draw(ctx);
 			}
 		}
 		else {
@@ -185,6 +200,17 @@ Ptero.scene_play = (function() {
 		stage = d;
 	}
 
+	var isNetEnabled = false;
+	function enableNet(on) {
+		isNetEnabled = on;
+		if (on) {
+			netBtn.enable();
+		}
+		else {
+			netBtn.disable();
+		}
+	}
+
 	return {
 		init: init,
 		resume: resume,
@@ -196,5 +222,7 @@ Ptero.scene_play = (function() {
 		enableControls: enableControls,
 		getStage: getStage,
 		setStage: setStage,
+		enableNet: enableNet,
+		flashNet: flashNet,
 	};
 })();

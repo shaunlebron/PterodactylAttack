@@ -4,29 +4,41 @@ Ptero.refreshBounty = function() {
 };
 
 Ptero.Bounty = function() {
-	// number of items in the bounty
-	this.size = 5;
 
 	// number of different colors
 	this.makeColorTable();
 
 	// populate items (i.e. random colors) in the bounty
 	var numColors = this.numColors;
-	function getRandomColor() {
-		return Math.floor(Math.random()*numColors);
-	};
-	this.items = [];
-	this.caught = [];
-	var i;
-	for (i=0; i<this.size; i++) {
-		this.items.push(getRandomColor());
-		this.caught.push(false);
-	};
-
-	this.cagedEnemies = [];
+	this.setRandomItems(5);
 };
 
 Ptero.Bounty.prototype = {
+	setRandomItems: function(numItems) {
+		var items = [];
+		var numColors = this.numColors;
+		function getRandomColor() {
+			return Math.floor(Math.random()*numColors);
+		};
+		var i;
+		for (i=0; i<numItems; i++) {
+			items.push(getRandomColor());
+		}
+		this.setItems(items);
+		this.random = true;
+	},
+	setItems: function(items) {
+		this.items = [];
+		this.caught = [];
+		this.cagedEnemies = [];
+		var i,len=items.length;
+		this.size = len;
+		for (i=0; i<len; i++) {
+			this.items.push(items[i]);
+			this.caught.push(false);
+		}
+		this.random = false;
+	},
 	makeColorTable: function() {
 		// associate color indexes to this stage's particular colors and enemies
 		var stage = Ptero.scene_play.getStage();
@@ -131,7 +143,12 @@ Ptero.Bounty.prototype = {
 				}
 
 				// create new bounty
-				Ptero.refreshBounty();
+				if (this.random) {
+					Ptero.refreshBounty();
+				}
+				else {
+					this.setItems(this.items);
+				}
 			}
 			else {
 
@@ -153,7 +170,13 @@ Ptero.Bounty.prototype = {
 			}
 
 			// create new bounty
-			Ptero.refreshBounty();
+			// create new bounty
+			if (this.random) {
+				Ptero.refreshBounty();
+			}
+			else {
+				this.setItems(this.items);
+			}
 		}
 		
 		
