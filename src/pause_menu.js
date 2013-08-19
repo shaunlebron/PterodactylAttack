@@ -78,7 +78,11 @@ Ptero.pause_menu = (function(){
 		// create backplate
 		var w = 600;
 		var h = 720;
-		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
+		backplate = {
+			"mountain" : Ptero.assets.sprites['backplate_mountain'],
+			"ice"      : Ptero.assets.sprites['backplate_ice'],
+			"volcano"  : Ptero.assets.sprites['backplate_ice'],
+		}[Ptero.background.name];
 		var frustum = Ptero.screen.getFrustum();
 		backplatePos = {
 			x: 0,
@@ -161,8 +165,7 @@ Ptero.pause_menu = (function(){
 	}
 
 	function draw(ctx) {
-		ctx.fillStyle = "rgba(0,0,0,0.7)";
-		backplate.fill(ctx, backplatePos);
+		backplate.draw(ctx, backplatePos);
 
 		var i,b,len=contentButtons.length;
 		for (i=0; i<len; i++) {

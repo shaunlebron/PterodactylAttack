@@ -56,7 +56,7 @@ Ptero.scene_highscore = (function(){
 		// backplate
 		var w = 600;
 		var h = 720;
-		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
+		backplate = Ptero.assets.sprites['backplate_mountain'];
 		var frustum = Ptero.screen.getFrustum();
 		backplatePos = {
 			x: 0,
@@ -120,8 +120,7 @@ Ptero.scene_highscore = (function(){
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
 
-		ctx.fillStyle = "rgba(0,0,0,0.7)";
-		backplate.fill(ctx, backplatePos);
+		backplate.draw(ctx, backplatePos);
 
 		// draw score
 		ctx.save();
