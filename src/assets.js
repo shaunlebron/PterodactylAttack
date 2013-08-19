@@ -2,6 +2,7 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
+
 		"msg_complete"   : "img/msg/msg_complete.png",
 		"msg_tut1"       : "img/msg/msg_tut1.png",
 		"msg_tut2"       : "img/msg/msg_tut2.png",
@@ -68,6 +69,7 @@ Ptero.assets = (function(){
 		"frame_volcano"  : "img/frame_volcano.png",
 
 		"title" : "img/title.png",
+		//"title": "img/backplate_mainlogo.jpg",
 
 		"net": "img/net.png",
 	};
