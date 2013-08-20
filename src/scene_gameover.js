@@ -54,7 +54,11 @@ Ptero.scene_gameover = (function(){
 
 		var w = 600;
 		var h = 720;
-		backplate = new Ptero.Billboard(w/2,h/2,w,h,1);
+		backplate = {
+			"mountain" : Ptero.assets.sprites['backplate_mountain'],
+			"ice"      : Ptero.assets.sprites['backplate_ice'],
+			"volcano"  : Ptero.assets.sprites['backplate_ice'],
+		}[Ptero.background.name];
 		var frustum = Ptero.screen.getFrustum();
 		backplatePos = {
 			x: 0,
@@ -101,8 +105,7 @@ Ptero.scene_gameover = (function(){
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
 
-		ctx.fillStyle = "rgba(0,0,0,0.7)";
-		backplate.fill(ctx, backplatePos);
+		backplate.draw(ctx, backplatePos);
 
 		Ptero.orb.draw(ctx);
 		replayBtn.draw(ctx);
