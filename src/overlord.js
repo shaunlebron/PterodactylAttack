@@ -1,18 +1,42 @@
 // An overlord manages a list of enemies by spawning and destroying them.
 
 Ptero.getMountainPaths = function() {
-	return [
-		Ptero.assets.json["mountain_path00"],
-		Ptero.assets.json["mountain_path01"],
-		Ptero.assets.json["mountain_path02"],
-		Ptero.assets.json["mountain_path03"],
-		Ptero.assets.json["mountain_path04"],
-		Ptero.assets.json["mountain_path05"],
-		Ptero.assets.json["mountain_path06"],
-		Ptero.assets.json["mountain_path07"],
-		Ptero.assets.json["mountain_path08"],
-		Ptero.assets.json["mountain_path09"],
-	];
+	return {
+		"mountain": [
+			Ptero.assets.json["mountain_path00"],
+			Ptero.assets.json["mountain_path01"],
+			Ptero.assets.json["mountain_path02"],
+			Ptero.assets.json["mountain_path03"],
+			Ptero.assets.json["mountain_path04"],
+			Ptero.assets.json["mountain_path05"],
+			Ptero.assets.json["mountain_path06"],
+			Ptero.assets.json["mountain_path07"],
+			Ptero.assets.json["mountain_path08"],
+			Ptero.assets.json["mountain_path09"],
+		],
+		"ice": [
+			Ptero.assets.json["ice_path00"],
+			Ptero.assets.json["ice_path01"],
+			Ptero.assets.json["ice_path02"],
+			Ptero.assets.json["ice_path03"],
+			Ptero.assets.json["ice_path04"],
+			Ptero.assets.json["ice_path05"],
+			Ptero.assets.json["ice_path06"],
+			Ptero.assets.json["ice_path07"],
+			Ptero.assets.json["ice_path08"],
+			Ptero.assets.json["ice_path09"],
+		],
+		"volcano": [
+			Ptero.assets.json["volcano_path00"],
+			Ptero.assets.json["volcano_path01"],
+			Ptero.assets.json["volcano_path02"],
+			Ptero.assets.json["volcano_path03"],
+			Ptero.assets.json["volcano_path04"],
+			Ptero.assets.json["volcano_path05"],
+			Ptero.assets.json["volcano_path06"],
+			Ptero.assets.json["volcano_path07"],
+		],
+	}[Ptero.background.name];
 };
 
 Ptero.makeOverlord = function() {

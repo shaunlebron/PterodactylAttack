@@ -203,6 +203,26 @@ Ptero.assets = (function(){
 		"mountain_path07": "paths/mountain/path07.json",
 		"mountain_path08": "paths/mountain/path08.json",
 		"mountain_path09": "paths/mountain/path09.json",
+
+		"ice_path00": "paths/ice/path00.json",
+		"ice_path01": "paths/ice/path01.json",
+		"ice_path02": "paths/ice/path02.json",
+		"ice_path03": "paths/ice/path03.json",
+		"ice_path04": "paths/ice/path04.json",
+		"ice_path05": "paths/ice/path05.json",
+		"ice_path06": "paths/ice/path06.json",
+		"ice_path07": "paths/ice/path07.json",
+		"ice_path08": "paths/ice/path08.json",
+		"ice_path09": "paths/ice/path09.json",
+
+		"volcano_path00": "paths/volcano/path00.json",
+		"volcano_path01": "paths/volcano/path01.json",
+		"volcano_path02": "paths/volcano/path02.json",
+		"volcano_path03": "paths/volcano/path03.json",
+		"volcano_path04": "paths/volcano/path04.json",
+		"volcano_path05": "paths/volcano/path05.json",
+		"volcano_path06": "paths/volcano/path06.json",
+		"volcano_path07": "paths/volcano/path07.json",
 	};
 
 	// Add secondary sources dependent on the primary sources listed above.
