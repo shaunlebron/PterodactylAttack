@@ -24,7 +24,7 @@ def convert(filename):
 		"font": True,
 		"chars": chars,
 	}
-	def addLine(line):
+	def addCharLine(line):
 		name = chr(getValue(line, 'id'))
 		chars[name] = {
 			"x": getValue(line, 'x'),
@@ -39,7 +39,9 @@ def convert(filename):
 	with open(filename) as f:
 		for line in f:
 			if line.startswith('char id'):
-				addLine(line)
+				addCharLine(line)
+			if "lineHeight" in line:
+				obj["lineHeight"] = getValue(line, 'lineHeight')
 	
 	print json.dumps(obj, indent=4)
 

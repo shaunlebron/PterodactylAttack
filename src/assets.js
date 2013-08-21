@@ -2,6 +2,9 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
+		"button_plank" : "img/plank.png",
+
+		"buttonfont": "fonts/buttonfont.png",
 
 		"msg_complete"   : "img/msg/msg_complete.png",
 		"msg_tut1"       : "img/msg/msg_tut1.png",
@@ -267,6 +270,7 @@ Ptero.assets = (function(){
 	var sprites = {};
 	var tables = {};
 	var mosaics = {};
+	var fonts = {};
 
 	function postProcessImage(name) {
 
@@ -279,6 +283,10 @@ Ptero.assets = (function(){
 		else if (meta.mosaic != undefined) {
 			console.log("creating mosaic",name);
 			mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
+		}
+		else if (meta.font != undefined) {
+			console.log("creating font",name);
+			fonts[name] = new Ptero.SpriteFont(images[name], meta);
 		}
 		else {
 			console.log("creating sprite",name);
@@ -479,6 +487,7 @@ Ptero.assets = (function(){
 		sprites: sprites,
 		tables: tables,
 		mosaics: mosaics,
+		fonts: fonts,
 		makeAnimSprite: makeAnimSprite,
 		keepExplosionsCached: keepExplosionsCached,
 	};

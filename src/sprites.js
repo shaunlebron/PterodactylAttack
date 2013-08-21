@@ -3,6 +3,77 @@
 Here we define structures for managing various sprites.
 
 */
+Ptero.SpriteFont = function(img,dict) {
+	this.chars = dict.chars;
+	this.scale = dict.scale || 1;
+	this.lineHeight = dict.lineHeight;
+	this.img = img;
+};
+
+Ptero.SpriteFont.prototype = {
+	getTextWidth: function(text) {
+		var w = 0;
+		var i,len=text.length;
+		var c;
+		for (i=0; i<len; i++) {
+			c = this.chars[text[i]];
+			w += (i == len-1) ? c.width : c.xadvance;
+		}
+		return w;
+	},
+	draw: function(ctx, text, billboard, pos, align) {
+		if (align == "left") {
+			text = " "+text;
+		}
+		else if (align == "right") {
+			text = text+" ";
+		}
+
+		var textWidth = this.getTextWidth(text);
+		var textHeight = this.lineHeight*1.5;
+		var textScale = (billboard.h*billboard.scale) / (textHeight*this.scale);
+
+		ctx.save();
+		billboard.transform(ctx, pos);
+		var x,y;
+		if (align == "left") {
+			ctx.translate(0, billboard.h/2);
+			ctx.scale(textScale, textScale);
+			x = 0;
+		}
+		else if (align == "right") {
+			ctx.translate(billboard.w, billboard.h/2);
+			ctx.scale(textScale, textScale);
+			ctx.translate(-textWidth, -textHeight/2);
+			x = -textWidth;
+		}
+		else if (align == "center") {
+			ctx.translate(billboard.w/2, billboard.h/2);
+			ctx.scale(textScale, textScale);
+			x = -textWidth/2;
+		}
+		y = -this.lineHeight/2;
+		var originX = 0;
+		var c;
+		var sx,sy,sw,sh;
+		var dx,dy,dw,dh;
+		var i,len=text.length;
+		for (i=0; i<len; i++) {
+			c = this.chars[text[i]];
+			sx = c.x;
+			sy = c.y;
+			sw = dw = c.width;
+			sh = dh = c.height;
+			dx = x + c.xoffset;
+			dy = y + c.yoffset;
+			if (sw > 0 && sh > 0) { // needs a nonzero size
+				ctx.drawImage(this.img, sx,sy,sw,sh, dx,dy,dw,dh);
+			}
+			x += c.xadvance; // should we add xoffset to this?
+		}
+		ctx.restore();
+	},
+};
 
 Ptero.VectorSprite = function(dict) {
 

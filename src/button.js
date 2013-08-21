@@ -129,6 +129,11 @@ Ptero.Button.prototype = {
 
 Ptero.SpriteButton = function(a) {
 	this.sprite = a.sprite;
+
+	this.fontSprite = a.fontSprite;
+	this.textAlign = a.textAlign || "center";
+	this.text = a.text;
+
 	a.billboard = a.sprite.billboard;
 
 	var ontouchstart = a.ontouchstart;
@@ -138,8 +143,11 @@ Ptero.SpriteButton = function(a) {
 
 	var origScale = a.sprite.billboard.scale;
 	var focusScale = origScale * 1.1;
+	this.origScale = this.activeScale = origScale;
+	var that = this;
 	function setScale(s) {
-		a.sprite.billboard.scale = s;
+		//a.sprite.billboard.scale = s;
+		that.activeScale = s;
 	}
 	
 	a.ontouchstart = function() {
@@ -164,7 +172,13 @@ Ptero.SpriteButton = function(a) {
 };
 Ptero.SpriteButton.prototype = newChildObject(Ptero.Button.prototype, {
 	draw: function(ctx) {
+		var backupScale = this.billboard.scale;
+		this.billboard.scale = this.activeScale;
 		this.sprite.draw(ctx,this.pos);
+		if (this.text) {
+			this.fontSprite.draw(ctx, this.text, this.billboard, this.pos, this.textAlign);
+		}
+		this.billboard.scale = backupScale;
 	},
 });
 
