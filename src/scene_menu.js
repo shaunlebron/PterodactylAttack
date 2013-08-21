@@ -5,6 +5,14 @@ Ptero.scene_menu = (function(){
 	var paths;
 	var enemies = [];
 
+	// This controls whether or not the pterodactyls will fly toward you when the menu starts.
+	// (This has been said to scare the user into shooting them if they have already played a game,
+	// so I will only enable this on startup)
+	var isPteroFlying = true;
+	function enablePteroFlying(on) {
+		isPteroFlying = on;
+	}
+
 	var spriteStart, spriteOptions;
 
 	function cleanup() {
@@ -28,6 +36,11 @@ Ptero.scene_menu = (function(){
 			var e = Ptero.Enemy.fromState(models[j]);
 			e.path.freezeAtEnd = true;
 			e.whenHit = (function(e){ return function() { e.explode(); Ptero.screen.shake(); }; })(e);
+
+			// skip the flying animation if needed
+			if (!isPteroFlying) {
+				e.path.setTime(e.path.totalTime);
+			}
 
 			// add enemy to this scene's enemies
 			enemies.push(e);
@@ -62,6 +75,9 @@ Ptero.scene_menu = (function(){
 
 	function switchScene(scene) {
 		Ptero.fadeToScene(scene, 0.25);
+
+		// disable ptero flying after first occurence
+		enablePteroFlying(false);
 	}
 
 	var touchHandler = {
@@ -105,15 +121,19 @@ Ptero.scene_menu = (function(){
 
 		var frustum = Ptero.screen.getFrustum();
 
-		if (time >= 1) {
-			var p;
-			p = enemies[0].getPosition();
-			p = frustum.projectToNear(p);
-			spriteOptions.draw(ctx,p);
-
-			p = enemies[1].getPosition();
-			p = frustum.projectToNear(p);
-			spriteStart.draw(ctx,p);
+		var p;
+		var i,len=enemies.length,e;
+		var sprites = [
+			spriteOptions,
+			spriteStart,
+		];
+		for (i=0; i<len; i++) {
+			e = enemies[i];
+			if (e.path.time >= e.path.totalTime) {
+				p = e.getPosition();
+				p = frustum.projectToNear(p);
+				sprites[i].draw(ctx,p);
+			}
 		}
 	}
 
