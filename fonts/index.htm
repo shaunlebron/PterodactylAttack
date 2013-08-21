@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<style>
+	@font-face {
+		font-family: "SharkParty";
+		src: url('SharkParty.ttf');
+	}
+	canvas {
+		border: 1px solid black;
+	}
+</style>
+</head>
+<body>
+<div style="font-family: SharkParty;position:absolute;top:0;left:0">.</div>
+<canvas id='canvas'></canvas>
+<script>
+
+function draw(ctx) {
+	
+	ctx.textBaseline = 'top';
+	ctx.textAlign = 'left';
+	var size = 50;
+	ctx.font = size + 'px SharkParty';
+	console.log(ctx.font);
+	ctx.fillStyle = '#000';
+	ctx.fillText('START',0,0);
+}
+
+window.onload = function() {
+	var canvas = document.getElementById('canvas');
+	canvas.width = 1024;
+	canvas.height = 400;
+	var ctx = canvas.getContext('2d');
+
+	function clear() {
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+	}
+
+	setInterval(function() {
+		clear();
+		draw(ctx);
+	}, 1000);
+};
+</script>
+</body>
+</html>
