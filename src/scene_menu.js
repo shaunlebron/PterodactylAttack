@@ -21,6 +21,16 @@ Ptero.scene_menu = (function(){
 		Ptero.bulletpool.clear();
 	}
 
+	var fadeOutTime = null;
+	var fadeOutLen = 0.5;
+	function fadeToGame() {
+		fadeOutTime = fadeOutLen;
+	}
+	function startGame() {
+		switchScene(Ptero.scene_play);
+		Ptero.audio.getTitleSong().fadeOut(2.0);
+	}
+
 	function createPteros() {
 		var wave = Ptero.assets.json["mainmenu_paths"];
 
@@ -51,7 +61,7 @@ Ptero.scene_menu = (function(){
 			switchScene(Ptero.scene_options);
 		}
 		enemies[1].afterHit = function() {
-			switchScene(Ptero.scene_pre_play);
+			fadeToGame();
 		}
 	}
 
@@ -74,7 +84,7 @@ Ptero.scene_menu = (function(){
 	}
 
 	function switchScene(scene) {
-		Ptero.fadeToScene(scene, 0.25);
+		Ptero.setScene(scene);
 
 		// disable ptero flying after first occurence
 		enablePteroFlying(false);
@@ -109,6 +119,10 @@ Ptero.scene_menu = (function(){
 			}
 		}
 
+		if (fadeOutTime != null) {
+			fadeOutTime = Math.max(0, fadeOutTime-dt);
+		}
+
 		Ptero.orb.update(dt);
 		Ptero.bulletpool.deferBullets();
 	}
@@ -133,6 +147,18 @@ Ptero.scene_menu = (function(){
 				p = e.getPosition();
 				p = frustum.projectToNear(p);
 				sprites[i].draw(ctx,p);
+			}
+		}
+
+		if (fadeOutTime != null) {
+			var w = Ptero.screen.getWidth();
+			var h = Ptero.screen.getHeight();
+			var alpha = 1 - fadeOutTime / fadeOutLen;
+			ctx.fillStyle = "rgba(0,0,0," + alpha + ")";
+			ctx.fillRect(0,0,w,h);
+			if (fadeOutTime == 0) {
+				fadeOutTime = null;
+				startGame();
 			}
 		}
 	}

@@ -107,7 +107,7 @@ Ptero.pause_menu = (function(){
 			onclick: function() {
 				Ptero.executive.togglePause();
 				cleanup();
-				Ptero.setScene(Ptero.scene_pre_play);
+				Ptero.setScene(Ptero.scene_menu);
 			}
 		});
 

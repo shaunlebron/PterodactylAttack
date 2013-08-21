@@ -88,6 +88,7 @@ Ptero.scene_play = (function() {
 		Ptero.orb.enableGuide(false);
 
 		// set the background
+		setStage('mountain');
 		Ptero.setBackground(stage);
 
 		// create a random bounty

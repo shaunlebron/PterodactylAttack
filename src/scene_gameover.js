@@ -80,7 +80,7 @@ Ptero.scene_gameover = (function(){
 			sprite: Ptero.assets.sprites['menu_quit'],
 			hudPos: {x:0.5, y:0.7},
 			onclick: function() {
-				switchScene(Ptero.scene_pre_play);
+				switchScene(Ptero.scene_menu);
 			},
 		});
 		quitBtn.enable();
