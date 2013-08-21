@@ -132,6 +132,7 @@ Ptero.Bounty.prototype = {
 			if (isComplete) {
 				// signal bounty completion with sound
 				Ptero.audio.playBountyComplete();
+				Ptero.score.addBounties(1);
 
 				// earn bounty reward
 				Ptero.player.earnHealth(1);
@@ -154,6 +155,7 @@ Ptero.Bounty.prototype = {
 
 				// signal bounty progression with sound
 				Ptero.audio.playBountyCorrect();
+				Ptero.score.addCaptures(1);
 
 			}
 		}
@@ -162,6 +164,7 @@ Ptero.Bounty.prototype = {
 
 			// signal bad bounty with sound
 			Ptero.audio.playBountyWrong();
+			Ptero.score.addFailedBounties(1);
 
 			// release all caged enemies
 			var len = this.cagedEnemies.length;

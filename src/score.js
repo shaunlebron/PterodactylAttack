@@ -17,7 +17,28 @@ Ptero.score = (function(){
 	var pointQueue = [];
 	var pointDuration = 2.0;
 
+	var kills;
+	var hits;
+	var misses;
+	var captures;
+	var bounties;
+	var failedBounties;
+
 	return {
+		getAccuracy: function() {
+			var total = hits + misses;
+			return (total == 0) ? 0 : hits/total;
+		},
+		printState: function() {
+			console.log("SCORE::::::::::::");
+			console.log(kills,'kills');
+			console.log(hits,'hits');
+			console.log(misses,'misses');
+			console.log(this.getAccuracy(),'accuracy');
+			console.log(bounties,'bounties');
+			console.log(failedBounties,'failedBounties');
+			console.log(":::::::::::::::::");
+		},
 		resetHighScore: function() {
 			highScore = 0;
 			this.commitHighScore();
@@ -41,9 +62,33 @@ Ptero.score = (function(){
 			}
 			console.log("highscore = " + highScore);
 		},
+		addKills: function(delta) {
+			kills += delta;
+		},
+		addHits: function(delta) {
+			hits += delta;
+		},
+		addMisses: function(delta) {
+			misses += delta;
+		},
+		addCaptures: function(delta) {
+			captures += delta;
+		},
+		addBounties: function(delta) {
+			bounties += delta;
+		},
+		addFailedBounties: function(delta) {
+			failedBounties += delta;
+		},
 		reset: function() {
 			pointQueue.length = 0;
 			total = 0;
+			kills = 0;
+			hits = 0;
+			misses = 0;
+			captures = 0;
+			bounties = 0;
+			failedBounties = 0;
 		},
 		update: function(dt) {
 			var i,len=pointQueue.length;

@@ -24,6 +24,8 @@ Ptero.Enemy = function() {
 
 	// time to flash white (used to indicate when this enemy is hit)
 	this.flashTime = 0;
+
+	this.pointsEarned = 0;
 };
 
 Ptero.Enemy.fromState = function(state, startTime) {
@@ -104,6 +106,10 @@ Ptero.Enemy.prototype = {
 	explode: function() {
 		// register hit to begin explosion
 		this.isHit = true;
+		if (Ptero.score) {
+			Ptero.score.addPoints(this.pointsEarned*2);
+			Ptero.score.addKills(1);
+		}
 		this.health = 0;
 		Ptero.audio.playExplode();
 	},
@@ -177,14 +183,18 @@ Ptero.Enemy.prototype = {
 			Ptero.audio.playNet();
 			this.createCaptureAndReleasePaths();
 			this.path = this.capturePath;
+			if (Ptero.score) {
+				Ptero.score.addHits(1);
+			}
 		}
 		else {
 			// update score
 			if (Ptero.score) {
-				Ptero.score.addPoints(100);
+				var p = 100;
+				Ptero.score.addPoints(p);
+				this.pointsEarned += p;
+				Ptero.score.addHits(1);
 			}
-			// scene.score += 100 + scene.getStreakBonus();
-			// scene.streakCount++;
 
 			this.applyDamage(damage);
 		}

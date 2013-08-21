@@ -45,6 +45,8 @@ Ptero.scene_gameover = (function(){
 		Ptero.audio.getScoreSong().play();
 		Ptero.overlord.stopScript();
 
+		Ptero.score.printState();
+
 		makeScoreBoard();
 
 		highScoreSprite = Ptero.assets.sprites['menu_highscore'];

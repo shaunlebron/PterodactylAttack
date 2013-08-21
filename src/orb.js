@@ -480,6 +480,11 @@ Ptero.orb = (function(){
 		if (isNet) {
 			bullet.damage = -1; // negative damage is arbitrarily meant to signal a capture net
 		}
+		else {
+			if (Ptero.score) {
+				Ptero.score.addMisses(1);
+			}
+		}
 		Ptero.bulletpool.add(bullet);
 		Ptero.audio.playShoot();
 	}
