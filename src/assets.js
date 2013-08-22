@@ -24,8 +24,6 @@ Ptero.assets = (function(){
 		"menu_wrench"       : "img/menu/menu_wrench.png",
 		"menu_strong"       : "img/menu/menu_strong.png",
 		"menu_scroll"       : "img/menu/menu_scroll.png",
-		"menu_quit"         : "img/menu/menu_quit.png",
-		"menu_replay"       : "img/menu/menu_replay.png",
 		"menu_highscore"    : "img/menu/menu_highscore.png",
 		"menu_credits"      : "img/menu/menu_credits.png",
 
@@ -39,7 +37,6 @@ Ptero.assets = (function(){
 		"play"      : "img/play.png",
 		"pause"     : "img/pause.png",
 		"logo"      : "img/logo.png",
-		"timertype" : "img/timertype.png",
 		"swipe"     : "img/swipe.png",
 
 		"btn_back"         : "img/buttons/btn_back.png",

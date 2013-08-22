@@ -5,8 +5,7 @@ Ptero.scene_gameover = (function(){
 	var backplatePos;
 
 	var replayBtn,quitBtn;
-
-	var highScoreSprite, highScorePos;
+	var scoreBtn;
 
 	function cleanup() {
 		replayBtn.disable();
@@ -18,41 +17,11 @@ Ptero.scene_gameover = (function(){
 		Ptero.fadeToScene(scene,0.5);
 	}
 
-	var scoreBoard,digits;
-	var scorePos;
-	function makeScoreBoard() {
-		var m = Ptero.assets.mosaics['timertype'];
-		
-		digits = Ptero.score.getTotal() + "";
-
-		// get the total width of the score
-		var i,len=digits.length;
-		var d;
-		var w=0,h;
-		for (i=0; i<len; i++) {
-			d = digits[i]
-			h = m.frames[d].origSize.height;
-			w += m.frames[d].origSize.width;
-		}
-
-		// create a billboard of that size of the desired scale
-		scoreBoard = new Ptero.Billboard(w/2,h/2,w,h,2);
-
-		scorePos = Ptero.screen.screenFracToSpace(0.5, 0.2 );
-	}
-
 	function init() {
 		Ptero.audio.getScoreSong().play();
 		Ptero.overlord.stopScript();
 
 		Ptero.score.printState();
-
-		makeScoreBoard();
-
-		highScoreSprite = Ptero.assets.sprites['menu_highscore'];
-		highScorePos = Ptero.screen.screenFracToSpace(0.5, 0.3);
-
-		scorePos = Ptero.screen.screenFracToSpace(0.5, 0.2 );
 
 		var w = 600;
 		var h = 720;
@@ -68,9 +37,21 @@ Ptero.scene_gameover = (function(){
 			z: frustum.near,
 		};
 
+		scoreBtn = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts['whitefont'],
+			textAlign: "center",
+			text: Ptero.score.getTotal()+"",
+			hudPos: {x:0.5, y:0.1},
+			width: 400,
+			height: 200,
+		});
+
 		replayBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_replay'],
-			hudPos: {x:0.5, y:0.5},
+			sprite: Ptero.assets.sprites['button_plank'],
+			fontSprite: Ptero.assets.fonts["buttonfont"],
+			textAlign: "center",
+			text: "REPLAY",
+			hudPos: {x:0.5, y:0.75},
 			onclick: function() {
 				switchScene(Ptero.scene_play);
 				//Ptero.audio.playSelect();
@@ -79,8 +60,11 @@ Ptero.scene_gameover = (function(){
 		replayBtn.enable();
 
 		quitBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_quit'],
-			hudPos: {x:0.5, y:0.7},
+			sprite: Ptero.assets.sprites['button_plank'],
+			fontSprite: Ptero.assets.fonts["buttonfont"],
+			textAlign: "center",
+			text: "QUIT",
+			hudPos: {x:0.5, y:0.90},
 			onclick: function() {
 				switchScene(Ptero.scene_menu);
 			},
@@ -112,44 +96,7 @@ Ptero.scene_gameover = (function(){
 		Ptero.orb.draw(ctx);
 		replayBtn.draw(ctx);
 		quitBtn.draw(ctx);
-
-		// draw score
-		ctx.save();
-		scoreBoard.transform(ctx, scorePos);
-		var m = Ptero.assets.mosaics['timertype'];
-		var j,len=digits.length;
-		var d;
-		var x=0,y=0;
-		for (j=0; j<len; j++) { // each digit
-			d = digits[j];
-
-			var frame = m.frames[d];
-			var size = frame.origSize;
-
-			var tiles = frame.tiles;
-			var i,numTiles = tiles.length;
-			var sx,sy,w,h,dx,dy;
-			var tile;
-			for (i=0; i<numTiles; i++) { // each segment of digit
-				tile = tiles[i];
-
-				sx = tile.x;
-				sy = tile.y;
-				w = tile.w;
-				h = tile.h;
-				dx = x+tile.origX;
-				dy = tile.origY;
-
-				ctx.drawImage(m.img, sx,sy,w,h,dx,dy,w,h);
-			}
-
-			x += size.width;
-		}
-		ctx.restore();
-
-		if (newHighScore) {
-			highScoreSprite.draw(ctx, highScorePos);
-		}
+		scoreBtn.draw(ctx);
 	}
 
 	function update(dt) {
