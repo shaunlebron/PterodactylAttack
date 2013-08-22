@@ -402,6 +402,15 @@ Ptero.createBackgrounds = function() {
 			return bg;
 		})(),
 
+		"menu": (function(){
+			var bg = new Ptero.Background();
+			bg.sprites = [
+				Ptero.assets.sprites["bg_menu"],
+			];
+			bg.loadLayersData(Ptero.assets.json["bg_menu_layers"]);
+			return bg;
+		})(),
+
 	};
 
 	// Let each background know its own name.

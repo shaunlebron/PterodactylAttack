@@ -67,6 +67,8 @@ Ptero.scene_menu = (function(){
 
 	var time;
 	function init() {
+		Ptero.setBackground('menu');
+		Ptero.background.goToIdle();
 
 		time = 0;
 

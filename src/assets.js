@@ -2,6 +2,8 @@
 Ptero.assets = (function(){
 
 	var imageSources = {
+		"bg_menu" : "bg/menu/bg_menu.jpg",
+
 		"button_plank" : "img/plank.png",
 
 		"buttonfont"   : "fonts/buttonfont.png",
@@ -156,14 +158,15 @@ Ptero.assets = (function(){
 	var jsonSources = {
 
 		// backgrounds
-		"bg_mountain_layers": "bg/mountain/layers.json",
-		"bg_ice_layers": "bg/ice/layers.json",
-		"bg_volcano_layers": "bg/volcano/layers.json",
+		"bg_mountain_layers" : "bg/mountain/layers.json",
+		"bg_ice_layers"      : "bg/ice/layers.json",
+		"bg_volcano_layers"  : "bg/volcano/layers.json",
+		"bg_menu_layers"     : "bg/menu/layers.json",
 
 		// misc paths
-		"mainmenu_paths": "paths/mainmenu.json",
-		"difficulty_paths": "paths/difficulty.json",
-		"highscores_paths": "paths/highscores.json",
+		"mainmenu_paths"   : "paths/mainmenu.json",
+		"difficulty_paths" : "paths/difficulty.json",
+		"highscores_paths" : "paths/highscores.json",
 
 		// stage paths
 		"mountain_path00": "paths/mountain/path00.json",
@@ -406,9 +409,15 @@ Ptero.assets = (function(){
 				req = new XMLHttpRequest();
 				req.onload = (function(name){
 					return function() {
-						json[name] = JSON.parse(this.responseText);
-						console.log("loaded json: "+ name);
-						handleLoad();
+						try {
+							json[name] = JSON.parse(this.responseText);
+							console.log("loaded json: "+ name);
+							handleLoad();
+						}
+						catch (e) {
+							console.log("ERROR: could not load json file",name);
+							console.error("could not load json file",name);
+						}
 					};
 				})(name);
 				req.open('GET', src, true);

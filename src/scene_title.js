@@ -18,7 +18,7 @@ Ptero.scene_title = (function(){
 		time = 0;
 
 		// set title background environment
-		Ptero.setBackground('mountain');
+		Ptero.setBackground('menu');
 		Ptero.background.goToIdle();
 
 		titleSprite = Ptero.assets.sprites["logo"];

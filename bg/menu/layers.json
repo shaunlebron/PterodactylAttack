@@ -1,0 +1,25 @@
+[
+	{
+		"desc": "bg",
+		"images": [
+			0
+		],
+		"depth": 19.872663139329806,
+		"parallaxOffset": 0,
+		"collisionShapes": [],
+		"introPath": {
+			"values": [
+				0,
+				0
+			],
+			"deltaTimes": [
+				0,
+				2
+			]
+		},
+		"idlePath": {
+			"values": [],
+			"deltaTimes": []
+		}
+	}
+]
