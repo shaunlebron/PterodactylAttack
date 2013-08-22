@@ -132,7 +132,7 @@ Ptero.bezier = function(x1, y1, x2, y2, epsilon){
 				return {
 					index: i-1,
 					time: t,
-					timeFrac: t/deltaTimes[i],
+					timeFrac: (deltaTimes[i] == 0) ? 0 : t/deltaTimes[i],
 				};
 			}
 			t -= deltaTimes[i];
