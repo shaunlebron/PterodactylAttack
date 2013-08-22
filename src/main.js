@@ -53,8 +53,6 @@ window.onload = function() {
 			Ptero.settings.load();
 			console.log('creating backgrounds');
 			Ptero.createBackgrounds();
-			console.log('loading high score');
-			Ptero.score.loadHighScore();
 			console.log("initing audio");
 			Ptero.audio.init();
 			console.log("initing input");

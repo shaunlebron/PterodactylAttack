@@ -35,28 +35,25 @@ Ptero.score = (function(){
 			console.log(failedBounties,'failedBounties');
 			console.log(":::::::::::::::::");
 		},
-		resetHighScore: function() {
-			highScore = 0;
-			this.commitHighScore();
-		},
-		getHighScore: function() {
-			return highScore;
-		},
-		commitHighScore: function() {
-			highScore = Math.max(total, highScore)
-			localStorage.highScore = highScore;
-		},
-		loadHighScore: function() {
-			highScore = null;
-			try {
-				highScore = JSON.parse(localStorage.highScore);
-			}
-			catch (e) {
-			}
-			if (!highScore) {
-				this.resetHighScore();
-			}
-			console.log("highscore = " + highScore);
+		commitStats: function() {
+			var highScore    = Ptero.settings.get("high_score");
+			var highKills    = Ptero.settings.get("high_kills");
+			var highCaptures = Ptero.settings.get("high_captures");
+			var highBounties = Ptero.settings.get("high_bounties");
+
+			var isNewHigh = {
+				"score"    : total    > highScore,
+				"kills"    : kills    > highKills,
+				"captures" : captures > highCaptures,
+				"bounties" : bounties > highBounties,
+			};
+
+			Ptero.settings.set("high_score",    Math.max(total,    highScore));
+			Ptero.settings.set("high_kills",    Math.max(kills,    highKills));
+			Ptero.settings.set("high_captures", Math.max(captures, highCaptures));
+			Ptero.settings.set("high_bounties", Math.max(bounties, highBounties));
+
+			return isNewHigh;
 		},
 		addKills: function(delta) {
 			kills += delta;
@@ -126,26 +123,6 @@ Ptero.score = (function(){
 		},
 		getScoreStr: function() {
 			return zeroPad(7,total);
-		},
-		draw: function(ctx) {
-			var scoreFont = Ptero.assets.mosaics["scoretype"];
-
-			var pad = Ptero.hud.getBorderPad();
-			var y = pad;
-			var x = Ptero.screen.getWidth() - pad;
-
-			var text = zeroPad(7,total);
-			var scale = Ptero.screen.getScale() * scoreFont.scale;
-
-			var i,len=text.length;
-			for (i=len-1; i>=0; i--) {
-				var c = text[i];
-				var w = scoreFont.frames[c].origSize.width * scale;
-				var h = scoreFont.frames[c].origSize.height * scale;
-				var pos = Ptero.screen.screenToSpace({ x: x-w/2, y: y+h/2 });
-				scoreFont.draw(ctx, pos, c);
-				x -= w;
-			}
 		},
 		addPoints: function(value) {
 			pointQueue.push({

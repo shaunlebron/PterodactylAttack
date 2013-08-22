@@ -6,34 +6,16 @@ Ptero.scene_highscore = (function(){
 
 	var backBtn;
 
+	var killsBtn0, killsBtn1;
+	var capsBtn0, capsBtn1;
+	var bountiesBtn0, bountiesBtn1;
+	var accuracyBtn0, accuracyBtn1;
+	
+	var scoreBtn;
+
 	var wrenchBtn;
 	var strongBtn;
 	var scrollBtn;
-
-	var highScoreSprite, highScorePos;
-
-	var scoreBoard,digits;
-	var scorePos;
-	function makeScoreBoard() {
-		var m = Ptero.assets.mosaics['timertype'];
-		
-		digits = Ptero.score.getHighScore() + "";
-
-		// get the total width of the score
-		var i,len=digits.length;
-		var d;
-		var w=0,h;
-		for (i=0; i<len; i++) {
-			d = digits[i]
-			h = m.frames[d].origSize.height;
-			w += m.frames[d].origSize.width;
-		}
-
-		// create a billboard of that size of the desired scale
-		scoreBoard = new Ptero.Billboard(w/2,h/2,w,h,2);
-
-		scorePos = Ptero.screen.screenFracToSpace(0.5, 0.5 );
-	}
 
 	function cleanup() {
 
@@ -44,14 +26,67 @@ Ptero.scene_highscore = (function(){
 		backBtn.disable();
 	}
 
+	function makeTable() {
+		var cellW = 550;
+		var cellH = 100;
+		var y = 0.35;
+		var dy = 80/720;
+
+		killsBtn0 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["whitefont"],
+			textAlign: "left",
+			text: "KILLS:",
+			hudPos: {x:0.5, y:y},
+			width: cellW,
+			height: cellH,
+		});
+		killsBtn1 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Ptero.settings.get("high_kills").toString(),
+			hudPos: {x:0.5, y:y},
+			width: cellW,
+			height: cellH,
+		});
+
+		capsBtn0 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["whitefont"],
+			textAlign: "left",
+			text: "CAPTURES:",
+			hudPos: {x:0.5, y:y+dy},
+			width: cellW,
+			height: cellH,
+		});
+		capsBtn1 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Ptero.settings.get("high_captures").toString(),
+			hudPos: {x:0.5, y:y+dy},
+			width: cellW,
+			height: cellH,
+		});
+
+		bountiesBtn0 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["whitefont"],
+			textAlign: "left",
+			text: "BOUNTIES:",
+			hudPos: {x:0.5, y:y+dy*2},
+			width: cellW,
+			height: cellH,
+		});
+		bountiesBtn1 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Ptero.settings.get("high_bounties").toString(),
+			hudPos: {x:0.5, y:y+dy*2},
+			width: cellW,
+			height: cellH,
+		});
+	}
+
 	var time;
 	function init() {
 		time = 0;
-
-		makeScoreBoard();
-
-		highScoreSprite = Ptero.assets.sprites['menu_highscore'];
-		highScorePos = Ptero.screen.screenFracToSpace(0.5, 0.3);
 
 		// backplate
 		var w = 600;
@@ -63,6 +98,17 @@ Ptero.scene_highscore = (function(){
 			y: 0,
 			z: frustum.near,
 		};
+		
+		makeTable();
+
+		scoreBtn = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts['whitefont'],
+			textAlign: "center",
+			text: Ptero.settings.get("high_score").toString(),
+			hudPos: {x:0.5, y:0.2},
+			width: 400,
+			height: 200,
+		});
 
 		var screenW = Ptero.screen.getWidth();
 		var scale = Ptero.screen.getScale();
@@ -122,42 +168,6 @@ Ptero.scene_highscore = (function(){
 
 		backplate.draw(ctx, backplatePos);
 
-		// draw score
-		ctx.save();
-		scoreBoard.transform(ctx, scorePos);
-		var m = Ptero.assets.mosaics['timertype'];
-		var j,len=digits.length;
-		var d;
-		var x=0,y=0;
-		for (j=0; j<len; j++) { // each digit
-			d = digits[j];
-
-			var frame = m.frames[d];
-			var size = frame.origSize;
-
-			var tiles = frame.tiles;
-			var i,numTiles = tiles.length;
-			var sx,sy,w,h,dx,dy;
-			var tile;
-			for (i=0; i<numTiles; i++) { // each segment of digit
-				tile = tiles[i];
-
-				sx = tile.x;
-				sy = tile.y;
-				w = tile.w;
-				h = tile.h;
-				dx = x+tile.origX;
-				dy = tile.origY;
-
-				ctx.drawImage(m.img, sx,sy,w,h,dx,dy,w,h);
-			}
-
-			x += size.width;
-		}
-		ctx.restore();
-
-		highScoreSprite.draw(ctx, highScorePos);
-
 		var alpha = 0.8;
 
 		var backupAlpha = ctx.globalAlpha;
@@ -173,6 +183,15 @@ Ptero.scene_highscore = (function(){
 		ctx.globalAlpha = backupAlpha;
 
 		backBtn.draw(ctx);
+
+		scoreBtn.draw(ctx);
+
+		killsBtn0.draw(ctx);
+		killsBtn1.draw(ctx);
+		capsBtn0.draw(ctx);
+		capsBtn1.draw(ctx);
+		bountiesBtn0.draw(ctx);
+		bountiesBtn1.draw(ctx);
 	}
 
 	return {

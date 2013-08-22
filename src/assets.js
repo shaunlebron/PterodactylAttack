@@ -4,9 +4,10 @@ Ptero.assets = (function(){
 	var imageSources = {
 		"button_plank" : "img/plank.png",
 
-		"buttonfont" : "fonts/buttonfont.png",
-		"whitefont"  : "fonts/whitefont.png",
-		"scorefont"  : "fonts/scorefont.png",
+		"buttonfont"   : "fonts/buttonfont.png",
+		"whitefont"    : "fonts/whitefont.png",
+		"scorefont"    : "fonts/scorefont.png",
+		"redscorefont" : "fonts/redscorefont.png",
 
 		"msg_complete"   : "img/msg/msg_complete.png",
 		"msg_tut1"       : "img/msg/msg_tut1.png",
@@ -24,7 +25,6 @@ Ptero.assets = (function(){
 		"menu_wrench"       : "img/menu/menu_wrench.png",
 		"menu_strong"       : "img/menu/menu_strong.png",
 		"menu_scroll"       : "img/menu/menu_scroll.png",
-		"menu_highscore"    : "img/menu/menu_highscore.png",
 		"menu_credits"      : "img/menu/menu_credits.png",
 
 		"boom1": "img/boom1.png",

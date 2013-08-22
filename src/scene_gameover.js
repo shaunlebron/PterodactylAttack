@@ -8,9 +8,11 @@ Ptero.scene_gameover = (function(){
 	var scoreBtn;
 
 	var killsBtn0, killsBtn1;
-	var capsBtn0, capsBtn1;
+	var capturesBtn0, capturesBtn1;
 	var bountiesBtn0, bountiesBtn1;
 	var accuracyBtn0, accuracyBtn1;
+
+	var isNewHigh;
 
 	function cleanup() {
 		replayBtn.disable();
@@ -64,7 +66,7 @@ Ptero.scene_gameover = (function(){
 			height: cellH,
 		});
 
-		capsBtn0 = new Ptero.TextButton({
+		capturesBtn0 = new Ptero.TextButton({
 			fontSprite: Ptero.assets.fonts["whitefont"],
 			textAlign: "left",
 			text: "CAPTURES:",
@@ -72,7 +74,7 @@ Ptero.scene_gameover = (function(){
 			width: cellW,
 			height: cellH,
 		});
-		capsBtn1 = new Ptero.TextButton({
+		capturesBtn1 = new Ptero.TextButton({
 			fontSprite: Ptero.assets.fonts["scorefont"],
 			textAlign: "right",
 			text: Ptero.score.getCaptures().toString(),
@@ -149,21 +151,9 @@ Ptero.scene_gameover = (function(){
 		});
 		quitBtn.enable();
 
-		commitHighScore();
+		isNewHigh = Ptero.score.commitStats();
 
         Ptero.orb.setNextOrigin(0,-2);
-	}
-
-	var newHighScore;
-	function commitHighScore() {
-		newHighScore = false;
-		var highScore = Ptero.score.getHighScore();
-		var currentHigh = highScore || 0;
-		var currentScore = Ptero.score.getTotal();
-		if (currentScore > currentHigh) {
-			newHighScore = true;
-			Ptero.score.commitHighScore();
-		}
 	}
 
 	function draw(ctx) {
@@ -174,19 +164,30 @@ Ptero.scene_gameover = (function(){
 		Ptero.orb.draw(ctx);
 		replayBtn.draw(ctx);
 		quitBtn.draw(ctx);
+
+		var isRed = Math.floor(time / 0.5) % 2 == 0;
+		var redFont = Ptero.assets.fonts['redscorefont'];
+		var font    = Ptero.assets.fonts['scorefont'];
+		scoreBtn.fontSprite     = isRed && isNewHigh["score"]    ? redFont : font;
+		killsBtn1.fontSprite    = isRed && isNewHigh["kills"]    ? redFont : font;
+		capturesBtn1.fontSprite = isRed && isNewHigh["captures"] ? redFont : font;
+		bountiesBtn1.fontSprite = isRed && isNewHigh["bounties"] ? redFont : font;
+
 		scoreBtn.draw(ctx);
 
 		killsBtn0.draw(ctx);
 		killsBtn1.draw(ctx);
-		capsBtn0.draw(ctx);
-		capsBtn1.draw(ctx);
+		capturesBtn0.draw(ctx);
+		capturesBtn1.draw(ctx);
 		bountiesBtn0.draw(ctx);
 		bountiesBtn1.draw(ctx);
 		accuracyBtn0.draw(ctx);
 		accuracyBtn1.draw(ctx);
 	}
 
+	var time = 0;
 	function update(dt) {
+		time += dt;
 		Ptero.orb.update(dt);
 		Ptero.overlord.update(dt);
 	}

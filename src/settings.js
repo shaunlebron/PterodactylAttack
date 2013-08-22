@@ -7,6 +7,10 @@ Ptero.settings = (function(){
 		"vibrateOn": true,
 		"tutorialOn": true,
 		"hand": 'right',
+		"high_score": 0,
+		"high_kills": 0,
+		"high_captures": 0,
+		"high_bounties": 0,
 	};
 	function initValues() {
 		if (!values) {
@@ -25,6 +29,13 @@ Ptero.settings = (function(){
 	var key = "settings";
 
 	return {
+		set: function(key,value) {
+			values[key] = value;
+			this.save();
+		},
+		get: function(key) {
+			return values[key];
+		},
 		load: function() {
 			values = null;
 			try {
