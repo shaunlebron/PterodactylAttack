@@ -13,7 +13,7 @@ Ptero.scene_menu = (function(){
 		isPteroFlying = on;
 	}
 
-	var spriteStart, spriteOptions;
+	var startBtn, optionsBtn;
 
 	function cleanup() {
 		Ptero.input.removeTouchHandler(touchHandler);
@@ -70,8 +70,23 @@ Ptero.scene_menu = (function(){
 
 		time = 0;
 
-		spriteStart = Ptero.assets.sprites['menu_start'];
-		spriteOptions = Ptero.assets.sprites['menu_options'];
+		startBtn = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts['whitefont'],
+			textAlign: 'center',
+			text: 'START',
+			width: 400,
+			height: 200,
+			pos: {x:0, y:0, z:0},
+		});
+
+		optionsBtn = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts['whitefont'],
+			textAlign: 'center',
+			text: 'OPTIONS',
+			width: 400,
+			height: 100,
+			pos: {x:0, y:0, z:0},
+		});
 
 		Ptero.input.addTouchHandler(touchHandler);
 		Ptero.orb.enableGuide(true);
@@ -135,18 +150,25 @@ Ptero.scene_menu = (function(){
 
 		var frustum = Ptero.screen.getFrustum();
 
-		var p;
+		var pos,b;
 		var i,len=enemies.length,e;
-		var sprites = [
-			spriteOptions,
-			spriteStart,
+		var buttons = [
+			optionsBtn,
+			startBtn,
+		];
+		var offset = [
+			-0.05,
+			-0.1,
 		];
 		for (i=0; i<len; i++) {
 			e = enemies[i];
 			if (e.path.time >= e.path.totalTime) {
-				p = e.getPosition();
-				p = frustum.projectToNear(p);
-				sprites[i].draw(ctx,p);
+				pos = e.getPosition();
+				pos = frustum.projectToNear(pos);
+				pos.y += offset[i];
+				b = buttons[i];
+				b.pos = pos;
+				b.draw(ctx);
 			}
 		}
 

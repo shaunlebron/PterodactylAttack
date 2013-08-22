@@ -127,21 +127,22 @@ Ptero.Button.prototype = {
 	},
 };
 
-Ptero.SpriteButton = function(a) {
-	this.sprite = a.sprite;
+Ptero.TextButton = function(a) {
+
+	this.billboard = a.billboard || (
+		new Ptero.Billboard(a.width/2, a.height/2, a.width, a.height, 1)
+	);
 
 	this.fontSprite = a.fontSprite;
 	this.textAlign = a.textAlign || "center";
 	this.text = a.text;
-
-	a.billboard = a.sprite.billboard;
 
 	var ontouchstart = a.ontouchstart;
 	var ontouchend = a.ontouchend;
 	var ontouchenter = a.ontouchenter;
 	var ontouchleave = a.ontouchleave;
 
-	var origScale = a.sprite.billboard.scale;
+	var origScale = this.billboard.scale;
 	var focusScale = origScale * 1.1;
 	this.origScale = this.activeScale = origScale;
 	var that = this;
@@ -167,10 +168,26 @@ Ptero.SpriteButton = function(a) {
 		ontouchleave && ontouchleave();
 	};
 
-
 	Ptero.Button.call(this,a);
 };
-Ptero.SpriteButton.prototype = newChildObject(Ptero.Button.prototype, {
+
+Ptero.TextButton.prototype = newChildObject(Ptero.Button.prototype, {
+	draw: function(ctx) {
+		var backupScale = this.billboard.scale;
+		this.billboard.scale = this.activeScale;
+		if (this.text) {
+			this.fontSprite.draw(ctx, this.text, this.billboard, this.pos, this.textAlign);
+		}
+		this.billboard.scale = backupScale;
+	},
+});
+
+Ptero.SpriteButton = function(a) {
+	this.sprite = a.sprite;
+	a.billboard = a.sprite.billboard;
+	Ptero.TextButton.call(this,a);
+};
+Ptero.SpriteButton.prototype = newChildObject(Ptero.TextButton.prototype, {
 	draw: function(ctx) {
 		var backupScale = this.billboard.scale;
 		this.billboard.scale = this.activeScale;
@@ -182,67 +199,3 @@ Ptero.SpriteButton.prototype = newChildObject(Ptero.Button.prototype, {
 	},
 });
 
-Ptero.TextButton = function(a) {
-
-	// get font size and css font string
-	this.fontSize = a.fontSize || Ptero.hud.getBaseTextSize();
-	this.font = this.fontSize + "px " + a.font;
-
-	// get other font related vars
-	this.textColor = a.textColor;
-	this.text = a.text;
-	this.textAlign = a.textAlign;
-	this.pad = (function(){
-		var pad = a.pad || 0;
-		if (typeof pad == "number") {
-			pad = { x:pad, y:pad };
-		}
-		return pad;
-	})();
-
-	// calculate width and height if fitting around text
-	a.fitText && (function(){
-		var ctx = Ptero.screen.getCtx();
-		var h = this.fontSize*1.25;
-
-		ctx.font = this.font;
-		a.width = ctx.measureText(a.text).width + 2*this.pad.x;
-
-		//a.width = a.text.length * h;
-		a.height = h + 2*this.pad.y;
-	}).call(this);
-
-	Ptero.Button.call(this,a);
-}
-Ptero.TextButton.prototype = newChildObject(Ptero.Button.prototype, {
-	draw: function(ctx) {
-		ctx.font = this.font;
-		ctx.textBaseline = "middle";
-		ctx.textAlign = this.textAlign;
-
-		var rect = this.billboard.getScreenRect(this.pos);
-		if (Ptero.painter.isDebugOutline()) {
-			ctx.strokeStyle = "#0F0";
-			ctx.strokeRect(rect.x,rect.y,rect.w,rect.h);
-		}
-		var y = rect.centerY;
-
-		// get x position
-		var x;
-		switch(this.textAlign) {
-			case "left": x = rect.x+this.pad.x; break;
-			case "right": x = rect.x+rect.w-this.pad.x; break;
-			case "center": x = rect.centerX; break;
-			default: throw("unrecognized text alignment "+this.textAlign);
-		}
-
-		// draw shadow first
-		var r = 2;
-		ctx.fillStyle = "#000";
-		ctx.fillText(this.text, x+r,y+r);
-
-		// draw text
-		ctx.fillStyle = this.textColor;
-		ctx.fillText(this.text, x,y);
-	},
-});
