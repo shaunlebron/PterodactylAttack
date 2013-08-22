@@ -16,6 +16,7 @@ Ptero.scene_bgpos = (function(){
 		"HIGHLIGHT": 16, // "4"
 		"NEXT_LAYER": 38, // up
 		"PREV_LAYER": 40, // down
+		"NEXT_BG": 80, // P
 	};
 
 	function cleanup() {
@@ -100,10 +101,29 @@ Ptero.scene_bgpos = (function(){
 		}
 	}
 
-	function init() {
-		bg = Ptero.setBackground('volcano');
+	function setBg(name) {
+		bg = Ptero.setBackground(name);
 		bg.setAnimating(false);
 		initExtremes();
+	}
+
+	function nextBg() {
+		var names = [
+			"mountain",
+			"ice",
+			"volcano",
+		];
+		var currName = Ptero.background.name;
+		var i,len=names.length;
+		for (i=0; i<len; i++) {
+			if (names[i] == currName) {
+				setBg(names[(i+1)%len]);
+			}
+		}
+	}
+
+	function init() {
+		setBg('mountain');
 
 		Ptero.input.addTouchHandler(touchHandler);
 		window.addEventListener('keyup', function(e) {
@@ -122,6 +142,9 @@ Ptero.scene_bgpos = (function(){
 			else if (e.keyCode == keys.HIGHLIGHT) {
 				isHighlight = false;	
 				bg.setSelectedLayer(null);
+			}
+			else if (e.keyCode == keys.NEXT_BG) {
+				nextBg();
 			}
 		});
 
