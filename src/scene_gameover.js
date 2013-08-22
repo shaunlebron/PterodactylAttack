@@ -7,6 +7,11 @@ Ptero.scene_gameover = (function(){
 	var replayBtn,quitBtn;
 	var scoreBtn;
 
+	var killsBtn0, killsBtn1;
+	var capsBtn0, capsBtn1;
+	var bountiesBtn0, bountiesBtn1;
+	var accuracyBtn0, accuracyBtn1;
+
 	function cleanup() {
 		replayBtn.disable();
 		quitBtn.disable();
@@ -36,6 +41,79 @@ Ptero.scene_gameover = (function(){
 			y: 0,
 			z: frustum.near,
 		};
+
+		var cellW = 550;
+		var cellH = 100;
+		var y = 0.25;
+		var dy = 80/720;
+
+		killsBtn0 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["whitefont"],
+			textAlign: "left",
+			text: "KILLS:",
+			hudPos: {x:0.5, y:y},
+			width: cellW,
+			height: cellH,
+		});
+		killsBtn1 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Ptero.score.getKills().toString(),
+			hudPos: {x:0.5, y:y},
+			width: cellW,
+			height: cellH,
+		});
+
+		capsBtn0 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["whitefont"],
+			textAlign: "left",
+			text: "CAPTURES:",
+			hudPos: {x:0.5, y:y+dy},
+			width: cellW,
+			height: cellH,
+		});
+		capsBtn1 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Ptero.score.getCaptures().toString(),
+			hudPos: {x:0.5, y:y+dy},
+			width: cellW,
+			height: cellH,
+		});
+
+		bountiesBtn0 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["whitefont"],
+			textAlign: "left",
+			text: "BOUNTIES:",
+			hudPos: {x:0.5, y:y+dy*2},
+			width: cellW,
+			height: cellH,
+		});
+		bountiesBtn1 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Ptero.score.getBounties().toString(),
+			hudPos: {x:0.5, y:y+dy*2},
+			width: cellW,
+			height: cellH,
+		});
+
+		accuracyBtn0 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["whitefont"],
+			textAlign: "left",
+			text: "HIT %:",
+			hudPos: {x:0.5, y:y+dy*3},
+			width: cellW,
+			height: cellH,
+		});
+		accuracyBtn1 = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Math.floor(Ptero.score.getAccuracy()*100).toString(),
+			hudPos: {x:0.5, y:y+dy*3},
+			width: cellW,
+			height: cellH,
+		});
 
 		scoreBtn = new Ptero.TextButton({
 			fontSprite: Ptero.assets.fonts['whitefont'],
@@ -97,6 +175,15 @@ Ptero.scene_gameover = (function(){
 		replayBtn.draw(ctx);
 		quitBtn.draw(ctx);
 		scoreBtn.draw(ctx);
+
+		killsBtn0.draw(ctx);
+		killsBtn1.draw(ctx);
+		capsBtn0.draw(ctx);
+		capsBtn1.draw(ctx);
+		bountiesBtn0.draw(ctx);
+		bountiesBtn1.draw(ctx);
+		accuracyBtn0.draw(ctx);
+		accuracyBtn1.draw(ctx);
 	}
 
 	function update(dt) {

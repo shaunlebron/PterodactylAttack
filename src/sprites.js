@@ -22,6 +22,10 @@ Ptero.SpriteFont.prototype = {
 		return w;
 	},
 	draw: function(ctx, text, billboard, pos, align) {
+		if (typeof text != "string") {
+			text = text.toString();
+		}
+
 		if (align == "left") {
 			text = " "+text;
 		}

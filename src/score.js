@@ -25,10 +25,6 @@ Ptero.score = (function(){
 	var failedBounties;
 
 	return {
-		getAccuracy: function() {
-			var total = hits + misses;
-			return (total == 0) ? 0 : hits/total;
-		},
 		printState: function() {
 			console.log("SCORE::::::::::::");
 			console.log(kills,'kills');
@@ -79,6 +75,25 @@ Ptero.score = (function(){
 		},
 		addFailedBounties: function(delta) {
 			failedBounties += delta;
+		},
+		getKills: function() {
+			return kills;
+		},
+		getHits: function() {
+			return hits;
+		},
+		getMisses: function() {
+			return misses;
+		},
+		getCaptures: function() {
+			return captures;
+		},
+		getBounties: function() {
+			return bounties;
+		},
+		getAccuracy: function() {
+			var total = hits + misses;
+			return (total == 0) ? 0 : hits/total;
 		},
 		reset: function() {
 			pointQueue.length = 0;
