@@ -45,6 +45,7 @@ Ptero.scene_play = (function() {
 
 	function cleanup() {
 		Ptero.bulletpool.clear();
+		disableControls();
 	}
 
 	function enableControls() {
