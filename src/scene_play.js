@@ -41,6 +41,8 @@ Ptero.scene_play = (function() {
 	}
 
 	var pauseBtn;
+	var scoreBtn;
+
 	function cleanup() {
 		Ptero.bulletpool.clear();
 	}
@@ -99,6 +101,19 @@ Ptero.scene_play = (function() {
 
 		// reset the score
 		Ptero.score.reset();
+
+		// create score button
+		scoreBtn = new Ptero.TextButton({
+			fontSprite: Ptero.assets.fonts["scorefont"],
+			textAlign: "right",
+			text: Ptero.score.getScoreStr(),
+			width: 400,
+			height: 130,
+			anchor: {
+				x: "right",
+				y: "top",
+			},
+		});
 
 		// create the pause button
 		pauseBtn = new Ptero.SpriteButton({
@@ -177,7 +192,10 @@ Ptero.scene_play = (function() {
 			}
 			if (time > 2) {
 				pauseBtn.draw(ctx);
-				Ptero.score.draw(ctx);
+
+				scoreBtn.text = Ptero.score.getScoreStr();
+				scoreBtn.draw(ctx);
+
 				var isNetShown = isNetEnabled && (Math.floor(netFlashTime / netFlashPeriod) % 2 == 0);
 				Ptero.player.drawHealth(ctx, isNetShown);
 				if (isNetShown) {

@@ -17,7 +17,7 @@ Ptero.SpriteFont.prototype = {
 		var c;
 		for (i=0; i<len; i++) {
 			c = this.chars[text[i]];
-			w += (i == len-1) ? c.width : c.xadvance;
+			w += (i == len-1) ? Math.max(c.width, c.xadvance) : c.xadvance;
 		}
 		return w;
 	},
@@ -44,7 +44,6 @@ Ptero.SpriteFont.prototype = {
 		else if (align == "right") {
 			ctx.translate(billboard.w, billboard.h/2);
 			ctx.scale(textScale, textScale);
-			ctx.translate(-textWidth, -textHeight/2);
 			x = -textWidth;
 		}
 		else if (align == "center") {

@@ -109,6 +109,9 @@ Ptero.score = (function(){
 				}
 			}
 		},
+		getScoreStr: function() {
+			return zeroPad(7,total);
+		},
 		draw: function(ctx) {
 			var scoreFont = Ptero.assets.mosaics["scoretype"];
 

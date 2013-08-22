@@ -113,6 +113,9 @@ Ptero.Button = function(a) {
 	})();
 };
 Ptero.Button.prototype = {
+	drawBorder: function(ctx) {
+		Ptero.painter.drawBorder(ctx,this.pos,"#F00",this.billboard);
+	},
 	enable: function() {
 		if (!this.isEnabled) {
 			Ptero.input.addTouchHandler(this.touchHandler);

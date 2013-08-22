@@ -1,0 +1,105 @@
+{
+    "lineHeight": 109, 
+    "chars": {
+        " ": {
+            "yoffset": 93, 
+            "width": 0, 
+            "xadvance": 67, 
+            "y": 92, 
+            "x": 204, 
+            "height": 0, 
+            "xoffset": 34
+        }, 
+        "1": {
+            "yoffset": 5, 
+            "width": 38, 
+            "xadvance": 67, 
+            "y": 2, 
+            "x": 2, 
+            "height": 88, 
+            "xoffset": 14
+        }, 
+        "0": {
+            "yoffset": 6, 
+            "width": 66, 
+            "xadvance": 67, 
+            "y": 2, 
+            "x": 111, 
+            "height": 87, 
+            "xoffset": 0
+        }, 
+        "3": {
+            "yoffset": 6, 
+            "width": 66, 
+            "xadvance": 67, 
+            "y": 2, 
+            "x": 179, 
+            "height": 87, 
+            "xoffset": 0
+        }, 
+        "2": {
+            "yoffset": 7, 
+            "width": 66, 
+            "xadvance": 67, 
+            "y": 92, 
+            "x": 2, 
+            "height": 86, 
+            "xoffset": 0
+        }, 
+        "5": {
+            "yoffset": 6, 
+            "width": 66, 
+            "xadvance": 67, 
+            "y": 2, 
+            "x": 247, 
+            "height": 87, 
+            "xoffset": 0
+        }, 
+        "4": {
+            "yoffset": 7, 
+            "width": 65, 
+            "xadvance": 67, 
+            "y": 92, 
+            "x": 70, 
+            "height": 86, 
+            "xoffset": 1
+        }, 
+        "7": {
+            "yoffset": 7, 
+            "width": 65, 
+            "xadvance": 67, 
+            "y": 92, 
+            "x": 137, 
+            "height": 86, 
+            "xoffset": 1
+        }, 
+        "6": {
+            "yoffset": 6, 
+            "width": 67, 
+            "xadvance": 67, 
+            "y": 2, 
+            "x": 42, 
+            "height": 87, 
+            "xoffset": 0
+        }, 
+        "9": {
+            "yoffset": 6, 
+            "width": 66, 
+            "xadvance": 67, 
+            "y": 2, 
+            "x": 383, 
+            "height": 87, 
+            "xoffset": 0
+        }, 
+        "8": {
+            "yoffset": 6, 
+            "width": 66, 
+            "xadvance": 67, 
+            "y": 2, 
+            "x": 315, 
+            "height": 87, 
+            "xoffset": 0
+        }
+    }, 
+    "font": true
+}

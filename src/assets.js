@@ -4,8 +4,9 @@ Ptero.assets = (function(){
 	var imageSources = {
 		"button_plank" : "img/plank.png",
 
-		"buttonfont": "fonts/buttonfont.png",
-		"whitefont": "fonts/whitefont.png",
+		"buttonfont" : "fonts/buttonfont.png",
+		"whitefont"  : "fonts/whitefont.png",
+		"scorefont"  : "fonts/scorefont.png",
 
 		"msg_complete"   : "img/msg/msg_complete.png",
 		"msg_tut1"       : "img/msg/msg_tut1.png",
@@ -39,7 +40,6 @@ Ptero.assets = (function(){
 		"pause"     : "img/pause.png",
 		"logo"      : "img/logo.png",
 		"timertype" : "img/timertype.png",
-		"scoretype" : "img/scoretype.png",
 		"swipe"     : "img/swipe.png",
 
 		"btn_back"         : "img/buttons/btn_back.png",
