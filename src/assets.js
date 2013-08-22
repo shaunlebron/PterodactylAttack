@@ -41,13 +41,6 @@ Ptero.assets = (function(){
 
 		"btn_back"         : "img/buttons/btn_back.png",
 
-		"splash_fg" : "img/splash_fg.png",
-		"splash_bg" : "img/splash_bg.png",
-
-		"frame_mountain" : "img/frame_mountain.png",
-		"frame_ice"      : "img/frame_ice.png",
-		"frame_volcano"  : "img/frame_volcano.png",
-
 		"title" : "img/title.png",
 
 		"backplate_mountain" : "img/backplate_menu_mountain.png",
