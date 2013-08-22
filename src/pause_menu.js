@@ -7,14 +7,9 @@ Ptero.pause_menu = (function(){
 	var resumeBtn;
 	var quitBtn;
 
-	var soundOnBtn;
-	var soundOffBtn;
-	var vibrateOnBtn;
-	var vibrateOffBtn;
-	var tutorialOnBtn;
-	var tutorialOffBtn;
-	var lefthandBtn;
-	var righthandBtn;
+	var soundBtn;
+	var vibrateBtn;
+	var handBtn;
 
 	var contentButtons;
 
@@ -33,6 +28,10 @@ Ptero.pause_menu = (function(){
 		enableVibrate(Ptero.settings.isVibrateEnabled());
 		setHand(Ptero.settings.getHand());
 
+		soundBtn.enable();
+		vibrateBtn.enable();
+		handBtn.enable();
+
 		resumeBtn.enable();
 		quitBtn.enable();
 		Ptero.scene.disableControls();
@@ -40,37 +39,34 @@ Ptero.pause_menu = (function(){
 
 	function setHand(hand) {
 		Ptero.settings.setHand(hand);
-		lefthandBtn.disable();
-		righthandBtn.disable();
 		if (hand == 'left') {
-			lefthandBtn.enable();
+			handBtn.text = "LEFT-HANDED";
 		}
 		else if (hand == 'right') {
-			righthandBtn.enable();
+			handBtn.text = "RIGHT-HANDED";
 		}
+	}
+	function toggleHand() {
+		var hand = Ptero.settings.getHand();
+		setHand(hand == "left" ? "right" : "left");
 	}
 
 	function enableSound(on) {
 		Ptero.settings.enableSound(on);
-		soundOnBtn.disable();
-		soundOffBtn.disable();
-		if (on) {
-			soundOnBtn.enable();
-		}
-		else {
-			soundOffBtn.enable();
-		}
+		soundBtn.text = "SOUND: " + (on ? "ON": "OFF");
 	}
+	function toggleSound() {
+		var on = Ptero.settings.isSoundEnabled();
+		enableSound(!on);
+	}
+
 	function enableVibrate(on) {
 		Ptero.settings.enableVibrate(on);
-		vibrateOnBtn.disable();
-		vibrateOffBtn.disable();
-		if (on) {
-			vibrateOnBtn.enable();
-		}
-		else {
-			vibrateOffBtn.enable();
-		}
+		vibrateBtn.text = "VIBRATE: " + (on ? "ON" : "OFF");
+	}
+	function toggleVibrate() {
+		var on = Ptero.settings.isVibrateEnabled();
+		enableVibrate(!on);
 	}
 
 	function init() {
@@ -93,8 +89,11 @@ Ptero.pause_menu = (function(){
 		// create resume and quit buttons
 		var dy = 1/6;
 		resumeBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_resume'],
-			hudPos: { x: 0.5, y: dy },
+			sprite: Ptero.assets.sprites['button_plank'],
+			fontSprite: Ptero.assets.fonts['buttonfont'],
+			textAlign: "center",
+			text: "RESUME",
+			hudPos: { x: 0.5, y: dy, },
 			onclick: function() {
 				Ptero.executive.togglePause();
 				cleanup();
@@ -102,8 +101,11 @@ Ptero.pause_menu = (function(){
 			}
 		});
 		quitBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_quit'],
-			hudPos: { x: 0.5, y: dy*5 },
+			sprite: Ptero.assets.sprites['button_plank'],
+			fontSprite: Ptero.assets.fonts['buttonfont'],
+			textAlign: "center",
+			text: "QUIT",
+			hudPos: { x: 0.5, y: dy*5, },
 			onclick: function() {
 				Ptero.executive.togglePause();
 				cleanup();
@@ -112,55 +114,37 @@ Ptero.pause_menu = (function(){
 		});
 
 		// create settings buttons
-		var soundPos = { x: 0.5, y: dy*2, };
-		soundOnBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_sound_on'],
-			hudPos: soundPos,
-			onclick: function() { enableSound(false); },
-		});
-		soundOffBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_sound_off'],
-			hudPos: soundPos,
-			onclick: function() { enableSound(true); },
+		soundBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['button_plank'],
+			fontSprite: Ptero.assets.fonts['buttonfont'],
+			textAlign: "center",
+			hudPos: { x: 0.5, y: dy*2, },
+			onclick: toggleSound,
 		});
 
-		var vibratePos = { x: 0.5, y: dy*3, };
-		vibrateOnBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_vibrate_on'],
-			hudPos: vibratePos,
-			onclick: function() { enableVibrate(false); },
-		});
-		vibrateOffBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_vibrate_off'],
-			hudPos: vibratePos,
-			onclick: function() { enableVibrate(true); },
+		vibrateBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['button_plank'],
+			fontSprite: Ptero.assets.fonts['buttonfont'],
+			textAlign: "center",
+			hudPos: { x: 0.5, y: dy*3, },
+			onclick: toggleVibrate,
 		});
 
-		var handPos = { x: 0.5, y: dy*4, };
-		lefthandBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_lefthanded'],
-			hudPos: handPos,
+		handBtn = new Ptero.SpriteButton({
+			sprite: Ptero.assets.sprites['button_plank'],
+			fontSprite: Ptero.assets.fonts['buttonfont'],
+			textAlign: "center",
+			hudPos: { x: 0.5, y: dy*4, },
 			onclick: function() {
-				setHand('right');
-				Ptero.scene_play.createNetBtn();
-			},
-		});
-		righthandBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_righthanded'],
-			hudPos: handPos,
-			onclick: function() {
-				setHand('left');
+				toggleHand();
 				Ptero.scene_play.createNetBtn();
 			},
 		});
 
 		contentButtons = [
-			soundOnBtn,
-			soundOffBtn,
-			vibrateOnBtn,
-			vibrateOffBtn,
-			lefthandBtn,
-			righthandBtn,
+			soundBtn,
+			vibrateBtn,
+			handBtn,
 		];
 	}
 
@@ -170,7 +154,7 @@ Ptero.pause_menu = (function(){
 		var i,b,len=contentButtons.length;
 		for (i=0; i<len; i++) {
 			b = contentButtons[i];
-			b.isEnabled && b.draw(ctx);
+			b.draw(ctx);
 		}
 
 		resumeBtn.draw(ctx);
