@@ -110,9 +110,8 @@ Ptero.scene_highscore = (function(){
 			height: 200,
 		});
 
-		var screenW = Ptero.screen.getWidth();
-		var scale = Ptero.screen.getScale();
-		var startX = screenW/2 + w*scale/2;
+		var screenW = Ptero.screen.getWindowWidth();
+		var startX = screenW/2 + w/2;
 		var midX = startX + (screenW - startX)/2;
 		
 		var hudFracX = midX / screenW;

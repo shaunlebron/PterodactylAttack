@@ -1,100 +1,124 @@
 Ptero.screen = (function(){
 
-	var width;
-	var height;
-	var aspect;
-	var scale;
+	// Size of the canvas in pixels.
+	var canvasWidth;
+	var canvasHeight;
+	var canvasAspect;
+
+	// The window is the virtual surface the game is drawn inside.
+	// The window will be scaled and positioned to fit screens of different sizes.
+
+	// window position in canvas pixels
+	var windowLeft;
+	var windowTop;
+
+	// the scale that the window will be drawn inside the canvas.
+	var windowScale;
+
+	// the window has a base height of 720 units, and its width is determined by the set aspect.
+	var windowAspect;
+	var windowWidth;
+	var windowHeight = 720;
+
+	function transformToWindow() {
+		ctx.transform(1,0,0,1,0,0);
+		ctx.translate(windowLeft, windowTop);
+		ctx.scale(windowScale, windowScale);
+	}
 
 	var canvas,ctx;
-	var frustum;
+
+	// if the HTML Canvas in the DOM has a border around it, this variable helps us keep accurate click coordinates.
 	var borderSize;
 
-	function setSize(w,h) {
-		width = w;
-		height = h;
-		aspect = width/height;
-		canvas.width = width;
-		canvas.height = height;
-	};
+	function setCanvasSize(w,h) {
+		canvas.width = canvasWidth = w;
+		canvas.height = canvasHeight = h;
+		canvasAspect = w / h;
+	}
 
-	function establishScale() {
-		var baseW = 1280;
-		var baseH = 720;
-		var baseAspect = baseW / baseH;
-		var scaleH = height / baseH;
-		var scaleW = width / baseW;
-		scale = (baseAspect > aspect) ? scaleH : scaleW;
-	};
+	function makeFrustum(aspect) {
+		var fov = 30*Math.PI/180;
+		var near = 1;
+		var far = near*20;
+		Ptero.frustum = new Ptero.Frustum(near,far,fov,aspect);
 
-	var shakeTime = 0;
-	var shakeMaxTime = 1;
-	var shakeOffset = 0;
-	var shakeRadius;
-	function shake() {
-		shakeTime = shakeMaxTime;
-	};
+		Ptero.frustum.scale = windowHeight / Ptero.frustum.nearHeight;
+	}
+
+	function setWindowAspect(aspect) {
+		windowAspect = aspect;
+		windowWidth = windowHeight * aspect;
+		makeFrustum(aspect);
+	}
+
+	function centerWindowAtPixel(x,y) {
+		windowLeft = x - windowWidth/2  * windowScale;
+		windowTop  = y - windowHeight/2 * windowScale;
+	}
+
+	// Scales the window to fit the height of the canvas, then centers horizontally
+	function fitWindow() {
+		windowScale = canvasHeight / windowHeight;
+		centerWindowAtPixel(canvasWidth/2, canvasHeight/2);
+	}
 
 	function init(_canvas,w,h) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
 
-		setSize(w,h);
-		establishScale();
+		setCanvasSize(w,h);
+		setWindowAspect(canvasAspect);
+		fitWindow();
 
-		var fov = 30*Math.PI/180;
-		//var near = height/2 / Math.tan(fov/2);
-		var near = 1;
-		var far = near*20;
-		Ptero.frustum = frustum = new Ptero.Frustum(near,far,fov,aspect);
-		shakeRadius = frustum.nearTop/16;
+		initShake();
+	}
 
-		Ptero.sizeFactor = frustum.nearTop;
-	};
-
+	// Screen-shaking
+	var shakeTime = 0;
+	var shakeMaxTime = 1;
+	var shakeOffset = 0;
+	var shakeRadius;
+	function initShake() {
+		shakeRadius = Ptero.frustum.nearTop/16;
+	}
+	function shake() {
+		shakeTime = shakeMaxTime;
+	}
 	var shakeSign = 1;
-	function update(dt) {
+	function updateShake(dt) {
 		shakeTime = Math.max(0, shakeTime - dt);
-		updateShake();
-	};
-
-	function updateShake() {
 		var cycles = 10;
 		var t = shakeTime/shakeMaxTime * Math.PI * 2 * 10;
 		var mag = shakeTime/shakeMaxTime;
 		shakeOffset = Math.sin(t) * mag * shakeRadius;
-	};
+	}
 
-	// Determine screen coordinates from a point in the frustum.
-	function spaceToScreen(vector) {
+	function spaceToWindow(vector) {
 		var v2 = {
 			x: vector.x + shakeOffset,
 			y: vector.y,
 			z: vector.z,
 		};
-		var v = frustum.projectToNear(v2);
+		var v = Ptero.frustum.projectToNear(v2);
 		return new Ptero.Vector(
-			(v.x/frustum.nearWidth + 0.5) * width,
-			(-v.y/frustum.nearHeight + 0.5) * height);
-	};
+			(v.x/Ptero.frustum.nearWidth + 0.5) * windowWidth,
+			(-v.y/Ptero.frustum.nearHeight + 0.5) * windowHeight);
+	}
 
-	// Determine point on the frustum's near plane from a screen coordinate.
-	function screenToSpace(vector) {
+	function windowToSpace(vector) {
 		return new Ptero.Vector(
-			(vector.x/width - 0.5) * frustum.nearWidth,
-			-(vector.y/height - 0.5) * frustum.nearHeight,
-			frustum.near);
-	};
+			(vector.x/windowWidth - 0.5) * Ptero.frustum.nearWidth,
+			-(vector.y/windowHeight - 0.5) * Ptero.frustum.nearHeight,
+			Ptero.frustum.near);
+	}
 
-	function screenFracToSpace(xf,yf) {
-		return screenToSpace({
-			x: xf * width,
-			y: yf * height,
-		});
-	};
-
-    function getScreenToSpaceRatio() {
-        return (width) / frustum.nearWidth;
-    };
+	function canvasToWindow(cx,cy) {
+		return {
+			x: (cx - windowLeft) / windowScale,
+			y: (cy - windowTop) / windowScale,
+		};
+	}
 
 	function getCanvasPos() {
 		var p = {x:0,y:0};
@@ -115,24 +139,38 @@ Ptero.screen = (function(){
 			p.y += borderSize;
 		}
 		return p;
-	};
+	}
+
+	function update(dt) {
+		updateShake(dt);
+	}
 
 	return {
 		init: init,
-		setBorderSize: function(s) { borderSize = s; },
-		getWidth:	function() { return width; },
-		getHeight:  function() { return height; },
-		getAspect:  function() { return aspect; },
-		getScale:   function() { return scale; },
+
 		getCanvas:	function() { return canvas; },
 		getCtx:		function() { return ctx; },
-		spaceToScreen: spaceToScreen,
-		screenToSpace: screenToSpace,
-		screenFracToSpace: screenFracToSpace,
-        getScreenToSpaceRatio: getScreenToSpaceRatio,
+
+		setBorderSize: function(s) { borderSize = s; },
+
+		getCanvasWidth  : function() { return canvasWidth; },
+		getCanvasHeight : function() { return canvasHeight; },
+		getCanvasAspect : function() { return canvasAspect; },
+
+		getWindowWidth  : function() { return windowWidth; },
+		getWindowHeight : function() { return windowHeight; },
+		getWindowAspect : function() { return windowAspect; },
+
+		spaceToWindow  : spaceToWindow,
+		windowToSpace  : windowToSpace,
+		canvasToWindow : canvasToWindow,
+
 		getCanvasPos: getCanvasPos,
+
+		transformToWindow: transformToWindow,
+
 		update: update,
-		updateShake: updateShake,
+
 		shake: shake,
 	};
 })();

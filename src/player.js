@@ -31,10 +31,9 @@ Ptero.Player.prototype = {
 		var pad = Ptero.hud.getBorderPad();
 		var y = pad;
 		var x = pad;
-		var scale = Ptero.screen.getScale();
 
-		var w = 50 * this.maxHealth * scale;
-		var h = 50 * scale;
+		var w = 50 * this.maxHealth;
+		var h = 50;
 
 		// create backdrop for both health and bounty
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
@@ -54,7 +53,7 @@ Ptero.Player.prototype = {
 				var i;
 				var r_small = h/4;
 				var r_big = h/2;
-				var space = 3*scale + r_big*2;
+				var space = 3 + r_big*2;
 				var bx = x+r_big;
 				var by = y + h + pad + h/2;
 				for (i=0; i<bounty.size; i++) {

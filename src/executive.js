@@ -68,7 +68,7 @@ Ptero.executive = (function(){
 		ctx.textAlign = "left";
 		var pad = 5;
 		var x = pad;
-		var y = Ptero.screen.getHeight() - pad;
+		var y = Ptero.screen.getWindowHeight() - pad;
 		ctx.fillText(Math.floor(fps)+" fps", x, y);
 	};
 
@@ -91,9 +91,12 @@ Ptero.executive = (function(){
 			Ptero.deferredSprites.finalize();
 
 			var ctx = Ptero.screen.getCtx();
+			ctx.save();
+			Ptero.screen.transformToWindow();
 			scene.draw(ctx);
 			drawFps(ctx);
 			requestAnimationFrame(tick);
+			ctx.restore();
 		}
 		catch (e) {
 			console.error(e.message + "@" + e.sourceURL);

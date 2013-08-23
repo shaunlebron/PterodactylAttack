@@ -97,7 +97,7 @@ Ptero.Baklava.Pane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
-	screenToSpace: function(x,y) {
+	windowToSpace: function(x,y) {
 		var a = (x - this.origin.x) / this.scale;
 		var b = -(y - this.origin.y) / this.scale;
 		var pos = {};
@@ -105,22 +105,22 @@ Ptero.Baklava.Pane.prototype = {
 		pos[this.axes[1]] = b;
 		return pos;
 	},
-	_spaceToScreen: function(a,b) {
+	_spaceToWindow: function(a,b) {
 		var x = a * this.scale + this.origin.x;
 		var y = -b * this.scale + this.origin.y;
 		return { x:x, y:y, };
 	},
-	spaceToScreen: function(spacePos) {
+	spaceToWindow: function(spacePos) {
 		var a = spacePos[this.axes[0]];
 		var b = spacePos[this.axes[1]];
-		return this._spaceToScreen(a,b);
+		return this._spaceToWindow(a,b);
 	},
 
 	/* PAINTER FUNCTIONS */
 
 	transform: function(pos) {
 		// for now, just assume the vector is a 3d space vector.
-		return this.spaceToScreen(pos);
+		return this.spaceToWindow(pos);
 	},
 	moveTo: function(ctx,pos) {
 		var p = this.transform(pos);
@@ -272,7 +272,7 @@ Ptero.Baklava.Pane.prototype = {
 	// select the path node within a radius of the given selection point
 
 	setFocusPoint: function(x,y) {
-		var pos = this.screenToSpace(x,y);
+		var pos = this.windowToSpace(x,y);
 		this.apos = pos[this.axes[0]];
 		this.bpos = pos[this.axes[1]];
 	},
@@ -280,7 +280,7 @@ Ptero.Baklava.Pane.prototype = {
 	getLayerAtPos: function(x,y) {
 		var i,len=Ptero.background.layers.length;
 		for (i=0; i<len; i++) {
-			var screenPos = this.spaceToScreen({x:0,y:0,z:Ptero.background.layers[i].depth});
+			var screenPos = this.spaceToWindow({x:0,y:0,z:Ptero.background.layers[i].depth});
 			if (this.axes[0] == 'z') {
 				if (Math.abs(screenPos.x - x) < this.nodeRadius) {
 					return i;
@@ -300,7 +300,7 @@ Ptero.Baklava.Pane.prototype = {
 
 		var i = this.getLayerAtPos(x,y);
 		if (i != null) {
-			var z = this.screenToSpace(x,y).z;
+			var z = this.windowToSpace(x,y).z;
 			return {
 				layerIndex: i,
 				offset_z: Ptero.background.layers[i].depth - z,
@@ -327,7 +327,7 @@ Ptero.Baklava.Pane.prototype = {
 	updateNodePosition: function(x,y) {
 		var layer = Ptero.Baklava.model.selectedLayer;
 		if (layer != null) {
-			var z = this.screenToSpace(x,y).z;
+			var z = this.windowToSpace(x,y).z;
 			Ptero.background.layers[layer].depth = z + this.selectedOffsetZ;
 			this.updateEnemyPos();
 		}

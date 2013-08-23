@@ -85,9 +85,9 @@ Ptero.input = (function(){
 		var wrapFunc = function(f) {
 			return function(evt) {
 				var canvasPos = Ptero.screen.getCanvasPos();
-				var p = {x:canvasPos.x, y:canvasPos.y};
 				function passCoordToEvent(x,y,index) {
-					f(x-p.x, y-p.y, index);
+					var windowPos = Ptero.screen.canvasToWindow(x-canvasPos.x, y-canvasPos.y);
+					f(windowPos.x, windowPos.y, index);
 				}
 				var touches = evt.changedTouches;
 				if (touches && touches.length > 0) {
@@ -112,8 +112,6 @@ Ptero.input = (function(){
 		}
 		if (isJQueryLoaded) {
 			$('#canvas').mousewheel(function(evt,delta,deltaX,deltaY) {
-				var canvasPos = Ptero.screen.getCanvasPos();
-				var p = {x:canvasPos.x, y:canvasPos.y};
 				var x,y;
 				if (evt.touches && evt.touches.length > 0) {
 					x = evt.touches[0].pageX;
@@ -123,11 +121,11 @@ Ptero.input = (function(){
 					x = evt.pageX;
 					y = evt.pageY;
 				}
-				p.x = x - p.x;
-				p.y = y - p.y;
+				var canvasPos = Ptero.screen.getCanvasPos();
+				var windowPos = Ptero.screen.canvasToWindow(x-canvasPos.x, y-canvasPos.y);
 
 				evt.preventDefault();
-				scroll(p.x,p.y,delta,deltaX,deltaY);
+				scroll(windowPos.x, windowPos.y,delta,deltaX,deltaY);
 			});
 		}
 		if (!navigator.isCocoonJS) {

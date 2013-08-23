@@ -21,7 +21,7 @@ Ptero.painter = (function(){
 	}
 
 	function drawImageFrameToSubRegion(ctx,image,pos,sx,sy,sw,sh,billboard,rx,ry) {
-		var rect = billboard.getScreenRect(pos);
+		var rect = billboard.getWindowRect(pos);
 		var dx = rect.x;
 		var dy = rect.y;
 		var dw = rect.w;
@@ -51,7 +51,7 @@ Ptero.painter = (function(){
 	};
 
 	function drawImageFrame(ctx,image,pos,sx,sy,sw,sh,billboard) {
-		var rect = billboard.getScreenRect(pos);
+		var rect = billboard.getWindowRect(pos);
 		var dx = rect.x;
 		var dy = rect.y;
 		var dw = rect.w;
@@ -84,7 +84,7 @@ Ptero.painter = (function(){
 	};
 
 	function drawBorder(ctx,pos,color,billboard,handle) {
-		var rect = billboard.getScreenRect(pos);
+		var rect = billboard.getWindowRect(pos);
 		var dx = rect.x;
 		var dy = rect.y;
 		var dw = rect.w;
@@ -124,7 +124,7 @@ Ptero.painter = (function(){
 	};
 
 	function transform(pos) {
-		return Ptero.screen.spaceToScreen(pos);
+		return Ptero.screen.spaceToWindow(pos);
 	}
 
 	function moveTo(ctx,pos) {

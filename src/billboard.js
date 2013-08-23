@@ -19,15 +19,26 @@ Ptero.Billboard.prototype = {
 		this.centerX = x;
 		this.centerY = y;
 	},
+	normalizePos: function(pos, destCoord) {
+		var currCoord = (pos.z == undefined) ? "window" : "space";
+		if (currCoord == destCoord) {
+			return pos;
+		}
+		if (currCoord == "window" && destCoord == "space") {
+			return Ptero.screen.windowToSpace(pos);
+		}
+		if (currCoord == "space" && destCoord == "window") {
+			return Ptero.screen.spaceToWindow(pos);
+		}
+	},
 	getTileSpaceRect: function(pos, sx, sy, sw, sh) {
-		var frustum = Ptero.frustum;
-		var scale = this.scale * Ptero.screen.getScale();
-		scale /= Ptero.screen.getScreenToSpaceRatio();
+		var spacePos = this.normalizePos(pos, "space");
+		var scale = this.scale / Ptero.frustum.scale;
 		var w = sw * scale;
 		var h = sh * scale;
-		var x = pos.x - this.centerX*scale + sx*scale;
-		var y = pos.y - this.centerY*scale + (this.h-(sy+sh))*scale;
-		var z = pos.z;
+		var x = spacePos.x - this.centerX*scale + sx*scale;
+		var y = spacePos.y - this.centerY*scale + (this.h-(sy+sh))*scale;
+		var z = spacePos.z;
 		return {
 			w: w,
 			h: h,
@@ -41,14 +52,13 @@ Ptero.Billboard.prototype = {
 		};
 	},
 	getSpaceRect: function(pos) {
-		var frustum = Ptero.frustum;
-		var scale = this.scale * Ptero.screen.getScale();
-		scale /= Ptero.screen.getScreenToSpaceRatio();
+		var spacePos = this.normalizePos(pos, "space");
+		var scale = this.scale / Ptero.frustum.scale;
 		var w = this.w * scale;
 		var h = this.h * scale;
-		var x = pos.x - this.centerX*scale;
-		var y = pos.y - this.centerY*scale;
-		var z = pos.z;
+		var x = spacePos.x - this.centerX*scale;
+		var y = spacePos.y - this.centerY*scale;
+		var z = spacePos.z;
 		return {
 			w: w,
 			h: h,
@@ -62,42 +72,39 @@ Ptero.Billboard.prototype = {
 		};
 	},
 	getNearRect: function(pos) {
-		var frustum = Ptero.frustum;
-		var scale = this.scale * Ptero.screen.getScale();
-		scale /= Ptero.screen.getScreenToSpaceRatio();
-		scale = scale / pos.z * frustum.near;
+		var spacePos = this.normalizePos(pos, "space");
+		var scale = this.scale / Ptero.frustum.scale / pos.z * Ptero.frustum.near;
 		return {
 			w: this.w * scale,
 			h: this.h * scale,
-			x: pos.x - this.centerX*scale,
-			y: pos.y - this.centerY*scale,
-			z: frustum.near,
+			x: spacePos.x - this.centerX*scale,
+			y: spacePos.y - this.centerY*scale,
+			z: Ptero.frustum.near,
 		};
 	},
-	getScreenSize: function() {
-		var scale = this.scale * Ptero.screen.getScale();
+	getWindowSize: function() {
 		return {
-			w: this.w * scale,
-			h: this.h * scale,
+			w: this.w * this.scale,
+			h: this.h * this.scale,
 		};
 	},
-	getScreenRect: function(pos) {
-		var frustum = Ptero.frustum;
-		var screenPos = Ptero.screen.spaceToScreen(pos);
-		var scale = this.scale * Ptero.screen.getScale();
-		scale = scale / pos.z * frustum.near;
+	// FIXME: replace getScreenRect with getWindowRect
+	getWindowRect: function(pos) {
+		var windowPos = this.normalizePos(pos, "window");
+		var spacePos = this.normalizePos(pos, "space");
+		var scale = this.scale / spacePos.z * Ptero.frustum.near;
 		return {
-			centerX: screenPos.x,
-			centerY: screenPos.y,
+			centerX: windowPos.x,
+			centerY: windowPos.y,
 			w: this.w * scale,
 			h: this.h * scale,
-			x: screenPos.x - this.centerX*scale,
-			y: screenPos.y - this.centerY*scale,
+			x: windowPos.x - this.centerX*scale,
+			y: windowPos.y - this.centerY*scale,
 		};
 	},
 
 	getRelativeCursor: function(x,y,pos) {
-		var rect = this.getScreenRect(pos);
+		var rect = this.getWindowRect(pos);
 		// TODO: use center pos for this billboard instead of assuming we're in the perfect center.
 		var midx = rect.x + rect.w/2;
 		var midy = rect.y + rect.h/2;
@@ -123,8 +130,8 @@ Ptero.Billboard.prototype = {
 		return {x:nx, y:ny};
 	},
 
-	isInsideScreenRect: function(x,y,pos) {
-		var rect = this.getScreenRect(pos);
+	isInsideWindowRect: function(x,y,pos) {
+		var rect = this.getWindowRect(pos);
 		var p = this.getRelativeCursor(x,y,pos);
 		if (0 <= p.x && p.x <= rect.w &&
 			0 <= p.y && p.y <= rect.h) {
@@ -134,7 +141,7 @@ Ptero.Billboard.prototype = {
 	},
 
 	isOverRotationHandle: function(x,y,pos) {
-		var rect = this.getScreenRect(pos);
+		var rect = this.getWindowRect(pos);
 		var p = this.getRelativeCursor(x,y,pos);
 		var dx = (rect.w/2) - p.x;
 		var dy = 0 - p.y;
@@ -143,14 +150,14 @@ Ptero.Billboard.prototype = {
 	},
 
 	transform: function(ctx,pos) {
-		var screenRect = this.getScreenRect(pos);
-		ctx.translate(screenRect.x, screenRect.y);
-		var scale = screenRect.w / this.w;
+		var rect = this.getWindowRect(pos);
+		ctx.translate(rect.x, rect.y);
+		var scale = rect.w / this.w;
 		ctx.scale(scale, scale);
 	},
 
 	fill: function(ctx,pos) {
-		var r = this.getScreenRect(pos);
+		var r = this.getWindowRect(pos);
 		ctx.fillRect(r.x,r.y,r.w,r.h);
 	},
 };

@@ -70,10 +70,10 @@ Ptero.orb = (function(){
 
 	// radius of the orb on screen and in space
 	function getRadius() {
-		return Ptero.screen.getHeight()/2 * (1/2*0.8);
+		return Ptero.screen.getWindowHeight()/2 * (1/2*0.8);
 	}
 	function getSpaceRadius() {
-		return getRadius() / Ptero.screen.getScreenToSpaceRatio();
+		return getRadius() / Ptero.frustum.scale;
 	}
 
 	// charging object
@@ -214,7 +214,7 @@ Ptero.orb = (function(){
 
 	function draw(ctx) {
 		var radius = getRadius();
-		var p = Ptero.screen.spaceToScreen(origin);
+		var p = Ptero.screen.spaceToWindow(origin);
 
 		//ctx.fillStyle = blinkFillStyle;
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
@@ -247,7 +247,7 @@ Ptero.orb = (function(){
 			var backupAlpha = ctx.globalAlpha;
 			ctx.globalAlpha = swipeAlpha;
 
-			var p = Ptero.screen.spaceToScreen(swipePos);
+			var p = Ptero.screen.spaceToWindow(swipePos);
 			ctx.fillStyle = "rgba(255,255,255,0.3)";
 			radius /= 4;
 			ctx.beginPath();
@@ -765,11 +765,11 @@ Ptero.orb = (function(){
 				continue;
 			}
 			targetPos = target.getPosition();
-			targetScreenPos = Ptero.screen.spaceToScreen(targetPos);
+			targetScreenPos = Ptero.screen.spaceToWindow(targetPos);
 			dx = screenX-targetScreenPos.x;
 			dy = screenY-targetScreenPos.y;
 			dist = dx*dx + dy*dy;
-			if (dist < closest_dist && target.getBillboard().isInsideScreenRect(screenX,screenY,targetPos)) {
+			if (dist < closest_dist && target.getBillboard().isInsideWindowRect(screenX,screenY,targetPos)) {
 				closest_dist = dist;
 				closest_index = i;
 			}
@@ -800,7 +800,7 @@ Ptero.orb = (function(){
 			if (target.lockedon || !target.isHittable()) {
 				continue;
 			}
-			if (target.getBillboard().isInsideScreenRect(screenX,screenY,target.getPosition())) {
+			if (target.getBillboard().isInsideWindowRect(screenX,screenY,target.getPosition())) {
 				//blink();
 			}
 		}
@@ -886,9 +886,9 @@ Ptero.orb = (function(){
 
 		// Convert the incoming xy coords from screen to space.
 		function wrapFunc(f) {
-			return function screenToSpaceWrapper(x,y,i) {
+			return function windowToSpaceWrapper(x,y,i) {
 				var screenPoint = {x:x,y:y};
-				var nearPoint = Ptero.screen.screenToSpace({x:x,y:y});
+				var nearPoint = Ptero.screen.windowToSpace({x:x,y:y});
 				f(nearPoint,screenPoint,i);
 			};
 		};

@@ -177,7 +177,7 @@ Ptero.scene_bgpos = (function(){
 		for (i=0; i<len; i++) {
 			x0 = layerExtremes[i][0];
 			x1 = layerExtremes[i][1];
-			x2 = x0 + (x1-x0) * (x/Ptero.screen.getWidth());
+			x2 = x0 + (x1-x0) * (x/Ptero.screen.getWindowWidth());
 			bg.layers[i].setX(x2);
 		}
 	}
@@ -203,7 +203,7 @@ Ptero.scene_bgpos = (function(){
 				}
 				if (extremeIndex != null) {
 					mode = 'extreme';
-					startPos = Ptero.screen.screenToSpace({x:x, y:y});
+					startPos = Ptero.screen.windowToSpace({x:x, y:y});
 					startLayerX = layerExtremes[layerIndex][extremeIndex];
 				}
 			}
@@ -213,7 +213,7 @@ Ptero.scene_bgpos = (function(){
 			}
 			else {
 				mode = 'extreme';
-				startPos = Ptero.screen.screenToSpace({x:x, y:y});
+				startPos = Ptero.screen.windowToSpace({x:x, y:y});
 				startLayerX = layerExtremes[layerIndex][extremeIndex];
 			}
 		},
@@ -222,7 +222,7 @@ Ptero.scene_bgpos = (function(){
 				setPosition(x);
 			}
 			else if (mode == 'extreme') {
-				var dx = Ptero.screen.screenToSpace({x:x,y:y}).x - startPos.x;
+				var dx = Ptero.screen.windowToSpace({x:x,y:y}).x - startPos.x;
 				layerExtremes[layerIndex][extremeIndex] = startLayerX + dx;
 				console.log(layerExtremes[layerIndex][extremeIndex]);
 				setToExtremes();

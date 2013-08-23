@@ -6,16 +6,17 @@ Ptero.Button = function(a) {
 		new Ptero.Billboard(a.width/2, a.height/2, a.width, a.height, 1)
 	);
 
-	var hudPos = a.hudPos && Ptero.screen.screenToSpace({
-			x: a.hudPos.x * Ptero.screen.getWidth(),
-			y: a.hudPos.y * Ptero.screen.getHeight(),
+	var hudPos = a.hudPos && Ptero.screen.windowToSpace({
+			x: a.hudPos.x * Ptero.screen.getWindowWidth(),
+			y: a.hudPos.y * Ptero.screen.getWindowHeight(),
 	});
 
 	this.isEnabled = false;
 
 	// get position or calculate it from the given anchor and margin.
 	this.pos = a.pos || hudPos || (function(){
-		var size = this.billboard.getScreenSize();
+		var size = this.billboard.getWindowSize();
+		console.log(size);
 		var w = size.w;
 		var h = size.h;
 
@@ -36,7 +37,7 @@ Ptero.Button = function(a) {
 		screenPos.y += h/2;
 
 		// return space position
-		return Ptero.screen.screenToSpace(screenPos);
+		return Ptero.screen.windowToSpace(screenPos);
 	}).call(this);
 	this.onclick = a.onclick;
 	this.ontouchstart = a.ontouchstart;
@@ -50,7 +51,7 @@ Ptero.Button = function(a) {
 		var startInside = false;
 		var lastX,lastY;
 		function isInside(x,y) {
-			return that.billboard.isInsideScreenRect(x,y,that.pos);
+			return that.billboard.isInsideWindowRect(x,y,that.pos);
 		}
 		var startIndex = null;
 		return {

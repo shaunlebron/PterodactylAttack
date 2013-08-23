@@ -97,7 +97,7 @@ Ptero.Ptalaga.Pane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
-	screenToSpace: function(x,y) {
+	windowToSpace: function(x,y) {
 		var a = (x - this.origin.x) / this.scale;
 		var b = -(y - this.origin.y) / this.scale;
 		var pos = {};
@@ -105,22 +105,22 @@ Ptero.Ptalaga.Pane.prototype = {
 		pos[this.axes[1]] = b;
 		return pos;
 	},
-	_spaceToScreen: function(a,b) {
+	_spaceToWindow: function(a,b) {
 		var x = a * this.scale + this.origin.x;
 		var y = -b * this.scale + this.origin.y;
 		return { x:x, y:y, };
 	},
-	spaceToScreen: function(spacePos) {
+	spaceToWindow: function(spacePos) {
 		var a = spacePos[this.axes[0]];
 		var b = spacePos[this.axes[1]];
-		return this._spaceToScreen(a,b);
+		return this._spaceToWindow(a,b);
 	},
 
 	/* PAINTER FUNCTIONS */
 
 	transform: function(pos) {
 		// for now, just assume the vector is a 3d space vector.
-		return this.spaceToScreen(pos);
+		return this.spaceToWindow(pos);
 	},
 	moveTo: function(ctx,pos) {
 		var p = this.transform(pos);
@@ -254,8 +254,8 @@ Ptero.Ptalaga.Pane.prototype = {
 			p1.prev = p0;
 
 			function isCloseEnough(p0,p1) {
-				var s0 = that.spaceToScreen(p0.p);
-				var s1 = that.spaceToScreen(p1.p);
+				var s0 = that.spaceToWindow(p0.p);
+				var s1 = that.spaceToWindow(p1.p);
 				var dx = s0.x - s1.x;
 				var dy = s0.y - s1.y;
 				return dx*dx + dy*dy < r*r;
@@ -359,7 +359,7 @@ Ptero.Ptalaga.Pane.prototype = {
 
 		for (i=0; i<len; i++) {
 			node = nodes[i];
-			pos = this.spaceToScreen(node);
+			pos = this.spaceToWindow(node);
 			dx = pos.x - x;
 			dy = pos.y - y;
 			dist_sq = dx*dx + dy*dy;
@@ -402,7 +402,7 @@ Ptero.Ptalaga.Pane.prototype = {
 	updateNodePosition: function(x,y) {
 		var point = Ptero.Ptalaga.enemy_model.getSelectedPoint();
 		if (point) {
-			var pos = this.screenToSpace(
+			var pos = this.windowToSpace(
 				x + this.selectedOffsetX,
 				y + this.selectedOffsetY
 			);
@@ -420,7 +420,7 @@ Ptero.Ptalaga.Pane.prototype = {
 	},
 
 	setFocusPoint: function(x,y) {
-		var pos = this.screenToSpace(x,y);
+		var pos = this.windowToSpace(x,y);
 		this.apos = pos[this.axes[0]];
 		this.bpos = pos[this.axes[1]];
 	},

@@ -175,8 +175,8 @@ Ptero.scene_menu = (function(){
 		}
 
 		if (fadeOutTime != null) {
-			var w = Ptero.screen.getWidth();
-			var h = Ptero.screen.getHeight();
+			var w = Ptero.screen.getWindowWidth();
+			var h = Ptero.screen.getWindowHeight();
 			var alpha = 1 - fadeOutTime / fadeOutLen;
 			ctx.fillStyle = "rgba(0,0,0," + alpha + ")";
 			ctx.fillRect(0,0,w,h);

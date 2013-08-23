@@ -89,8 +89,8 @@ Ptero.Bullet.prototype = {
 			this.sprite.draw(ctx, this.pos);
 		}
 		if (this.prevPos) {
-			var r0 = this.sprite.billboard.getScreenRect(this.pos);
-			var r1 = this.sprite.billboard.getScreenRect(this.prevPos);
+			var r0 = this.sprite.billboard.getWindowRect(this.pos);
+			var r1 = this.sprite.billboard.getWindowRect(this.prevPos);
 			ctx.beginPath();
 			ctx.moveTo(r0.x, r0.centerY);
 			ctx.lineTo(r0.x+r0.w, r0.centerY);
@@ -153,9 +153,9 @@ Ptero.PathBullet.prototype = {
 		}
 		var pos = this.path.pos.copy();
 		var dir = this.dir.copy();
-		var screenPos1 = Ptero.screen.spaceToScreen(pos);
+		var screenPos1 = Ptero.screen.spaceToWindow(pos);
 		var pos2 = pos.copy().sub(dir);
-		var screenPos2 = Ptero.screen.spaceToScreen(pos2);
+		var screenPos2 = Ptero.screen.spaceToWindow(pos2);
 		var dx = screenPos1.x - screenPos2.x;
 		var dy = screenPos1.y - screenPos2.y;
 

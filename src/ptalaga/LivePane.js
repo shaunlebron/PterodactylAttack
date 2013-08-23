@@ -8,9 +8,9 @@ Ptero.Ptalaga.LivePane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
-	screenToSpace: function(x,y,spaceZ) {
+	windowToSpace: function(x,y,spaceZ) {
 		var frustum = Ptero.frustum;
-		var spacePos = Ptero.screen.screenToSpace({x:x,y:y});
+		var spacePos = Ptero.screen.windowToSpace({x:x,y:y});
 		spacePos = frustum.projectToZ(spacePos, spaceZ);
 		return {
 			x: spacePos.x,
@@ -18,8 +18,8 @@ Ptero.Ptalaga.LivePane.prototype = {
 		};
 	},
 
-	spaceToScreen: function(pos) {
-		return Ptero.screen.spaceToScreen(pos);
+	spaceToWindow: function(pos) {
+		return Ptero.screen.spaceToWindow(pos);
 	},
 
 	screenToAngle: function(x,y,cx,cy) {
@@ -47,7 +47,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		var enemy_model = Ptero.Ptalaga.enemy_model;
 		var nodeSprite = enemy_model.nodeSprites[index];
 		var spaceCenter = enemy_model.points[index];
-		var spaceClick = this.screenToSpace(x,y,spaceCenter.z);
+		var spaceClick = this.windowToSpace(x,y,spaceCenter.z);
 		if (enemy_model.enemy.sprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
 			return {
 				index: index,
@@ -72,7 +72,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		if (enemy_model.selectedIndex != undefined) {
 			var point = enemy_model.getSelectedPoint();
 			if (enemy_model.enemy.sprite.getBillboard().isOverRotationHandle(x,y,point)) {
-				var p = Ptero.screen.spaceToScreen(point);
+				var p = Ptero.screen.spaceToWindow(point);
 				var click_angle = this.screenToAngle(x,y,p.x,p.y);
 				return {
 					index: enemy_model.selectedIndex,
@@ -91,7 +91,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		var offset_x, offset_y;
 		for (i=0; i<len; i++) {
 			node = nodes[i];
-			pos = this.spaceToScreen(node);
+			pos = this.spaceToWindow(node);
 			dist_sq = getPointDistSq(pos.x,pos.y,x,y);
 			if (dist_sq < min_dist_sq) {
 				closest_index = i;
@@ -152,13 +152,13 @@ Ptero.Ptalaga.LivePane.prototype = {
 			if (this.selectedOffsetAngle != undefined) {
 				// rotate
 				var point = enemy_model.getSelectedPoint();
-				var p = Ptero.screen.spaceToScreen(point);
+				var p = Ptero.screen.spaceToWindow(point);
 				var click_angle = this.screenToAngle(x,y,p.x,p.y);
 				point.angle = click_angle + this.selectedOffsetAngle;
 			}
 			else {
 				// move
-				var spaceClick = this.screenToSpace(x,y,point.z);
+				var spaceClick = this.windowToSpace(x,y,point.z);
 				point.x = spaceClick.x + this.selectedOffsetX;
 				point.y = spaceClick.y + this.selectedOffsetY;
 			}
@@ -208,7 +208,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 
 	transform: function(pos) {
 		// for now, just assume the vector is a 3d space vector.
-		return this.spaceToScreen(pos);
+		return this.spaceToWindow(pos);
 	},
 	moveTo: function(ctx,pos) {
 		var p = this.transform(pos);
@@ -297,8 +297,8 @@ Ptero.Ptalaga.LivePane.prototype = {
 			p1.prev = p0;
 
 			function isCloseEnough(p0,p1) {
-				var s0 = that.spaceToScreen(p0.p);
-				var s1 = that.spaceToScreen(p1.p);
+				var s0 = that.spaceToWindow(p0.p);
+				var s1 = that.spaceToWindow(p1.p);
 				var dx = s0.x - s1.x;
 				var dy = s0.y - s1.y;
 				return dx*dx + dy*dy < r*r;
@@ -348,6 +348,8 @@ Ptero.Ptalaga.LivePane.prototype = {
 	},
 
 	draw: function(ctx) {
+		ctx.save();
+		Ptero.screen.transformToWindow();
 		this.scene.draw(ctx);
 		if (!Ptero.Ptalaga.enemy_model_list.isPreview) {
 			var models = Ptero.Ptalaga.enemy_model_list.models;
@@ -383,6 +385,8 @@ Ptero.Ptalaga.LivePane.prototype = {
 		p.lineTo(ctx, { x: f.nearRight, y: f.nearBottom, z: f.near });
 		ctx.closePath();
 		ctx.fill();
+
+		ctx.restore();
 	},
 
 	update: function(dt) {

@@ -27,7 +27,11 @@ Ptero.scene_credits = (function(){
 		time = 0;
 
 		creditsSprite = Ptero.assets.sprites['credits'];
-		creditsPos = Ptero.screen.screenFracToSpace(0.5, 0.4);
+		creditsPos = {
+			x: 0,
+			y: 0,
+			z: Ptero.frustum.near,
+		};
 
 		// backplate
 		var w = 600;
@@ -40,9 +44,8 @@ Ptero.scene_credits = (function(){
 			z: frustum.near,
 		};
 
-		var screenW = Ptero.screen.getWidth();
-		var scale = Ptero.screen.getScale();
-		var startX = screenW/2 + w*scale/2;
+		var screenW = Ptero.screen.getWindowWidth();
+		var startX = screenW/2 + w/2;
 		var midX = startX + (screenW - startX)/2;
 		
 		var hudFracX = midX / screenW;

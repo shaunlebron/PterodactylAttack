@@ -8,9 +8,9 @@ Ptero.Baklava.LivePane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
 
-	screenToSpace: function(x,y,spaceZ) {
+	windowToSpace: function(x,y,spaceZ) {
 		var frustum = Ptero.frustum;
-		var spacePos = Ptero.screen.screenToSpace({x:x,y:y});
+		var spacePos = Ptero.screen.windowToSpace({x:x,y:y});
 		spacePos = frustum.projectToZ(spacePos, spaceZ);
 		return {
 			x: spacePos.x,
@@ -19,8 +19,8 @@ Ptero.Baklava.LivePane.prototype = {
 		};
 	},
 
-	spaceToScreen: function(pos) {
-		return Ptero.screen.spaceToScreen(pos);
+	spaceToWindow: function(pos) {
+		return Ptero.screen.spaceToWindow(pos);
 	},
 
 	screenToAngle: function(x,y,cx,cy) {
@@ -61,7 +61,7 @@ Ptero.Baklava.LivePane.prototype = {
 			if (collisionMode == "create") {
 				var len = collisionDraft.points.length;
 				if (len > 0) {
-					var screenPos0 = this.spaceToScreen(collisionDraft.points[0]);
+					var screenPos0 = this.spaceToWindow(collisionDraft.points[0]);
 					var dx = x - screenPos0.x;
 					var dy = y - screenPos0.y;
 					var dist_sq = dx*dx+dy*dy;
@@ -74,7 +74,7 @@ Ptero.Baklava.LivePane.prototype = {
 					}
 				}
 
-				var pos = this.screenToSpace(x,y,near);
+				var pos = this.windowToSpace(x,y,near);
 				collisionDraft.points.push(pos);
 				return {
 					point: collisionDraft.points[len],
@@ -95,12 +95,12 @@ Ptero.Baklava.LivePane.prototype = {
 						var j,numPoints = shape.points.length;
 						for (j=0; j<numPoints; j++) {
 							var point = shape.points[j];
-							var screenPos = this.spaceToScreen(point);
+							var screenPos = this.spaceToWindow(point);
 							var dx = x - screenPos.x;
 							var dy = y - screenPos.y;
 							var dist_sq = dx*dx+dy*dy;
 							if (dist_sq < 100) {
-								var spaceClick = this.screenToSpace(x,y,point.z);
+								var spaceClick = this.windowToSpace(x,y,point.z);
 								return {
 									shape: shape,
 									point: point,
@@ -116,7 +116,7 @@ Ptero.Baklava.LivePane.prototype = {
 					for (i=0; i<numShapes; i++) {
 						var shape = shapes[i];
 						var points = shape.points;
-						var spaceClick = this.screenToSpace(x,y,points[0].z);
+						var spaceClick = this.windowToSpace(x,y,points[0].z);
 
 						if (shape.isPointInside(spaceClick.x, spaceClick.y)) {
 
@@ -144,7 +144,7 @@ Ptero.Baklava.LivePane.prototype = {
 				var points = this.selectedShape.points;
 				var j, numPoints = points.length;
 				var point0 = points[i];
-				var point1 = this.screenToSpace(x,y,point0.z);
+				var point1 = this.windowToSpace(x,y,point0.z);
 				var point2 = points[i==0 ? numPoints-1 : i-1];
 				var point3 = points[(i+1)%numPoints];
 
@@ -179,10 +179,10 @@ Ptero.Baklava.LivePane.prototype = {
 			var frustum = Ptero.frustum;
 			var leftPos = { x: offset, y: 0, z: frustum.near };
 			var rightPos = { x: -offset, y: 0, z: frustum.near };
-			var leftScreenPos = this.spaceToScreen(leftPos);
-			var rightScreenPos = this.spaceToScreen(rightPos);
+			var leftScreenPos = this.spaceToWindow(leftPos);
+			var rightScreenPos = this.spaceToWindow(rightPos);
 
-			var spaceClick = this.screenToSpace(x,y,frustum.near);
+			var spaceClick = this.windowToSpace(x,y,frustum.near);
 			var leftScreenDx = leftScreenPos.x - x;
 			var rightScreenDx = rightScreenPos.x - x;
 			
@@ -259,7 +259,7 @@ Ptero.Baklava.LivePane.prototype = {
 		if (layer) {
 			var point = Ptero.Baklava.model.enemyPos;
 			point.z = layer.depth - 0.001;
-			var spaceClick = this.screenToSpace(x,y,point.z);
+			var spaceClick = this.windowToSpace(x,y,point.z);
 			point.x = spaceClick.x;
 			point.y = spaceClick.y;
 		}
@@ -275,14 +275,14 @@ Ptero.Baklava.LivePane.prototype = {
 		}
 		else if (mode == "collision") {
 			if (this.selectedPoint != null) {
-				var spaceClick = this.screenToSpace(x,y,this.selectedPoint.z);
+				var spaceClick = this.windowToSpace(x,y,this.selectedPoint.z);
 				this.selectedPoint.x = spaceClick.x + this.selectedOffsetX;
 				this.selectedPoint.y = spaceClick.y + this.selectedOffsetY;
 				Ptero.Baklava.loader.backup();
 			}
 			else if (this.selectedShape != null) {
 				var shape = this.selectedShape;
-				var spaceClick = this.screenToSpace(x,y,shape.points[0].z);
+				var spaceClick = this.windowToSpace(x,y,shape.points[0].z);
 				var offsets = this.selectedOffsets;
 				var i,len=offsets.length;
 				for (i=0; i<len; i++) {
@@ -295,7 +295,7 @@ Ptero.Baklava.LivePane.prototype = {
 		else if (mode == "parallax") {
 			if (this.selectedOffset != null) {
 				var frustum = Ptero.frustum;
-				var spaceClick = this.screenToSpace(x,y,frustum.near);
+				var spaceClick = this.windowToSpace(x,y,frustum.near);
 				var offset = Math.abs(spaceClick.x + this.selectedOffset);
 				Ptero.background.setCurrentLayerParallaxOffset(offset);
 				Ptero.Baklava.loader.backup();
@@ -319,7 +319,7 @@ Ptero.Baklava.LivePane.prototype = {
 
 	transform: function(pos) {
 		// for now, just assume the vector is a 3d space vector.
-		return this.spaceToScreen(pos);
+		return this.spaceToWindow(pos);
 	},
 	moveTo: function(ctx,pos) {
 		var p = this.transform(pos);
