@@ -79,7 +79,7 @@ Ptero.BackgroundLayer.prototype = {
 	setX: function(x) {
 		this.position.x = x;
 		this.position.y = 0;
-		this.position.z = Ptero.screen.getFrustum().near;
+		this.position.z = Ptero.frustum.near;
 	},
 	update: function(dt) {
 
@@ -270,7 +270,7 @@ Ptero.Background.prototype = {
 			return (1000 / 60 / ms) / 4;
 		}
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 
 		var i,numLayers=layersData.length;
 		for (i=0; i<numLayers; i++) {

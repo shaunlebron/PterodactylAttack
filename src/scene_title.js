@@ -23,7 +23,7 @@ Ptero.scene_title = (function(){
 
 		titleSprite = Ptero.assets.sprites["logo"];
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		startY = frustum.nearTop*2;
 		endY = frustum.nearTop/3;
 		var midY = frustum.nearTop/4;

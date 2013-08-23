@@ -9,7 +9,7 @@ Ptero.Fourier.LivePane.prototype = {
 		this.scene.draw(ctx);
 
 		var p = Ptero.painter;
-		var f = Ptero.screen.getFrustum();
+		var f = Ptero.frustum;
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
 		p.moveTo(ctx, { x: f.nearLeft, y: f.nearTop, z: f.near });

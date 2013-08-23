@@ -79,7 +79,7 @@ Ptero.pause_menu = (function(){
 			"ice"      : Ptero.assets.sprites['backplate_ice'],
 			"volcano"  : Ptero.assets.sprites['backplate_ice'],
 		}[Ptero.background.name];
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		backplatePos = {
 			x: 0,
 			y: 0,

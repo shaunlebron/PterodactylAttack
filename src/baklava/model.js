@@ -2,7 +2,7 @@
 Ptero.Baklava.Model = function() {
 	this.adultSprite = Ptero.assets.makeAnimSprite('adult');
 	this.enemySprite = Ptero.assets.makeAnimSprite('baby');
-	this.enemyPos = {x:0,y:0,z:Ptero.screen.getFrustum().near*2};
+	this.enemyPos = {x:0,y:0,z:Ptero.frustum.near*2};
 
 	this.collisionDraft = null;
 	this.setCollisionMode("select");

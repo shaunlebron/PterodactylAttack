@@ -32,7 +32,7 @@ Ptero.scene_hygoon = (function(){
 		fgOpacityInterp = Ptero.makeInterp('linear', [0,0,1,1,0,0], timesToDeltas([0, 0.2, 1.5, 3.55, 4.6, 5]));
 		bgOpacityInterp = Ptero.makeInterp('linear', [0,0,0.5,0,0], timesToDeltas([0, 0.8, 3, 4.2, 5]));
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		fgPos = {
 			x: 0,
 			y: 0,

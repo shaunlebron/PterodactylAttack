@@ -21,7 +21,7 @@ Ptero.CollisionShape.prototype = {
 
 	projectToZ: function(z) {
 		var i,len=this.points.length;
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		for (i=0; i<len; i++) {
 			this.points[i] = frustum.projectToZ(this.points[i], z);
 		}

@@ -11,7 +11,7 @@ Ptero.orb = (function(){
 	var swipeAlpha;
 	var swipeTimer;
 	function startSwipeAnim(targetPos) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var swipePos = (new Ptero.Vector).set({x:0, y:frustum.nearBottom/4*3, z:frustum.near});
 		var swipeDir = (new Ptero.Vector).set(targetPos).sub(swipePos).normalize();
 		var swipePos2 = (new Ptero.Vector).set(swipeDir).mul(frustum.nearHeight/4).add(swipePos);
@@ -127,7 +127,7 @@ Ptero.orb = (function(){
 	var setOrigin,setNextOrigin;
 	var startOrigin;
 	function convertFracToAbs(xfrac, yfrac) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		return new Ptero.Vector(
 				xfrac * frustum.nearRight,
 				yfrac * frustum.nearTop,
@@ -181,7 +181,7 @@ Ptero.orb = (function(){
 		ctx.fillStyle = target.isGoingToDie ? "rgba(255,0,0,"+alpha+")" : "rgba(255,255,255,"+alpha+")";
 		ctx.strokeStyle = "rgba(0,0,0,"+alpha+")";
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 
 		var lc,rc;
 		var i;
@@ -414,7 +414,7 @@ Ptero.orb = (function(){
 		var i,numTargets=targets.length;
 		var target;
 
-		var collideDist = Ptero.screen.getFrustum().nearWidth/2;
+		var collideDist = Ptero.frustum.nearWidth/2;
 		var minDist = collideDist*4;
 		var minBullet;
 		var minTarget;
@@ -542,7 +542,7 @@ Ptero.orb = (function(){
 
 	// Returns the angle between the target projected on the screen and the aim vector.
 	function get2dAimAngle(target_pos, aim_vector) {
-		var target_proj = Ptero.screen.getFrustum().projectToNear(target_pos);
+		var target_proj = Ptero.frustum.projectToNear(target_pos);
 		var target_vec = getAimVector(target_proj);
 		var target_angle = target_vec.angleTo(aim_vector);
 		return target_angle;
@@ -573,7 +573,7 @@ Ptero.orb = (function(){
 		var angle;
 		for (i=0; i<4; i++) {
 			corner = corners[i];
-			corner_proj = Ptero.screen.getFrustum().projectToNear(corner);
+			corner_proj = Ptero.frustum.projectToNear(corner);
 			corner_aim = getAimVector(corner_proj);
 			cross = corner_aim.cross(aim).z;
 			angle = get2dAimAngle(corner_aim, aim);
@@ -604,7 +604,7 @@ Ptero.orb = (function(){
 		var closest_hit_z = Infinity;
 
 		var i,len;
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var z;
 		for (i=0,len=targets.length; targets && i<len; ++i) {
 			if (!targets[i].isHittable()) {
@@ -651,7 +651,7 @@ Ptero.orb = (function(){
 	};
 
 	function getBulletSpeed() {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		return frustum.nearTop * 120;
 	}
 
@@ -714,18 +714,18 @@ Ptero.orb = (function(){
 
 	function getBulletConeAtPos(pos) {
 		var z = pos.z;
-		var proj = Ptero.screen.getFrustum().projectToNear(pos);
+		var proj = Ptero.frustum.projectToNear(pos);
 		var r = proj.dist(startOrigin);
 		return {r:r, z:z};
 	};
 
 	function getDefaultBulletCone() {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		return {r: frustum.nearTop, z: frustum.near * 3};
 	};
 
 	function createBulletFromCone(cone, aim_vector, speed) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var vector = aim_vector.copy().mul(cone.r);
 		vector.add(startOrigin);
 		vector.set(frustum.projectToZ(vector,cone.z)).sub(startOrigin).normalize();
@@ -779,7 +779,7 @@ Ptero.orb = (function(){
 			target = targets[closest_index];
 			if (showGuide) {
 				target.onTap && target.onTap();
-				var targetPos = Ptero.screen.getFrustum().projectToNear(target.getPosition());
+				var targetPos = Ptero.frustum.projectToNear(target.getPosition());
 				blink();
 				startSwipeAnim(targetPos);
 			}

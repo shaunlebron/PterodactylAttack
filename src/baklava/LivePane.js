@@ -9,7 +9,7 @@ Ptero.Baklava.LivePane.prototype = {
 	/* COORDINATE FUNCTIONS */
 
 	screenToSpace: function(x,y,spaceZ) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var spacePos = Ptero.screen.screenToSpace({x:x,y:y});
 		spacePos = frustum.projectToZ(spacePos, spaceZ);
 		return {
@@ -55,7 +55,7 @@ Ptero.Baklava.LivePane.prototype = {
 		else if (mode == "collision") {
 			var collisionMode = model.collisionMode;
 			var collisionDraft = model.collisionDraft;
-			var near = Ptero.screen.getFrustum().near;
+			var near = Ptero.frustum.near;
 
 			// WHEN CREATING, WE ARE SIMPLY ADDING POINTS WITH EACH CLICK, AND STOPPING WHEN FIRST POINT IS CLICKED
 			if (collisionMode == "create") {
@@ -176,7 +176,7 @@ Ptero.Baklava.LivePane.prototype = {
 		}
 		else if (mode == "parallax") {
 			var offset = Ptero.background.getCurrentLayerParallaxOffset();
-			var frustum = Ptero.screen.getFrustum();
+			var frustum = Ptero.frustum;
 			var leftPos = { x: offset, y: 0, z: frustum.near };
 			var rightPos = { x: -offset, y: 0, z: frustum.near };
 			var leftScreenPos = this.spaceToScreen(leftPos);
@@ -294,7 +294,7 @@ Ptero.Baklava.LivePane.prototype = {
 		}
 		else if (mode == "parallax") {
 			if (this.selectedOffset != null) {
-				var frustum = Ptero.screen.getFrustum();
+				var frustum = Ptero.frustum;
 				var spaceClick = this.screenToSpace(x,y,frustum.near);
 				var offset = Math.abs(spaceClick.x + this.selectedOffset);
 				Ptero.background.setCurrentLayerParallaxOffset(offset);
@@ -416,7 +416,7 @@ Ptero.Baklava.LivePane.prototype = {
 		}
 		else if (mode == "parallax") {
 			var offset = Ptero.background.getCurrentLayerParallaxOffset();
-			var frustum = Ptero.screen.getFrustum();
+			var frustum = Ptero.frustum;
 			var painter = Ptero.painter;
 			if (offset != null) {
 				ctx.beginPath();
@@ -444,7 +444,7 @@ Ptero.Baklava.LivePane.prototype = {
 
 
 		var p = Ptero.painter;
-		var f = Ptero.screen.getFrustum();
+		var f = Ptero.frustum;
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
 		p.moveTo(ctx, { x: f.nearLeft, y: f.nearTop, z: f.near });

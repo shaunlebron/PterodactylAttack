@@ -45,7 +45,7 @@ Ptero.screen = (function(){
 		//var near = height/2 / Math.tan(fov/2);
 		var near = 1;
 		var far = near*20;
-		frustum = new Ptero.Frustum(near,far,fov,aspect);
+		Ptero.frustum = frustum = new Ptero.Frustum(near,far,fov,aspect);
 		shakeRadius = frustum.nearTop/16;
 
 		Ptero.sizeFactor = frustum.nearTop;
@@ -126,7 +126,6 @@ Ptero.screen = (function(){
 		getScale:   function() { return scale; },
 		getCanvas:	function() { return canvas; },
 		getCtx:		function() { return ctx; },
-		getFrustum: function() { return frustum; },
 		spaceToScreen: spaceToScreen,
 		screenToSpace: screenToSpace,
 		screenFracToSpace: screenFracToSpace,

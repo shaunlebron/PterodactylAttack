@@ -12,7 +12,7 @@ Ptero.scene_loading = (function(){
 	return {
 		init: function() {
 			bgSprite = Ptero.assets.sprites['title'];
-			var frustum = Ptero.screen.getFrustum();
+			var frustum = Ptero.frustum;
 			bgPos = {
 				x:0,
 				y:0,

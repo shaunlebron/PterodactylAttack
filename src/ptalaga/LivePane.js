@@ -9,7 +9,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 	/* COORDINATE FUNCTIONS */
 
 	screenToSpace: function(x,y,spaceZ) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var spacePos = Ptero.screen.screenToSpace({x:x,y:y});
 		spacePos = frustum.projectToZ(spacePos, spaceZ);
 		return {
@@ -367,7 +367,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		}
 
 		var p = Ptero.painter;
-		var f = Ptero.screen.getFrustum();
+		var f = Ptero.frustum;
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
 		p.moveTo(ctx, { x: f.nearLeft, y: f.nearTop, z: f.near });

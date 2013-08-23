@@ -230,7 +230,7 @@ Ptero.Baklava.Pane.prototype = {
 	drawBgLayer: function(ctx, i) {
 		ctx.strokeStyle = (i == Ptero.Baklava.model.selectedLayer) ? "#F00" : "#333";
 		ctx.lineWidth = 2;
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 
 		var z = Ptero.background.layers[i].depth;
 		var x = frustum.nearRight / frustum.near * z;
@@ -399,7 +399,7 @@ Ptero.Baklava.Pane.prototype = {
 
 		if (this.axes[0] == 'x' && this.axes[1] == 'z') {
 			var p = Ptero.painter;
-			var f = Ptero.screen.getFrustum();
+			var f = Ptero.frustum;
 			ctx.fillStyle = "rgba(0,0,0,0.5)";
 			ctx.beginPath();
 			this.moveTo(ctx, { x: f.nearLeft, y: f.nearTop, z: f.near });

@@ -132,7 +132,7 @@ Ptero.Enemy.prototype = {
 		// get current position (should be from the attackPath)
 		var currentPos = this.getPosition();
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		
 		var p0 = {
 			x: currentPos.x,
@@ -233,7 +233,7 @@ Ptero.Enemy.prototype = {
 		var billboard = this.getBillboard();
 		var pos = this.getPosition();
 		var rect = billboard.getSpaceRect(pos);
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		return (
 			frustum.isInside(rect.bl) ||
 			frustum.isInside(rect.br) ||

@@ -150,7 +150,7 @@ Ptero.scene_menu = (function(){
 
 		Ptero.orb.draw(ctx);
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 
 		var pos,b;
 		var i,len=enemies.length,e;

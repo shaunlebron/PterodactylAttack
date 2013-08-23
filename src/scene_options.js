@@ -80,7 +80,7 @@ Ptero.scene_options = (function(){
 		var w = 600;
 		var h = 720;
 		backplate = Ptero.assets.sprites["backplate_mountain"];
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		backplatePos = {
 			x: 0,
 			y: 0,

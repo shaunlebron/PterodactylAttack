@@ -456,7 +456,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 		};
 	},
 	makeDefaultPath: function(numPoints) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var near = frustum.near;
 		var far = frustum.far;
 		var dist = far-near;
@@ -553,7 +553,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 		var p = path.pos;
 		var t = path.time;
 		if (!p) {
-			p = Ptero.screen.getFrustum().getRandomPoint();
+			p = Ptero.frustum.getRandomPoint();
 			t = Ptero.Ptalaga.enemy_model_list.time;
 		}
 		else {
@@ -605,7 +605,7 @@ Ptero.Ptalaga.EnemyModel.prototype = {
 
 	addPoint: function() {
 		var len = this.points.length;
-		var p = Ptero.screen.getFrustum().getRandomPoint();
+		var p = Ptero.frustum.getRandomPoint();
 		p.angle = 0;
 		this.times.push(this.times[len-1] + 1.0);
 		p.t = this.times[len];

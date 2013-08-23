@@ -3,7 +3,7 @@ Ptero.makeLinearEnemyPath = function() {
 
 	// frustum attributes
 	var aspect = Ptero.screen.getAspect();
-	var frustum = Ptero.screen.getFrustum();
+	var frustum = Ptero.frustum;
 	var size = Ptero.sizeFactor;
 	var near = frustum.near;
 	var far = frustum.far;
@@ -43,7 +43,7 @@ Ptero.makeHermiteEnemyPath = function() {
 
 	// frustum attributes
 	var aspect = Ptero.screen.getAspect();
-	var frustum = Ptero.screen.getFrustum();
+	var frustum = Ptero.frustum;
 	var size = Ptero.sizeFactor;
 	var near = frustum.near;
 	var far = frustum.near * 8;

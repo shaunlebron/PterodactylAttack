@@ -7,10 +7,10 @@ Ptero.BulletSmoke = function(pos) {
 	this.timeLimit = 2.0;
 	
 	var angle = Math.random()*Math.PI*2;
-	var speed = Ptero.screen.getFrustum().nearHeight * Math.random();
+	var speed = Ptero.frustum.nearHeight * Math.random();
 	this.vx = Math.cos(angle) * speed;
 	this.vz = Math.sin(angle) * speed;
-	this.vy = Ptero.screen.getFrustum().nearHeight;
+	this.vy = Ptero.frustum.nearHeight;
 };
 
 Ptero.BulletSmoke.prototype = {

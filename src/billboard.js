@@ -20,7 +20,7 @@ Ptero.Billboard.prototype = {
 		this.centerY = y;
 	},
 	getTileSpaceRect: function(pos, sx, sy, sw, sh) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var scale = this.scale * Ptero.screen.getScale();
 		scale /= Ptero.screen.getScreenToSpaceRatio();
 		var w = sw * scale;
@@ -41,7 +41,7 @@ Ptero.Billboard.prototype = {
 		};
 	},
 	getSpaceRect: function(pos) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var scale = this.scale * Ptero.screen.getScale();
 		scale /= Ptero.screen.getScreenToSpaceRatio();
 		var w = this.w * scale;
@@ -62,7 +62,7 @@ Ptero.Billboard.prototype = {
 		};
 	},
 	getNearRect: function(pos) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var scale = this.scale * Ptero.screen.getScale();
 		scale /= Ptero.screen.getScreenToSpaceRatio();
 		scale = scale / pos.z * frustum.near;
@@ -82,7 +82,7 @@ Ptero.Billboard.prototype = {
 		};
 	},
 	getScreenRect: function(pos) {
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 		var screenPos = Ptero.screen.spaceToScreen(pos);
 		var scale = this.scale * Ptero.screen.getScale();
 		scale = scale / pos.z * frustum.near;

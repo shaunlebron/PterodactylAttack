@@ -104,7 +104,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -133,7 +133,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -149,7 +149,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -178,7 +178,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -194,7 +194,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -245,7 +245,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -262,7 +262,7 @@ Ptero.OverlordTutor.prototype = {
 			//		var pos = {
 			//			x: 0,
 			//			y: 0,
-			//			z: Ptero.screen.getFrustum().near,
+			//			z: Ptero.frustum.near,
 			//		};
 			//		s.draw(ctx, pos);
 			//	};
@@ -279,7 +279,7 @@ Ptero.OverlordTutor.prototype = {
 						var pos = {
 							x: 0,
 							y: 0,
-							z: Ptero.screen.getFrustum().near,
+							z: Ptero.frustum.near,
 						};
 						s.draw(ctx, pos, "help");
 						if (!first) {
@@ -347,7 +347,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -364,7 +364,7 @@ Ptero.OverlordTutor.prototype = {
 			//		var pos = {
 			//			x: 0,
 			//			y: 0,
-			//			z: Ptero.screen.getFrustum().near,
+			//			z: Ptero.frustum.near,
 			//		};
 			//		s.draw(ctx, pos);
 			//	};
@@ -393,7 +393,7 @@ Ptero.OverlordTutor.prototype = {
 						var pos = {
 							x: 0,
 							y: 0,
-							z: Ptero.screen.getFrustum().near,
+							z: Ptero.frustum.near,
 						};
 						s.draw(ctx, pos, "help");
 						if (!first) {
@@ -459,7 +459,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};
@@ -475,7 +475,7 @@ Ptero.OverlordTutor.prototype = {
 					var pos = {
 						x: 0,
 						y: 0,
-						z: Ptero.screen.getFrustum().near,
+						z: Ptero.frustum.near,
 					};
 					s.draw(ctx, pos);
 				};

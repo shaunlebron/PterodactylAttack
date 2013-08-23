@@ -15,7 +15,7 @@ Ptero.Ptalaga.panes = (function() {
 		rotPaneWidth = 100;
 		timePaneWidth = 2*w - rotPaneWidth;
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 
 		// Create the panes for each projection.
 		topPane = new Ptero.Ptalaga.Pane( w,h, ['x','z'], 'top');

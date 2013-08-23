@@ -30,7 +30,7 @@ Ptero.Fourier.screen = (function(){
 		$('#'+w+'-'+h+'-btn').addClass('active');
 		aspect = w/h;
 
-		var f = Ptero.screen.getFrustum();
+		var f = Ptero.frustum;
 		var x = f.nearHeight * aspect / 2;
 		f.nearRightA = x;
 		f.nearLeftA = -x;

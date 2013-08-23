@@ -12,7 +12,7 @@ Ptero.Baklava.panes = (function() {
 		paneWidth = w;
 		paneHeight = h;
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 
 		// Create the panes for each projection.
 		topPane = new Ptero.Baklava.Pane( w,h, ['x','z'], 'top');

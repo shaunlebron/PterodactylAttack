@@ -14,7 +14,7 @@ Ptero.Fourier.panes = (function() {
 		timePaneWidth = w;
 		timePaneHeight = Ptero.Fourier.screen.getTimePaneHeight();
 
-		var frustum = Ptero.screen.getFrustum();
+		var frustum = Ptero.frustum;
 
 		// Set the live pane to a scene and initialize it.
 		livePane = new Ptero.Fourier.LivePane();
