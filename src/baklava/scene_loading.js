@@ -36,6 +36,8 @@ Ptero.Baklava.scene_loading = (function(){
 			time += dt;
 		},
 		draw: function(ctx) {
+			ctx.save();
+			Ptero.screen.transformToWindow();
 			bgSprite.draw(ctx, bgPos);
 
 			ctx.save();
@@ -62,6 +64,7 @@ Ptero.Baklava.scene_loading = (function(){
 				ctx.stroke();
 			}
 
+			ctx.restore();
 			ctx.restore();
 		},
 	};

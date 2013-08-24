@@ -6,6 +6,9 @@ Ptero.Fourier.LivePane = function() {
 Ptero.Fourier.LivePane.prototype = {
 
 	draw: function(ctx) {
+		ctx.save();
+		Ptero.screen.transformToWindow();
+		
 		this.scene.draw(ctx);
 
 		var p = Ptero.painter;
@@ -25,6 +28,8 @@ Ptero.Fourier.LivePane.prototype = {
 		p.lineTo(ctx, { x: f.nearRight, y: f.nearBottom, z: f.near });
 		ctx.closePath();
 		ctx.fill();
+
+		ctx.restore();
 	},
 
 	update: function(dt) {
@@ -36,11 +41,20 @@ Ptero.Fourier.LivePane.prototype = {
 	},
 
 	mouseStart: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 	},
 
 	mouseMove: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 	},
 
 	mouseEnd: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 	},
 };

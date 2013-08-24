@@ -193,6 +193,7 @@ Ptero.scene_bgpos = (function(){
 	var startLayerX;
 	var mode;
 	var touchHandler = {
+		coord: "window",
 		start: function(x,y) {
 			mode = null;
 

@@ -1,7 +1,6 @@
 
 Ptero.Ptalaga.LivePane = function() {
 	this.scene = Ptero.Ptalaga.scene_crater;
-	this.nodeRadius = 4;
 };
 
 Ptero.Ptalaga.LivePane.prototype = {
@@ -48,7 +47,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		var nodeSprite = enemy_model.nodeSprites[index];
 		var spaceCenter = enemy_model.points[index];
 		var spaceClick = this.windowToSpace(x,y,spaceCenter.z);
-		if (enemy_model.enemy.sprite.getBillboard().isInsideScreenRect(x,y,spaceCenter)) {
+		if (enemy_model.enemy.sprite.getBillboard().isInsideWindowRect(x,y,spaceCenter)) {
 			return {
 				index: index,
 				offset_x: spaceCenter.x - spaceClick.x,
@@ -168,15 +167,24 @@ Ptero.Ptalaga.LivePane.prototype = {
 	},
 
 	mouseStart: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 		var i = this.getNodeInfoFromCursor(x,y);
 		this.selectNode(i.index, i.offset_x, i.offset_y, i.offset_angle);
 	},
 
 	mouseMove: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 		this.updateNodePosition(x,y);
 	},
 
 	mouseEnd: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 		if (this.startPoint && this.movedPoint) {
 			var sourcePoint = this.sourcePoint;
 			var curX = sourcePoint.x;
@@ -261,18 +269,18 @@ Ptero.Ptalaga.LivePane.prototype = {
 		var selectedIndex = model.selectedIndex;
 		for (i=0; i<len; i++) {
 			if (selectedIndex != i) {
-				this.fillCircle(ctx, nodes[i], this.nodeRadius, "#555",2);
+				this.fillCircle(ctx, nodes[i], this.nodeRadius, "#555");
 			}
 		}
 		var selectedPoint = model.getSelectedPoint();
 		if (selectedPoint) {
-			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00",2);
+			this.fillCircle(ctx, selectedPoint, this.nodeRadius, "#F00");
 			model.nodeSprites[selectedIndex].drawBorder(ctx, selectedPoint, "rgba(255,0,0,0.2)");
 		}
 		else {
 			var pos = model.enemy.getPosition();
 			if (pos) {
-				this.fillCircle(ctx, pos, this.nodeRadius, "#00F",2);
+				this.fillCircle(ctx, pos, this.nodeRadius, "#00F");
 			}
 		}
 	},
@@ -343,7 +351,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 			}
 		}
 		ctx.strokeStyle = "#777";
-		ctx.lineWidth = 2;
+		ctx.lineWidth = 2 * this.hudScale;
 		ctx.stroke();
 	},
 
@@ -395,5 +403,8 @@ Ptero.Ptalaga.LivePane.prototype = {
 
 	init: function() {
 		this.scene.init();
+
+		this.hudScale = Ptero.screen.getWindowHeight() / Ptero.Ptalaga.screen.getPaneHeight();
+		this.nodeRadius = 4 * this.hudScale;
 	},
 };

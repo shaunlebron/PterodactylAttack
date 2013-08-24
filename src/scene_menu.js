@@ -16,7 +16,6 @@ Ptero.scene_menu = (function(){
 	var startBtn, optionsBtn;
 
 	function cleanup() {
-		Ptero.input.removeTouchHandler(touchHandler);
 		Ptero.orb.disableTouch();
 		Ptero.bulletpool.clear();
 	}
@@ -90,7 +89,6 @@ Ptero.scene_menu = (function(){
 			pos: {x:0, y:0, z:0},
 		});
 
-		Ptero.input.addTouchHandler(touchHandler);
 		Ptero.orb.enableGuide(true);
 
 		createPteros();
@@ -106,17 +104,6 @@ Ptero.scene_menu = (function(){
 		// disable ptero flying after first occurence
 		enablePteroFlying(false);
 	}
-
-	var touchHandler = {
-		start: function(x,y) {
-		},
-		move: function(x,y) {
-		},
-		end: function(x,y) {
-		},
-		cancel: function(x,y) {
-		},
-	};
 
 	function update(dt) {
 		time += dt;

@@ -304,15 +304,24 @@ Ptero.Baklava.LivePane.prototype = {
 	},
 
 	mouseStart: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 		var info = this.getNodeInfoFromCursor(x,y);
 		this.selectNode(info);
 	},
 
 	mouseMove: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 		this.updateNodePosition(x,y);
 	},
 
 	mouseEnd: function(x,y) {
+		var p = Ptero.screen.canvasToWindow(x,y);
+		x = p.x;
+		y = p.y;
 	},
 
 	/* PAINTER FUNCTIONS */
@@ -394,6 +403,8 @@ Ptero.Baklava.LivePane.prototype = {
 	},
 
 	draw: function(ctx) {
+		ctx.save();
+		Ptero.screen.transformToWindow();
 		this.scene.draw(ctx);
 
 		var model = Ptero.Baklava.model;
@@ -460,6 +471,9 @@ Ptero.Baklava.LivePane.prototype = {
 		p.lineTo(ctx, { x: f.nearRight, y: f.nearBottom, z: f.near });
 		ctx.closePath();
 		ctx.fill();
+
+		ctx.restore();
+	
 	},
 
 	update: function(dt) {

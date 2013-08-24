@@ -31,7 +31,7 @@ Ptero.Fourier.scene_fourier = (function() {
 		Ptero.orb.draw(ctx);
 		var point;
 		if (Ptero.input.isTouched()) {
-			point = Ptero.input.getPoint();
+			point = Ptero.input.getWindowPoint();
 			ctx.fillStyle = "rgba(255,255,255,0.2)";
 			ctx.beginPath();
 			ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);

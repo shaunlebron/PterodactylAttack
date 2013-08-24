@@ -55,6 +55,7 @@ Ptero.Button = function(a) {
 		}
 		var startIndex = null;
 		return {
+			coord: "window",
 			start: function(x,y,i) {
 				if (startIndex != null) {
 					return;

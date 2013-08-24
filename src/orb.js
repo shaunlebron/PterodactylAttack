@@ -893,6 +893,7 @@ Ptero.orb = (function(){
 			};
 		};
 		return {
+			coord: "window",
 			start: wrapFunc(start),
 			move: wrapFunc(move),
 			end: wrapFunc(end),

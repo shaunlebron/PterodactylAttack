@@ -10,7 +10,6 @@ Ptero.scene_title = (function(){
 	var enemies = [];
 
 	function cleanup() {
-		Ptero.input.removeTouchHandler(touchHandler);
 	}
 
 	var time;
@@ -48,21 +47,9 @@ Ptero.scene_title = (function(){
 			},
 		};
 
-		Ptero.input.addTouchHandler(touchHandler);
 		song = Ptero.audio.getTitleSong();
 		song.play();
 	}
-
-	var touchHandler = {
-		start: function(x,y) {
-		},
-		move: function(x,y) {
-		},
-		end: function(x,y) {
-		},
-		cancel: function(x,y) {
-		},
-	};
 
 	function update(dt) {
 		time += dt;

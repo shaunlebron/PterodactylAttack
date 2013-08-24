@@ -38,42 +38,59 @@ Ptero.input = (function(){
 	};
 
 	var touched = false; // is screen currently being touched.
-	var point = {}; // current touch point.
+	var canvasPoint = {}; // current touch point.
+	var windowPoint = {};
+
+	function touchHelper(func,cx,cy,wx,wy,i) {
+		forEachTouchHandler(function(handler) {
+			if (handler[func]) {
+				if (handler.coord == "window") {
+					handler[func](wx,wy,i);
+				}
+				else {
+					handler[func](cx,cy,i);
+				}
+			}
+		});
+	}
 
 	// Main dispatch functions for each touch event.
-	function touchStart(x,y,i) {
+	function touchStart(cx,cy,wx,wy,i) {
 		touched = true;
-		point.x = x;
-		point.y = y;
-		forEachTouchHandler(function(h) {
-			h.start && h.start(x,y,i);
-		});
+		canvasPoint.x = cx;
+		canvasPoint.y = cy;
+		windowPoint.x = wx;
+		windowPoint.y = wy;
+		touchHelper('start',cx,cy,wx,wy,i);
 	};
-	function touchMove(x,y,i) {
+	function touchMove(cx,cy,wx,wy,i) {
 		if (!touched) {
 			return;
 		}
-		point.x = x;
-		point.y = y;
-		forEachTouchHandler(function(h) {
-			h.move && h.move(x,y,i);
-		});
+		canvasPoint.x = cx;
+		canvasPoint.y = cy;
+		windowPoint.x = wx;
+		windowPoint.y = wy;
+		touchHelper('move',cx,cy,wx,wy,i);
 	};
-	function touchEnd(x,y,i) {
+	function touchEnd(cx,cy,wx,wy,i) {
 		touched = false;
-		forEachTouchHandler(function(h) {
-			h.end && h.end(x,y,i);
-		});
+		touchHelper('end',cx,cy,wx,wy,i);
 	};
-	function touchCancel(x,y,i) {
+	function touchCancel(cx,cy,wx,wy,i) {
 		touched = false;
-		forEachTouchHandler(function(h) {
-			h.cancel && h.cancel(x,y,i);
-		});
+		touchHelper('cancel',cx,cy,wx,wy,i);
 	};
-	function scroll(x,y,delta,deltaX,deltaY) {
-		forEachTouchHandler(function(h) {
-			h.scroll && h.scroll(x,y,delta,deltaX,deltaY);
+	function scroll(cx,cy,wx,wy,delta,deltaX,deltaY) {
+		forEachTouchHandler(function(handler) {
+			if (handler.scroll) {
+				if (handler.coord == "window") {
+					handler.scroll(wx,wy,delta,deltaX,deltaY);
+				}
+				else {
+					handler.scroll(cx,cy,delta,deltaX,deltaY);
+				}
+			}
 		});
 	};
 
@@ -86,8 +103,10 @@ Ptero.input = (function(){
 			return function(evt) {
 				var canvasPos = Ptero.screen.getCanvasPos();
 				function passCoordToEvent(x,y,index) {
-					var windowPos = Ptero.screen.canvasToWindow(x-canvasPos.x, y-canvasPos.y);
-					f(windowPos.x, windowPos.y, index);
+					var cx = x-canvasPos.x;
+					var cy = y-canvasPos.y;
+					var windowPos = Ptero.screen.canvasToWindow(cx,cy);
+					f(cx, cy, windowPos.x, windowPos.y, index);
 				}
 				var touches = evt.changedTouches;
 				if (touches && touches.length > 0) {
@@ -122,10 +141,12 @@ Ptero.input = (function(){
 					y = evt.pageY;
 				}
 				var canvasPos = Ptero.screen.getCanvasPos();
-				var windowPos = Ptero.screen.canvasToWindow(x-canvasPos.x, y-canvasPos.y);
+				var cx = x-canvasPos.x;
+				var cy = y-canvasPos.y;
+				var windowPos = Ptero.screen.canvasToWindow(cx,cy);
 
 				evt.preventDefault();
-				scroll(windowPos.x, windowPos.y,delta,deltaX,deltaY);
+				scroll(cx,cy,windowPos.x,windowPos.y,delta,deltaX,deltaY);
 			});
 		}
 		if (!navigator.isCocoonJS) {
@@ -182,7 +203,8 @@ Ptero.input = (function(){
 	return {
 		init: init,
 		isTouched: function() { return touched; },
-		getPoint: function() { return point; },
+		getCanvasPoint: function() { return canvasPoint; },
+		getWindowPoint: function() { return windowPoint; },
 		addTouchHandler: addTouchHandler,
 		removeTouchHandler: removeTouchHandler,
 	};
