@@ -27,7 +27,6 @@ Ptero.assets = (function(){
 		"menu_wrench"       : "img/menu/menu_wrench.png",
 		"menu_strong"       : "img/menu/menu_strong.png",
 		"menu_scroll"       : "img/menu/menu_scroll.png",
-		"menu_credits"      : "img/menu/menu_credits.png",
 
 		"boom1": "img/boom1.png",
 		"boom2": "img/boom2.png",
