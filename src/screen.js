@@ -47,9 +47,13 @@ Ptero.screen = (function(){
 	}
 
 	function setWindowAspect(aspect) {
+		var oldWidth = windowWidth;
 		windowAspect = aspect;
 		windowWidth = windowHeight * aspect;
 		makeFrustum(aspect);
+		if (windowLeft != undefined) {
+			windowLeft += (oldWidth-windowWidth)/2  * windowScale;
+		}
 	}
 
 	function centerWindowAtPixel(x,y) {
@@ -126,6 +130,13 @@ Ptero.screen = (function(){
 		};
 	}
 
+	function windowToCanvas(wx,wy) {
+		return {
+			x: windowLeft + wx*windowScale,
+			y: windowTop  + wy*windowScale,
+		};
+	}
+
 	function getCanvasPos() {
 		var p = {x:0,y:0};
 		if (navigator.isCocoonJS) {
@@ -170,6 +181,7 @@ Ptero.screen = (function(){
 		spaceToWindow  : spaceToWindow,
 		windowToSpace  : windowToSpace,
 		canvasToWindow : canvasToWindow,
+		windowToCanvas : windowToCanvas,
 
 		getCanvasPos: getCanvasPos,
 

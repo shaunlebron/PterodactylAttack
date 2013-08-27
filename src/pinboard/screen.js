@@ -23,7 +23,6 @@ Ptero.Pinboard.screen = (function(){
 		$('#'+w+'-'+h+'-btn').addClass('active');
 		aspect = w/h;
 		Ptero.screen.setWindowAspect(aspect);
-		//Ptero.screen.fitWindow();
 	};
 
 	return {
