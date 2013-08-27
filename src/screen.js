@@ -63,8 +63,19 @@ Ptero.screen = (function(){
 
 	// Scales the window to fit the height of the canvas, then centers horizontally
 	function fitWindow() {
-		windowScale = canvasHeight / windowHeight;
+		windowScale = getWindowFitScale();
 		centerWindowAtPixel(canvasWidth/2, canvasHeight/2);
+	}
+
+	function getWindowFitScale() {
+		return canvasHeight / windowHeight;
+	}
+
+	function zoomWindow(scale, wx, wy) {
+		var c = windowToCanvas(wx,wy);
+		windowScale = scale;
+		windowLeft = c.x - wx*windowScale;
+		windowTop  = c.y - wy*windowScale;
 	}
 
 	function clipWindow() {
@@ -188,9 +199,27 @@ Ptero.screen = (function(){
 		transformToWindow: transformToWindow,
 		setWindowAspect: setWindowAspect,
 		fitWindow: fitWindow,
+		getWindowFitScale: getWindowFitScale,
 		clipWindow: clipWindow,
 		centerWindowAtPixel: centerWindowAtPixel,
-		setWindowScale: function(s) { windowScale = s; },
+		zoomWindow: zoomWindow,
+
+		getWindowPos: function() {
+			return {
+				x: windowLeft,
+				y: windowTop,
+			};
+		},
+		getWindowScale: function() {
+			return windowScale;
+		},
+		setWindowPos: function(x,y) {
+			windowLeft = x;
+			windowTop = y;
+		},
+		setWindowScale: function(s) {
+			windowScale = s;
+		},
 
 		update: update,
 
