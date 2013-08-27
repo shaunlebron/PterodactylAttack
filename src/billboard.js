@@ -88,7 +88,6 @@ Ptero.Billboard.prototype = {
 			h: this.h * this.scale,
 		};
 	},
-	// FIXME: replace getScreenRect with getWindowRect
 	getWindowRect: function(pos) {
 		var windowPos = this.normalizePos(pos, "window");
 		var spacePos = this.normalizePos(pos, "space");
@@ -102,9 +101,23 @@ Ptero.Billboard.prototype = {
 			y: windowPos.y - this.centerY*scale,
 		};
 	},
-
+	getCanvasRect: function(pos) {
+		var windowPos = this.normalizePos(pos, "window");
+		var spacePos = this.normalizePos(pos, "space");
+		var canvasPos = Ptero.screen.windowToCanvas(windowPos.x, windowPos.y);
+		var scale = this.scale / spacePos.z * Ptero.frustum.near * Ptero.screen.getWindowScale();
+		return {
+			centerX: canvasPos.x,
+			centerY: canvasPos.y,
+			w: this.w * scale,
+			h: this.h * scale,
+			x: canvasPos.x - this.centerX*scale,
+			y: canvasPos.y - this.centerY*scale,
+		};
+	},
 	getRelativeCursor: function(x,y,pos) {
 		var rect = this.getWindowRect(pos);
+
 		// TODO: use center pos for this billboard instead of assuming we're in the perfect center.
 		var midx = rect.x + rect.w/2;
 		var midy = rect.y + rect.h/2;
@@ -130,7 +143,7 @@ Ptero.Billboard.prototype = {
 		return {x:nx, y:ny};
 	},
 
-	isInsideWindowRect: function(x,y,pos) {
+	isInsideWindowRect: function(wx,wy,pos) {
 		var rect = this.getWindowRect(pos);
 		var p = this.getRelativeCursor(x,y,pos);
 		if (0 <= p.x && p.x <= rect.w &&
@@ -138,6 +151,48 @@ Ptero.Billboard.prototype = {
 			return true;
 		}
 		return false;
+	},
+	isInsideCanvasRect: function(cx,cy,pos) {
+		var rect = this.getCanvasRect(pos);
+		return (
+			rect.x <= cx && cx <= (rect.x + rect.w) &&
+			rect.y <= cy && cy <= (rect.y + rect.h));
+	},
+
+	setBottomSide: function(wy, windowPos) {
+		var rect = this.getWindowRect(windowPos);
+		wy = Math.max(rect.y+1, wy);
+		var relativeCenterY = this.centerY / this.h;
+		this.h = (wy - rect.y) / this.scale;
+		this.centerY = this.h * relativeCenterY;
+		windowPos.y = rect.y + this.centerY * this.scale;
+	},
+
+	setTopSide: function(wy, windowPos) {
+		var rect = this.getWindowRect(windowPos);
+		wy = Math.min(rect.y+rect.h-1, wy);
+		var relativeCenterY = this.centerY / this.h;
+		this.h = (rect.y + rect.h - wy) / this.scale;
+		this.centerY = this.h * relativeCenterY;
+		windowPos.y = wy + this.centerY * this.scale;
+	},
+
+	setLeftSide: function(wx, windowPos) {
+		var rect = this.getWindowRect(windowPos);
+		wx = Math.min(rect.x+rect.w-1, wx);
+		var relativeCenterX = this.centerX / this.w;
+		this.w = (rect.x + rect.w - wx) / this.scale;
+		this.centerX = this.w * relativeCenterX;
+		windowPos.x = wx + this.centerX * this.scale;
+	},
+
+	setRightSide: function(wx, windowPos) {
+		var rect = this.getWindowRect(windowPos);
+		wx = Math.max(rect.x+1, wx);
+		var relativeCenterX = this.centerX / this.w;
+		this.w = (wx - rect.x) / this.scale;
+		this.centerX = this.w * relativeCenterX;
+		windowPos.x = rect.x + this.centerX * this.scale;
 	},
 
 	isOverRotationHandle: function(x,y,pos) {
