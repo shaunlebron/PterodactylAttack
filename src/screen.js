@@ -63,6 +63,12 @@ Ptero.screen = (function(){
 		centerWindowAtPixel(canvasWidth/2, canvasHeight/2);
 	}
 
+	function clipWindow() {
+		ctx.beginPath();
+		ctx.rect(0,0,windowWidth,windowHeight);
+		ctx.clip();
+	}
+
 	function init(_canvas,w,h) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
@@ -168,6 +174,11 @@ Ptero.screen = (function(){
 		getCanvasPos: getCanvasPos,
 
 		transformToWindow: transformToWindow,
+		setWindowAspect: setWindowAspect,
+		fitWindow: fitWindow,
+		clipWindow: clipWindow,
+		centerWindowAtPixel: centerWindowAtPixel,
+		setWindowScale: function(s) { windowScale = s; },
 
 		update: update,
 
