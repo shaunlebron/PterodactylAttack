@@ -1,28 +1,38 @@
 
 Ptero.Pinboard.scene_pinboard = (function(){
 
-	var touchHandler = {
-		coord: "window",
-		start: function(wx,wy) {
-		},
-		move: function(wx,wy) {
-		},
-		end: function(wx,wy) {
-		},
-		cancel: function(wx,wy) {
-		},
-		scroll: function(wx,wy,delta,deltaX,deltaY) {
-			// from: http://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
-			var scaleFactor = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
+	var touchHandler = (function(){
+		var initialWindowLeft = null;
+		var initialWindowRight = null;
+		var dx,dy;
+		
+		return {
+			coord: "canvas",
+			start: function(cx,cy) {
+				var c = Ptero.screen.getWindowPos();
+				dx = cx - c.x;
+				dy = cy - c.y;
+			},
+			move: function(cx,cy) {
+				Ptero.screen.setWindowPos(cx-dx, cy-dy);
+			},
+			end: function(cx,cy) {
+			},
+			cancel: function(cx,cy) {
+			},
+			scroll: function(cx,cy,delta,deltaX,deltaY) {
+				// from: http://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
+				var scaleFactor = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
 
-			var scale = Ptero.screen.getWindowScale() * scaleFactor;
-			var maxScale = Ptero.screen.getWindowFitScale();
-			var minScale = maxScale / 8;
-			scale = Math.max(minScale, Math.min(maxScale, scale));
+				var scale = Ptero.screen.getWindowScale() * scaleFactor;
+				var maxScale = Ptero.screen.getWindowFitScale();
+				var minScale = maxScale / 8;
+				scale = Math.max(minScale, Math.min(maxScale, scale));
 
-			Ptero.screen.zoomWindow(scale, wx, wy);
-		},
-	};
+				Ptero.screen.zoomWindow(scale, cx, cy);
+			},
+		};
+	})();
 
 	function init() {
 		Ptero.setBackground('menu');
