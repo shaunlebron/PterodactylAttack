@@ -2,6 +2,7 @@
 Ptero.Pinboard.scene_pinboard = (function(){
 
 	var image,pos,billboard;
+	var isStiffResizeKey;
 	var imageTouchHandler = (function(){
 		var dx,dy;
 
@@ -41,40 +42,105 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			dx /= Ptero.screen.getWindowScale();
 			dy /= Ptero.screen.getWindowScale();
 
-			var funcs = [];
-			if (mix == 0) {
-				funcs.push(function(wx,wy) {
+			var func;
+			if (mix == 0 && miy == 1) {
+				func = function(wx,wy) {
 					billboard.setLeftSide(wx-dx,pos);
-				});
-			}
-			else if (mix == 2) {
-				funcs.push(function(wx,wy) {
-					billboard.setRightSide(wx-dx,pos);
-				});
-			}
-			
-			if (miy == 0) {
-				funcs.push(function(wx,wy) {
-					billboard.setTopSide(wy-dy,pos);
-				});
-			}
-			else if (miy == 2) {
-				funcs.push(function(wx,wy) {
-					billboard.setBottomSide(wy-dy,pos);
-				});
-			}
-
-			if (funcs.length == 0) {
-				return null;
-			}
-			else {
-				var i,len = funcs.length;
-				return function(wx,wy) {
-					for (i=0; i<len; i++) {
-						funcs[i](wx,wy);
-					}
 				};
 			}
+			else if (mix == 2 && miy == 1) {
+				func = function(wx,wy) {
+					billboard.setRightSide(wx-dx,pos);
+				};
+			}
+			else if (mix == 1 && miy == 0) {
+				func = function(wx,wy) {
+					billboard.setTopSide(wy-dy,pos);
+				};
+			}
+			else if (mix == 1 && miy == 2) {
+				func = function(wx,wy) {
+					billboard.setBottomSide(wy-dy,pos);
+				};
+			}
+			else if (mix == 0 && miy == 0) {
+				func = function(wx,wy) {
+					var aspect = billboard.w / billboard.h;
+					billboard.setTopSide(wy-dy,pos);
+					billboard.setLeftSide(wx-dx,pos);
+					if (isStiffResizeKey) {
+						var rect = billboard.getWindowRect(pos);
+						var newAspect = billboard.w / billboard.h;
+						if (newAspect > aspect) {
+							var w = rect.h * aspect;
+							billboard.setLeftSide(rect.x + rect.w - w, pos);
+						}
+						else {
+							var h = rect.w / aspect;
+							billboard.setTopSide(rect.y + rect.h - h, pos);
+						}
+					}
+				}
+			}
+			else if (mix == 2 && miy == 0) {
+				func = function(wx,wy) {
+					var aspect = billboard.w / billboard.h;
+					billboard.setTopSide(wy-dy,pos);
+					billboard.setRightSide(wx-dx,pos);
+					if (isStiffResizeKey) {
+						var rect = billboard.getWindowRect(pos);
+						var newAspect = billboard.w / billboard.h;
+						if (newAspect > aspect) {
+							var w = rect.h * aspect;
+							billboard.setRightSide(rect.x + w, pos);
+						}
+						else {
+							var h = rect.w / aspect;
+							billboard.setTopSide(rect.y + rect.h - h, pos);
+						}
+					}
+				}
+			}
+			else if (mix == 0 && miy == 2) {
+				func = function(wx,wy) {
+					var aspect = billboard.w / billboard.h;
+					billboard.setBottomSide(wy-dy,pos);
+					billboard.setLeftSide(wx-dx,pos);
+					if (isStiffResizeKey) {
+						var rect = billboard.getWindowRect(pos);
+						var newAspect = billboard.w / billboard.h;
+						if (newAspect > aspect) {
+							var w = rect.h * aspect;
+							billboard.setLeftSide(rect.x + rect.w - w, pos);
+						}
+						else {
+							var h = rect.w / aspect;
+							billboard.setBottomSide(rect.y + h, pos);
+						}
+					}
+				}
+			}
+			else if (mix == 2 && miy == 2) {
+				func = function(wx,wy) {
+					var aspect = billboard.w / billboard.h;
+					billboard.setBottomSide(wy-dy,pos);
+					billboard.setRightSide(wx-dx,pos);
+					if (isStiffResizeKey) {
+						var rect = billboard.getWindowRect(pos);
+						var newAspect = billboard.w / billboard.h;
+						if (newAspect > aspect) {
+							var w = rect.h * aspect;
+							billboard.setRightSide(rect.x + w, pos);
+						}
+						else {
+							var h = rect.w / aspect;
+							billboard.setBottomSide(rect.y + h, pos);
+						}
+					}
+				}
+			}
+
+			return func;
 		}
 		return {
 			coord: "canvas",
@@ -161,10 +227,16 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			if (e.keyCode == 18) {
 				isZoomPanKey = true;
 			}
+			else if (e.keyCode == 16) {
+				isStiffResizeKey = true;
+			}
 		});
 		window.addEventListener("keyup", function(e) {
 			if (e.keyCode == 18) {
 				isZoomPanKey = false;
+			}
+			else if (e.keyCode == 16) {
+				isStiffResizeKey = false;
 			}
 		});
 
