@@ -253,6 +253,15 @@ $(function(){
 
 		<ul id="bgTypeMenu" class="dropdown-menu"></ul>
 	</div>
+	<div class="btn-group">
+		<button
+			onclick="Ptero.Pinboard.scene_pinboard.renameSelectedObject()"
+			class="btn"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Name Tag"
+			><i class="icon-tag"></i> <span id="objectName"></span></button>
+	</div>
 </div>
 
 <div id='container'>
@@ -265,6 +274,7 @@ $(function(){
 <li><kbd>Alt</kbd> + <kbd>Left Click</kbd> Pan the view.</li>
 <li><kbd>Alt</kbd> + <kbd>Scroll</kbd> Zoom in/out view.</li>
 <li><kbd>Shift</kbd> + <kbd>Left Click</kbd> Aspect-preserving resize, or Position-snapping.</li>
+<li><kbd>Ctrl</kbd> + <kbd>Z</kbd> to undo. <kbd>Ctrl</kbd> + <kbd>Y</kbd> to redo.</li>
 </ul>
 </span>
 

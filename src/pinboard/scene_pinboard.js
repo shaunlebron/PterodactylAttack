@@ -30,6 +30,28 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	function selectIndex(i) {
 		selectedIndex = i;
+		refreshTagDisplay();
+	}
+
+	function refreshTagDisplay() {
+		var obj = objects[selectedIndex];
+		var name = "";
+		if (obj && obj.name) {
+			name = obj.name;
+		}
+		$('#objectName').html(name);
+	}
+
+	function renameSelectedObject() {
+		if (selectedIndex != null) {
+			var obj = objects[selectedIndex];
+			bootbox.prompt("Rename tag:", "Cancel", "OK", function(result) {
+				if (result) {
+					obj.name = result;
+					refreshTagDisplay();
+				}
+			}, obj.name || "");
+		}
 	}
 
 	function orderSelectedObject(order) {
@@ -41,7 +63,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 					temp = objects[i];
 					objects[i] = objects[i+1];
 					objects[i+1] = temp;
-					selectedIndex++;
+					selectIndex(selectedIndex+1);
 				}
 			}
 			else if (order == "backward") {
@@ -49,20 +71,20 @@ Ptero.Pinboard.scene_pinboard = (function(){
 					temp = objects[i];
 					objects[i] = objects[i-1];
 					objects[i-1] = temp;
-					selectedIndex--;
+					selectIndex(selectedIndex-1);
 				}
 			}
 			else if (order == "back") {
 				temp = objects[i];
 				objects.splice(i,1);
 				objects.splice(0,0,temp);
-				selectedIndex = 0;
+				selectIndex(0);
 			}
 			else if (order == "front") {
 				temp = objects[i];
 				objects.splice(i,1);
 				objects.push(temp);
-				selectedIndex = objects.length-1;
+				selectIndex(objects.length-1);
 			}
 		}
 	}
@@ -657,9 +679,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		update: update,
 		setNewAspect: setNewAspect,
 		selectImage: selectImage,
+
 		removeSelectedObject: removeSelectedObject,
 		duplicateSelectedObject: duplicateSelectedObject,
 		orderSelectedObject: orderSelectedObject,
+		renameSelectedObject: renameSelectedObject,
+
 		undo: undo,
 		redo: redo,
 	};
