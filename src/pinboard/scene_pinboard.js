@@ -1,11 +1,29 @@
 
 Ptero.Pinboard.scene_pinboard = (function(){
 
-	var image,pos,billboard;
+	var objects = [];
+	var selectedIndex;
+
+	function selectIndex(i) {
+		selectedIndex = i;
+	}
+
+	function createNewImageObject(name) {
+		var image = Ptero.assets.images[name];
+		var o = {
+			image:     image,
+			pos:       {x:0, y:0},
+			billboard: new Ptero.Billboard(0,0,image.width,image.height),
+		};
+		objects.push(o);
+	}
+
 	function setNewAspect(aspect) {
 		var w = Ptero.screen.getWindowWidth();
 		var h = Ptero.screen.getWindowHeight();
-		if (pos) {
+		var i,len=objects.length;
+		for (i=0; i<len; i++) {
+			var pos = objects[i].pos;
 			pos.x = pos.x / w * h * aspect;
 		}
 	}
@@ -13,10 +31,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 	var isStiffResizeKey;
 	var isSnapKey;
 	var imageTouchHandler = (function(){
-		var dx,dy;
 
+		var image,pos,billboard;
 		var moveFunc;
-
 		var touchRadiusSq = 100;
 
 		function snap(val,valToSnap) {
@@ -24,7 +41,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			return (Math.abs(val-valToSnap) < snapRadius) ? valToSnap : val;
 		}
 
-		function getMoveAnchorFunc(cx,cy) {
+		function getMoveAnchorFunc(obj,cx,cy) {
+			var billboard = obj.billboard;
+			var pos = obj.pos;
+
 			var rect = billboard.getCanvasRect(pos);
 			var a = Ptero.screen.windowToCanvas(pos.x, pos.y);
 			var dx = cx - a.x;
@@ -50,7 +70,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			}
 		}
 
-		function getResizeFunc(cx,cy) {
+		function getResizeFunc(obj,cx,cy) {
+			var billboard = obj.billboard;
+			var pos = obj.pos;
+
 			var rect = billboard.getCanvasRect(pos);
 			function dist(xf,yf) {
 				var dx = cx - (rect.x + xf * rect.w);
@@ -185,37 +208,60 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			return func;
 		}
 
-		function getMoveImageFunc(cx,cy) {
-			var isInside = billboard.isInsideCanvasRect(cx,cy,pos);
-			var w = Ptero.screen.canvasToWindow(cx,cy);
-			dx = w.x - pos.x;
-			dy = w.y - pos.y;
-			return function(wx,wy) {
-				wx -= dx;
-				wy -= dy;
-				var windowRect = {
-					x: 0,
-					y: 0,
-					w: Ptero.screen.getWindowWidth(),
-					h: Ptero.screen.getWindowHeight(),
+		function getMoveImageFunc(obj,cx,cy) {
+			var billboard = obj.billboard;
+			var pos = obj.pos;
+
+			if (billboard.isInsideCanvasRect(cx,cy,pos)) {
+				var w = Ptero.screen.canvasToWindow(cx,cy);
+				dx = w.x - pos.x;
+				dy = w.y - pos.y;
+				return function(wx,wy) {
+					wx -= dx;
+					wy -= dy;
+					var windowRect = {
+						x: 0,
+						y: 0,
+						w: Ptero.screen.getWindowWidth(),
+						h: Ptero.screen.getWindowHeight(),
+					};
+					if (isSnapKey) {
+						wx = snap(wx, windowRect.x);
+						wx = snap(wx, windowRect.x + windowRect.w/2);
+						wx = snap(wx, windowRect.x + windowRect.w);
+						wy = snap(wy, windowRect.y);
+						wy = snap(wy, windowRect.y + windowRect.h/2);
+						wy = snap(wy, windowRect.y + windowRect.h);
+					}
+					pos.x = wx;
+					pos.y = wy;
 				};
-				if (isSnapKey) {
-					wx = snap(wx, windowRect.x);
-					wx = snap(wx, windowRect.x + windowRect.w/2);
-					wx = snap(wx, windowRect.x + windowRect.w);
-					wy = snap(wy, windowRect.y);
-					wy = snap(wy, windowRect.y + windowRect.h/2);
-					wy = snap(wy, windowRect.y + windowRect.h);
-				}
-				pos.x = wx;
-				pos.y = wy;
-			};
+			}
 		}
 
 		return {
 			coord: "canvas",
 			start: function(cx,cy) {
-				moveFunc = getMoveAnchorFunc(cx,cy) || getResizeFunc(cx,cy) || getMoveImageFunc(cx,cy);
+
+				moveFunc = null;
+
+				var obj = objects[selectedIndex];
+				if (obj) {
+					moveFunc = getMoveAnchorFunc(obj,cx,cy) || getResizeFunc(obj,cx,cy) || getMoveImageFunc(obj,cx,cy);
+				}
+
+				if (!moveFunc) {
+					selectIndex(null);
+					var i,len=objects.length;
+					for (i=0; i<len; i++) {
+						obj = objects[i];
+						var f = getMoveImageFunc(obj,cx,cy);
+						if (f) {
+							moveFunc = f;
+							selectIndex(i);
+						}
+					}
+				}
 			},
 			move: function(cx,cy) {
 				var w = Ptero.screen.canvasToWindow(cx,cy);
@@ -278,9 +324,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		s.setWindowScale(s.getCanvasHeight() / (s.getWindowHeight()*1.5));
 		s.centerWindowAtPixel(s.getCanvasWidth()/2, s.getCanvasHeight()/2);
 
-		image = Ptero.assets.images['logo'];
-		billboard = new Ptero.Billboard(0,0,image.width,image.height);
-		pos = {x:0,y:0};
+		createNewImageObject('logo');
+		createNewImageObject('button_plank');
 
 		window.addEventListener("keydown", function(e) {
 			if (e.keyCode == 18) { // alt
@@ -290,6 +335,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				isStiffResizeKey = true;
 				isSnapKey = true;
 			}
+			else if (e.keyCode == 17) { // ctrl
+				isPreviewKey = true;
+			}
 		});
 		window.addEventListener("keyup", function(e) {
 			if (e.keyCode == 18) {
@@ -298,6 +346,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			else if (e.keyCode == 16) {
 				isStiffResizeKey = false;
 				isSnapKey = false;
+			}
+			else if (e.keyCode == 17) {
+				isPreviewKey = false;
 			}
 		});
 
@@ -318,6 +369,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		disableTouch();
 	}
 
+	var isPreviewKey;
 	function draw(ctx) {
 		ctx.save();
 		Ptero.screen.transformToWindow();
@@ -330,33 +382,54 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		ctx.strokeRect(0,0,Ptero.screen.getWindowWidth(),Ptero.screen.getWindowHeight());
 
 		// TODO: draw images in depth order here
-		Ptero.painter.drawImage(ctx,image,pos,billboard);
+		var i,len=objects.length;
+		for (i=0; i<len; i++) {
+			var obj = objects[i];
+			var image     = obj.image;
+			var pos       = obj.pos;
+			var billboard = obj.billboard;
+			Ptero.painter.drawImage(ctx,image,pos,billboard);
 
-		ctx.lineWidth = 3 / Ptero.screen.getWindowScale();
-		ctx.strokeStyle = "#F00";
-		var rect = billboard.getWindowRect(pos);
-		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+			if (isPreviewKey) {
+				continue;
+			}
 
-		var radius = 4 / Ptero.screen.getWindowScale();
-		ctx.fillStyle = "#F00";
-		var i,j,vals=[0,0.5,1];
-		for (i=0; i<3; i++) {
-			for (j=0; j<3; j++) {
-				if (i==1 && j==1) {
-					continue;
-				}
+			if (i == selectedIndex) {
+				ctx.lineWidth = 3 / Ptero.screen.getWindowScale();
+				ctx.strokeStyle = "#F00";
+				var rect = billboard.getWindowRect(pos);
+				ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+
+				var radius = 4 / Ptero.screen.getWindowScale();
+				ctx.fillStyle = "#F00";
+				(function(){
+					var i,j,vals=[0,0.5,1];
+					for (i=0; i<3; i++) {
+						for (j=0; j<3; j++) {
+							if (i==1 && j==1) {
+								continue;
+							}
+							ctx.beginPath();
+							ctx.arc(rect.x + rect.w*vals[i], rect.y + rect.h*vals[j], radius, 0, Math.PI*2);
+							ctx.fill();
+						}
+					}
+				})();
+
+				var radius = 8 / Ptero.screen.getWindowScale();
+				ctx.fillStyle = "#00F";
 				ctx.beginPath();
-				ctx.arc(rect.x + rect.w*vals[i], rect.y + rect.h*vals[j], radius, 0, Math.PI*2);
+				ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
 				ctx.fill();
 			}
+			else {
+				ctx.lineWidth = 3 / Ptero.screen.getWindowScale();
+				ctx.strokeStyle = "#555";
+				var rect = billboard.getWindowRect(pos);
+				ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+			}
+
 		}
-
-		var radius = 8 / Ptero.screen.getWindowScale();
-		ctx.fillStyle = "#00F";
-		ctx.beginPath();
-		ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
-		ctx.fill();
-
 		ctx.restore();
 	}
 
