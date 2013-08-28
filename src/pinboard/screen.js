@@ -3,7 +3,7 @@ Ptero.Pinboard.screen = (function(){
 
 	var canvas;
 
-	var width =  630;
+	var width =  800;
 	var height = 350;
 
 	var aspect;

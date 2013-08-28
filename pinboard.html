@@ -13,7 +13,7 @@
 	body {
 		margin-right: auto;
 		margin-left: auto;
-		width: 630px;
+		width: 800px;
 		/* from: http://www.colourlovers.com/color/5F468E/Indigo */
 		background-color: #5F468E;
 	}
@@ -183,6 +183,40 @@ $(function(){
 			data-placement="bottom"
 			data-title="Remove Object"
 			><i class="icon-remove"></i></button>
+	</div>
+	<div class="btn-group">
+		<button
+			class="btn dropdown-toggle"
+			data-toggle="dropdown">
+			<span>Order</span> <span class="caret"></span>
+			</button>
+
+		<ul class="dropdown-menu">
+			<li>
+				<a
+					onclick="Ptero.Pinboard.scene_pinboard.orderSelectedObject('forward')"
+					href="#"
+					>Send Forward</a>
+			</li>
+			<li>
+				<a
+					onclick="Ptero.Pinboard.scene_pinboard.orderSelectedObject('backward')"
+					href="#"
+					>Send Backward</a>
+			</li>
+			<li>
+				<a
+					onclick="Ptero.Pinboard.scene_pinboard.orderSelectedObject('front')"
+					href="#"
+					>Send to Front</a>
+			</li>
+			<li>
+				<a
+					onclick="Ptero.Pinboard.scene_pinboard.orderSelectedObject('back')"
+					href="#"
+					>Send to Back</a>
+			</li>
+		</ul>
 	</div>
 	<div class="btn-group">
 		<button

@@ -8,6 +8,41 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		selectedIndex = i;
 	}
 
+	function orderSelectedObject(order) {
+		if (selectedIndex != null) {
+			var temp;
+			var i = selectedIndex;
+			if (order == "forward") {
+				if (objects[i+1]) {
+					temp = objects[i];
+					objects[i] = objects[i+1];
+					objects[i+1] = temp;
+					selectedIndex++;
+				}
+			}
+			else if (order == "backward") {
+				if (objects[i-1]) {
+					temp = objects[i];
+					objects[i] = objects[i-1];
+					objects[i-1] = temp;
+					selectedIndex--;
+				}
+			}
+			else if (order == "back") {
+				temp = objects[i];
+				objects.splice(i,1);
+				objects.splice(0,0,temp);
+				selectedIndex = 0;
+			}
+			else if (order == "front") {
+				temp = objects[i];
+				objects.splice(i,1);
+				objects.push(temp);
+				selectedIndex = objects.length-1;
+			}
+		}
+	}
+
 	function removeSelectedObject() {
 		if (selectedIndex != null) {
 			objects.splice(selectedIndex,1);
@@ -481,5 +516,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		selectImage: selectImage,
 		removeSelectedObject: removeSelectedObject,
 		duplicateSelectedObject: duplicateSelectedObject,
+		orderSelectedObject: orderSelectedObject,
 	};
 })();
