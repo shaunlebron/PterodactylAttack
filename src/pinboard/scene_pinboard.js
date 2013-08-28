@@ -119,15 +119,39 @@ Ptero.Pinboard.scene_pinboard = (function(){
 	function selectImage(name) {
 		if (selectedIndex == null) {
 			var image = Ptero.assets.images[name];
-			var o = {
+			var obj = {
 				image:     image,
 				pos:       {x:0, y:0},
 				billboard: new Ptero.Billboard(0,0,image.width,image.height),
 			};
-			objects.push(o);
+			objects.push(obj);
+			var newIndex = objects.length-1;
+
+			recordForUndo({
+				object: obj,
+				undo: function() {
+					objects.splice(newIndex, 1);
+				},
+				redo: function() {
+					objects.push(obj);
+				},
+			});
 		}
 		else {
-			objects[selectedIndex].image = Ptero.assets.images[name];
+			var obj = objects[selectedIndex];
+			var origImage = obj.image;
+			var newImage = Ptero.assets.images[name];
+			obj.image = newImage;
+
+			recordForUndo({
+				object: obj,
+				undo: function() {
+					obj.image = origImage;
+				},
+				redo: function() {
+					obj.image = newImage;
+				},
+			});
 		}
 	}
 
