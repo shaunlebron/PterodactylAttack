@@ -11,6 +11,11 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 		var touchRadiusSq = 100;
 
+		function snap(val,valToSnap) {
+			var snapRadius = 10 / Ptero.screen.getWindowScale();
+			return (Math.abs(val-valToSnap) < snapRadius) ? valToSnap : val;
+		}
+
 		function getMoveAnchorFunc(cx,cy) {
 			var rect = billboard.getCanvasRect(pos);
 			var a = Ptero.screen.windowToCanvas(pos.x, pos.y);
@@ -23,10 +28,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 					wy -= dy/Ptero.screen.getWindowScale();
 					var windowRect = billboard.getWindowRect(pos);
 					if (isSnapKey) {
-						function snap(val,valToSnap) {
-							var snapRadius = 10;
-							return (Math.abs(val-valToSnap) < snapRadius) ? valToSnap : val;
-						}
 						wx = snap(wx, windowRect.x);
 						wx = snap(wx, windowRect.x + windowRect.w/2);
 						wx = snap(wx, windowRect.x + windowRect.w);
@@ -175,22 +176,38 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 			return func;
 		}
+
+		function getMoveImageFunc(cx,cy) {
+			var isInside = billboard.isInsideCanvasRect(cx,cy,pos);
+			var w = Ptero.screen.canvasToWindow(cx,cy);
+			dx = w.x - pos.x;
+			dy = w.y - pos.y;
+			return function(wx,wy) {
+				wx -= dx;
+				wy -= dy;
+				var windowRect = {
+					x: 0,
+					y: 0,
+					w: Ptero.screen.getWindowWidth(),
+					h: Ptero.screen.getWindowHeight(),
+				};
+				if (isSnapKey) {
+					wx = snap(wx, windowRect.x);
+					wx = snap(wx, windowRect.x + windowRect.w/2);
+					wx = snap(wx, windowRect.x + windowRect.w);
+					wy = snap(wy, windowRect.y);
+					wy = snap(wy, windowRect.y + windowRect.h/2);
+					wy = snap(wy, windowRect.y + windowRect.h);
+				}
+				pos.x = wx;
+				pos.y = wy;
+			};
+		}
+
 		return {
 			coord: "canvas",
 			start: function(cx,cy) {
-				var isInside = billboard.isInsideCanvasRect(cx,cy,pos);
-
-				moveFunc = getMoveAnchorFunc(cx,cy) || getResizeFunc(cx,cy);
-
-				if (!moveFunc && isInside) {
-					var w = Ptero.screen.canvasToWindow(cx,cy);
-					dx = w.x - pos.x;
-					dy = w.y - pos.y;
-					moveFunc = function(wx,wy) {
-						pos.x = wx - dx;
-						pos.y = wy - dy;
-					};
-				}
+				moveFunc = getMoveAnchorFunc(cx,cy) || getResizeFunc(cx,cy) || getMoveImageFunc(cx,cy);
 			},
 			move: function(cx,cy) {
 				var w = Ptero.screen.canvasToWindow(cx,cy);
