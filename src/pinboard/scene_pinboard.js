@@ -76,8 +76,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			recordForUndo({
 				object: obj,
 				undo: function() {
-					selectedIndex = i;
 					objects.splice(i, 0, obj);
+					selectIndex(i);
 				},
 				redo: function() {
 					objects.splice(i, 1);
@@ -89,14 +89,30 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	function duplicateSelectedObject() {
 		if (selectedIndex != null) {
-			var o = objects[selectedIndex];
-			var b = o.billboard;
-			var o2 = {
-				image:     o.image,
+			var obj = objects[selectedIndex];
+			var b = obj.billboard;
+			var obj2 = {
+				image:     obj.image,
 				pos:       {x:0, y:0},
 				billboard: new Ptero.Billboard(b.centerX, b.centerY, b.w, b.h),
 			};
-			objects.push(o2);
+			objects.push(obj2);
+
+			var origIndex = selectedIndex;
+			var newIndex = objects.length-1;
+			selectIndex(newIndex);
+
+			recordForUndo({
+				object: obj,
+				undo: function() {
+					objects.splice(newIndex, 1);
+					selectIndex(origIndex);
+				},
+				redo: function() {
+					objects.push(obj2);
+					selectIndex(newIndex);
+				},
+			});
 		}
 	}
 
