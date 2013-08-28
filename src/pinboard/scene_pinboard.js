@@ -2,6 +2,14 @@
 Ptero.Pinboard.scene_pinboard = (function(){
 
 	var image,pos,billboard;
+	function setNewAspect(aspect) {
+		var w = Ptero.screen.getWindowWidth();
+		var h = Ptero.screen.getWindowHeight();
+		if (pos) {
+			pos.x = pos.x / w * h * aspect;
+		}
+	}
+
 	var isStiffResizeKey;
 	var isSnapKey;
 	var imageTouchHandler = (function(){
@@ -361,5 +369,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		cleanup: cleanup,
 		draw: draw,
 		update: update,
+		setNewAspect: setNewAspect,
 	};
 })();

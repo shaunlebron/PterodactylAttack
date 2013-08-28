@@ -21,7 +21,9 @@ Ptero.Pinboard.screen = (function(){
 		$('#4-3-btn').removeClass('active');
 		$('#3-2-btn').removeClass('active');
 		$('#'+w+'-'+h+'-btn').addClass('active');
+		var newAspect = w/h;
 		aspect = w/h;
+		Ptero.Pinboard.scene_pinboard.setNewAspect(aspect);
 		Ptero.screen.setWindowAspect(aspect);
 	};
 
