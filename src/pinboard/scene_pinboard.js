@@ -125,15 +125,19 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				billboard: new Ptero.Billboard(0,0,image.width,image.height),
 			};
 			objects.push(obj);
+			var origIndex = selectedIndex;
 			var newIndex = objects.length-1;
+			selectIndex(newIndex);
 
 			recordForUndo({
 				object: obj,
 				undo: function() {
 					objects.splice(newIndex, 1);
+					selectIndex(origIndex);
 				},
 				redo: function() {
 					objects.push(obj);
+					selectIndex(newIndex);
 				},
 			});
 		}
