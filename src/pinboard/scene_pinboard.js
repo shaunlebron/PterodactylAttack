@@ -8,6 +8,26 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 		var moveFunc;
 
+		var touchRadiusSq = 100;
+
+		function getMoveAnchorFunc(cx,cy) {
+			var rect = billboard.getCanvasRect(pos);
+			var a = Ptero.screen.windowToCanvas(pos.x, pos.y);
+			var dx = cx - a.x;
+			var dy = cy - a.y;
+			var distSq = dx*dx + dy*dy;
+			if (distSq < touchRadiusSq) {
+				return function(wx,wy) {
+					wx -= dx/Ptero.screen.getWindowScale();
+					wy -= dy/Ptero.screen.getWindowScale();
+					var rect = billboard.getWindowRect(pos);
+					billboard.setCenter(wx - rect.x, wy - rect.y);
+					pos.x = wx;
+					pos.y = wy;
+				};
+			}
+		}
+
 		function getResizeFunc(cx,cy) {
 			var rect = billboard.getCanvasRect(pos);
 			function dist(xf,yf) {
@@ -21,9 +41,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				};
 			}
 
-			var minDistSq = 100;
 			var fracs = [0, 0.5, 1];
 			var mix,miy,dx,dy,ix,iy;
+			var minDistSq = touchRadiusSq;
 			for (ix=0; ix<3; ix++) {
 				for (iy=0; iy<3; iy++) {
 					if (ix == 1 && iy == 1) {
@@ -146,7 +166,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			coord: "canvas",
 			start: function(cx,cy) {
 				var isInside = billboard.isInsideCanvasRect(cx,cy,pos);
-				moveFunc = getResizeFunc(cx,cy);
+
+				moveFunc = getMoveAnchorFunc(cx,cy) || getResizeFunc(cx,cy);
 
 				if (!moveFunc && isInside) {
 					var w = Ptero.screen.canvasToWindow(cx,cy);
@@ -270,12 +291,14 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 		// TODO: draw images in depth order here
 		Ptero.painter.drawImage(ctx,image,pos,billboard);
-		var radius = 4 / Ptero.screen.getWindowScale();
+
 		ctx.lineWidth = 3 / Ptero.screen.getWindowScale();
-		ctx.fillStyle = "#F00";
 		ctx.strokeStyle = "#F00";
 		var rect = billboard.getWindowRect(pos);
 		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+
+		var radius = 4 / Ptero.screen.getWindowScale();
+		ctx.fillStyle = "#F00";
 		var i,j,vals=[0,0.5,1];
 		for (i=0; i<3; i++) {
 			for (j=0; j<3; j++) {
@@ -287,6 +310,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				ctx.fill();
 			}
 		}
+
+		var radius = 8 / Ptero.screen.getWindowScale();
+		ctx.fillStyle = "#00F";
+		ctx.beginPath();
+		ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
+		ctx.fill();
 
 		ctx.restore();
 	}
