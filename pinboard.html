@@ -36,9 +36,6 @@
 	button {
 		font-size: 1.2em;
 	}
-	canvas {
-		border: 1px solid black;
-	}
 
 	#toolbar-position {
 		display: none;
@@ -268,6 +265,49 @@ $(function(){
 	<canvas id='canvas'></canvas>
 </div>
 
+<form class="form-inline" style="margin-top: 10px">
+	<input type="text" class="form-control" placeholder="(text inside object)">
+	<div class="btn-group">
+		<button
+			id="text-left-btn"
+			class="btn"
+			onclick="Ptero.Pinboard.scene_pinboard.setSelectedTextAlign('left')"
+			rel="tooltip"
+			data-placement="top"
+			data-title="align text left"
+			><i class="icon-align-left"></i></button>
+		<button
+			id="text-center-btn"
+			class="btn"
+			onclick="Ptero.Pinboard.scene_pinboard.setSelectedTextAlign('center')"
+			rel="tooltip"
+			data-placement="top"
+			data-title="align text center"
+			><i class="icon-align-center"></i></button>
+		<button
+			id="text-right-btn"
+			class="btn"
+			onclick="Ptero.Pinboard.scene_pinboard.setSelectedTextAlign('right')"
+			rel="tooltip"
+			data-placement="top"
+			data-title="align text right"
+			><i class="icon-align-right"></i></button>
+	</div>
+	<div class="btn-group dropup">
+		<button
+			rel="tooltip"
+			data-placement="top"
+			data-title="Font"
+			class="btn dropdown-toggle"
+			data-toggle="dropdown">
+			<i class="icon-font"></i> <span class="caret"></span>
+			</button>
+
+		<ul id="imageMenu" class="dropdown-menu"></ul>
+	</div>
+</form>
+
+<hr>
 <span class="light-keys" style="color:#FFF">
 <ul>
 <li><kbd>P</kbd> Hold to preview without border visuals.</li>
