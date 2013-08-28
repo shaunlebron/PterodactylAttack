@@ -145,7 +145,7 @@ Ptero.Billboard.prototype = {
 
 	isInsideWindowRect: function(wx,wy,pos) {
 		var rect = this.getWindowRect(pos);
-		var p = this.getRelativeCursor(x,y,pos);
+		var p = this.getRelativeCursor(wx,wy,pos);
 		if (0 <= p.x && p.x <= rect.w &&
 			0 <= p.y && p.y <= rect.h) {
 			return true;

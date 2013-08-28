@@ -82,7 +82,7 @@ Ptero.Ptalaga.LivePane.prototype = {
 		*/
 
 		// First, see if any of the knots are clicked.
-		var min_dist_sq = 100;
+		var min_dist_sq = this.nodeRadius*this.nodeRadius;
 		var nodes = Ptero.Ptalaga.enemy_model.points;
 		var i,len = nodes.length;
 		var node,pos;
