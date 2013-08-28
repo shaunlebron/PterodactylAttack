@@ -3,6 +3,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	var image,pos,billboard;
 	var isStiffResizeKey;
+	var isSnapKey;
 	var imageTouchHandler = (function(){
 		var dx,dy;
 
@@ -20,8 +21,20 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				return function(wx,wy) {
 					wx -= dx/Ptero.screen.getWindowScale();
 					wy -= dy/Ptero.screen.getWindowScale();
-					var rect = billboard.getWindowRect(pos);
-					billboard.setCenter(wx - rect.x, wy - rect.y);
+					var windowRect = billboard.getWindowRect(pos);
+					if (isSnapKey) {
+						function snap(val,valToSnap) {
+							var snapRadius = 10;
+							return (Math.abs(val-valToSnap) < snapRadius) ? valToSnap : val;
+						}
+						wx = snap(wx, windowRect.x);
+						wx = snap(wx, windowRect.x + windowRect.w/2);
+						wx = snap(wx, windowRect.x + windowRect.w);
+						wy = snap(wy, windowRect.y);
+						wy = snap(wy, windowRect.y + windowRect.h/2);
+						wy = snap(wy, windowRect.y + windowRect.h);
+					}
+					billboard.setCenter(wx - windowRect.x, wy - windowRect.y);
 					pos.x = wx;
 					pos.y = wy;
 				};
@@ -245,11 +258,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		pos = {x:0,y:0};
 
 		window.addEventListener("keydown", function(e) {
-			if (e.keyCode == 18) {
+			if (e.keyCode == 18) { // alt
 				isZoomPanKey = true;
 			}
-			else if (e.keyCode == 16) {
+			else if (e.keyCode == 16) { // shift
 				isStiffResizeKey = true;
+				isSnapKey = true;
 			}
 		});
 		window.addEventListener("keyup", function(e) {
@@ -258,6 +272,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			}
 			else if (e.keyCode == 16) {
 				isStiffResizeKey = false;
+				isSnapKey = false;
 			}
 		});
 
