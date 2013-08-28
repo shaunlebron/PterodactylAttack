@@ -380,18 +380,51 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			}
 		}
 
+		var origObjState;
+		function restoreObjectState(state) {
+			var obj = state.object;
+			obj.pos.x = state.x;
+			obj.pos.y = state.y;
+			obj.billboard.centerX = state.centerX;
+			obj.billboard.centerY = state.centerY;
+			obj.billboard.w = state.w;
+			obj.billboard.h = state.h;
+		}
+		function getObjectState(obj) {
+			return {
+				object: obj,
+				x: obj.pos.x,
+				y: obj.pos.y,
+				centerX: obj.billboard.centerX,
+				centerY: obj.billboard.centerY,
+				w: obj.billboard.w,
+				h: obj.billboard.h,
+			};
+		}
+		function areObjectStatesEqual(a,b) {
+			var key;
+			for (key in a) {
+				if (a[key] != b[key]) {
+					return false;
+				}
+			}
+			return true;
+		}
+
 		return {
 			coord: "canvas",
 			start: function(cx,cy) {
 
 				moveFunc = null;
 				var i,len=objects.length;
+				var f,obj;
 
+				// if an object is already selected
 				if (selectedIndex != null) {
 
 					// select the frontmost object if the cursor is above one that is in front of the selected object.
 					for (i=selectedIndex+1; i<len; i++) {
-						var f = getMoveImageFunc(objects[i],cx,cy);
+						f = getMoveImageFunc(objects[i],cx,cy);
 						if (f) {
 							moveFunc = f;
 							selectIndex(i);
@@ -400,21 +433,34 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 					// if there is no object obstructing the cursor from the selected object, proceed with usual control
 					if (!moveFunc) {
-						var obj = objects[selectedIndex];
+						obj = objects[selectedIndex];
 						moveFunc = getMoveAnchorFunc(obj,cx,cy) || getResizeFunc(obj,cx,cy) || getMoveImageFunc(obj,cx,cy);
 					}
 				}
 
+				// if no move function has been created
 				if (!moveFunc) {
+
+					// deselect
 					selectIndex(null);
+
+					// find the topmost object under the cursor
 					for (i=0; i<len; i++) {
 						obj = objects[i];
-						var f = getMoveImageFunc(obj,cx,cy);
+						f = getMoveImageFunc(obj,cx,cy);
 						if (f) {
 							moveFunc = f;
 							selectIndex(i);
 						}
 					}
+				}
+
+				// if an object is selected, save its state for redo/undo support
+				if (selectedIndex != null) {
+					origObjState = getObjectState(objects[selectedIndex]);
+				}
+				else {
+					origObjState = null;
 				}
 			},
 			move: function(cx,cy) {
@@ -422,10 +468,26 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				moveFunc && moveFunc(w.x,w.y);
 			},
 			end: function(cx,cy) {
+				if (origObjState) {
+					var obj = origObjState.object;
+					var origState = origObjState;
+					var newState = getObjectState(obj);
+					if (!areObjectStatesEqual(origState, newState)) {
+						recordForUndo({
+							object: obj,
+							undo: function() {
+								restoreObjectState(origState);
+							},
+							redo: function() {
+								restoreObjectState(newState);
+							},
+						});
+					}
+				}
 				moveFunc = null;
 			},
-			cancel: function(wx,wy) {
-				moveFunc = null;
+			cancel: function(cx,cy) {
+				this.end(cx,cy);
 			},
 		};
 	})();
