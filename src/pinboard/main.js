@@ -28,6 +28,25 @@ window.onload = function() {
 				$('#bgTypeMenu').html(str);
 			})();
 
+			(function() {
+				var bgType;
+				var str="";
+				var images = [
+					"backplate_mountain",
+					"backplate_ice",
+					"net",
+					"button_plank",
+					"menu_wrench",
+					"menu_strong",
+					"menu_scroll",
+					"btn_back",
+				];
+				var i,len=images.length;
+				for (i=0; i<len; i++) {
+					str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.createNewImageObject('" + images[i] + "')\" href=\"#\">" + images[i] + "</a></li>";
+				}
+				$('#imageMenu').html(str);
+			})();
 
 			console.log("initing input");
 			Ptero.input.init();

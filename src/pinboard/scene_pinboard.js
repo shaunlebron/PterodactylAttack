@@ -244,15 +244,28 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			start: function(cx,cy) {
 
 				moveFunc = null;
+				var i,len=objects.length;
 
-				var obj = objects[selectedIndex];
-				if (obj) {
-					moveFunc = getMoveAnchorFunc(obj,cx,cy) || getResizeFunc(obj,cx,cy) || getMoveImageFunc(obj,cx,cy);
+				if (selectedIndex != null) {
+
+					// select the frontmost object if the cursor is above one that is in front of the selected object.
+					for (i=selectedIndex+1; i<len; i++) {
+						var f = getMoveImageFunc(objects[i],cx,cy);
+						if (f) {
+							moveFunc = f;
+							selectIndex(i);
+						}
+					}
+
+					// if there is no object obstructing the cursor from the selected object, proceed with usual control
+					if (!moveFunc) {
+						var obj = objects[selectedIndex];
+						moveFunc = getMoveAnchorFunc(obj,cx,cy) || getResizeFunc(obj,cx,cy) || getMoveImageFunc(obj,cx,cy);
+					}
 				}
 
 				if (!moveFunc) {
 					selectIndex(null);
-					var i,len=objects.length;
 					for (i=0; i<len; i++) {
 						obj = objects[i];
 						var f = getMoveImageFunc(obj,cx,cy);
@@ -324,9 +337,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		s.setWindowScale(s.getCanvasHeight() / (s.getWindowHeight()*1.5));
 		s.centerWindowAtPixel(s.getCanvasWidth()/2, s.getCanvasHeight()/2);
 
-		createNewImageObject('logo');
-		createNewImageObject('button_plank');
-
 		window.addEventListener("keydown", function(e) {
 			if (e.keyCode == 18) { // alt
 				isZoomPanKey = true;
@@ -373,13 +383,13 @@ Ptero.Pinboard.scene_pinboard = (function(){
 	function draw(ctx) {
 		ctx.save();
 		Ptero.screen.transformToWindow();
+		ctx.strokeStyle = "#000";
+		ctx.lineWidth = 10;
+		ctx.strokeRect(0,0,Ptero.screen.getWindowWidth(),Ptero.screen.getWindowHeight());
 		ctx.save();
 		Ptero.screen.clipWindow();
 		Ptero.deferredSprites.draw(ctx);
 		ctx.restore();
-		ctx.strokeStyle = "#000";
-		ctx.lineWidth = 10;
-		ctx.strokeRect(0,0,Ptero.screen.getWindowWidth(),Ptero.screen.getWindowHeight());
 
 		// TODO: draw images in depth order here
 		var i,len=objects.length;
@@ -443,5 +453,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		draw: draw,
 		update: update,
 		setNewAspect: setNewAspect,
+		createNewImageObject: createNewImageObject,
 	};
 })();
