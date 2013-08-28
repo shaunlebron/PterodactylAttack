@@ -160,7 +160,7 @@ $(function(){
 		<button
 			rel="tooltip"
 			data-placement="bottom"
-			data-title="Add Image"
+			data-title="Edit/Add Image"
 			class="btn dropdown-toggle"
 			data-toggle="dropdown">
 			<i class="icon-picture"></i> <span class="caret"></span>
@@ -170,12 +170,14 @@ $(function(){
 	</div>
 	<div class="btn-group">
 		<button
+			onclick="Ptero.Pinboard.scene_pinboard.duplicateSelectedObject()"
 			class="btn"
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Duplicate Object"
 			><i class="icon-copy"></i></button>
 		<button
+			onclick="Ptero.Pinboard.scene_pinboard.removeSelectedObject()"
 			class="btn"
 			rel="tooltip"
 			data-placement="bottom"

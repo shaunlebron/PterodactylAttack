@@ -8,14 +8,39 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		selectedIndex = i;
 	}
 
-	function createNewImageObject(name) {
-		var image = Ptero.assets.images[name];
-		var o = {
-			image:     image,
-			pos:       {x:0, y:0},
-			billboard: new Ptero.Billboard(0,0,image.width,image.height),
-		};
-		objects.push(o);
+	function removeSelectedObject() {
+		if (selectedIndex != null) {
+			objects.splice(selectedIndex,1);
+			selectIndex(null);
+		}
+	}
+
+	function duplicateSelectedObject() {
+		if (selectedIndex != null) {
+			var o = objects[selectedIndex];
+			var b = o.billboard;
+			var o2 = {
+				image:     o.image,
+				pos:       {x:0, y:0},
+				billboard: new Ptero.Billboard(b.centerX, b.centerY, b.w, b.h),
+			};
+			objects.push(o2);
+		}
+	}
+
+	function selectImage(name) {
+		if (selectedIndex == null) {
+			var image = Ptero.assets.images[name];
+			var o = {
+				image:     image,
+				pos:       {x:0, y:0},
+				billboard: new Ptero.Billboard(0,0,image.width,image.height),
+			};
+			objects.push(o);
+		}
+		else {
+			objects[selectedIndex].image = Ptero.assets.images[name];
+		}
 	}
 
 	function setNewAspect(aspect) {
@@ -453,6 +478,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		draw: draw,
 		update: update,
 		setNewAspect: setNewAspect,
-		createNewImageObject: createNewImageObject,
+		selectImage: selectImage,
+		removeSelectedObject: removeSelectedObject,
+		duplicateSelectedObject: duplicateSelectedObject,
 	};
 })();

@@ -43,7 +43,7 @@ window.onload = function() {
 				];
 				var i,len=images.length;
 				for (i=0; i<len; i++) {
-					str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.createNewImageObject('" + images[i] + "')\" href=\"#\">" + images[i] + "</a></li>";
+					str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage('" + images[i] + "')\" href=\"#\">" + images[i] + "</a></li>";
 				}
 				$('#imageMenu').html(str);
 			})();
