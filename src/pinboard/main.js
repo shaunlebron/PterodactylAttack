@@ -19,6 +19,16 @@ window.onload = function() {
 			console.log('creating backgrounds');
 			Ptero.createBackgrounds();
 
+			$(document).keydown(function(e){
+				if (e.which == 90 && e.ctrlKey) {
+					Ptero.Pinboard.scene_pinboard.undo();
+				}
+				else if (e.which == 89 && e.ctrlKey) {
+					Ptero.Pinboard.scene_pinboard.redo();
+				}
+			});
+
+
 			(function() {
 				var bgType;
 				var str="";

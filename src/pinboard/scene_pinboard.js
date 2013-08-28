@@ -1,6 +1,30 @@
 
 Ptero.Pinboard.scene_pinboard = (function(){
 
+	var undoStack = [];
+	var undoStackLength = 0;
+	var undoStackPos = 0;
+	function recordForUndo(f) {
+		if (undoStackPos < undoStackLength) {
+			undoStack.splice(undoStackPos);
+		}
+		undoStack.push(f);
+		undoStackPos++;
+		undoStackLength = undoStackPos;
+	}
+	function undo() {
+		if (undoStackPos > 0) {
+			undoStackPos--;
+			undoStack[undoStackPos].undo();
+		}
+	}
+	function redo() {
+		if (undoStackPos < undoStackLength) {
+			undoStack[undoStackPos].redo();
+			undoStackPos++;
+		}
+	}
+
 	var objects = [];
 	var selectedIndex;
 
@@ -45,8 +69,21 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	function removeSelectedObject() {
 		if (selectedIndex != null) {
+			var obj = objects[selectedIndex];
+			var i = selectedIndex;
 			objects.splice(selectedIndex,1);
 			selectIndex(null);
+			recordForUndo({
+				object: obj,
+				undo: function() {
+					selectedIndex = i;
+					objects.splice(i, 0, obj);
+				},
+				redo: function() {
+					objects.splice(i, 1);
+					selectIndex(null);
+				},
+			});
 		}
 	}
 
@@ -405,7 +442,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				isStiffResizeKey = true;
 				isSnapKey = true;
 			}
-			else if (e.keyCode == 17) { // ctrl
+			else if (e.keyCode == 80) { // "P"
 				isPreviewKey = true;
 			}
 		});
@@ -417,7 +454,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				isStiffResizeKey = false;
 				isSnapKey = false;
 			}
-			else if (e.keyCode == 17) {
+			else if (e.keyCode == 80) {
 				isPreviewKey = false;
 			}
 		});
@@ -517,5 +554,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		removeSelectedObject: removeSelectedObject,
 		duplicateSelectedObject: duplicateSelectedObject,
 		orderSelectedObject: orderSelectedObject,
+		undo: undo,
+		redo: redo,
 	};
 })();
