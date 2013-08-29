@@ -179,6 +179,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				image:     obj.image,
 				pos:       {x:0, y:0},
 				billboard: new Ptero.Billboard(b.centerX, b.centerY, b.w, b.h),
+				font:      obj.font,
+				textAlign: obj.textAlign,
+				text:      obj.text,
 			};
 			objects.push(obj2);
 
