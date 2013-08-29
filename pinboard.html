@@ -266,7 +266,12 @@ $(function(){
 </div>
 
 <form class="form-inline" style="margin-top: 10px">
-	<input type="text" class="form-control" placeholder="(text inside object)">
+	<input
+		id="textInput"
+		onkeyup="Ptero.Pinboard.scene_pinboard.updateSelectedText()"
+		type="text"
+		class="form-control"
+		placeholder="(text inside object)">
 	<div class="btn-group">
 		<button
 			id="text-left-btn"
@@ -300,10 +305,10 @@ $(function(){
 			data-title="Font"
 			class="btn dropdown-toggle"
 			data-toggle="dropdown">
-			<i class="icon-font"></i> <span class="caret"></span>
+			<i class="icon-font"></i> <span id="fontName"></span> <span class="caret"></span>
 			</button>
 
-		<ul id="imageMenu" class="dropdown-menu"></ul>
+		<ul id="fontMenu" class="dropdown-menu"></ul>
 	</div>
 </form>
 

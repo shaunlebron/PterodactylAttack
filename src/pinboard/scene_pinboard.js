@@ -31,6 +31,18 @@ Ptero.Pinboard.scene_pinboard = (function(){
 	function selectIndex(i) {
 		selectedIndex = i;
 		refreshTagDisplay();
+		refreshTextAlignDisplay();
+		refreshTextDisplay();
+		refreshFontDisplay();
+	}
+
+	function refreshFontDisplay() {
+		var obj = objects[selectedIndex];
+		var font = "";
+		if (obj && obj.text && obj.font) {
+			font = obj.font;
+		}
+		$('#fontName').html(font);
 	}
 
 	function refreshTagDisplay() {
@@ -40,6 +52,56 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			name = obj.name;
 		}
 		$('#objectName').html(name);
+	}
+
+	function refreshTextAlignDisplay() {
+		$('#text-left-btn').removeClass('active');
+		$('#text-right-btn').removeClass('active');
+		$('#text-center-btn').removeClass('active');
+		
+		var obj = objects[selectedIndex];
+		if (obj && obj.text && obj.textAlign) {
+			$('#text-'+obj.textAlign+'-btn').addClass('active');
+		}
+	}
+
+	function refreshTextDisplay() {
+		var obj = objects[selectedIndex];
+		var text = "";
+		if (obj && obj.text) {
+			text = obj.text;
+		}
+		var $textInput = $('#textInput');
+		if (selectedIndex == null) {
+			$textInput.prop('disabled', true);
+		}
+		else {
+			$textInput.prop('disabled', false);
+		}
+		$textInput.val(text);
+	}
+
+	function setSelectedTextAlign(align) {
+		var obj = objects[selectedIndex];
+		if (obj) {
+			obj.textAlign = align;
+			refreshTextAlignDisplay();
+		}
+	}
+
+	function setSelectedFont(font) {
+		if (selectedIndex != null) {
+			objects[selectedIndex].font = font;
+			refreshFontDisplay();
+		}
+	}
+
+	function updateSelectedText() {
+		if (selectedIndex != null) {
+			objects[selectedIndex].text = $('#textInput').val();
+			refreshTextAlignDisplay();
+			refreshFontDisplay();
+		}
 	}
 
 	function renameSelectedObject() {
@@ -145,6 +207,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				image:     image,
 				pos:       {x:0, y:0},
 				billboard: new Ptero.Billboard(0,0,image.width,image.height),
+				font:      'whitefont',
+				textAlign: 'center',
+				text:      '',
 			};
 			objects.push(obj);
 			var origIndex = selectedIndex;
@@ -562,6 +627,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		s.setWindowScale(s.getCanvasHeight() / (s.getWindowHeight()*1.5));
 		s.centerWindowAtPixel(s.getCanvasWidth()/2, s.getCanvasHeight()/2);
 
+		selectIndex(null);
+
 		window.addEventListener("keydown", function(e) {
 			if (e.keyCode == 18) { // alt
 				isZoomPanKey = true;
@@ -684,6 +751,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		duplicateSelectedObject: duplicateSelectedObject,
 		orderSelectedObject: orderSelectedObject,
 		renameSelectedObject: renameSelectedObject,
+
+		setSelectedTextAlign: setSelectedTextAlign,
+		setSelectedFont: setSelectedFont,
+		updateSelectedText: updateSelectedText,
 
 		undo: undo,
 		redo: redo,

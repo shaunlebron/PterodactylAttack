@@ -28,6 +28,14 @@ window.onload = function() {
 				}
 			});
 
+			(function() {
+				var str="";
+				var name;
+				for (name in Ptero.assets.fonts) {
+					str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.setSelectedFont('" + name + "')\" href=\"#\">" + name + "</a></li>";
+				}
+				$('#fontMenu').html(str);
+			})();
 
 			(function() {
 				var bgType;
