@@ -44,15 +44,28 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			name = existingName;
 		}
 		else {
+			// create new image object
 			var image = new Image();
 			image.src = dataUrl;
+
+			// wait for image to load
 			image.onload = function() {
-				// FIXME: prevent name collisions
+				// prevent name collisions by adding asterisks until a new name is found
+				while (localImages[name]) {
+					name += "*";
+				}
 				localImages[name] = {
 					image: image,
 					name: name,
 					dataUrl: dataUrl,
 				};
+
+				// add to image list
+				var $menu = $('#imageMenu');
+				var str = $menu.html();
+				str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage('" + name + "')\" href=\"#\">" + name + "</a></li>";
+				$menu.html(str);
+
 				// calling this again to make sure the image is loaded before we proceed
 				addNewImage(name, dataUrl);
 			};
@@ -60,12 +73,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		}
 
 		var dict = localImages[name];
-
-		// add to image list
-		var $menu = $('#imageMenu');
-		var str = $menu.html();
-		str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage('" + name + "')\" href=\"#\">" + name + "</a></li>";
-		$menu.html(str);
 
 		// add new image object
 		selectImage(name);
