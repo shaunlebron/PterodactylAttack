@@ -17,7 +17,9 @@ Ptero.SpriteFont.prototype = {
 		var c;
 		for (i=0; i<len; i++) {
 			c = this.chars[text[i]];
-			w += (i == len-1) ? Math.max(c.width, c.xadvance) : c.xadvance;
+			if (c) {
+				w += (i == len-1) ? Math.max(c.width, c.xadvance) : c.xadvance;
+			}
 		}
 		return w;
 	},
@@ -66,6 +68,9 @@ Ptero.SpriteFont.prototype = {
 		var i,len=text.length;
 		for (i=0; i<len; i++) {
 			c = this.chars[text[i]];
+			if (!c) {
+				continue;
+			}
 			sx = c.x;
 			sy = c.y;
 			sw = dw = c.width;
