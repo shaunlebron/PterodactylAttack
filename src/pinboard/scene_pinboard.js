@@ -6,6 +6,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	function getObjectState(obj) {
 		return {
+			name      : obj.name,
 			x         : obj.pos.x,
 			y         : obj.pos.y,
 			centerX   : obj.billboard.centerX,
@@ -25,6 +26,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			image = Ptero.assets.images[state.imageName] || localImages[state.imageName].image;
 		}
 		return {
+			name: state.name,
 			pos: { x: state.x, y: state.y },
 			billboard: new Ptero.Billboard(state.centerX, state.centerY, state.w, state.h),
 			font: state.font,
@@ -309,6 +311,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		if (obj) {
 			obj.textAlign = align;
 			refreshTextAlignDisplay();
+			Ptero.Pinboard.loader.backup();
 		}
 	}
 
@@ -316,6 +319,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		if (selectedIndex != null) {
 			objects[selectedIndex].font = font;
 			refreshFontDisplay();
+			Ptero.Pinboard.loader.backup();
 		}
 	}
 
@@ -324,6 +328,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			objects[selectedIndex].text = $('#textInput').val();
 			refreshTextAlignDisplay();
 			refreshFontDisplay();
+			Ptero.Pinboard.loader.backup();
 		}
 	}
 
@@ -334,6 +339,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				obj.name = result;
 				refreshTagDisplay();
 			}, obj.name || "");
+			Ptero.Pinboard.loader.backup();
 		}
 	}
 
@@ -369,6 +375,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				objects.push(temp);
 				selectIndex(objects.length-1);
 			}
+			Ptero.Pinboard.loader.backup();
 		}
 	}
 

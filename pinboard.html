@@ -123,7 +123,7 @@ $(function(){
 		selector: '[rel="tooltip"]'
 	});
 
-	var handleDropImage = Ptero.Pinboard.loader.handleDropImage;
+	document.getElementById('open-file').addEventListener('change', Ptero.Pinboard.loader.handleOpenFile, false);
 
 	function handleDragOver(e) {
 		e.stopPropagation();
@@ -133,11 +133,13 @@ $(function(){
 	
 	var dropzone = document.getElementById('canvas');
 	dropzone.addEventListener('dragover', handleDragOver, false);
-	dropzone.addEventListener('drop', handleDropImage, false);
+	dropzone.addEventListener('drop', Ptero.Pinboard.loader.handleDropImage, false);
 
 });
 </script>
 
+
+<input style="display:none" type="file" id="open-file" />
 
 <h2 id="title">Pinboard</h2>
 <div class="btn-toolbar" id="toolbar">
@@ -158,6 +160,7 @@ $(function(){
 			</li>
 			<li>
 				<a
+					onclick="$('#open-file').click()"
 					href="#"
 					>Open</a>
 			</li>
