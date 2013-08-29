@@ -47,7 +47,6 @@ window.onload = function() {
 			})();
 
 			(function() {
-				var bgType;
 				var str="";
 				str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage(null)\" href=\"#\">(empty image)</a></li>";
 				var images = [

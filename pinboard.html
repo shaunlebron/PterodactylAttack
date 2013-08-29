@@ -91,6 +91,7 @@
 	<script src="src/vectorPathData.js"></script>
 
 	<script src="src/pinboard/main.js"></script>
+	<script src="src/pinboard/loader.js"></script>
 	<script src="src/pinboard/screen.js"></script>
 	<script src="src/pinboard/executive.js"></script>
 	<script src="src/pinboard/scene_loading.js"></script>
@@ -121,6 +122,18 @@ $(function(){
 	$('body').tooltip({
 		selector: '[rel="tooltip"]'
 	});
+
+	var handleDropImage = Ptero.Pinboard.loader.handleDropImage;
+
+	function handleDragOver(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.dataTransfer.dropEffect = 'copy';
+	}
+	
+	var dropzone = document.getElementById('canvas');
+	dropzone.addEventListener('dragover', handleDragOver, false);
+	dropzone.addEventListener('drop', handleDropImage, false);
 
 });
 </script>

@@ -25,6 +25,52 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		}
 	}
 
+	var localImages = {};
+	function getNameFromDataUrl(dataUrl) {
+		var name, dict;
+		for (name in localImages) {
+			dict = localImages[name];
+			if (dict.dataUrl == dataUrl) {
+				return name;
+			}
+		}
+		return null;
+	}
+	function addNewImage(name, dataUrl) {
+		// check if already present
+		var existingName = getNameFromDataUrl(dataUrl);
+		if (existingName) {
+			dict = localImages[existingName];
+			name = existingName;
+		}
+		else {
+			var image = new Image();
+			image.src = dataUrl;
+			image.onload = function() {
+				// FIXME: prevent name collisions
+				localImages[name] = {
+					image: image,
+					name: name,
+					dataUrl: dataUrl,
+				};
+				// calling this again to make sure the image is loaded before we proceed
+				addNewImage(name, dataUrl);
+			};
+			return;
+		}
+
+		var dict = localImages[name];
+
+		// add to image list
+		var $menu = $('#imageMenu');
+		var str = $menu.html();
+		str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage('" + name + "')\" href=\"#\">" + name + "</a></li>";
+		$menu.html(str);
+
+		// add new image object
+		selectImage(name);
+	}
+
 	var objects = [];
 	var selectedIndex;
 
@@ -206,7 +252,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 	function selectImage(name) {
 		if (selectedIndex == null) {
 			if (name) {
-				var image = Ptero.assets.images[name];
+				var image = Ptero.assets.images[name] || localImages[name].image;
 				var obj = {
 					image:     image,
 					billboard: new Ptero.Billboard(0,0,image.width,image.height),
@@ -242,7 +288,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		else {
 			var obj = objects[selectedIndex];
 			var origImage = obj.image;
-			var newImage = Ptero.assets.images[name];
+			var newImage = Ptero.assets.images[name] || localImages[name].image;
 			obj.image = newImage;
 
 			recordForUndo({
@@ -773,6 +819,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		setSelectedTextAlign: setSelectedTextAlign,
 		setSelectedFont: setSelectedFont,
 		updateSelectedText: updateSelectedText,
+
+		addNewImage: addNewImage,
 
 		undo: undo,
 		redo: redo,
