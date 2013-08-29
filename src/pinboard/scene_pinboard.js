@@ -5,10 +5,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 	// SAVE/LOAD STATES
 
 	function getObjectState(obj) {
+		var sw = Ptero.screen.getWindowWidth();
+		var sh = Ptero.screen.getWindowHeight();
 		return {
 			name      : obj.name,
-			x         : obj.pos.x,
-			y         : obj.pos.y,
+			x         : obj.pos.x/sw,
+			y         : obj.pos.y/sh,
 			centerX   : obj.billboard.centerX,
 			centerY   : obj.billboard.centerY,
 			w         : obj.billboard.w,
@@ -22,12 +24,14 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	function makeObjectFromState(state) {
 		var image;
+		var sw = Ptero.screen.getWindowWidth();
+		var sh = Ptero.screen.getWindowHeight();
 		if (state.imageName) {
 			image = Ptero.assets.images[state.imageName] || localImages[state.imageName].image;
 		}
 		return {
 			name: state.name,
-			pos: { x: state.x, y: state.y },
+			pos: { x: state.x*sw, y: state.y*sh },
 			billboard: new Ptero.Billboard(state.centerX, state.centerY, state.w, state.h),
 			font: state.font,
 			textAlign: state.textAlign,
