@@ -472,10 +472,16 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		else {
 			var obj = objects[selectedIndex];
 			var origImage = obj.image;
+			var newImage;
 			if (name) {
-				var newImage = Ptero.assets.images[name] || localImages[name].image;
+				newImage = Ptero.assets.images[name] || localImages[name].image;
 				obj.image = newImage;
 				obj.imageName = name;
+			}
+			else {
+				newImage = null;
+				obj.image = newImage;
+				obj.imageName = null;
 			}
 
 			recordForUndo({
