@@ -22,6 +22,9 @@ Ptero.SpriteFont.prototype = {
 		return w;
 	},
 	draw: function(ctx, text, billboard, pos, align) {
+		// FIXME: only uppercase for fonts that need it
+		text = text.toUpperCase();
+
 		if (typeof text != "string") {
 			text = text.toString();
 		}

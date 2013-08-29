@@ -691,6 +691,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			var pos       = obj.pos;
 			var billboard = obj.billboard;
 			Ptero.painter.drawImage(ctx,image,pos,billboard);
+			if (obj.text) {
+				font = Ptero.assets.fonts[obj.font];
+				font.draw(ctx, obj.text, billboard, pos, obj.textAlign);
+			}
 
 			if (isPreviewKey) {
 				continue;
