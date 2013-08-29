@@ -202,16 +202,24 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	function selectImage(name) {
 		if (selectedIndex == null) {
-			var image = Ptero.assets.images[name];
-			var obj = {
-				image:     image,
-				pos:       {x:0, y:0},
-				billboard: new Ptero.Billboard(0,0,image.width,image.height),
-				font:      'whitefont',
-				textAlign: 'center',
-				text:      '',
-			};
+			if (name) {
+				var image = Ptero.assets.images[name];
+				var obj = {
+					image:     image,
+					billboard: new Ptero.Billboard(0,0,image.width,image.height),
+				};
+			}
+			else {
+				var obj = {
+					billboard: new Ptero.Billboard(0,0,200,200),
+				};
+			}
+			obj.pos =       {x:0, y:0};
+			obj.font =      'whitefont';
+			obj.textAlign = 'center';
+			obj.text =      '';
 			objects.push(obj);
+
 			var origIndex = selectedIndex;
 			var newIndex = objects.length-1;
 			selectIndex(newIndex);
@@ -687,10 +695,11 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		var i,len=objects.length;
 		for (i=0; i<len; i++) {
 			var obj = objects[i];
-			var image     = obj.image;
 			var pos       = obj.pos;
 			var billboard = obj.billboard;
-			Ptero.painter.drawImage(ctx,image,pos,billboard);
+			if (obj.image) {
+				Ptero.painter.drawImage(ctx,obj.image,pos,billboard);
+			}
 			if (obj.text) {
 				font = Ptero.assets.fonts[obj.font];
 				font.draw(ctx, obj.text, billboard, pos, obj.textAlign);
@@ -724,9 +733,11 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 				var radius = 8 / Ptero.screen.getWindowScale();
 				ctx.fillStyle = "#00F";
+				ctx.strokeStyle = "#FF0";
 				ctx.beginPath();
 				ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
 				ctx.fill();
+				ctx.stroke();
 			}
 			else {
 				ctx.lineWidth = 3 / Ptero.screen.getWindowScale();
