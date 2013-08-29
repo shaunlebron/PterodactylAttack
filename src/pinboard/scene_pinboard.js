@@ -68,12 +68,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		var numLocalImages = 0;
 		var name;
 		for (name in state.localImages) {
-			console.log('local image:',name);
 			numLocalImages++;
 		}
 
 		function onLoaded() {
-			console.log('onLoaded');
 			var i,len=state.objects.length;
 			for (i=0; i<len; i++) {
 				objects.push(makeObjectFromState(state.objects[i]));

@@ -29,7 +29,6 @@ Ptero.Pinboard.loader = (function(){
 		try {
 			if (window.localStorage) {
 				var stateStr = window.localStorage.pinboardState;
-				console.log(stateStr);
 				var state = JSON.parse(stateStr);
 				if (state) {
 					Ptero.Pinboard.scene_pinboard.setState(state);
