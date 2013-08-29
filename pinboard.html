@@ -143,6 +143,7 @@ $(function(){
 <div class="btn-toolbar" id="toolbar">
 	<div class="btn-group">
 		<button
+			onclick="Ptero.Pinboard.loader.backup()"
 			class="btn dropdown-toggle"
 			data-toggle="dropdown">
 			<span>File</span> <span class="caret"></span>
@@ -151,6 +152,7 @@ $(function(){
 		<ul class="dropdown-menu">
 			<li>
 				<a
+					onclick="Ptero.Pinboard.loader.promptReset()"
 					href="#"
 					>New</a>
 			</li>
@@ -161,6 +163,7 @@ $(function(){
 			</li>
 			<li>
 				<a
+					id="save-button"
 					href="#"
 					>Save</a>
 			</li>

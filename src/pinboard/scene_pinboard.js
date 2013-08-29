@@ -1,6 +1,127 @@
 
 Ptero.Pinboard.scene_pinboard = (function(){
 
+	/******************************************************************************/
+	// SAVE/LOAD STATES
+
+	function getObjectState(obj) {
+		return {
+			x         : obj.pos.x,
+			y         : obj.pos.y,
+			centerX   : obj.billboard.centerX,
+			centerY   : obj.billboard.centerY,
+			w         : obj.billboard.w,
+			h         : obj.billboard.h,
+			font      : obj.font,
+			textAlign : obj.textAlign,
+			text      : obj.text,
+			imageName : obj.imageName,
+		};
+	}
+
+	function makeObjectFromState(state) {
+		var image;
+		if (state.imageName) {
+			image = Ptero.assets.images[state.imageName] || localImages[state.imageName].image;
+		}
+		return {
+			pos: { x: state.x, y: state.y },
+			billboard: new Ptero.Billboard(state.centerX, state.centerY, state.w, state.h),
+			font: state.font,
+			textAlign: state.textAlign,
+			text: state.text,
+			imageName: state.imageName,
+			image: image,
+		};
+	}
+
+	function getState() {
+		var state = {
+			localImages: {},
+			objects: [],
+		};
+
+		var i,len=objects.length;
+		var objState;
+		for (i=0; i<len; i++) {
+			objState = getObjectState(objects[i]);
+			var imgName = objState.imageName;
+			if (localImages[imgName]) {
+				state.localImages[imgName] = localImages[imgName].dataUrl;
+			}
+			state.objects.push(objState);
+		}
+
+		return state;
+	}
+
+	function setState(state) {
+		resetState();
+
+		var numLoaded = 0;
+		var numLocalImages = 0;
+		var name;
+		for (name in state.localImages) {
+			console.log('local image:',name);
+			numLocalImages++;
+		}
+
+		function onLoaded() {
+			console.log('onLoaded');
+			var i,len=state.objects.length;
+			for (i=0; i<len; i++) {
+				objects.push(makeObjectFromState(state.objects[i]));
+			}
+		}
+
+		if (numLocalImages == 0) {
+			onLoaded();
+		}
+		else {
+			for (name in state.localImages) {
+				var image = new Image();
+				var dataUrl = state.localImages[name];
+				image.onload = (function(name,image,dataUrl){
+					return function() {
+
+						localImages[name] = {
+							image: image,
+							name: name,
+							dataUrl: dataUrl,
+						};
+
+						// add to image list
+						addImageToListDisplay(name);
+
+						numLoaded++;
+						if (numLoaded == numLocalImages) {
+							onLoaded();
+						}
+					};
+				})(name,image,dataUrl);
+				image.src = dataUrl;
+			}
+		}
+	}
+
+	function resetState() {
+		clearObjects();
+		clearUndoStack();
+		clearLocalImages();
+		resetImageListDisplay();
+
+		// init background
+		Ptero.setBackground('menu');
+
+		// init camera
+		var s = Ptero.screen;
+		s.setWindowScale(s.getCanvasHeight() / (s.getWindowHeight()*1.5));
+		s.centerWindowAtPixel(s.getCanvasWidth()/2, s.getCanvasHeight()/2);
+	}
+
+	/******************************************************************************/
+	// UNDO/REDO STACK
+
 	var undoStack = [];
 	var undoStackLength = 0;
 	var undoStackPos = 0;
@@ -11,6 +132,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		undoStack.push(f);
 		undoStackPos++;
 		undoStackLength = undoStackPos;
+
+		Ptero.Pinboard.loader.backup();
 	}
 	function undo() {
 		if (undoStackPos > 0) {
@@ -24,8 +147,17 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			undoStackPos++;
 		}
 	}
+	function clearUndoStack() {
+		undoStack.length = undoStackLength = undoStackPos = 0;
+	}
+
+	/******************************************************************************/
+	// LOCAL IMAGE IMPORTING
 
 	var localImages = {};
+	function clearLocalImages() {
+		localImages = {};
+	}
 	function getNameFromDataUrl(dataUrl) {
 		var name, dict;
 		for (name in localImages) {
@@ -36,7 +168,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		}
 		return null;
 	}
-	function addNewImage(name, dataUrl) {
+	function addNewImage(name, dataUrl, onLoad) {
 		// check if already present
 		var existingName = getNameFromDataUrl(dataUrl);
 		if (existingName) {
@@ -61,10 +193,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				};
 
 				// add to image list
-				var $menu = $('#imageMenu');
-				var str = $menu.html();
-				str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage('" + name + "')\" href=\"#\">" + name + "</a></li>";
-				$menu.html(str);
+				addImageToListDisplay(name);
 
 				// calling this again to make sure the image is loaded before we proceed
 				addNewImage(name, dataUrl);
@@ -78,8 +207,16 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		selectImage(name);
 	}
 
+	/******************************************************************************/
+	// OBJECT LIST AND SELECTION
+
 	var objects = [];
 	var selectedIndex;
+
+	function clearObjects() {
+		objects.length = 0;
+		selectIndex(null);
+	}
 
 	function selectIndex(i) {
 		selectedIndex = i;
@@ -87,6 +224,36 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		refreshTextAlignDisplay();
 		refreshTextDisplay();
 		refreshFontDisplay();
+	}
+
+	/******************************************************************************/
+	// DISPLAY BINDING TO OBJECT ATTRIBUTES
+
+	function resetImageListDisplay() {
+		var str="";
+		str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage(null)\" href=\"#\">(empty image)</a></li>";
+		var images = [
+			"backplate_mountain",
+			"backplate_ice",
+			"net",
+			"button_plank",
+			"menu_wrench",
+			"menu_strong",
+			"menu_scroll",
+			"btn_back",
+		];
+		var i,len=images.length;
+		for (i=0; i<len; i++) {
+			str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage('" + images[i] + "')\" href=\"#\">" + images[i] + "</a></li>";
+		}
+		$('#imageMenu').html(str);
+	}
+
+	function addImageToListDisplay(name) {
+		var $menu = $('#imageMenu');
+		var str = $menu.html();
+		str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage('" + name + "')\" href=\"#\">" + name + "</a></li>";
+		$menu.html(str);
 	}
 
 	function refreshFontDisplay() {
@@ -134,6 +301,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		$textInput.val(text);
 	}
 
+	/******************************************************************************/
+	// OBJECT MODIFIER INTERFACES
+
 	function setSelectedTextAlign(align) {
 		var obj = objects[selectedIndex];
 		if (obj) {
@@ -161,10 +331,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		if (selectedIndex != null) {
 			var obj = objects[selectedIndex];
 			bootbox.prompt("Rename tag:", "Cancel", "OK", function(result) {
-				if (result) {
-					obj.name = result;
-					refreshTagDisplay();
-				}
+				obj.name = result;
+				refreshTagDisplay();
 			}, obj.name || "");
 		}
 	}
@@ -230,6 +398,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			var b = obj.billboard;
 			var obj2 = {
 				image:     obj.image,
+				imageName: obj.imageName,
 				pos:       {x:0, y:0},
 				billboard: new Ptero.Billboard(b.centerX, b.centerY, b.w, b.h),
 				font:      obj.font,
@@ -262,6 +431,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				var image = Ptero.assets.images[name] || localImages[name].image;
 				var obj = {
 					image:     image,
+					imageName: name,
 					billboard: new Ptero.Billboard(0,0,image.width,image.height),
 				};
 			}
@@ -295,8 +465,11 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		else {
 			var obj = objects[selectedIndex];
 			var origImage = obj.image;
-			var newImage = Ptero.assets.images[name] || localImages[name].image;
-			obj.image = newImage;
+			if (name) {
+				var newImage = Ptero.assets.images[name] || localImages[name].image;
+				obj.image = newImage;
+				obj.imageName = name;
+			}
 
 			recordForUndo({
 				object: obj,
@@ -319,6 +492,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			pos.x = pos.x / w * h * aspect;
 		}
 	}
+
+
+	/******************************************************************************/
+	// IMAGE TOUCH OPERATIONS
 
 	var isStiffResizeKey;
 	var isSnapKey;
@@ -643,6 +820,9 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		};
 	})();
 
+	/******************************************************************************/
+	// CAMERA TOUCH OPERATIONS
+
 	var isZoomPanKey;
 	var zoomPanTouchHandler = (function(){
 		var dx,dy;
@@ -685,14 +865,11 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		};
 	})();
 
-	function init() {
-		Ptero.setBackground('menu');
-		var s = Ptero.screen;
-		s.setWindowScale(s.getCanvasHeight() / (s.getWindowHeight()*1.5));
-		s.centerWindowAtPixel(s.getCanvasWidth()/2, s.getCanvasHeight()/2);
+	/******************************************************************************/
+	// MAIN INPUT
 
-		selectIndex(null);
-
+	var isPreviewKey;
+	function enableKeys() {
 		window.addEventListener("keydown", function(e) {
 			if (e.keyCode == 18) { // alt
 				isZoomPanKey = true;
@@ -717,8 +894,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 				isPreviewKey = false;
 			}
 		});
-
-		enableTouch();
 	}
 
 	function enableTouch() {
@@ -735,7 +910,18 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		disableTouch();
 	}
 
-	var isPreviewKey;
+	/******************************************************************************/
+	// MAIN INPUT
+
+	function init() {
+
+		resetState();
+
+		// init input
+		enableKeys();
+		enableTouch();
+	}
+
 	function draw(ctx) {
 		ctx.save();
 		Ptero.screen.transformToWindow();
@@ -828,6 +1014,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		updateSelectedText: updateSelectedText,
 
 		addNewImage: addNewImage,
+
+		getState: getState,
+		setState: setState,
+		resetState: resetState,
 
 		undo: undo,
 		redo: redo,
