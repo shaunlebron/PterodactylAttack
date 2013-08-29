@@ -237,6 +237,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		var str="";
 		str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage(null)\" href=\"#\">(empty image)</a></li>";
 		var images = [
+			"logo",
 			"backplate_mountain",
 			"backplate_ice",
 			"net",
