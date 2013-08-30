@@ -883,7 +883,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 					var scaleFactor = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
 
 					var scale = Ptero.screen.getWindowScale() * scaleFactor;
-					var maxScale = Ptero.screen.getWindowFitScale();
+					var maxScale = Ptero.screen.getWindowFitScale() * 2;
 					var minScale = maxScale / 8;
 					scale = Math.max(minScale, Math.min(maxScale, scale));
 
