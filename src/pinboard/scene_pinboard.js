@@ -143,12 +143,14 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		if (undoStackPos > 0) {
 			undoStackPos--;
 			undoStack[undoStackPos].undo();
+			Ptero.Pinboard.loader.backup();
 		}
 	}
 	function redo() {
 		if (undoStackPos < undoStackLength) {
 			undoStack[undoStackPos].redo();
 			undoStackPos++;
+			Ptero.Pinboard.loader.backup();
 		}
 	}
 	function clearUndoStack() {
@@ -515,6 +517,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 
 	var isStiffResizeKey;
 	var isSnapKey;
+	var isMoveXOnly, isMoveYOnly;
 	var imageTouchHandler = (function(){
 
 		var image,pos,billboard;
@@ -548,9 +551,14 @@ Ptero.Pinboard.scene_pinboard = (function(){
 						wy = snap(wy, windowRect.y + windowRect.h/2);
 						wy = snap(wy, windowRect.y + windowRect.h);
 					}
-					billboard.setCenter(wx - windowRect.x, wy - windowRect.y);
-					pos.x = wx;
-					pos.y = wy;
+					if (!isMoveYOnly) {
+						billboard.centerX = wx - windowRect.x;
+						pos.x = wx;
+					}
+					if (!isMoveXOnly) {
+						billboard.centerY = wy - windowRect.y;
+						pos.y = wy;
+					}
 				};
 			}
 		}
@@ -718,8 +726,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 						wy = snap(wy, windowRect.y + windowRect.h/2);
 						wy = snap(wy, windowRect.y + windowRect.h);
 					}
-					pos.x = wx;
-					pos.y = wy;
+					if (!isMoveYOnly) {
+						pos.x = wx;
+					}
+					if (!isMoveXOnly) {
+						pos.y = wy;
+					}
 				};
 			}
 		}
@@ -897,6 +909,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			else if (e.keyCode == 80) { // "P"
 				isPreviewKey = true;
 			}
+			else if (e.keyCode == 88) { // "X"
+				isMoveXOnly = true;
+			}
+			else if (e.keyCode == 89) { // "Y"
+				isMoveYOnly = true;
+			}
 		});
 		window.addEventListener("keyup", function(e) {
 			if (e.keyCode == 18) {
@@ -908,6 +926,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			}
 			else if (e.keyCode == 80) {
 				isPreviewKey = false;
+			}
+			else if (e.keyCode == 88) { // "X"
+				isMoveXOnly = false;
+			}
+			else if (e.keyCode == 89) { // "Y"
+				isMoveYOnly = false;
 			}
 		});
 	}
