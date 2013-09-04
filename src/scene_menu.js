@@ -20,7 +20,7 @@ Ptero.scene_menu = (function(){
 		Ptero.bulletpool.clear();
 	}
 
-	var fadeOutTime = null;
+	var fadeOutTime;
 	var fadeOutLen = 1.0;
 	function fadeToGame() {
 		fadeOutTime = fadeOutLen;
@@ -38,6 +38,8 @@ Ptero.scene_menu = (function(){
 
 		enemies.length = 0;
 
+		var optionSelected = false;
+
 		// iterate each enemy in wave
 		for (j=0; j<numModels; j++) {
 
@@ -45,13 +47,19 @@ Ptero.scene_menu = (function(){
 			var action;
 			if (j == 0) {
 				action = function() {
-					Ptero.scene_options.animateIn();
-					switchScene(Ptero.scene_options);
+					if (!optionSelected) {
+						optionSelected = true;
+						Ptero.scene_options.animateIn();
+						switchScene(Ptero.scene_options);
+					}
 				};
 			}
 			else if (j == 1) {
 				action = function() {
-					fadeToGame();
+					if (!optionSelected) {
+						optionSelected = true;
+						fadeToGame();
+					}
 				};
 			}
 
@@ -84,12 +92,11 @@ Ptero.scene_menu = (function(){
         Ptero.orb.setNextOrigin(0,-1);
 	}
 
-	var time;
 	function init() {
 		Ptero.setBackground('menu');
 		Ptero.background.goToIdle();
 
-		time = 0;
+		fadeOutTime = null;
 
 		startBtn = new Ptero.Button({
 			fontSprite: Ptero.assets.fonts['whitefont'],
@@ -120,7 +127,6 @@ Ptero.scene_menu = (function(){
 	}
 
 	function update(dt) {
-		time += dt;
 
 		// update enemies
 		var i,numEnemies = enemies.length;
