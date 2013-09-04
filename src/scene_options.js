@@ -63,6 +63,11 @@ Ptero.scene_options = (function(){
 		enableTutorial(!on);
 	}
 
+	var displacement = 0;
+	function animateIn() {
+		displacement = Ptero.screen.getWindowWidth();
+	}
+
 	function init() {
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_options"]);
@@ -111,14 +116,20 @@ Ptero.scene_options = (function(){
 	}
 
 	function update(dt) {
+		displacement *= 0.7;
 	}
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
+		
+		ctx.save();
+		ctx.translate(displacement, 0);
 		buttonList.draw(ctx);
+		ctx.restore();
 	}
 
 	return {
+		animateIn: animateIn,
 		init: init,
 		update: update,
 		draw: draw,

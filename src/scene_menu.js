@@ -45,6 +45,7 @@ Ptero.scene_menu = (function(){
 			var action;
 			if (j == 0) {
 				action = function() {
+					Ptero.scene_options.animateIn();
 					switchScene(Ptero.scene_options);
 				};
 			}
