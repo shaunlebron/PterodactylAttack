@@ -30,6 +30,7 @@ Ptero.audio = (function() {
 	function update(dt) {
 		if (initialized) {
 			titleSong.update(dt);
+			scoreSong.update(dt);
 		}
 	}
 
