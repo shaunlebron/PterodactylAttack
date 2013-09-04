@@ -1,13 +1,6 @@
 
 Ptero.scene_play = (function() {
 
-	var netFlashTime = 0;
-	var netFlashPeriod = 0.1;
-	var netFlashLen = netFlashPeriod*2*5;
-	function flashNet() {
-		netFlashTime = netFlashLen;
-	}
-
 	var KEY_SPACE = 32;
 	var KEY_SHIFT = 16;
 	var KEY_CTRL = 17;
@@ -42,6 +35,7 @@ Ptero.scene_play = (function() {
 
 	var pauseBtn;
 	var scoreBtn;
+	var netLeftBtn, netRightBtn;
 
 	function cleanup() {
 		Ptero.bulletpool.clear();
@@ -62,7 +56,7 @@ Ptero.scene_play = (function() {
 		Ptero.orb.disableTouch();
 	}
 
-	function createNetBtn() {
+	function refreshHandBtn() {
 		netBtn = new Ptero.SpriteButton({
 			sprite: Ptero.assets.sprites['net'],
 			anchor: {

@@ -1,0 +1,43 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"name": "score",
+			"x": 1,
+			"y": 0,
+			"centerX": 341.9428571428572,
+			"centerY": 0,
+			"w": 378.97142857142853,
+			"h": 147.54285714285714,
+			"font": "scorefont",
+			"textAlign": "right",
+			"text": "000"
+		},
+		{
+			"name": "leftnet",
+			"x": 0,
+			"y": 0.5,
+			"centerX": 0,
+			"centerY": 81.50693877551018,
+			"w": 157.25714285714278,
+			"h": 157.2571428571428,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "net"
+		},
+		{
+			"name": "rightnet",
+			"x": 1,
+			"y": 0.5,
+			"centerX": 157.25714285714278,
+			"centerY": 78.6285714285714,
+			"w": 157.25714285714278,
+			"h": 157.2571428571428,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "net"
+		}
+	]
+}

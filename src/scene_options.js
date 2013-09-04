@@ -1,43 +1,24 @@
 
 Ptero.scene_options = (function(){
 
-	var backplate;
-	var backplatePos;
-
-	var backBtn;
+	var buttonList;
 
 	var soundBtn;
 	var vibrateBtn;
 	var tutorialBtn;
 	var handBtn;
 
-	var contentButtons;
-
-	var wrenchBtn;
-	var strongBtn;
-	var scrollBtn;
-
 	function cleanup() {
-		var i,b,len=contentButtons.length;
-		for (i=0; i<len; i++) {
-			b = contentButtons[i];
-			b.disable();
-		}
-
-		wrenchBtn.disable();
-		strongBtn.disable();
-		scrollBtn.disable();
-
-		backBtn.disable();
+		buttonList.disable();
 	}
 
 	function setHand(hand) {
 		Ptero.settings.setHand(hand);
 		if (hand == 'left') {
-			handBtn.text = "LEFT-HANDED";
+			handBtn.text = "LEFT";
 		}
 		else if (hand == 'right') {
-			handBtn.text = "RIGHT-HANDED";
+			handBtn.text = "RIGHT";
 		}
 	}
 	function toggleHand() {
@@ -47,7 +28,7 @@ Ptero.scene_options = (function(){
 
 	function enableSound(on) {
 		Ptero.settings.enableSound(on);
-		soundBtn.text = "SOUND: " + (on ? "ON": "OFF");
+		soundBtn.text = (on ? "ON": "OFF");
 	}
 	function toggleSound() {
 		var on = Ptero.settings.isSoundEnabled();
@@ -56,7 +37,7 @@ Ptero.scene_options = (function(){
 
 	function enableVibrate(on) {
 		Ptero.settings.enableVibrate(on);
-		vibrateBtn.text = "VIBRATE: " + (on ? "ON" : "OFF");
+		vibrateBtn.text = (on ? "ON" : "OFF");
 	}
 	function toggleVibrate() {
 		var on = Ptero.settings.isVibrateEnabled();
@@ -65,124 +46,49 @@ Ptero.scene_options = (function(){
 
 	function enableTutorial(on) {
 		Ptero.settings.enableTutorial(on);
-		tutorialBtn.text = "TUTORIAL: " + (on ? "ON" : "OFF");
+		tutorialBtn.text = (on ? "ON" : "OFF");
 	}
 	function toggleTutorial() {
 		var on = Ptero.settings.isTutorialEnabled();
 		enableTutorial(!on);
 	}
 
-	var time;
 	function init() {
-		time = 0;
 
-		// backplate
-		var w = 600;
-		var h = 720;
-		backplate = Ptero.assets.sprites["backplate_mountain"];
-		var frustum = Ptero.frustum;
-		backplatePos = {
-			x: 0,
-			y: 0,
-			z: frustum.near,
+		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_options"]);
+		buttonList.enable();
+
+		var btns = buttonList.namedButtons;
+
+		btns["wrench"].onclick = function() {
+			Ptero.setScene(Ptero.scene_options);
 		};
 
-		var screenW = Ptero.screen.getWindowWidth();
-		var startX = screenW/2 + w/2;
-		var midX = startX + (screenW - startX)/2;
-		
-		var hudFracX = midX / screenW;
+		btns["strong"].onclick = function() {
+			Ptero.setScene(Ptero.scene_highscore);
+		};
 
+		btns["scroll"].onclick = function() {
+			Ptero.setScene(Ptero.scene_credits);
+		};
 
-		// side buttons
-		wrenchBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_wrench'],
-			hudPos: { x: hudFracX, y:0.2 },
-			onclick: function() {
-				Ptero.setScene(Ptero.scene_options);
-			},
-		});
-		wrenchBtn.enable();
+		var b = btns["back"];
+		b.isClickDelay = true;
+		b.onclick = function() {
+			Ptero.setScene(Ptero.scene_menu);
+		};
 
-		strongBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_strong'],
-			hudPos: { x: hudFracX, y:0.5 },
-			onclick: function() {
-				Ptero.setScene(Ptero.scene_highscore);
-			},
-		});
-		strongBtn.enable();
+		soundBtn = btns["sound"];
+		soundBtn.onclick = toggleSound;
 
-		scrollBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['menu_scroll'],
-			hudPos: { x: hudFracX, y:0.8 },
-			onclick: function() {
-				Ptero.setScene(Ptero.scene_credits);
-			},
-		});
-		scrollBtn.enable();
+		vibrateBtn = btns["vibrate"];
+		vibrateBtn.onclick = toggleVibrate;
 
-		// back button
-		backBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['btn_back'],
-			hudPos: { x: 0.5, y:0.85 },
-			isClickDelay: true,
-			onclick: function() {
-				Ptero.setScene(Ptero.scene_menu);
-			},
-		});
-		backBtn.enable();
+		tutorialBtn = btns["tutorial"];
+		tutorialBtn.onclick = toggleTutorial;
 
-
-		// content
-		var y = 0.15;
-		var dy = 0.17;
-
-		soundBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['button_plank'],
-			fontSprite: Ptero.assets.fonts['buttonfont'],
-			textAlign: "center",
-			hudPos: { x: 0.5, y: y, },
-			onclick: toggleSound,
-		});
-		soundBtn.enable();
-
-		y += dy;
-		vibrateBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['button_plank'],
-			fontSprite: Ptero.assets.fonts['buttonfont'],
-			textAlign: "center",
-			hudPos: { x: 0.5, y: y, },
-			onclick: toggleVibrate,
-		});
-		vibrateBtn.enable();
-
-		y += dy;
-		tutorialBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['button_plank'],
-			fontSprite: Ptero.assets.fonts['buttonfont'],
-			textAlign: "center",
-			hudPos: { x: 0.5, y: y, },
-			onclick: toggleTutorial,
-		});
-		tutorialBtn.enable();
-
-		y += dy;
-		handBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['button_plank'],
-			fontSprite: Ptero.assets.fonts['buttonfont'],
-			textAlign: "center",
-			hudPos: { x: 0.5, y: y, },
-			onclick: toggleHand,
-		});
-		handBtn.enable();
-
-		contentButtons = [
-			soundBtn,
-			vibrateBtn,
-			tutorialBtn,
-			handBtn,
-		];
+		handBtn = btns["hand"];
+		handBtn.onclick = toggleHand;
 
 		enableSound(Ptero.settings.isSoundEnabled());
 		enableVibrate(Ptero.settings.isVibrateEnabled());
@@ -191,35 +97,11 @@ Ptero.scene_options = (function(){
 	}
 
 	function update(dt) {
-		time += dt;
 	}
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
-
-		backplate.draw(ctx, backplatePos);
-
-		var i,b,len=contentButtons.length;
-		for (i=0; i<len; i++) {
-			b = contentButtons[i];
-			b.isEnabled && b.draw(ctx);
-		}
-
-		var alpha = 0.8;
-
-		var backupAlpha = ctx.globalAlpha;
-		ctx.globalAlpha = 1;
-		wrenchBtn.draw(ctx);
-
-		ctx.globalAlpha = alpha;
-		strongBtn.draw(ctx);
-
-		ctx.globalAlpha = alpha;
-		scrollBtn.draw(ctx);
-
-		ctx.globalAlpha = backupAlpha;
-
-		backBtn.draw(ctx);
+		buttonList.draw(ctx);
 	}
 
 	return {
@@ -227,7 +109,6 @@ Ptero.scene_options = (function(){
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
-		isVibrate: function() { return vibrate; },
 	};
 
 })();

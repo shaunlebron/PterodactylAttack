@@ -71,21 +71,19 @@ Ptero.scene_menu = (function(){
 
 		time = 0;
 
-		startBtn = new Ptero.TextButton({
+		startBtn = new Ptero.Button({
 			fontSprite: Ptero.assets.fonts['whitefont'],
 			textAlign: 'center',
 			text: 'START',
-			width: 400,
-			height: 200,
+			billboard: new Ptero.Billboard(200,100,400,200),
 			pos: {x:0, y:0, z:0},
 		});
 
-		optionsBtn = new Ptero.TextButton({
+		optionsBtn = new Ptero.Button({
 			fontSprite: Ptero.assets.fonts['whitefont'],
 			textAlign: 'center',
 			text: 'OPTIONS',
-			width: 400,
-			height: 100,
+			billboard: new Ptero.Billboard(200,50,400,100),
 			pos: {x:0, y:0, z:0},
 		});
 

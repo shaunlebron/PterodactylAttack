@@ -1,52 +1,96 @@
+Ptero.ButtonList = function(dict) {
+	// this is the ordered list of all the buttons
+	this.buttons = [];
+
+	// this is a dictionary mapping names to buttons
+	// Since only the interactive buttons require names for attaching events,
+	// it follows that only named buttons have to be enabled and disabled.
+	this.namedButtons = {};
+
+	// create the buttons
+	var i,len=dict.objects.length;
+	var btn;
+	for (i=0; i<len; i++) {
+		var state = dict.objects[i];
+		var btn = Ptero.Button.fromState(state);
+		this.buttons.push(btn);
+		if (state.name) {
+			this.namedButtons[state.name] = btn;
+		}
+	}
+};
+
+Ptero.ButtonList.prototype = {
+	enable: function() {
+		var name;
+		for (name in this.namedButtons) {
+			this.namedButtons[name].enable();
+		}
+	},
+	disable: function() {
+		var name;
+		for (name in this.namedButtons) {
+			this.namedButtons[name].disable();
+		}
+	},
+	draw: function(ctx) {
+		var i,len=this.buttons.length;
+		for (i=0; i<len; i++) {
+			this.buttons[i].draw(ctx);
+		}
+	},
+};
 
 Ptero.Button = function(a) {
 
-	// get billboard or build a new one from the given size
-	this.billboard = a.billboard || (
-		new Ptero.Billboard(a.width/2, a.height/2, a.width, a.height, 1)
-	);
+	this.billboard  = a.billboard;
+	this.pos        = a.pos;
+	this.image      = a.image;
+	this.fontSprite = a.fontSprite;
+	this.textAlign  = a.textAlign;
+	this.text       = a.text;
 
-	var hudPos = a.hudPos && Ptero.screen.windowToSpace({
-			x: a.hudPos.x * Ptero.screen.getWindowWidth(),
-			y: a.hudPos.y * Ptero.screen.getWindowHeight(),
-	});
+	this.isClickDelay = a.isClickDelay;
 
-	this.isEnabled = false;
+	this.isEnabled    = false;
 
-	// get position or calculate it from the given anchor and margin.
-	this.pos = a.pos || hudPos || (function(){
-		var size = this.billboard.getWindowSize();
-		console.log(size);
-		var w = size.w;
-		var h = size.h;
-
-		// make sure margin has x and y components
-		var margin = a.margin || 0;
-		if (typeof margin == "number") {
-			margin = { x: margin, y: margin };
-		}
-
-		// get screen position of topleft corner
-		var screenPos = Ptero.hud.getAnchoredScreenPos(
-			a.anchor.x, a.anchor.y,
-			w, h,
-			margin.x, margin.y);
-
-		// get screen position of midpoint
-		screenPos.x += w/2;
-		screenPos.y += h/2;
-
-		// return space position
-		return Ptero.screen.windowToSpace(screenPos);
-	}).call(this);
-	this.onclick = a.onclick;
+	// initialize button click events (can be overwritten)
+	this.onclick      = a.onclick;
 	this.ontouchstart = a.ontouchstart;
-	this.ontouchend = a.ontouchend;
+	this.ontouchend   = a.ontouchend;
 	this.ontouchenter = a.ontouchenter;
 	this.ontouchleave = a.ontouchleave;
 
-	// Create touch handler
+	// scale state for growing/shrinking button for reacting to touch events
+	var origScale  = this.billboard.scale;
+	var focusScale = origScale * 1.1;
+	this.origScale = this.activeScale      = origScale;
 	var that = this;
+	function setScale(s) {
+		that.activeScale = s;
+	}
+	
+	// wrapper functions that delegate to user-defined click events
+	// while capturing them for scaling the button for touch events
+	var that = this;
+	this.touchstart = function() {
+		setScale(focusScale);
+		that.ontouchstart && that.ontouchstart();
+	};
+	this.touchend = function() {
+		setScale(origScale);
+		that.ontouchend && that.ontouchend();
+	};
+	this.touchenter = function() {
+		setScale(focusScale);
+		that.ontouchenter && that.ontouchenter();
+	};
+	this.touchleave = function() {
+		setScale(origScale);
+		that.ontouchleave && that.ontouchleave();
+	};
+
+	// Create touch handler
 	this.touchHandler = (function(){
 		var startInside = false;
 		var lastX,lastY;
@@ -66,7 +110,7 @@ Ptero.Button = function(a) {
 				lastY = y;
 				if (startInside) {
 					startIndex = i;
-					that.ontouchstart && that.ontouchstart(x,y);
+					that.touchstart(x,y);
 				}
 				else {
 					startIndex = null;
@@ -81,10 +125,10 @@ Ptero.Button = function(a) {
 				lastY = y;
 				if (startInside) {
 					if (isInside(x,y,i)) {
-						that.ontouchenter && that.ontouchenter(x,y);
+						that.touchenter(x,y);
 					}
 					else {
-						that.ontouchleave && that.ontouchleave(x,y);
+						that.touchleave(x,y);
 					}
 				}
 			},
@@ -94,9 +138,9 @@ Ptero.Button = function(a) {
 				}
 
 				if (startInside) {
-					that.ontouchend && that.ontouchend(x,y);
+					that.touchend(x,y);
 					if (isInside(lastX,lastY)) {
-						if (a.isClickDelay) {
+						if (that.isClickDelay) {
 							setTimeout(function(){
 								that.onclick && that.onclick();
 							}, 250);
@@ -114,7 +158,34 @@ Ptero.Button = function(a) {
 		};
 	})();
 };
+
+Ptero.Button.fromState = function(state) {
+	var windowWidth = Ptero.screen.getWindowWidth();
+	var windowHeight = Ptero.screen.getWindowHeight();
+	var a = {
+		pos: Ptero.screen.windowToSpace({ x: state.x * windowWidth, y: state.y * windowHeight}),
+		billboard: new Ptero.Billboard(state.centerX, state.centerY, state.w, state.h),
+		image: Ptero.assets.images[state.imageName],
+		fontSprite: Ptero.assets.fonts[state.font],
+		textAlign: state.textAlign,
+		text: state.text,
+	};
+	var btn = new Ptero.Button(a);
+	return btn;
+};
+
 Ptero.Button.prototype = {
+	draw: function(ctx) {
+		var backupScale = this.billboard.scale;
+		this.billboard.scale = this.activeScale;
+		if (this.image) {
+			Ptero.painter.drawImage(ctx, this.image, this.pos, this.billboard);
+		}
+		if (this.text) {
+			this.fontSprite.draw(ctx, this.text, this.billboard, this.pos, this.textAlign);
+		}
+		this.billboard.scale = backupScale;
+	},
 	drawBorder: function(ctx) {
 		Ptero.painter.drawBorder(ctx,this.pos,"#F00",this.billboard);
 	},
@@ -131,76 +202,3 @@ Ptero.Button.prototype = {
 		}
 	},
 };
-
-Ptero.TextButton = function(a) {
-
-	this.billboard = a.billboard || (
-		new Ptero.Billboard(a.width/2, a.height/2, a.width, a.height, 1)
-	);
-
-	this.fontSprite = a.fontSprite;
-	this.textAlign = a.textAlign || "center";
-	this.text = a.text;
-
-	var ontouchstart = a.ontouchstart;
-	var ontouchend = a.ontouchend;
-	var ontouchenter = a.ontouchenter;
-	var ontouchleave = a.ontouchleave;
-
-	var origScale = this.billboard.scale;
-	var focusScale = origScale * 1.1;
-	this.origScale = this.activeScale = origScale;
-	var that = this;
-	function setScale(s) {
-		//a.sprite.billboard.scale = s;
-		that.activeScale = s;
-	}
-	
-	a.ontouchstart = function() {
-		setScale(focusScale);
-		ontouchstart && ontouchstart();
-	};
-	a.ontouchend = function() {
-		setScale(origScale);
-		ontouchend && ontouchend();
-	};
-	a.ontouchenter = function() {
-		setScale(focusScale);
-		ontouchenter && ontouchenter();
-	};
-	a.ontouchleave = function() {
-		setScale(origScale);
-		ontouchleave && ontouchleave();
-	};
-
-	Ptero.Button.call(this,a);
-};
-
-Ptero.TextButton.prototype = newChildObject(Ptero.Button.prototype, {
-	draw: function(ctx) {
-		var backupScale = this.billboard.scale;
-		this.billboard.scale = this.activeScale;
-		if (this.text) {
-			this.fontSprite.draw(ctx, this.text, this.billboard, this.pos, this.textAlign);
-		}
-		this.billboard.scale = backupScale;
-	},
-});
-
-Ptero.SpriteButton = function(a) {
-	this.sprite = a.sprite;
-	a.billboard = a.sprite.billboard;
-	Ptero.TextButton.call(this,a);
-};
-Ptero.SpriteButton.prototype = newChildObject(Ptero.TextButton.prototype, {
-	draw: function(ctx) {
-		var backupScale = this.billboard.scale;
-		this.billboard.scale = this.activeScale;
-		this.sprite.draw(ctx,this.pos);
-		if (this.text) {
-			this.fontSprite.draw(ctx, this.text, this.billboard, this.pos, this.textAlign);
-		}
-		this.billboard.scale = backupScale;
-	},
-});
-
