@@ -186,6 +186,21 @@ Ptero.Background.prototype = {
 		for (i=0; i<len; i++) {
 			this.layers[i].update(dt);
 		}
+
+		// Each background has an associated group of pterodactyls that must be pre-loaded, so this is done here.
+		// Though this is executed every frame, it is effectively only executed once for every vector animation.
+		// (see Ptero.assets.cacheVectorAnim)
+		var i,len=this.vectorAnimsToLoad.length;
+		var name;
+		for (i=0; i<len; i++) {
+			name = this.vectorAnimsToLoad[i];
+			Ptero.deferredSprites.defer(
+				(function(name){
+					return function(ctx) {
+						Ptero.assets.cacheVectorAnim(ctx,name);
+					};
+				})(name), 0);
+		}
 	},
 	loadLayersData: function(layersData) {
 
@@ -362,6 +377,14 @@ Ptero.createBackgrounds = function() {
 				"bg_mountain_17",
 			]);
 			bg.loadLayersData(Ptero.assets.json["bg_mountain_layers"]);
+			bg.vectorAnimsToLoad = [
+				'baby_mountain_blue',
+				'baby_mountain_purple',
+				'adult_mountain_red',
+				'adult_mountain_green',
+				'baby_white',
+				'adult_white',
+			];
 			return bg;
 		})(),
 
@@ -380,6 +403,14 @@ Ptero.createBackgrounds = function() {
 				"bg_ice_09",
 			]);
 			bg.loadLayersData(Ptero.assets.json["bg_ice_layers"]);
+			bg.vectorAnimsToLoad = [
+				'baby_ice_purple',
+				'baby_ice_yellow',
+				'adult_ice_red',
+				'adult_ice_green',
+				'baby_white',
+				'adult_white',
+			];
 			return bg;
 		})(),
 
@@ -398,6 +429,14 @@ Ptero.createBackgrounds = function() {
 				"bg_volcano_09",
 				"bg_volcano_10",
 			]);
+			bg.vectorAnimsToLoad = [
+				'baby_volcano_green',
+				'baby_volcano_purple',
+				'adult_volcano_blue',
+				'adult_volcano_orange',
+				'baby_white',
+				'adult_white',
+			];
 			bg.loadLayersData(Ptero.assets.json["bg_volcano_layers"]);
 			return bg;
 		})(),
@@ -408,6 +447,10 @@ Ptero.createBackgrounds = function() {
 				Ptero.assets.sprites["bg_menu"],
 			];
 			bg.loadLayersData(Ptero.assets.json["bg_menu_layers"]);
+			bg.vectorAnimsToLoad = [
+				'baby_mountain_blue',
+				'adult_mountain_green',
+			];
 			return bg;
 		})(),
 

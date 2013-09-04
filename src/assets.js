@@ -115,6 +115,7 @@ Ptero.assets = (function(){
 		vectorAnims[name] = {
 			"fps": 12,
 			"frames": frames,
+			"cached": false,
 		};
 
 		// Create enemy type
@@ -174,6 +175,7 @@ Ptero.assets = (function(){
 		"btns_game"      : "layout/game.json",
 		"btns_pause"     : "layout/pause.json",
 		"btns_gameover"  : "layout/gameover.json",
+		"btns_loading"   : "layout/loading.json",
 
 		// stage paths
 		"mountain_path00": "paths/mountain/path00.json",
@@ -433,6 +435,25 @@ Ptero.assets = (function(){
 		}
 	};
 
+	function cacheVectorAnim(ctx,vectorName) {
+		var anim = vectorAnims[vectorName];
+		if (anim.cached) {
+			return;
+		}
+		anim.cached = true;
+
+		var pos = {
+			x:0,
+			y:Ptero.frustum.farTop*2,
+			z:Ptero.frustum.far,
+		};
+		var i,len=anim.frames.length;
+		for (i=0; i<len; i++) {
+			var frameName = anim.frames[i];
+			var sprite = vectorSprites[frameName].draw(ctx,pos);
+		}
+	}
+
 	function keepExplosionsCached(ctx) {
 		// This seems to prevents the sporadic drawing of explosions from creating hiccups in the framerate.
 		// This method works by trying to keep the textures loaded in whatever internal cache the Chrome browser uses for drawing textures.
@@ -476,5 +497,6 @@ Ptero.assets = (function(){
 		fonts: fonts,
 		makeAnimSprite: makeAnimSprite,
 		keepExplosionsCached: keepExplosionsCached,
+		cacheVectorAnim: cacheVectorAnim,
 	};
 })();

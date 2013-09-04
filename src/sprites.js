@@ -421,15 +421,18 @@ Ptero.AnimSprite.prototype = {
 		this.time %= this.totalDuration;
 		this.frame = Math.floor(this.time / this.frameDuration);
 	},
-	draw: function(ctx,pos) {
+	draw: function(ctx,pos,frame) {
+		if (frame == undefined) {
+			frame = this.frame;
+		}
 		if (this.table) {
-			this.table.draw(ctx,pos,this.frame);
+			this.table.draw(ctx,pos,frame);
 		}
 		else if (this.mosaic) {
-			this.mosaic.draw(ctx,pos,this.mosaic.frame_names[this.frame]);
+			this.mosaic.draw(ctx,pos,this.mosaic.frame_names[frame]);
 		}
 		else if (this.vectorAnim) {
-			var name = this.vectorAnim.frames[this.frame];
+			var name = this.vectorAnim.frames[frame];
 			Ptero.assets.vectorSprites[name].draw(ctx,pos);
 		}
 	},

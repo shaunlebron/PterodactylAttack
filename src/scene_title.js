@@ -1,68 +1,30 @@
 
 Ptero.scene_title = (function(){
 
-	var titleSprite;
-	var song;
-	var titleMover;
-	var startY, endY;
-	var titlePos;
-	var paths;
-	var enemies = [];
+	var buttonList;
 
 	function cleanup() {
 	}
 
-	var time;
 	function init() {
-		time = 0;
 
 		// set title background environment
 		Ptero.setBackground('menu');
 		Ptero.background.goToIdle();
 
-		titleSprite = Ptero.assets.sprites["logo"];
-
-		var frustum = Ptero.frustum;
-		startY = frustum.nearTop*2;
-		endY = frustum.nearTop/3;
-		var midY = frustum.nearTop/4;
-
-		titlePos = {
-			x: 0,
-			y: endY,
-			z: frustum.near,
-		};
-		titleMover = {
-			t:0,
-			interp: Ptero.makeHermiteInterp([endY, midY, startY], [0, 0.2, 0.2]),
-			update: function(dt) {
-				this.t += dt;
-				var y = this.interp(this.t);
-				if (y != null) {
-					titlePos.y = y;
-				}
-				else {
-					Ptero.setScene(Ptero.scene_menu);
-				}
-			},
-		};
-
-		song = Ptero.audio.getTitleSong();
-		song.play();
+		buttonList = new Ptero.ButtonList(Ptero.assets.json['btns_loading']);
 	}
 
 	function update(dt) {
-		time += dt;
-
-		if (time > 0.1) {
-			titleMover.update(dt);
-		}
+		// this is only update once, since we're using to play the music and to initially load the pterodactyls for the main menu.
+		Ptero.setScene(Ptero.scene_menu);
+		var song = Ptero.audio.getTitleSong();
+		song.play();
 	}
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
-
-		titleSprite.draw(ctx,titlePos);
+		buttonList.draw(ctx);
 	}
 
 	return {
