@@ -131,10 +131,10 @@
 			"h": 78.6285714285714,
 			"font": "buttonfont",
 			"textAlign": "center",
-			"text": "hand"
+			"text": "net side"
 		},
 		{
-			"name": "hand",
+			"name": "netSide",
 			"x": 0.5,
 			"y": 0.6942857142857143,
 			"centerX": -31.956769495304144,

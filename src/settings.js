@@ -6,7 +6,7 @@ Ptero.settings = (function(){
 		"soundOn": true,
 		"vibrateOn": true,
 		"tutorialOn": true,
-		"hand": 'right',
+		"netSide": 'right',
 		"high_score": 0,
 		"high_kills": 0,
 		"high_captures": 0,
@@ -61,8 +61,8 @@ Ptero.settings = (function(){
 			values['tutorialOn'] = on;
 			this.save();
 		},
-		setHand: function(hand) {
-			values['hand'] = hand;
+		setNetSide: function(side) {
+			values['netSide'] = side;
 			this.save();
 		},
 		isSoundEnabled: function() {
@@ -74,8 +74,8 @@ Ptero.settings = (function(){
 		isTutorialEnabled: function() {
 			return values['tutorialOn'];
 		},
-		getHand: function() {
-			return values['hand'];
+		getNetSide: function() {
+			return values['netSide'];
 		},
 	};
 })();

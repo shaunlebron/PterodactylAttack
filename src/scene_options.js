@@ -6,24 +6,24 @@ Ptero.scene_options = (function(){
 	var soundBtn;
 	var vibrateBtn;
 	var tutorialBtn;
-	var handBtn;
+	var netSideBtn;
 
 	function cleanup() {
 		buttonList.disable();
 	}
 
-	function setHand(hand) {
-		Ptero.settings.setHand(hand);
-		if (hand == 'left') {
-			handBtn.text = "LEFT";
+	function setNetSide(side) {
+		Ptero.settings.setNetSide(side);
+		if (side == 'left') {
+			netSideBtn.text = "LEFT";
 		}
-		else if (hand == 'right') {
-			handBtn.text = "RIGHT";
+		else if (side == 'right') {
+			netSideBtn.text = "RIGHT";
 		}
 	}
-	function toggleHand() {
-		var hand = Ptero.settings.getHand();
-		setHand(hand == "left" ? "right" : "left");
+	function toggleNetSide() {
+		var side = Ptero.settings.getNetSide();
+		setNetSide(side == "left" ? "right" : "left");
 	}
 
 	function enableSound(on) {
@@ -87,13 +87,13 @@ Ptero.scene_options = (function(){
 		tutorialBtn = btns["tutorial"];
 		tutorialBtn.onclick = toggleTutorial;
 
-		handBtn = btns["hand"];
-		handBtn.onclick = toggleHand;
+		netSideBtn = btns["netSide"];
+		netSideBtn.onclick = toggleNetSide;
 
 		enableSound(Ptero.settings.isSoundEnabled());
 		enableVibrate(Ptero.settings.isVibrateEnabled());
 		enableTutorial(Ptero.settings.isTutorialEnabled());
-		setHand(Ptero.settings.getHand());
+		setNetSide(Ptero.settings.getNetSide());
 	}
 
 	function update(dt) {

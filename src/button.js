@@ -13,6 +13,7 @@ Ptero.ButtonList = function(dict) {
 	for (i=0; i<len; i++) {
 		var state = dict.objects[i];
 		var btn = Ptero.Button.fromState(state);
+		btn.shouldDraw = true;
 		this.buttons.push(btn);
 		if (state.name) {
 			this.namedButtons[state.name] = btn;
@@ -35,8 +36,10 @@ Ptero.ButtonList.prototype = {
 	},
 	draw: function(ctx) {
 		var i,len=this.buttons.length;
+		var btn;
 		for (i=0; i<len; i++) {
-			this.buttons[i].draw(ctx);
+			btn = this.buttons[i];
+			btn.shouldDraw && btn.draw(ctx);
 		}
 	},
 };
