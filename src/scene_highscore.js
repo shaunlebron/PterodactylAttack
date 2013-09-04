@@ -4,7 +4,7 @@ Ptero.scene_highscore = (function(){
 	var buttonList;
 
 	function cleanup() {
-		buttonList.enable();
+		buttonList.disable();
 	}
 
 	function init() {
