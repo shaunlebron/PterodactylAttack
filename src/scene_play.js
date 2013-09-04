@@ -33,6 +33,8 @@ Ptero.scene_play = (function() {
 		}
 	}
 
+	var buttonList;
+
 	var pauseBtn;
 	var scoreBtn;
 	var netLeftBtn, netRightBtn;
@@ -43,43 +45,19 @@ Ptero.scene_play = (function() {
 	}
 
 	function enableControls() {
-		pauseBtn.enable();
+		buttonList.enable();
 		if (isNetEnabled) {
-			netBtn.enable();
+			enableNet(true);
 		}
 		Ptero.orb.enableTouch();
 	}
 
 	function disableControls() {
-		netBtn.disable();
-		pauseBtn.disable();
+		buttonList.disable();
 		Ptero.orb.disableTouch();
 	}
 
-	function refreshHandBtn() {
-		netBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites['net'],
-			anchor: {
-				x: Ptero.settings.getHand() == 'right' ? 'left' : 'right',
-				y: "center",
-			},
-			ontouchstart: function(x,y) {
-				Ptero.orb.enableNet(true);
-			},
-			ontouchend: function(x,y) {
-				Ptero.orb.enableNet(false);
-			},
-			ontouchenter: function(x,y) {
-				Ptero.orb.enableNet(true);
-			},
-			ontouchleave: function(x,y) {
-				Ptero.orb.enableNet(false);
-			},
-		});
-	}
-
 	var time;
-	var netBtn;
 	function init() {
 
 		Ptero.orb.enableGuide(false);
@@ -91,35 +69,26 @@ Ptero.scene_play = (function() {
 		// create a random bounty
 		Ptero.refreshBounty();
 
-		// create the capture net button
-		createNetBtn();
-
 		// reset the score
 		Ptero.score.reset();
 
-		// create score button
-		scoreBtn = new Ptero.TextButton({
-			fontSprite: Ptero.assets.fonts["scorefont"],
-			textAlign: "right",
-			text: Ptero.score.getScoreStr(),
-			width: 400,
-			height: 130,
-			anchor: {
-				x: "right",
-				y: "top",
-			},
-		});
+		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_game"]);
+		var btns = buttonList.namedButtons;
 
-		// create the pause button
-		pauseBtn = new Ptero.SpriteButton({
-			sprite: Ptero.assets.sprites["pause"],
-			anchor: {x:"right",y:"bottom"},
-			margin: 10,
-			onclick: function() {
-				Ptero.executive.togglePause();
-				Ptero.pause_menu.enable();
-			},
-		});
+		scoreBtn = btns["score"];
+
+		pauseBtn = btns["pause"];
+		pauseBtn.onclick = function() {
+			Ptero.executive.togglePause();
+			Ptero.pause_menu.enable();
+		};
+
+		netLeftBtn = btns["netLeft"];
+		netRightBtn = btns["netRight"];
+		netLeftBtn.ontouchstart = netRightBtn.ontouchstart = function(x,y) { Ptero.orb.enableNet(true); };
+		netLeftBtn.ontouchend   = netRightBtn.ontouchend   = function(x,y) { Ptero.orb.enableNet(false); };
+		netLeftBtn.ontouchenter = netRightBtn.ontouchenter = function(x,y) { Ptero.orb.enableNet(true); };
+		netLeftBtn.ontouchleave = netRightBtn.ontouchleave = function(x,y) { Ptero.orb.enableNet(false); };
 
 		// create a player to hold player attributes such as health.
 		Ptero.player = new Ptero.Player();
@@ -130,7 +99,6 @@ Ptero.scene_play = (function() {
 		// create the overlord to manage the enemies
 		Ptero.overlord = Ptero.makeOverlord();
 		Ptero.overlord.init();
-
 
 		// initialize orb
 		Ptero.orb.init();
@@ -166,7 +134,6 @@ Ptero.scene_play = (function() {
 				Ptero.orb.update(dt);
 				Ptero.bulletpool.deferBullets();
 				Ptero.score.update(dt);
-				netFlashTime = Math.max(0, netFlashTime-dt);
 			}
 		}
 	};
@@ -174,7 +141,6 @@ Ptero.scene_play = (function() {
 	function draw(ctx) {
 		if (!Ptero.executive.isPaused()) {
 			Ptero.assets.keepExplosionsCached(ctx);
-			//Ptero.background.draw(ctx);
 			Ptero.deferredSprites.draw(ctx);
 			Ptero.orb.draw(ctx);
 			var point;
@@ -185,19 +151,11 @@ Ptero.scene_play = (function() {
 				ctx.arc(point.x, point.y, 30, 0, 2*Math.PI);
 				ctx.fill();
 			}
-			if (time > 2) {
-				pauseBtn.draw(ctx);
 
-				scoreBtn.text = Ptero.score.getScoreStr();
-				scoreBtn.draw(ctx);
-
-				var isNetShown = isNetEnabled && (Math.floor(netFlashTime / netFlashPeriod) % 2 == 0);
-				Ptero.player.drawHealth(ctx, isNetShown);
-				if (isNetShown) {
-					netBtn.draw(ctx);
-				}
-				Ptero.overlord.draw(ctx);
-			}
+			scoreBtn.text = Ptero.score.getScoreStr();
+			Ptero.player.drawHealth(ctx, isNetEnabled);
+			buttonList.draw(ctx);
+			Ptero.overlord.draw(ctx);
 		}
 		else {
 			Ptero.deferredSprites.draw(ctx);
@@ -217,11 +175,21 @@ Ptero.scene_play = (function() {
 	var isNetEnabled = false;
 	function enableNet(on) {
 		isNetEnabled = on;
+
+		netLeftBtn.disable();
+		netRightBtn.disable();
+		netLeftBtn.shouldDraw = netRightBtn.shouldDraw = false;
+
+		var side = Ptero.settings.getNetSide();
 		if (on) {
-			netBtn.enable();
-		}
-		else {
-			netBtn.disable();
+			if (side == 'left') {
+				netLeftBtn.enable();
+				netLeftBtn.shouldDraw = true;
+			}
+			else if (side == 'right') {
+				netRightBtn.enable();
+				netRightBtn.shouldDraw = true;
+			}
 		}
 	}
 
@@ -230,13 +198,11 @@ Ptero.scene_play = (function() {
 		resume: resume,
 		update: update,
 		draw: draw,
-		createNetBtn: createNetBtn,
 		cleanup:cleanup,
 		disableControls: disableControls,
 		enableControls: enableControls,
 		getStage: getStage,
 		setStage: setStage,
 		enableNet: enableNet,
-		flashNet: flashNet,
 	};
 })();

@@ -24,7 +24,7 @@ Ptero.scene_highscore = (function(){
 		};
 
 		btns["strong"].onclick = function() {
-			Ptero.setScene(Ptero.scene_highscore);
+			//Ptero.setScene(Ptero.scene_highscore);
 		};
 
 		btns["scroll"].onclick = function() {

@@ -171,6 +171,9 @@ Ptero.assets = (function(){
 		"btns_options"   : "layout/options.json",
 		"btns_highscore" : "layout/highscore.json",
 		"btns_credits"   : "layout/credits.json",
+		"btns_game"      : "layout/game.json",
+		"btns_pause"     : "layout/pause.json",
+		"btns_gameover"  : "layout/gameover.json",
 
 		// stage paths
 		"mountain_path00": "paths/mountain/path00.json",

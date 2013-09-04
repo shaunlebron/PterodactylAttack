@@ -14,7 +14,7 @@
 			"text": "000"
 		},
 		{
-			"name": "leftnet",
+			"name": "netLeft",
 			"x": 0,
 			"y": 0.5,
 			"centerX": 0,
@@ -27,7 +27,7 @@
 			"imageName": "net"
 		},
 		{
-			"name": "rightnet",
+			"name": "netRight",
 			"x": 1,
 			"y": 0.5,
 			"centerX": 157.25714285714278,
@@ -38,6 +38,19 @@
 			"textAlign": "center",
 			"text": "",
 			"imageName": "net"
+		},
+		{
+			"name": "pause",
+			"x": 1,
+			"y": 1,
+			"centerX": 127.7714285714286,
+			"centerY": 127.77142857142854,
+			"w": 127.7714285714286,
+			"h": 127.77142857142854,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "pause"
 		}
 	]
 }

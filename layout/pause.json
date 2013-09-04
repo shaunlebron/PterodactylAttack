@@ -1,0 +1,150 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"x": 0.5,
+			"y": 0.5,
+			"centerX": 638.5714285714286,
+			"centerY": 359.1964285714287,
+			"w": 1277.142857142857,
+			"h": 718.3928571428575,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "backplate_mountain"
+		},
+		{
+			"name": "sound",
+			"x": 0.5,
+			"y": 0.2085714285714285,
+			"centerX": -31.956769495304144,
+			"centerY": 43.08571428571432,
+			"w": 211.36942857142935,
+			"h": 86.17142857142863,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "on",
+			"imageName": "button_plank"
+		},
+		{
+			"x": 0.5,
+			"y": 0.20714285714285718,
+			"centerX": 241.8912141691908,
+			"centerY": 39.31428571428569,
+			"w": 251.42857142857082,
+			"h": 78.6285714285714,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "sound"
+		},
+		{
+			"x": 0.5,
+			"y": 0.34857142857142853,
+			"centerX": 241.8912141691908,
+			"centerY": 39.31428571428569,
+			"w": 251.42857142857082,
+			"h": 78.6285714285714,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "music"
+		},
+		{
+			"name": "music",
+			"x": 0.5,
+			"y": 0.3457142857142857,
+			"centerX": -31.956769495304144,
+			"centerY": 43.08571428571432,
+			"w": 211.36942857142935,
+			"h": 86.17142857142863,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "on",
+			"imageName": "button_plank"
+		},
+		{
+			"x": 0.5,
+			"y": 0.48285714285714276,
+			"centerX": 241.8912141691908,
+			"centerY": 39.31428571428569,
+			"w": 251.42857142857082,
+			"h": 78.6285714285714,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "vibrate"
+		},
+		{
+			"name": "vibrate",
+			"x": 0.5,
+			"y": 0.48428571428571426,
+			"centerX": -31.956769495304144,
+			"centerY": 43.08571428571432,
+			"w": 211.36942857142935,
+			"h": 86.17142857142863,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "on",
+			"imageName": "button_plank"
+		},
+		{
+			"x": 0.4951785714285714,
+			"y": 0.6257142857142854,
+			"centerX": 241.8912141691908,
+			"centerY": 39.31428571428569,
+			"w": 251.42857142857082,
+			"h": 78.6285714285714,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "net side"
+		},
+		{
+			"name": "netSide",
+			"x": 0.5,
+			"y": 0.6214285714285713,
+			"centerX": -31.956769495304144,
+			"centerY": 43.08571428571432,
+			"w": 211.36942857142935,
+			"h": 86.17142857142863,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "right",
+			"imageName": "button_plank"
+		},
+		{
+			"name": "resume",
+			"x": 0.5,
+			"y": 0.776587301587302,
+			"centerX": 208.60342857142797,
+			"centerY": 40.74285714285705,
+			"w": 417.2068571428558,
+			"h": 81.4857142857141,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "resume",
+			"imageName": "button_plank"
+		},
+		{
+			"name": "quit",
+			"x": 0.5,
+			"y": 0.9128571428571429,
+			"centerX": 208.60342857142797,
+			"centerY": 40.74285714285705,
+			"w": 417.2068571428558,
+			"h": 81.4857142857141,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "quit",
+			"imageName": "button_plank"
+		},
+		{
+			"x": 0.5,
+			"y": 0.07888888888888887,
+			"centerX": 204.91428571428565,
+			"centerY": 72.22857142857141,
+			"w": 409.8285714285713,
+			"h": 144.45714285714283,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "paused"
+		}
+	]
+}

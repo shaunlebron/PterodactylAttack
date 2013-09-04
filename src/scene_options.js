@@ -4,6 +4,7 @@ Ptero.scene_options = (function(){
 	var buttonList;
 
 	var soundBtn;
+	var musicBtn;
 	var vibrateBtn;
 	var tutorialBtn;
 	var netSideBtn;
@@ -35,6 +36,15 @@ Ptero.scene_options = (function(){
 		enableSound(!on);
 	}
 
+	function enableMusic(on) {
+		Ptero.settings.enableMusic(on);
+		musicBtn.text = (on ? "ON": "OFF");
+	}
+	function toggleMusic() {
+		var on = Ptero.settings.isMusicEnabled();
+		enableMusic(!on);
+	}
+
 	function enableVibrate(on) {
 		Ptero.settings.enableVibrate(on);
 		vibrateBtn.text = (on ? "ON" : "OFF");
@@ -61,7 +71,7 @@ Ptero.scene_options = (function(){
 		var btns = buttonList.namedButtons;
 
 		btns["wrench"].onclick = function() {
-			Ptero.setScene(Ptero.scene_options);
+			//Ptero.setScene(Ptero.scene_options);
 		};
 
 		btns["strong"].onclick = function() {
@@ -81,6 +91,9 @@ Ptero.scene_options = (function(){
 		soundBtn = btns["sound"];
 		soundBtn.onclick = toggleSound;
 
+		musicBtn = btns["music"];
+		musicBtn.onclick = toggleMusic;
+
 		vibrateBtn = btns["vibrate"];
 		vibrateBtn.onclick = toggleVibrate;
 
@@ -91,6 +104,7 @@ Ptero.scene_options = (function(){
 		netSideBtn.onclick = toggleNetSide;
 
 		enableSound(Ptero.settings.isSoundEnabled());
+		enableMusic(Ptero.settings.isMusicEnabled());
 		enableVibrate(Ptero.settings.isVibrateEnabled());
 		enableTutorial(Ptero.settings.isTutorialEnabled());
 		setNetSide(Ptero.settings.getNetSide());

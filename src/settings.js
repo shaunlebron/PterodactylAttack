@@ -4,6 +4,7 @@ Ptero.settings = (function(){
 	var values;
 	var defaultValues = {
 		"soundOn": true,
+		"musicOn": true,
 		"vibrateOn": true,
 		"tutorialOn": true,
 		"netSide": 'right',
@@ -53,6 +54,10 @@ Ptero.settings = (function(){
 			values['soundOn'] = on;
 			this.save();
 		},
+		enableMusic: function(on) {
+			values['musicOn'] = on;
+			this.save();
+		},
 		enableVibrate: function(on) {
 			values['vibrateOn'] = on;
 			this.save();
@@ -67,6 +72,9 @@ Ptero.settings = (function(){
 		},
 		isSoundEnabled: function() {
 			return values['soundOn'];
+		},
+		isMusicEnabled: function() {
+			return values['musicOn'];
 		},
 		isVibrateEnabled: function() {
 			return values['vibrateOn'];

@@ -1,0 +1,159 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"x": 0.5,
+			"y": 0.5,
+			"centerX": 638.5714285714286,
+			"centerY": 359.1964285714287,
+			"w": 1277.142857142857,
+			"h": 718.3928571428575,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "backplate_mountain"
+		},
+		{
+			"name": "score",
+			"x": 0.5,
+			"y": 0.18888888888888888,
+			"centerX": 254.28571428571433,
+			"centerY": 90.74285714285716,
+			"w": 508.57142857142867,
+			"h": 181.48571428571432,
+			"font": "scorefont",
+			"textAlign": "center",
+			"text": "124650"
+		},
+		{
+			"x": 0.5,
+			"y": 0.4303174603174604,
+			"centerX": 249.53617195364026,
+			"centerY": 32.11428571428576,
+			"w": 411.8857142857139,
+			"h": 64.22857142857151,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "kills"
+		},
+		{
+			"name": "kills",
+			"x": 0.5,
+			"y": 0.4331746031746031,
+			"centerX": -47.31428571428569,
+			"centerY": 48.571428571428555,
+			"w": 243.20000000000002,
+			"h": 97.14285714285714,
+			"font": "redscorefont",
+			"textAlign": "right",
+			"text": "348"
+		},
+		{
+			"name": "caps",
+			"x": 0.5,
+			"y": 0.5342857142857144,
+			"centerX": -47.31428571428569,
+			"centerY": 48.571428571428555,
+			"w": 243.20000000000002,
+			"h": 97.14285714285714,
+			"font": "redscorefont",
+			"textAlign": "right",
+			"text": "277"
+		},
+		{
+			"name": "bounties",
+			"x": 0.5,
+			"y": 0.6342857142857143,
+			"centerX": -47.31428571428569,
+			"centerY": 48.571428571428555,
+			"w": 243.20000000000002,
+			"h": 97.14285714285714,
+			"font": "redscorefont",
+			"textAlign": "right",
+			"text": "34"
+		},
+		{
+			"x": 0.5,
+			"y": 0.5342857142857144,
+			"centerX": 249.53617195364026,
+			"centerY": 32.11428571428576,
+			"w": 411.8857142857139,
+			"h": 64.22857142857151,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "captures"
+		},
+		{
+			"x": 0.5,
+			"y": 0.6371428571428572,
+			"centerX": 249.53617195364026,
+			"centerY": 32.11428571428576,
+			"w": 411.8857142857139,
+			"h": 64.22857142857151,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "bounties"
+		},
+		{
+			"x": 0.5,
+			"y": 0.746057142857143,
+			"centerX": 249.53617195364026,
+			"centerY": 32.11428571428576,
+			"w": 411.8857142857139,
+			"h": 64.22857142857151,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "hit percent"
+		},
+		{
+			"name": "accuracy",
+			"x": 0.5,
+			"y": 0.7478125714285716,
+			"centerX": -47.31428571428569,
+			"centerY": 48.571428571428555,
+			"w": 243.20000000000002,
+			"h": 97.14285714285714,
+			"font": "redscorefont",
+			"textAlign": "right",
+			"text": "34"
+		},
+		{
+			"name": "replay",
+			"x": 0.5,
+			"y": 0.905730158730159,
+			"centerX": 310.60571428571427,
+			"centerY": 46.29714285714272,
+			"w": 297.23428571428565,
+			"h": 92.59428571428555,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "replay",
+			"imageName": "button_plank"
+		},
+		{
+			"name": "quit",
+			"x": 0.5,
+			"y": 0.9045714285714286,
+			"centerX": -8.2285714285714,
+			"centerY": 46.29714285714272,
+			"w": 297.23428571428565,
+			"h": 92.59428571428555,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "quit",
+			"imageName": "button_plank"
+		},
+		{
+			"name": "highScore",
+			"x": 0.5,
+			"y": 0.31501891121031744,
+			"centerX": 278.29241071428567,
+			"centerY": 58.56584821428571,
+			"w": 556.5848214285713,
+			"h": 117.13169642857143,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "high score!"
+		}
+	]
+}
