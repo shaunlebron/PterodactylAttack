@@ -21,13 +21,13 @@ Ptero.scene_menu = (function(){
 	}
 
 	var fadeOutTime = null;
-	var fadeOutLen = 0.5;
+	var fadeOutLen = 1.0;
 	function fadeToGame() {
 		fadeOutTime = fadeOutLen;
 	}
 	function startGame() {
 		switchScene(Ptero.scene_play);
-		Ptero.audio.getTitleSong().fadeOut(2.0);
+		Ptero.audio.getTitleSong().fadeOut(1.0);
 	}
 
 	function createPteros() {
@@ -41,10 +41,29 @@ Ptero.scene_menu = (function(){
 		// iterate each enemy in wave
 		for (j=0; j<numModels; j++) {
 
+			// event
+			var action;
+			if (j == 0) {
+				action = function() {
+					switchScene(Ptero.scene_options);
+				};
+			}
+			else if (j == 1) {
+				action = function() {
+					fadeToGame();
+				};
+			}
+
 			// create enemy
 			var e = Ptero.Enemy.fromState(models[j]);
 			e.path.freezeAtEnd = true;
-			e.whenHit = (function(e){ return function() { e.explode(); Ptero.screen.shake(); }; })(e);
+			e.whenHit = (function(e,action){
+				return function() {
+					e.explode();
+					Ptero.screen.shake();
+					setTimeout(action, 500);
+				};
+			})(e,action);
 
 			// skip the flying animation if needed
 			if (!isPteroFlying) {
@@ -54,14 +73,14 @@ Ptero.scene_menu = (function(){
 			// add enemy to this scene's enemies
 			enemies.push(e);
 		}
+	}
 
-		enemies[0].afterHit = function() {
-			// options
-			switchScene(Ptero.scene_options);
-		}
-		enemies[1].afterHit = function() {
-			fadeToGame();
-		}
+	var orbInitialized;
+	function initOrb() {
+		Ptero.orb.init();
+		Ptero.orb.enableGuide(true);
+		Ptero.orb.setTargets(enemies);
+        Ptero.orb.setNextOrigin(0,-1);
 	}
 
 	var time;
@@ -87,13 +106,9 @@ Ptero.scene_menu = (function(){
 			pos: {x:0, y:0, z:0},
 		});
 
-		Ptero.orb.enableGuide(true);
 
 		createPteros();
-
-		Ptero.orb.init();
-		Ptero.orb.setTargets(enemies);
-        Ptero.orb.setNextOrigin(0,-1);
+		orbInitialized = false;
 	}
 
 	function switchScene(scene) {
@@ -106,6 +121,7 @@ Ptero.scene_menu = (function(){
 	function update(dt) {
 		time += dt;
 
+		// update enemies
 		var i,numEnemies = enemies.length;
 		for (i=0; i<numEnemies; i++) {
 			enemies[i].update(dt);
@@ -121,11 +137,23 @@ Ptero.scene_menu = (function(){
 			}
 		}
 
+		// init orb when enemies are in places
+		var e = enemies[0];
+		if (e.path.time >= e.path.totalTime) {
+			if (!orbInitialized) {
+				orbInitialized = true;
+				initOrb();
+			}
+		}
+		if (orbInitialized) {
+			Ptero.orb.update(dt);
+		}
+
 		if (fadeOutTime != null) {
 			fadeOutTime = Math.max(0, fadeOutTime-dt);
 		}
 
-		Ptero.orb.update(dt);
+
 		Ptero.bulletpool.deferBullets();
 	}
 
@@ -133,7 +161,9 @@ Ptero.scene_menu = (function(){
 		Ptero.assets.keepExplosionsCached(ctx);
 		Ptero.deferredSprites.draw(ctx);
 
-		Ptero.orb.draw(ctx);
+		if (orbInitialized) {
+			Ptero.orb.draw(ctx);
+		}
 
 		var frustum = Ptero.frustum;
 
