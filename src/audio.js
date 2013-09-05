@@ -78,9 +78,9 @@ Ptero.Song.prototype = {
 	},
 	stop: function() {
 		this.pause();
+		this.audio.currentTime = 0;
 	},
 	pause: function() {
-		//this.audio.src = this.filepath;
 		this.audio.pause();
 	},
 	getVolume: function() {
