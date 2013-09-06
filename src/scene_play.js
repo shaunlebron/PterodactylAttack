@@ -153,9 +153,12 @@ Ptero.scene_play = (function() {
 			}
 
 			scoreBtn.text = Ptero.score.getScoreStr();
-			Ptero.player.drawHealth(ctx, isNetEnabled);
-			buttonList.draw(ctx);
-			Ptero.overlord.draw(ctx);
+
+			if (Ptero.background.isIdle()) {
+				Ptero.player.drawHealth(ctx, isNetEnabled);
+				buttonList.draw(ctx);
+				Ptero.overlord.draw(ctx);
+			}
 		}
 		else {
 			Ptero.deferredSprites.draw(ctx);

@@ -114,6 +114,11 @@ Ptero.Background.prototype = {
 			this.layers[i].animating = on;
 		}
 	},
+	isIdle: function() {
+		var layer = this.layers[0];
+		return (layer.path == layer.idlePath ||
+			(layer.path == layer.introPath && layer.path.time >= layer.path.totalTime));
+	},
 	goToIdle: function() {
 		var i,len = this.layers.length;
 		for (i=0; i<len; i++) {
