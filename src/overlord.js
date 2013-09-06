@@ -47,7 +47,7 @@ Ptero.makeOverlord = function() {
 	}
 	else {
 		Ptero.scene_play.enableNet(true);
-		return new Ptero.OverlordPattern(paths);
+		return new Ptero.OverlordWaves(paths);
 	}
 };
 
@@ -499,6 +499,189 @@ Ptero.OverlordTutor.prototype = {
 		this.stopped = true;
 	},
 	update: function(dt) {
+
+		// update enemies
+		var e,pos;
+		var i,len=this.enemies.length;
+		for (i=0; this.enemies[i];) {
+			e = this.enemies[i];
+			if (e.isDead) {
+				// remove enemy if needed
+				this.enemies.splice(i,1);
+			}
+			else {
+				e.update(dt);
+				pos = e.getPosition();
+				if (pos) {
+					Ptero.deferredSprites.defer(
+						(function(e) {
+							return function(ctx){
+								e.draw(ctx);
+							};
+						})(e),
+						pos.z);
+				}
+				i++;
+			}
+		}
+	},
+};
+
+//////////////////////////////////////////////////////////////////////////////
+
+Ptero.OverlordWaves = function(paths) {
+	this.paths = paths;
+	this.enemies = [];
+	this.stopped = false;
+
+	this.waveNum = 0;
+	this.showWaveNum = false;
+
+	this.createWaveScript(0);
+
+	var buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_wave"]);
+	this.waveBtn = buttonList.namedButtons["wave"];
+};
+
+Ptero.OverlordWaves.prototype = {
+	draw: function(ctx) {
+		if (this.showWaveNum) {
+			this.waveBtn.text = "wave " + (this.waveNum+1).toString();
+			this.waveBtn.draw(ctx);
+		}
+	},
+	stopScript: function() {
+		this.stopped = true;
+	},
+	createWaveScript: function(waveNum) {
+
+		var t = 0;
+		var events = [];
+		var that = this;
+
+		// add a number of enemies to the screen
+		function addEnemy(num) {
+			if (num==undefined) {
+				num = 1;
+			}
+			var i;
+			for (i=0; i<num; i++) {
+				that.enemies.push(that.createRandomEnemy());
+			}
+		}
+
+		// add an action to the event list
+		function addEvent(dt,action) {
+			t += dt;
+			events.push({ time: t, action: action });
+		}
+
+		// Show wave count
+		addEvent(0, function() {
+			that.waveNum = waveNum;
+			that.showWaveNum = true;
+		});
+
+		// Hide wave count after 3 seconds
+		addEvent(3, function() {
+			that.showWaveNum = false;
+		});
+
+		// the time to wait between each ptero group
+		var groupWaitTime = (function(){
+			// wait time will decrease to a certain floor
+
+			var waveCap = 12;
+			var maxWait = 3;
+			var minWait = 1;
+			var waitRange = maxWait - minWait;
+
+			var k = Math.min(waveNum,waveCap) / waveCap;
+
+			return maxWait - waitRange * k;
+
+		})();
+
+		// the time to wait between each ptero in a ptero group
+		var pteroWaitTime = (function(){
+
+			var waveCap = 12;
+			var maxWait = 1.0;
+			var minWait = 0.1;
+			var waitRange = maxWait - minWait;
+
+			var k = Math.min(waveNum,waveCap) / waveCap;
+
+			return maxWait - waitRange * k;
+		})();
+
+		// the number of pteros in the initial group
+		var groupStart = (function(){
+			return Math.floor(waveNum/3) + 1;
+		})();
+
+		// the number of pteros added to each subsequent group
+		var groupGrowth = (function(){
+			var w = waveNum % 3;
+			return [2,3,4][w];
+		})();
+
+		// the number of ptero groups in this wave
+		var numGroups = (function(){
+			return 5;
+		})();
+
+		console.log('WAVE',waveNum+1);
+		console.log('group wait time',groupWaitTime);
+		console.log('ptero wait time',pteroWaitTime);
+		console.log('group start',groupStart);
+		console.log('group growth',groupGrowth);
+		console.log('num groups', numGroups);
+
+		// create the ptero events
+		var i,j,groupCount;
+		groupCount = groupStart;
+		for (i=0; i<numGroups; i++) {
+			addEvent(groupWaitTime, addEnemy);
+			for (j=1; j<groupCount; j++) {
+				addEvent(pteroWaitTime, addEnemy);
+			}
+			groupCount += groupGrowth;
+		}
+
+		// add event to advance to next wave
+		addEvent(3, function() {
+			that.createWaveScript(waveNum + 1);
+		});
+
+		// create the script to execute the timed events
+		this.script = new Ptero.TimedScript(events);
+	},
+	createRandomEnemy: function() {
+		var enemyNames = Ptero.bounty.enemyNames;
+		var enemyType = enemyNames[Math.floor(Math.random()*enemyNames.length)];
+		var path = this.paths[Math.floor(Math.random()*this.paths.length)];
+		return this.createEnemy(path,enemyType);
+	},
+	createEnemy: function(path, enemyType) {
+		var state = {
+			isAttack: true,
+			enemyType: enemyType,
+			points: path.models[0].points,
+		};
+		return Ptero.Enemy.fromState(state);
+	},
+	init: function() {
+		// empty enemies list
+		this.enemies.length = 0;
+
+		this.script.init();
+	},
+	update: function(dt) {
+
+		if (!this.stopped) {
+			this.script.update(dt);
+		}
 
 		// update enemies
 		var e,pos;

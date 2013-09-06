@@ -1,0 +1,17 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"name": "wave",
+			"x": 0.5,
+			"y": 0.2546031746031746,
+			"centerX": 100,
+			"centerY": 99.99999999999999,
+			"w": 200,
+			"h": 200,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "wave 1"
+		}
+	]
+}

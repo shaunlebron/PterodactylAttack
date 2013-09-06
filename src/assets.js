@@ -169,6 +169,7 @@ Ptero.assets = (function(){
 		"highscores_paths" : "paths/highscores.json",
 
 		// button layouts
+		"btns_wave"      : "layout/wave.json",
 		"btns_options"   : "layout/options.json",
 		"btns_highscore" : "layout/highscore.json",
 		"btns_credits"   : "layout/credits.json",
