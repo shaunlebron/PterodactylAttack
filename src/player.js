@@ -28,7 +28,7 @@ Ptero.Player.prototype = {
 	die: function() {
 	},
 	drawHealth: function(ctx,shouldDrawBounty) {
-		var pad = Ptero.screen.getCanvasHeight() / 10;
+		var pad = Ptero.screen.getWindowHeight() / 20;
 		var y = pad;
 		var x = pad;
 
