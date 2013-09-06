@@ -22,9 +22,8 @@ Ptero.audio = (function() {
 
 		net = new Audio('audio/net.wav');
 
-		titleSong = new Ptero.Song("audio/theme3.mp3");
-
-		scoreSong = new Ptero.Song("audio/score.mp3");
+		titleSong = new Ptero.Song("audio/theme3");
+		scoreSong = new Ptero.Song("audio/score");
 	}
 
 	function update(dt) {
@@ -51,13 +50,27 @@ Ptero.audio = (function() {
 })();
 
 Ptero.Song = function(filepath) {
-	this.filepath = filepath;
-	this.audio = new Audio();
-	this.audio.src = this.filepath;
+	var audio = new Audio();
+
+	if (audio.canPlayType('audio/ogg')) {
+		audio.src = filepath+".ogg";
+	}
+	else if (audio.canPlayType('audio/mp3')) {
+		audio.src = filepath+".mp3";
+	}
+	else {
+		audio = null;
+	}
+
+	this.audio = audio;
 };
 
 Ptero.Song.prototype = {
 	setLoop: function() {
+		if (!this.audio) {
+			return;
+		}
+
 		// from: http://stackoverflow.com/a/6452884/142317
 		if (typeof this.audio.loop == 'boolean')
 		{
@@ -72,24 +85,48 @@ Ptero.Song.prototype = {
 		}
 	},
 	update: function(dt) {
+		if (!this.audio) {
+			return;
+		}
+
 		if (this.volumeFader) {
 			this.volumeFader.update(dt);
 		}
 	},
 	stop: function() {
+		if (!this.audio) {
+			return;
+		}
+
 		this.pause();
 		this.audio.currentTime = 0;
 	},
 	pause: function() {
+		if (!this.audio) {
+			return;
+		}
+
 		this.audio.pause();
 	},
 	getVolume: function() {
+		if (!this.audio) {
+			return 0;
+		}
+
 		return this.audio.volume;
 	},
 	setVolume: function(vol) {
+		if (!this.audio) {
+			return;
+		}
+
 		this.audio.volume = vol;
 	},
 	fadeOut: function(t) {
+		if (!this.audio) {
+			return;
+		}
+
 		var that = this;
 		this.volumeFader = {
 			time: 0,
@@ -108,7 +145,10 @@ Ptero.Song.prototype = {
 		};
 	},
 	play: function() {
-		this.audio.src = this.filepath;
+		if (!this.audio) {
+			return;
+		}
+
 		this.setVolume(1);
 		this.audio.play();
 	},
