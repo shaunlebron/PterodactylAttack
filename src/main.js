@@ -15,7 +15,12 @@ window.onload = function() {
 	if (navigator.isCocoonJS) {
 		w = window.innerWidth;
 		h = window.innerHeight;
+		// cap at 16:9 to prevent drawing the background outside anticipated boundaries
+		if (w/h > 16/9) {
+			w = h/9*16;
+		}
 		document.body.appendChild(canvas);
+		//canvas.style.cssText="idtkscale:ScaleAspectFit;";
 	}
 	else {
 		document.body.appendChild(canvas);
