@@ -114,11 +114,6 @@ Ptero.Background.prototype = {
 			this.layers[i].animating = on;
 		}
 	},
-	isIdle: function() {
-		var layer = this.layers[0];
-		return (layer.path == layer.idlePath ||
-			(layer.path == layer.introPath && layer.path.time >= layer.path.totalTime));
-	},
 	goToIdle: function() {
 		var i,len = this.layers.length;
 		for (i=0; i<len; i++) {
@@ -185,8 +180,17 @@ Ptero.Background.prototype = {
 		for (i=0; i<len; i++) {
 			this.layers[i].init();
 		}
+		this.isIdle = false;
 	},
 	update: function(dt) {
+		if (!this.isIdle) {
+			var layer = this.layers[0];
+			this.isIdle = (layer.path == layer.idlePath ||
+				(layer.path == layer.introPath && layer.path.time >= layer.path.totalTime));
+			if (this.isIdle) {
+				this.onIdle && this.onIdle();
+			}
+		}
 		var i,len=this.layers.length;
 		for (i=0; i<len; i++) {
 			this.layers[i].update(dt);

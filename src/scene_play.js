@@ -103,7 +103,13 @@ Ptero.scene_play = (function() {
 		// initialize orb
 		Ptero.orb.init();
 		Ptero.orb.setTargets(Ptero.overlord.enemies);
-        Ptero.orb.setNextOrigin(0,-1);
+		Ptero.orb.setNextOrigin(0,-1);
+
+		this.isActive = false;
+		var that = this;
+		Ptero.background.onIdle = function() {
+			that.isActive = true;
+		};
 
 		// add keyboard events
 		window.addEventListener("keydown", onKeyDown);
@@ -129,7 +135,7 @@ Ptero.scene_play = (function() {
 		}
 		else {
 			time += dt;
-			if (time > 2) {
+			if (this.isActive) {
 				Ptero.overlord.update(dt);
 				Ptero.orb.update(dt);
 				Ptero.bulletpool.deferBullets();
@@ -154,7 +160,7 @@ Ptero.scene_play = (function() {
 
 			scoreBtn.text = Ptero.score.getScoreStr();
 
-			if (Ptero.background.isIdle()) {
+			if (this.isActive) {
 				Ptero.player.drawHealth(ctx, isNetEnabled);
 				buttonList.draw(ctx);
 				Ptero.overlord.draw(ctx);
