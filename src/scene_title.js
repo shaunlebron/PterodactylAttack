@@ -18,8 +18,7 @@ Ptero.scene_title = (function(){
 	function update(dt) {
 		// this is only update once, since we're using to play the music and to initially load the pterodactyls for the main menu.
 		Ptero.setScene(Ptero.scene_menu);
-		var song = Ptero.audio.getTitleSong();
-		song.play();
+		Ptero.audio.play('theme');
 	}
 
 	function draw(ctx) {

@@ -10,12 +10,12 @@ Ptero.scene_gameover = (function(){
 	}
 
 	function switchScene(scene) {
-		Ptero.audio.getScoreSong().fadeOut(1.0);
+		Ptero.audio.fadeOut('score',1.0);
 		Ptero.fadeToScene(scene,0.5);
 	}
 
 	function init() {
-		Ptero.audio.getScoreSong().play();
+		Ptero.audio.play('score');
 		Ptero.overlord.stopScript();
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_gameover"]);

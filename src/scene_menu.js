@@ -27,7 +27,7 @@ Ptero.scene_menu = (function(){
 	}
 	function startGame() {
 		switchScene(Ptero.scene_play);
-		Ptero.audio.getTitleSong().fadeOut(1.0);
+		Ptero.audio.fadeOut('theme',1.0);
 	}
 
 	function createPteros() {

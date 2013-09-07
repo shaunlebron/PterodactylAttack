@@ -1,6 +1,22 @@
 
 Ptero.assets = (function(){
 
+	var sfxSources = {
+		"shoot"          : "audio/shoot04.wav",
+		"explode"        : "audio/explode04.wav",
+		"hurt"           : "audio/hurt.wav",
+		"select"         : "audio/select04.wav",
+		"bountyCorrect"  : "audio/bounty_correct.wav",
+		"bountyWrong"    : "audio/bounty_wrong.wav",
+		"bountyComplete" : "audio/bounty_complete.wav",
+		"net"            : "audio/net.wav",
+	};
+
+	var songSources = {
+		"theme" : "audio/theme3",
+		"score" : "audio/score",
+	};
+
 	var imageSources = {
 		"bg_menu" : "bg/menu/bg_menu.jpg",
 
@@ -245,6 +261,12 @@ Ptero.assets = (function(){
 
 	var json = {};
 
+	// "Audio" objects for sfx
+	var sfx = {};
+	
+	// post-processed song structures
+	var songs = {};
+
 	// "Image" objects, actual image file data
 	var images = {};
 
@@ -367,6 +389,8 @@ Ptero.assets = (function(){
 			var totalCount = 0;
 			for (name in imageSources) { totalCount++; }
 			for (name in jsonSources) { totalCount++; }
+			for (name in sfxSources) { totalCount++; }
+			for (name in songSources) { totalCount++; }
 
 			// Running count of how many files have been loaded.
 			var count = 2; // already loaded "loading" image and json
@@ -433,6 +457,36 @@ Ptero.assets = (function(){
 				req.open('GET', src, true);
 				req.send();
 			}
+
+			// load sound effects
+			var audio;
+			for (name in sfxSources) {
+				audio = new Audio();
+				audio.src = sfxSources[name];
+				sfx[name] = audio;
+				console.log("loaded sfx: ", name);
+				handleLoad();
+			}
+
+			// load songs and create song objects
+			for (name in songSources) {
+				audio = new Audio();
+				src = songSources[name];
+				if (audio.canPlayType('audio/ogg')) {
+					audio.src = src+".ogg";
+				}
+				else if (audio.canPlayType('audio/mp3')) {
+					audio.src = src+".mp3";
+				}
+				else {
+					audio = null;
+					console.error("no song found for: ", name);
+					continue;
+				}
+				console.log("loaded song: ", name);
+				songs[name] = new Ptero.Song(audio);
+				handleLoad();
+			}
 		}
 	};
 
@@ -490,6 +544,8 @@ Ptero.assets = (function(){
 	return {
 		json: json,
 		load: load,
+		sfx: sfx,
+		songs: songs,
 		images: images,
 		vectorSprites: vectorSprites,
 		sprites: sprites,

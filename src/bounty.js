@@ -131,7 +131,7 @@ Ptero.Bounty.prototype = {
 
 			if (isComplete) {
 				// signal bounty completion with sound
-				Ptero.audio.playBountyComplete();
+				Ptero.audio.play('bountyComplete');
 				Ptero.score.addBounties(1);
 
 				// earn bounty reward
@@ -154,7 +154,7 @@ Ptero.Bounty.prototype = {
 			else {
 
 				// signal bounty progression with sound
-				Ptero.audio.playBountyCorrect();
+				Ptero.audio.play('bountyCorrect');
 				Ptero.score.addCaptures(1);
 
 			}
@@ -163,7 +163,7 @@ Ptero.Bounty.prototype = {
 			// caught the wrong the ptero
 
 			// signal bad bounty with sound
-			Ptero.audio.playBountyWrong();
+			Ptero.audio.play('bountyWrong');
 			Ptero.score.addFailedBounties(1);
 
 			// release all caged enemies

@@ -111,7 +111,7 @@ Ptero.Enemy.prototype = {
 			Ptero.score.addKills(1);
 		}
 		this.health = 0;
-		Ptero.audio.playExplode();
+		Ptero.audio.play('explode');
 	},
 	applyDamage: function(damage) {
 		if (this.health <= 0) {
@@ -123,7 +123,7 @@ Ptero.Enemy.prototype = {
 			this.explode();
 		}
 		else {
-			Ptero.audio.playHurt();
+			Ptero.audio.play('hurt');
 
 			this.flashTime = 0.1;
 		}
@@ -180,7 +180,7 @@ Ptero.Enemy.prototype = {
 
 		if (damage < 0) {
 			// negative damage is arbitrarily used to signal a capture
-			Ptero.audio.playNet();
+			Ptero.audio.play('net');
 			this.createCaptureAndReleasePaths();
 			this.path = this.capturePath;
 			if (Ptero.score) {

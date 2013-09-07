@@ -454,7 +454,7 @@ Ptero.orb = (function(){
 					//target.isGoingToDie = true;
 					collideBulletWithBg(bullet);
 					Ptero.bulletpool.add(bullet);
-					Ptero.audio.playShoot();
+					Ptero.audio.play('shoot');
 					return;
 				}
 				else if (dist < minDist) {
@@ -486,7 +486,7 @@ Ptero.orb = (function(){
 			}
 		}
 		Ptero.bulletpool.add(bullet);
-		Ptero.audio.playShoot();
+		Ptero.audio.play('shoot');
 	}
 
 	// Try to fire a bullet into the given direction.
@@ -537,7 +537,7 @@ Ptero.orb = (function(){
 
 		// Add the new bullet to our bullet collection.
 		Ptero.bulletpool.add(bullet);
-		Ptero.audio.playShoot();
+		Ptero.audio.play('shoot');
 	};
 
 	// Returns the angle between the target projected on the screen and the aim vector.

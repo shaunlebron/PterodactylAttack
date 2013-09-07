@@ -56,6 +56,7 @@ Ptero.settings = (function(){
 		},
 		enableMusic: function(on) {
 			values['musicOn'] = on;
+			Ptero.audio.setMusicVolume(this.getMusicVolume());
 			this.save();
 		},
 		enableVibrate: function(on) {
@@ -81,6 +82,9 @@ Ptero.settings = (function(){
 		},
 		isTutorialEnabled: function() {
 			return values['tutorialOn'];
+		},
+		getMusicVolume: function() {
+			return values['musicOn'] ? 1 : 0;
 		},
 		getNetSide: function() {
 			return values['netSide'];
