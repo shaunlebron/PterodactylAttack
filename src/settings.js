@@ -7,7 +7,7 @@ Ptero.settings = (function(){
 		"musicOn": true,
 		"vibrateOn": true,
 		"tutorialOn": true,
-		"netSide": 'right',
+		"netSide": 'left',
 		"high_score": 0,
 		"high_kills": 0,
 		"high_captures": 0,
