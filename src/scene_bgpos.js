@@ -108,18 +108,7 @@ Ptero.scene_bgpos = (function(){
 	}
 
 	function nextBg() {
-		var names = [
-			"mountain",
-			"ice",
-			"volcano",
-		];
-		var currName = Ptero.background.name;
-		var i,len=names.length;
-		for (i=0; i<len; i++) {
-			if (names[i] == currName) {
-				setBg(names[(i+1)%len]);
-			}
-		}
+		setBg(Ptero.getNextBgName());
 	}
 
 	function init() {

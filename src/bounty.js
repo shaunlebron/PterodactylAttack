@@ -41,7 +41,7 @@ Ptero.Bounty.prototype = {
 	},
 	makeColorTable: function() {
 		// associate color indexes to this stage's particular colors and enemies
-		var stage = Ptero.scene_play.getStage();
+		var stage = Ptero.background.name;
 		if (stage == "mountain") {
 			this.colors = [
 				'#7EBBED',

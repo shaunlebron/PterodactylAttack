@@ -1,65 +1,27 @@
 // An overlord manages a list of enemies by spawning and destroying them.
 
-Ptero.getMountainPaths = function() {
-	return {
-		"mountain": [
-			Ptero.assets.json["mountain_path00"],
-			Ptero.assets.json["mountain_path01"],
-			Ptero.assets.json["mountain_path02"],
-			Ptero.assets.json["mountain_path03"],
-			Ptero.assets.json["mountain_path04"],
-			Ptero.assets.json["mountain_path05"],
-			Ptero.assets.json["mountain_path06"],
-			Ptero.assets.json["mountain_path07"],
-			Ptero.assets.json["mountain_path08"],
-			Ptero.assets.json["mountain_path09"],
-		],
-		"ice": [
-			Ptero.assets.json["ice_path00"],
-			Ptero.assets.json["ice_path01"],
-			Ptero.assets.json["ice_path02"],
-			Ptero.assets.json["ice_path03"],
-			Ptero.assets.json["ice_path04"],
-			Ptero.assets.json["ice_path05"],
-			Ptero.assets.json["ice_path06"],
-			Ptero.assets.json["ice_path07"],
-			Ptero.assets.json["ice_path08"],
-			Ptero.assets.json["ice_path09"],
-		],
-		"volcano": [
-			Ptero.assets.json["volcano_path00"],
-			Ptero.assets.json["volcano_path01"],
-			Ptero.assets.json["volcano_path02"],
-			Ptero.assets.json["volcano_path03"],
-			Ptero.assets.json["volcano_path04"],
-			Ptero.assets.json["volcano_path05"],
-			Ptero.assets.json["volcano_path06"],
-			Ptero.assets.json["volcano_path07"],
-		],
-	}[Ptero.background.name];
-};
-
 Ptero.makeOverlord = function() {
-	var paths = Ptero.getMountainPaths();
 	if (Ptero.settings.isTutorialEnabled()) {
 		Ptero.scene_play.enableNet(false);
-		return new Ptero.OverlordTutor(paths);
+		return new Ptero.OverlordTutor();
 	}
 	else {
 		Ptero.scene_play.enableNet(true);
-		return new Ptero.OverlordWaves(paths);
+		return new Ptero.OverlordWaves();
 	}
 };
 
 //////////////////////////////////////////////////////////////////////////////
-Ptero.OverlordTutor = function(paths) {
-	this.paths = paths;
+Ptero.OverlordTutor = function() {
 	this.enemies = [];
 	this.stopped = false;
-
+	this.refreshPaths();
 };
 
 Ptero.OverlordTutor.prototype = {
+	refreshPaths: function() {
+		this.paths = Ptero.background.pteroPaths;
+	},
 	draw: function(ctx) {
 		this.drawSign && this.drawSign(ctx);
 	},
@@ -529,8 +491,7 @@ Ptero.OverlordTutor.prototype = {
 
 //////////////////////////////////////////////////////////////////////////////
 
-Ptero.OverlordWaves = function(paths) {
-	this.paths = paths;
+Ptero.OverlordWaves = function() {
 	this.enemies = [];
 	this.stopped = false;
 
@@ -544,6 +505,9 @@ Ptero.OverlordWaves = function(paths) {
 };
 
 Ptero.OverlordWaves.prototype = {
+	refreshPaths: function() {
+		this.paths = Ptero.background.pteroPaths;
+	},
 	draw: function(ctx) {
 		if (this.showWaveNum) {
 			this.waveBtn.text = "wave " + (this.waveNum+1).toString();
@@ -652,6 +616,12 @@ Ptero.OverlordWaves.prototype = {
 
 		// add event to advance to next wave
 		addEvent(5, function() {
+			Ptero.background.exit();
+			var nextName = Ptero.getNextBgName();
+			Ptero.background.onExitDone = function() {
+				Ptero.setBackground(nextName);
+				that.init();
+			};
 			that.createWaveScript(waveNum + 1);
 		});
 
@@ -675,6 +645,8 @@ Ptero.OverlordWaves.prototype = {
 	init: function() {
 		// empty enemies list
 		this.enemies.length = 0;
+		this.refreshPaths();
+		Ptero.refreshBounty();
 
 		this.script.init();
 	},

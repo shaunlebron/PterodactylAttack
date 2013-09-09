@@ -34,6 +34,9 @@ Ptero.BackgroundLayer.prototype = {
 		this.path = this.introPath;
 		this.syncPositionToPath();
 	},
+	exit: function() {
+		this.path = this.exitPath;
+	},
 	goToIdle: function() {
 		if (this.idlePath) {
 			this.path = this.idlePath;
@@ -89,6 +92,7 @@ Ptero.BackgroundLayer.prototype = {
 			this.path.step(dt);
 
 			// update current path
+			// (it is possible here that the introPath never finishes and just freezes at the end, so idlePath is never used).
 			if (this.path == this.introPath && this.introPath.isDone()) {
 				this.path = this.idlePath;
 				this.idlePath.reset();
@@ -180,9 +184,21 @@ Ptero.Background.prototype = {
 		for (i=0; i<len; i++) {
 			this.layers[i].init();
 		}
+
 		this.isIdle = false;
+		this.isExitDone = false;
+	},
+	exit: function() {
+		this.isIdle = false;
+
+		var i,len=this.layers.length;
+		for (i=0; i<len; i++) {
+			this.layers[i].exit();
+		}
 	},
 	update: function(dt) {
+
+		// trigger onIntroDone event if needed
 		if (!this.isIdle) {
 			var layer = this.layers[0];
 			this.isIdle = (layer.path == layer.idlePath ||
@@ -191,6 +207,16 @@ Ptero.Background.prototype = {
 				this.onIdle && this.onIdle();
 			}
 		}
+
+		// trigger onExitDone event if needed
+		if (!this.isExitDone) {
+			var layer = this.layers[0];
+			this.isExitDone = (layer.path == layer.exitPath && layer.path.time >= layer.path.totalTime);
+			if (this.isExitDone) {
+				this.onExitDone && this.onExitDone();
+			}
+		}
+
 		var i,len=this.layers.length;
 		for (i=0; i<len; i++) {
 			this.layers[i].update(dt);
@@ -326,6 +352,14 @@ Ptero.Background.prototype = {
 					d.introPath.deltaTimes),
 				false);
 
+			// build exit path by reversing intro points
+			layer.exitPath = new Ptero.InterpDriver(
+				Ptero.makeInterp('linear',
+					[d.introPath.values[1], d.introPath.values[0]],
+					d.introPath.deltaTimes),
+				false);
+			layer.exitPath.freezeAtEnd = true;
+
 			// build idle path from points
 			if (d.idlePath.values.length == 0) {
 				layer.idlePath = null;
@@ -394,6 +428,18 @@ Ptero.createBackgrounds = function() {
 				'baby_white',
 				'adult_white',
 			];
+			bg.pteroPaths = [
+				Ptero.assets.json["mountain_path00"],
+				Ptero.assets.json["mountain_path01"],
+				Ptero.assets.json["mountain_path02"],
+				Ptero.assets.json["mountain_path03"],
+				Ptero.assets.json["mountain_path04"],
+				Ptero.assets.json["mountain_path05"],
+				Ptero.assets.json["mountain_path06"],
+				Ptero.assets.json["mountain_path07"],
+				Ptero.assets.json["mountain_path08"],
+				Ptero.assets.json["mountain_path09"],
+			];
 			return bg;
 		})(),
 
@@ -419,6 +465,18 @@ Ptero.createBackgrounds = function() {
 				'adult_ice_green',
 				'baby_white',
 				'adult_white',
+			];
+			bg.pteroPaths = [
+				Ptero.assets.json["ice_path00"],
+				Ptero.assets.json["ice_path01"],
+				Ptero.assets.json["ice_path02"],
+				Ptero.assets.json["ice_path03"],
+				Ptero.assets.json["ice_path04"],
+				Ptero.assets.json["ice_path05"],
+				Ptero.assets.json["ice_path06"],
+				Ptero.assets.json["ice_path07"],
+				Ptero.assets.json["ice_path08"],
+				Ptero.assets.json["ice_path09"],
 			];
 			return bg;
 		})(),
@@ -446,6 +504,16 @@ Ptero.createBackgrounds = function() {
 				'baby_white',
 				'adult_white',
 			];
+			bg.pteroPaths = [
+				Ptero.assets.json["volcano_path00"],
+				Ptero.assets.json["volcano_path01"],
+				Ptero.assets.json["volcano_path02"],
+				Ptero.assets.json["volcano_path03"],
+				Ptero.assets.json["volcano_path04"],
+				Ptero.assets.json["volcano_path05"],
+				Ptero.assets.json["volcano_path06"],
+				Ptero.assets.json["volcano_path07"],
+			];
 			bg.loadLayersData(Ptero.assets.json["bg_volcano_layers"]);
 			return bg;
 		})(),
@@ -469,6 +537,21 @@ Ptero.createBackgrounds = function() {
 	var name;
 	for (name in Ptero.backgrounds) {
 		Ptero.backgrounds[name].name = name;
+	}
+};
+
+Ptero.getNextBgName = function(currName) {
+	var names = [
+		"mountain",
+		"ice",
+		"volcano",
+	];
+	var currName = currName || Ptero.background.name;
+	var i,len=names.length;
+	for (i=0; i<len; i++) {
+		if (names[i] == currName) {
+			return names[(i+1)%len];
+		}
 	}
 };
 

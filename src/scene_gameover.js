@@ -36,6 +36,7 @@ Ptero.scene_gameover = (function(){
 
 		btns["quit"].onclick = function() {
 			switchScene(Ptero.scene_menu);
+			Ptero.audio.play('theme');
 		};
 
 		isNewHigh = Ptero.score.commitStats();

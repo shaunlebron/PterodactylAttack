@@ -92,6 +92,7 @@ Ptero.pause_menu = (function(){
 			Ptero.executive.togglePause();
 			cleanup();
 			Ptero.setScene(Ptero.scene_menu);
+			Ptero.audio.play("theme");
 		};
 	}
 

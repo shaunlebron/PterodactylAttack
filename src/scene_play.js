@@ -66,9 +66,6 @@ Ptero.scene_play = (function() {
 		setStage('mountain');
 		Ptero.setBackground(stage);
 
-		// create a random bounty
-		Ptero.refreshBounty();
-
 		// reset the score
 		Ptero.score.reset();
 
@@ -105,12 +102,6 @@ Ptero.scene_play = (function() {
 		Ptero.orb.setTargets(Ptero.overlord.enemies);
 		Ptero.orb.setNextOrigin(0,-1);
 
-		this.isActive = false;
-		var that = this;
-		Ptero.background.onIdle = function() {
-			that.isActive = true;
-		};
-
 		// add keyboard events
 		window.addEventListener("keydown", onKeyDown);
 		window.addEventListener("keyup", onKeyUp);
@@ -135,7 +126,7 @@ Ptero.scene_play = (function() {
 		}
 		else {
 			time += dt;
-			if (this.isActive) {
+			if (Ptero.background.isIdle) {
 				Ptero.overlord.update(dt);
 				Ptero.orb.update(dt);
 				Ptero.bulletpool.deferBullets();
@@ -148,7 +139,6 @@ Ptero.scene_play = (function() {
 		if (!Ptero.executive.isPaused()) {
 			Ptero.assets.keepExplosionsCached(ctx);
 			Ptero.deferredSprites.draw(ctx);
-			Ptero.orb.draw(ctx);
 			var point;
 			if (Ptero.input.isTouched()) {
 				point = Ptero.input.getWindowPoint();
@@ -160,7 +150,8 @@ Ptero.scene_play = (function() {
 
 			scoreBtn.text = Ptero.score.getScoreStr();
 
-			if (this.isActive) {
+			if (Ptero.background.isIdle) {
+				Ptero.orb.draw(ctx);
 				Ptero.player.drawHealth(ctx, isNetEnabled);
 				buttonList.draw(ctx);
 				Ptero.overlord.draw(ctx);
