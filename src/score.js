@@ -17,6 +17,7 @@ Ptero.score = (function(){
 	var pointQueue = [];
 	var pointDuration = 2.0;
 
+	var waves;
 	var kills;
 	var hits;
 	var misses;
@@ -37,23 +38,29 @@ Ptero.score = (function(){
 		},
 		commitStats: function() {
 			var highScore    = Ptero.settings.get("high_score");
+			var highWaves    = Ptero.settings.get("high_waves");
 			var highKills    = Ptero.settings.get("high_kills");
 			var highCaptures = Ptero.settings.get("high_captures");
 			var highBounties = Ptero.settings.get("high_bounties");
 
 			var isNewHigh = {
 				"score"    : total    > highScore,
+				"waves"    : waves    > highWaves,
 				"kills"    : kills    > highKills,
 				"captures" : captures > highCaptures,
 				"bounties" : bounties > highBounties,
 			};
 
 			Ptero.settings.set("high_score",    Math.max(total,    highScore));
+			Ptero.settings.set("high_waves",    Math.max(waves,    highWaves));
 			Ptero.settings.set("high_kills",    Math.max(kills,    highKills));
 			Ptero.settings.set("high_captures", Math.max(captures, highCaptures));
 			Ptero.settings.set("high_bounties", Math.max(bounties, highBounties));
 
 			return isNewHigh;
+		},
+		addWaves: function(delta) {
+			waves += delta;
 		},
 		addKills: function(delta) {
 			kills += delta;
@@ -72,6 +79,9 @@ Ptero.score = (function(){
 		},
 		addFailedBounties: function(delta) {
 			failedBounties += delta;
+		},
+		getWaves: function() {
+			return waves;
 		},
 		getKills: function() {
 			return kills;
@@ -95,6 +105,7 @@ Ptero.score = (function(){
 		reset: function() {
 			pointQueue.length = 0;
 			total = 0;
+			waves = 0;
 			kills = 0;
 			hits = 0;
 			misses = 0;

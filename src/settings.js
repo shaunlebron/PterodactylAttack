@@ -9,6 +9,7 @@ Ptero.settings = (function(){
 		"tutorialOn": true,
 		"netSide": 'left',
 		"high_score": 0,
+		"high_waves": 0,
 		"high_kills": 0,
 		"high_captures": 0,
 		"high_bounties": 0,

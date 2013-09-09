@@ -24,6 +24,7 @@ Ptero.scene_gameover = (function(){
 		var btns = buttonList.namedButtons;
 
 		btns["score"].text    = Ptero.score.getTotal().toString();
+		btns["waves"].text    = Ptero.score.getWaves().toString();
 		btns["kills"].text    = Ptero.score.getKills().toString();
 		btns["caps"].text     = Ptero.score.getCaptures().toString();
 		btns["bounties"].text = Ptero.score.getBounties().toString();

@@ -580,6 +580,7 @@ Ptero.OverlordWaves.prototype = {
 		addEvent(0, function() {
 			that.waveNum = waveNum;
 			that.showWaveNum = true;
+			Ptero.score.addWaves(1);
 		});
 
 		// Hide wave count after 3 seconds
