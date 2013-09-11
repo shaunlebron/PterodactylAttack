@@ -508,8 +508,8 @@ Ptero.OverlordWaves.prototype = {
 	refreshPaths: function() {
 		this.paths = Ptero.background.pteroPaths;
 	},
-	showWave: function() {
-		this.waveBtn.text = "wave " + (this.waveNum+1).toString();
+	showWaveTitle: function(text) {
+		this.waveBtn.text = text;
 		var that = this;
 		this.waveTitle = (function(){
 			var radius = 70;
@@ -579,7 +579,7 @@ Ptero.OverlordWaves.prototype = {
 		// Show wave count
 		addEvent(0, function() {
 			that.waveNum = waveNum;
-			that.showWave();
+			that.showWaveTitle("wave " + (waveNum+1).toString());
 			Ptero.score.addWaves(1);
 		});
 
@@ -647,10 +647,7 @@ Ptero.OverlordWaves.prototype = {
 
 		// add event to advance to next wave
 		addEvent(5, function() {
-			Ptero.scene_play.fadeToNextStage(function(){
-				that.createWaveScript(waveNum + 1);
-				that.init();
-			});
+			that.waitingForTheEnd = true;
 		});
 
 		// create the script to execute the timed events
@@ -675,6 +672,7 @@ Ptero.OverlordWaves.prototype = {
 		this.enemies.length = 0;
 		this.refreshPaths();
 		Ptero.refreshBounty();
+		this.waitingForTheEnd = false;
 
 		this.script.init();
 	},
@@ -710,6 +708,26 @@ Ptero.OverlordWaves.prototype = {
 						pos.z);
 				}
 				i++;
+			}
+		}
+
+		// end the wave when appropriate
+		if (this.waitingForTheEnd) {
+			var that = this;
+			function readyToEnd() {
+				var i,len=that.enemies.length;
+				for (i=0; i<len; i++) {
+					if (!that.enemies[i].isCaught) {
+						return false;
+					}
+				}
+				return true;
+			}
+			if (readyToEnd()) {
+				Ptero.scene_play.fadeToNextStage(function(){
+					that.createWaveScript(that.waveNum + 1);
+					that.init();
+				});
 			}
 		}
 	},
