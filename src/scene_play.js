@@ -1,16 +1,26 @@
 
 Ptero.scene_play = (function() {
 
+	var isPaused = false;
+	function pause() {
+		isPaused = true;
+		disableControls();
+		Ptero.pause_menu.enable();
+		Ptero.pause_menu.animateIn();
+	}
+	function unpause() {
+		isPaused = false;
+		Ptero.pause_menu.disable();
+		enableControls();
+	}
+
 	var KEY_SPACE = 32;
 	var KEY_SHIFT = 16;
 	var KEY_CTRL = 17;
 	var KEY_ALT = 18;
 	var KEY_A = 65;
 	function onKeyDown(e) {
-		if (e.keyCode == KEY_SPACE) {
-			Ptero.executive.togglePause();
-		}
-		else if (e.keyCode == KEY_A) {
+		if (e.keyCode == KEY_A) {
 			Ptero.orb.toggleDrawCones();
 		}
 		else if (e.keyCode == KEY_SHIFT) {
@@ -59,12 +69,12 @@ Ptero.scene_play = (function() {
 
 	var time;
 	function init() {
+		isPaused = false;
 
 		Ptero.orb.enableGuide(false);
 
 		// set the background
-		setStage('mountain');
-		Ptero.setBackground(stage);
+		Ptero.setBackground('mountain');
 
 		// reset the score
 		Ptero.score.reset();
@@ -75,10 +85,7 @@ Ptero.scene_play = (function() {
 		scoreBtn = btns["score"];
 
 		pauseBtn = btns["pause"];
-		pauseBtn.onclick = function() {
-			Ptero.executive.togglePause();
-			Ptero.pause_menu.enable();
-		};
+		pauseBtn.onclick = pause;
 
 		netLeftBtn = btns["netLeft"];
 		netRightBtn = btns["netRight"];
@@ -113,30 +120,30 @@ Ptero.scene_play = (function() {
 		enableControls();
 	};
 
-	function resume() {
-		//on resume, renable the pause menu
-		Ptero.executive.togglePause();
-		Ptero.pause_menu.enable();
-		Ptero.orb.setTargets(Ptero.overlord.enemies);
-	}
-
 	function update(dt) {
-		if (Ptero.player.health <= 0) {
-			Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+		if (!isPaused) {
+			if (Ptero.player.health <= 0) {
+				Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+			}
+			else {
+				time += dt;
+				if (Ptero.background.isIdle) {
+					Ptero.overlord.update(dt);
+					Ptero.orb.update(dt);
+					Ptero.bulletpool.deferBullets();
+					Ptero.score.update(dt);
+				}
+			}
 		}
 		else {
-			time += dt;
-			if (Ptero.background.isIdle) {
-				Ptero.overlord.update(dt);
-				Ptero.orb.update(dt);
-				Ptero.bulletpool.deferBullets();
-				Ptero.score.update(dt);
-			}
+			Ptero.overlord.update(0);
+			Ptero.bulletpool.deferBullets();
+			Ptero.pause_menu.update(dt);
 		}
 	};
 
 	function draw(ctx) {
-		if (!Ptero.executive.isPaused()) {
+		if (!isPaused) {
 			Ptero.assets.keepExplosionsCached(ctx);
 			Ptero.deferredSprites.draw(ctx);
 			var point;
@@ -164,14 +171,6 @@ Ptero.scene_play = (function() {
 
 	};
 
-	var stage;
-	function getStage() {
-		return stage;
-	}
-	function setStage(d) {
-		stage = d;
-	}
-
 	var isNetEnabled = false;
 	function enableNet(on) {
 		isNetEnabled = on;
@@ -195,14 +194,11 @@ Ptero.scene_play = (function() {
 
 	return {
 		init: init,
-		resume: resume,
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
-		disableControls: disableControls,
-		enableControls: enableControls,
-		getStage: getStage,
-		setStage: setStage,
 		enableNet: enableNet,
+		pause: pause,
+		unpause: unpause,
 	};
 })();

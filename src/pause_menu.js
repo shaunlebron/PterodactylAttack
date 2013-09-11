@@ -8,7 +8,7 @@ Ptero.pause_menu = (function(){
 	var vibrateBtn;
 	var netSideBtn;
 
-	function cleanup() {
+	function disable() {
 		buttonList.disable();
 	}
 
@@ -19,8 +19,6 @@ Ptero.pause_menu = (function(){
 		enableMusic(Ptero.settings.isMusicEnabled());
 		enableVibrate(Ptero.settings.isVibrateEnabled());
 		setNetSide(Ptero.settings.getNetSide());
-
-		Ptero.scene.disableControls();
 	}
 
 	function setNetSide(side) {
@@ -83,26 +81,38 @@ Ptero.pause_menu = (function(){
 		netSideBtn.onclick = toggleNetSide;
 
 		btns["resume"].onclick = function() {
-			Ptero.executive.togglePause();
-			cleanup();
-			Ptero.scene.enableControls();
+			Ptero.scene_play.unpause();
 		};
 
 		btns["quit"].onclick = function() {
-			Ptero.executive.togglePause();
-			cleanup();
+			Ptero.scene_play.unpause();
 			Ptero.setScene(Ptero.scene_menu);
 			Ptero.audio.play("theme");
 		};
 	}
 
 	function draw(ctx) {
+
+		ctx.save();
+		ctx.translate(displacement, 0);
 		buttonList.draw(ctx);
+		ctx.restore();
+	}
+	
+	function update(dt) {
+		displacement *= 0.7;
+	}
+
+	var displacement = 0;
+	function animateIn() {
+		displacement = Ptero.screen.getWindowWidth();
 	}
 
 	return {
+		animateIn: animateIn,
 		init: init,
-		cleanup: cleanup,
+		update: update,
+		disable: disable,
 		enable: enable,
 		draw: draw,
 	};
