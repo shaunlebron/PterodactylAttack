@@ -14,7 +14,6 @@ Ptero.scene_gameover = (function(){
 		Ptero.overlord.stopScript();
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_gameover"]);
-		buttonList.enable();
 
 		var btns = buttonList.namedButtons;
 
@@ -35,6 +34,12 @@ Ptero.scene_gameover = (function(){
 			Ptero.audio.stop('score');
 			Ptero.audio.play('theme');
 		};
+
+		// enable controls after one second to prevent inadvertent selection if swipe actions spill over from the game
+		setTimeout(function() {
+			btns["replay"].enable();
+			btns["quit"].enable();
+		}, 1000);
 
 		isNewHigh = Ptero.score.commitStats();
 		btns["highScore"].shouldDraw = isNewHigh.score;
