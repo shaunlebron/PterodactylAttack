@@ -673,6 +673,7 @@ Ptero.OverlordWaves.prototype = {
 		this.refreshPaths();
 		Ptero.refreshBounty();
 		this.waitingForTheEnd = false;
+		this.waveTitle = null;
 
 		this.script.init();
 	},
@@ -724,6 +725,8 @@ Ptero.OverlordWaves.prototype = {
 				return true;
 			}
 			if (readyToEnd()) {
+				this.waitingForTheEnd = false;
+				this.showWaveTitle("WAVE COMPLETE!");
 				Ptero.scene_play.fadeToNextStage(function(){
 					that.createWaveScript(that.waveNum + 1);
 					that.init();

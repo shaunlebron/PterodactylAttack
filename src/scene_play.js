@@ -218,10 +218,12 @@ Ptero.scene_play = (function() {
 				time += dt;
 				hud.update(dt);
 				if (state == "active") {
-					Ptero.overlord.update(dt);
 					Ptero.orb.update(dt);
 					Ptero.bulletpool.deferBullets();
 					Ptero.score.update(dt);
+				}
+				if (state == 'active' || state == 'fade-out') {
+					Ptero.overlord.update(dt);
 				}
 			}
 		}
@@ -251,6 +253,8 @@ Ptero.scene_play = (function() {
 
 			if (state == "active") {
 				Ptero.orb.draw(ctx);
+			}
+			if (state == 'active' || state == 'fade-out') {
 				Ptero.overlord.draw(ctx);
 			}
 		}
