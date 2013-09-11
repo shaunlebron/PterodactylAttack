@@ -32,9 +32,22 @@ Ptero.BackgroundLayer.prototype = {
 		}
 
 		this.path = this.introPath;
+
+		// For now, we are skipping the intro path for layers with an idle path.
+		// This is a temporary fix for aesthetics so we don't have to blend the idle path with the exit path.
+		if (this.idlePath) {
+			this.path = this.idlePath;
+		}
+
 		this.syncPositionToPath();
 	},
 	exit: function() {
+		// For now, we are skipping the intro path for layers with an idle path.
+		// This is a temporary fix for aesthetics so we don't have to blend the idle path with the exit path.
+		if (this.idlePath) {
+			return;
+		}
+
 		this.path = this.exitPath;
 		this.exitPath.reset();
 	},
@@ -98,7 +111,6 @@ Ptero.BackgroundLayer.prototype = {
 				this.path = this.idlePath;
 				this.idlePath.reset();
 			}
-
 			
 			this.syncPositionToPath();
 		}
@@ -186,6 +198,16 @@ Ptero.Background.prototype = {
 			this.layers[i].init();
 		}
 
+		var i,len=this.layers.length;
+		var layer;
+		for (i=0; i<len; i++) {
+			var layer = this.layers[i];
+			if (!layer.idlePath) {
+				break;
+			}
+		}
+		this.animLayerRef = layer;
+
 		this.isIdle = false;
 		this.isExitDone = false;
 	},
@@ -202,9 +224,8 @@ Ptero.Background.prototype = {
 
 		// trigger onIntroDone event if needed
 		if (!this.isIdle) {
-			var layer = this.layers[0];
-			this.isIdle = (layer.path == layer.idlePath ||
-				(layer.path == layer.introPath && layer.path.time >= layer.path.totalTime));
+			var layer = this.animLayerRef;
+			this.isIdle = (layer.path == layer.introPath && layer.path.time >= layer.path.totalTime);
 			if (this.isIdle) {
 				this.onIdle && this.onIdle();
 			}
@@ -212,7 +233,7 @@ Ptero.Background.prototype = {
 
 		// trigger onExitDone event if needed
 		if (!this.isExitDone) {
-			var layer = this.layers[0];
+			var layer = this.animLayerRef;
 			this.isExitDone = (layer.path == layer.exitPath && layer.path.time >= layer.path.totalTime);
 			if (this.isExitDone) {
 				this.onExitDone && this.onExitDone();
