@@ -36,6 +36,7 @@ Ptero.BackgroundLayer.prototype = {
 	},
 	exit: function() {
 		this.path = this.exitPath;
+		this.exitPath.reset();
 	},
 	goToIdle: function() {
 		if (this.idlePath) {
@@ -190,6 +191,7 @@ Ptero.Background.prototype = {
 	},
 	exit: function() {
 		this.isIdle = false;
+		this.isExitDone = false;
 
 		var i,len=this.layers.length;
 		for (i=0; i<len; i++) {
