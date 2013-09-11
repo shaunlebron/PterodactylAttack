@@ -107,9 +107,7 @@ Ptero.scene_play = (function() {
 		Ptero.overlord.init();
 
 		// initialize orb
-		Ptero.orb.init();
 		Ptero.orb.setTargets(Ptero.overlord.enemies);
-		Ptero.orb.setNextOrigin(0,-1);
 
 		// add keyboard events
 		window.addEventListener("keydown", onKeyDown);
@@ -201,6 +199,8 @@ Ptero.scene_play = (function() {
 	function switchBackground(name) {
 		state = "intro";
 		hud.hide();
+		Ptero.orb.init();
+		Ptero.orb.setNextOrigin(0,-1);
 		Ptero.setBackground(name);
 		Ptero.background.onIdle = function() {
 			hud.fadeIn(1, function(){
