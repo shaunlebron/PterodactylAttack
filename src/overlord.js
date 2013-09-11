@@ -508,11 +508,47 @@ Ptero.OverlordWaves.prototype = {
 	refreshPaths: function() {
 		this.paths = Ptero.background.pteroPaths;
 	},
-	draw: function(ctx) {
-		if (this.showWaveNum) {
-			this.waveBtn.text = "wave " + (this.waveNum+1).toString();
-			this.waveBtn.draw(ctx);
-		}
+	showWave: function() {
+		this.waveBtn.text = "wave " + (this.waveNum+1).toString();
+		var that = this;
+		this.waveTitle = (function(){
+			var radius = 70;
+			var transitionTime = 0.1;
+			var stayTime = 2;
+			var interp = Ptero.makeInterpForObjs('linear',
+				[
+					{ 'offset': -radius , 'alpha': 0 , } ,
+					{ 'offset': 0       , 'alpha': 1 , } ,
+					{ 'offset': 0       , 'alpha': 1 , } ,
+					{ 'offset': radius  , 'alpha': 0 , }
+				],
+				['offset', 'alpha'],
+				[0, transitionTime, stayTime, transitionTime]);
+
+			var driver = new Ptero.InterpDriver(interp);
+
+			function update(dt) {
+				driver.step(dt);
+				if (driver.isDone()) {
+					that.waveTitle = null;
+				}
+			}
+			function draw(ctx) {
+				var val = driver.val;
+				if (val) {
+					ctx.save();
+					ctx.translate(0, val.offset);
+					ctx.globalAlpha = val.alpha;
+					that.waveBtn.draw(ctx);
+					ctx.globalAlpha = 1;
+					ctx.restore();
+				}
+			}
+			return {
+				update: update,
+				draw: draw,
+			};
+		})();
 	},
 	stopScript: function() {
 		this.stopped = true;
@@ -543,13 +579,8 @@ Ptero.OverlordWaves.prototype = {
 		// Show wave count
 		addEvent(0, function() {
 			that.waveNum = waveNum;
-			that.showWaveNum = true;
+			that.showWave();
 			Ptero.score.addWaves(1);
-		});
-
-		// Hide wave count after 3 seconds
-		addEvent(3, function() {
-			that.showWaveNum = false;
 		});
 
 		// the time to wait between each ptero group
@@ -647,7 +678,11 @@ Ptero.OverlordWaves.prototype = {
 
 		this.script.init();
 	},
+	draw: function(ctx) {
+		this.waveTitle && this.waveTitle.draw(ctx);
+	},
 	update: function(dt) {
+		this.waveTitle && this.waveTitle.update(dt);
 
 		if (!this.stopped) {
 			this.script.update(dt);
