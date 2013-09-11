@@ -9,11 +9,6 @@ Ptero.scene_gameover = (function(){
 		buttonList.disable();
 	}
 
-	function switchScene(scene) {
-		Ptero.audio.fadeOut('score',1.0);
-		Ptero.fadeToScene(scene,0.5);
-	}
-
 	function init() {
 		Ptero.audio.play('score');
 		Ptero.overlord.stopScript();
@@ -31,11 +26,13 @@ Ptero.scene_gameover = (function(){
 		btns["accuracy"].text = Math.floor(Ptero.score.getAccuracy()*100).toString();
 
 		btns["replay"].onclick = function() {
-			switchScene(Ptero.scene_play);
+			Ptero.audio.fadeOut('score',1.0);
+			Ptero.setScene(Ptero.scene_play);
 		};
 
 		btns["quit"].onclick = function() {
-			switchScene(Ptero.scene_menu);
+			Ptero.setScene(Ptero.scene_menu);
+			Ptero.audio.stop('score');
 			Ptero.audio.play('theme');
 		};
 

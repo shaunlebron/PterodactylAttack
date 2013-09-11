@@ -1,6 +1,35 @@
 
 Ptero.audio = (function() {
 
+	function stop(name) {
+		var sfx = Ptero.assets.sfx[name];
+		if (sfx) {
+			sfx.pause();
+			sfx.currentTime = 0;
+			return;
+		}
+
+		var song = Ptero.assets.songs[name];
+		if (song) {
+			song.stop();
+			return;
+		}
+	}
+
+	function pause(name) {
+		var sfx = Ptero.assets.sfx[name];
+		if (sfx) {
+			sfx.pause();
+			return;
+		}
+
+		var song = Ptero.assets.songs[name];
+		if (song) {
+			song.pause();
+			return;
+		}
+	}
+
 	function play(name) {
 		var sfx = Ptero.assets.sfx[name];
 		if (sfx) {
@@ -41,6 +70,8 @@ Ptero.audio = (function() {
 	return {
 		update         : update,
 		play           : play,
+		pause          : pause,
+		stop           : stop,
 		fadeOut        : fadeOut,
 		setMusicVolume : setMusicVolume,
 	};
