@@ -819,6 +819,7 @@ Ptero.orb = (function(){
 
 		// Start the charge if touch starts inside the orb.
 		function start(nearPoint,screenPoint,i) {
+			console.log('orb start at', screenPoint.x, screenPoint.y);
 
 			if (startIndex != null) {
 				return;
