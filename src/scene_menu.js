@@ -21,13 +21,13 @@ Ptero.scene_menu = (function(){
 	}
 
 	var fadeOutTime;
-	var fadeOutLen = 1.0;
+	var fadeOutLen = 0.5;
 	function fadeToGame() {
 		fadeOutTime = fadeOutLen;
 	}
 	function startGame() {
 		switchScene(Ptero.scene_play);
-		Ptero.audio.fadeOut('theme',1.0);
+		Ptero.audio.fadeOut('theme', fadeOutLen);
 	}
 
 	function createPteros() {
