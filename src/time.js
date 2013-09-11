@@ -4,41 +4,41 @@ Ptero.StopWatch = function() {
 };
 
 Ptero.StopWatch.prototype = {
-	reset: function reset() {
-		this.elapsedMillis = 0;
+	reset: function() {
+		this.t = 0;
 	},
-	increment: function increment(millis) {
-		this.elapsedMillis += millis;
+	update: function(dt) {
+		this.t += dt;
 	},
 };
 
-Ptero.Timer = function(millisLimit) {
-	this.millisLimit = millisLimit;
+Ptero.Timer = function(d) {
+	this.limit = d.limit;
+	this.onFinish = d.onFinish;
+	this.onUpdate = d.onUpdate;
 	this.stopWatch = new Ptero.StopWatch;
 };
 
 Ptero.Timer.prototype = {
-	setFinishCallback: function setFinishCallback(callback) {
-		this.onFinish = callback;
+	isDone: function() {
+		return this.stopWatch.t > this.limit;
 	},
-	isDone: function isDone() {
-		return this.stopWatch.elapsedMillis > this.millisLimit;
+	getTimeElapsed: function() {
+		return Math.min(this.limit,this.stopWatch.t);
 	},
-	getElapsedMillis: function getElapsedMillis() {
-		return this.stopWatch.elapsedMillis;
-	},
-	getMillisLeft: function() {
-		return Math.max(0,this.millisLimit - this.getElapsedMillis());
+	getTimeLeft: function() {
+		return this.limit - this.getTimeElapsed();
 	},
 	reset: function reset() {
 		this.stopWatch.reset();
 	},
-	increment: function increment(millis) {
+	update: function(dt) {
 		if (this.isDone()) {
 			this.onFinish && this.onFinish();
 		}
 		else {
-			this.stopWatch.increment(millis);
+			this.stopWatch.update(dt);
+			this.onUpdate && this.onUpdate(dt, this.getTimeElapsed(), this.limit);
 		}
 	},
 };

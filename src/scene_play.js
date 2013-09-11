@@ -1,6 +1,8 @@
 
 Ptero.scene_play = (function() {
 
+	var state;
+
 	var isPaused = false;
 	function pause() {
 		isPaused = true;
@@ -74,7 +76,7 @@ Ptero.scene_play = (function() {
 		Ptero.orb.enableGuide(false);
 
 		// set the background
-		Ptero.setBackground('mountain');
+		switchBackground('mountain');
 
 		// reset the score
 		Ptero.score.reset();
@@ -120,6 +122,93 @@ Ptero.scene_play = (function() {
 		enableControls();
 	};
 
+	var hud = (function(){
+
+		var alpha;
+		var timer;
+
+		function hide() {
+			alpha = null;
+		}
+
+		function fadeIn(t, onDone) {
+			state = "fade-in";
+			var duration = 0.25;
+			var interp = Ptero.makeInterp('linear', [0,1], [0, duration]);
+			timer = new Ptero.Timer({
+				limit: duration,
+				onUpdate: function(dt,t) {
+					alpha = interp(t);
+				},
+				onFinish: function() {
+					alpha = 1;
+					timer = null;
+					onDone && onDone();
+				},
+			});
+		}
+
+		function fadeOut(t, onDone) {
+			state = "fade-out";
+			var duration = 0.25;
+			var interp = Ptero.makeInterp('linear', [1,0], [0, duration]);
+			timer = new Ptero.Timer({
+				limit: duration,
+				onUpdate: function(dt,t) {
+					alpha = interp(t);
+				},
+				onFinish: function() {
+					alpha = 0;
+					timer = null;
+					onDone && onDone();
+				},
+			});
+		}
+
+		function update(dt) {
+			timer && timer.update(dt);
+		}
+
+		function draw(ctx) {
+			if (alpha) {
+				ctx.globalAlpha = alpha;
+				Ptero.player.drawHealth(ctx, isNetEnabled);
+				buttonList.draw(ctx);
+				ctx.globalAlpha = 1;
+			}
+		}
+
+		return {
+			hide: hide,
+			fadeIn: fadeIn,
+			fadeOut: fadeOut,
+			update: update,
+			draw: draw,
+		};
+	})();
+
+	function fadeToNextStage(onDone) {
+		hud.fadeOut(1, function() {
+			var nextName = Ptero.getNextBgName();
+			Ptero.background.exit();
+			Ptero.background.onExitDone = function() {
+				switchBackground(nextName);
+				onDone && onDone();
+			};
+		});
+	}
+
+	function switchBackground(name) {
+		state = "intro";
+		hud.hide();
+		Ptero.setBackground(name);
+		Ptero.background.onIdle = function() {
+			hud.fadeIn(1, function(){
+				state = "active";
+			});
+		};
+	}
+
 	function update(dt) {
 		if (!isPaused) {
 			if (Ptero.player.health <= 0) {
@@ -127,7 +216,8 @@ Ptero.scene_play = (function() {
 			}
 			else {
 				time += dt;
-				if (Ptero.background.isIdle) {
+				hud.update(dt);
+				if (state == "active") {
 					Ptero.overlord.update(dt);
 					Ptero.orb.update(dt);
 					Ptero.bulletpool.deferBullets();
@@ -157,10 +247,10 @@ Ptero.scene_play = (function() {
 
 			scoreBtn.text = Ptero.score.getScoreStr();
 
-			if (Ptero.background.isIdle) {
+			hud.draw(ctx);
+
+			if (state == "active") {
 				Ptero.orb.draw(ctx);
-				Ptero.player.drawHealth(ctx, isNetEnabled);
-				buttonList.draw(ctx);
 				Ptero.overlord.draw(ctx);
 			}
 		}
@@ -200,5 +290,6 @@ Ptero.scene_play = (function() {
 		enableNet: enableNet,
 		pause: pause,
 		unpause: unpause,
+		fadeToNextStage: fadeToNextStage,
 	};
 })();

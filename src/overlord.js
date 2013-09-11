@@ -616,13 +616,10 @@ Ptero.OverlordWaves.prototype = {
 
 		// add event to advance to next wave
 		addEvent(5, function() {
-			Ptero.background.exit();
-			var nextName = Ptero.getNextBgName();
-			Ptero.background.onExitDone = function() {
-				Ptero.setBackground(nextName);
+			Ptero.scene_play.fadeToNextStage(function(){
+				that.createWaveScript(waveNum + 1);
 				that.init();
-			};
-			that.createWaveScript(waveNum + 1);
+			});
 		});
 
 		// create the script to execute the timed events
