@@ -9,9 +9,11 @@ Ptero.scene_gameover = (function(){
 		buttonList.disable();
 	}
 
+	var isExiting;
 	function init() {
 		Ptero.audio.play('score');
 		Ptero.overlord.stopScript();
+		isExiting = false;
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_gameover"]);
 
@@ -25,8 +27,13 @@ Ptero.scene_gameover = (function(){
 		btns["accuracy"].text = Math.floor(Ptero.score.getAccuracy()*100).toString();
 
 		btns["replay"].onclick = function() {
+			isExiting = true;
+			cleanup();
 			Ptero.audio.fadeOut('score',1.0);
-			Ptero.setScene(Ptero.scene_play);
+			Ptero.background.exit();
+			Ptero.background.onExitDone = function() {
+				Ptero.setScene(Ptero.scene_play);
+			};
 		};
 
 		btns["quit"].onclick = function() {
@@ -47,7 +54,9 @@ Ptero.scene_gameover = (function(){
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
-		buttonList.draw(ctx);
+		if (!isExiting) {
+			buttonList.draw(ctx);
+		}
 	}
 
 	var time = 0;
