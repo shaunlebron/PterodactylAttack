@@ -38,20 +38,16 @@ Ptero.scene_gameover = (function(){
 
 		isNewHigh = Ptero.score.commitStats();
 		btns["highScore"].shouldDraw = isNewHigh.score;
-
-        Ptero.orb.setNextOrigin(0,-2);
 	}
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
-		Ptero.orb.draw(ctx);
 		buttonList.draw(ctx);
 	}
 
 	var time = 0;
 	function update(dt) {
 		time += dt;
-		Ptero.orb.update(dt);
 		Ptero.overlord.update(dt);
 	}
 

@@ -904,6 +904,7 @@ Ptero.orb = (function(){
 	var touchEnabled = false;
 	function enableTouch() {
 		if (!touchEnabled) {
+			console.log('enabling orb touch');
 			Ptero.input.addTouchHandler(touchHandler);
 			touchEnabled = true;
 		}
@@ -911,6 +912,7 @@ Ptero.orb = (function(){
 	function disableTouch() {
 		if (touchEnabled) {
 			Ptero.input.removeTouchHandler(touchHandler);
+			console.log('disabling orb touch');
 			touchEnabled = false;
 		}
 	};
