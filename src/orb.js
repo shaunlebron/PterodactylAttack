@@ -811,6 +811,10 @@ Ptero.orb = (function(){
 		var startIn = false;
 		var startIndex = null;
 
+		function reset() {
+			startIndex = null;
+		}
+
 		// Determine if the given point is in the orb's touch surface.
 		function isInside(nearPoint) {
 			var r = getSpaceRadius();
@@ -819,7 +823,6 @@ Ptero.orb = (function(){
 
 		// Start the charge if touch starts inside the orb.
 		function start(nearPoint,screenPoint,i) {
-			console.log('orb start at', screenPoint.x, screenPoint.y);
 
 			if (startIndex != null) {
 				return;
@@ -895,6 +898,7 @@ Ptero.orb = (function(){
 		};
 		return {
 			coord: "window",
+			reset: reset,
 			start: wrapFunc(start),
 			move: wrapFunc(move),
 			end: wrapFunc(end),
@@ -905,15 +909,14 @@ Ptero.orb = (function(){
 	var touchEnabled = false;
 	function enableTouch() {
 		if (!touchEnabled) {
-			console.log('enabling orb touch');
 			Ptero.input.addTouchHandler(touchHandler);
 			touchEnabled = true;
 		}
 	};
 	function disableTouch() {
 		if (touchEnabled) {
+			touchHandler.reset();
 			Ptero.input.removeTouchHandler(touchHandler);
-			console.log('disabling orb touch');
 			touchEnabled = false;
 		}
 	};
