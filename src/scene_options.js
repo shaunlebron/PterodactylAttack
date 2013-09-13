@@ -64,6 +64,17 @@ Ptero.scene_options = (function(){
 	}
 
 	var displacement = 0;
+	var updateDisplacement = (function(){
+		var time = 0;
+		var step = 1/60;
+		return function(dt) {
+			time += dt;
+			while (time - step >= 0) {
+				time -= step;
+				displacement *= 0.7;
+			}
+		};
+	})();
 	function animateIn() {
 		displacement = Ptero.screen.getWindowWidth();
 	}
@@ -116,7 +127,7 @@ Ptero.scene_options = (function(){
 	}
 
 	function update(dt) {
-		displacement *= 0.7;
+		updateDisplacement(dt);
 	}
 
 	function draw(ctx) {

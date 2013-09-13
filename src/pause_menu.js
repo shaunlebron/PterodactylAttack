@@ -100,10 +100,24 @@ Ptero.pause_menu = (function(){
 	}
 	
 	function update(dt) {
-		displacement *= 0.7;
+		updateDisplacement(dt);
 	}
 
 	var displacement = 0;
+
+	// update displacement with a factor-based deceleration that is framerate independent
+	var updateDisplacement = (function(){
+		var time = 0;
+		var step = 1/60;
+		return function(dt) {
+			time += dt;
+			while (time - step >= 0) {
+				time -= step;
+				displacement *= 0.7;
+			}
+		};
+	})();
+
 	function animateIn() {
 		displacement = Ptero.screen.getWindowWidth();
 	}
