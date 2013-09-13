@@ -139,6 +139,19 @@ Ptero.orb = (function(){
 	function setOrigin(xfrac, yfrac) {
 		origin = convertFracToAbs(xfrac,yfrac);
 	};
+	var updateOrigin = (function(){
+		var time = 0;
+		var step = 1/60;
+		return function(dt) {
+			time += dt;
+			while (time - step >= 0) {
+				time -= step;
+				origin.x += (next_origin.x - origin.x) * 0.3;
+				origin.y += (next_origin.y - origin.y) * 0.3;
+				origin.z += (next_origin.z - origin.z) * 0.3;
+			}
+		};
+	})();
 
 	// the orb's targets.
 	var targets;
@@ -154,7 +167,7 @@ Ptero.orb = (function(){
 	};
 
 	function update(dt) {
-		origin.ease_to(next_origin, 0.3);
+		updateOrigin(dt);
 		Ptero.bulletpool.update(dt);
 		charge.update(dt);
 		updateBlinkTimer(dt);
