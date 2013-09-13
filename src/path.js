@@ -36,6 +36,11 @@ Ptero.InterpDriver.prototype = {
 		this.step(0);
 	},
 
+	skipToEnd: function() {
+		this.time = this.totalTime;
+		this.step(0);
+	},
+
 	isDone: function isDone() {
 		return !this.loop && !this.freezeAtEnd && this.time > this.totalTime; 
 	},
