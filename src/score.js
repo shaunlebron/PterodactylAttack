@@ -14,8 +14,6 @@ Ptero.score = (function(){
 	var highScore;
 
 	var total = 0;
-	var pointQueue = [];
-	var pointDuration = 2.0;
 
 	var waves;
 	var kills;
@@ -103,7 +101,6 @@ Ptero.score = (function(){
 			return (total == 0) ? 0 : hits/total;
 		},
 		reset: function() {
-			pointQueue.length = 0;
 			total = 0;
 			waves = 0;
 			kills = 0;
@@ -114,32 +111,11 @@ Ptero.score = (function(){
 			failedBounties = 0;
 		},
 		update: function(dt) {
-			var i,len=pointQueue.length;
-
-			// update times
-			for (i=0;i<len;i++) {
-				pointQueue[i].time += dt;
-			}
-
-			// expire times
-			i=0;
-			while (pointQueue[i]) {
-				if (pointQueue[i].time > pointDuration) {
-					pointQueue.splice(i,1);
-				}
-				else {
-					i++;
-				}
-			}
 		},
 		getScoreStr: function() {
 			return zeroPad(7,total);
 		},
 		addPoints: function(value) {
-			pointQueue.push({
-				value: value,
-				time: 0,
-			});
 			total += value;
 		},
 		setTotal: function(value) {
