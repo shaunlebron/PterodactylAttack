@@ -3,10 +3,13 @@ Ptero.Player = function() {
 	this.initHealth = 3;
 
 	this.reset();
-
+	this.setGod(false);
 };
 
 Ptero.Player.prototype = {
+	setGod: function(on) {
+		this.isGod = on;
+	},
 	reset: function() {
 		this.health = this.initHealth;
 	},
@@ -14,6 +17,10 @@ Ptero.Player.prototype = {
 		this.health = Math.min(this.maxHealth, this.health+hp);
 	},
 	applyDamage: function(dmg) {
+		if (this.isGod) {
+			dmg = 0;
+		}
+
 		if (this.health > 0) {
 			if (Ptero.settings.isVibrateEnabled()) {
 				navigator.vibrate && navigator.vibrate(200);

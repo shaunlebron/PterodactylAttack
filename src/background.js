@@ -554,6 +554,27 @@ Ptero.createBackgrounds = function() {
 			return bg;
 		})(),
 
+		"tutorial": (function(){
+			var bg = new Ptero.Background();
+			bg.sprites = [
+				Ptero.assets.sprites["bg_tutorial"],
+			];
+			bg.loadLayersData(Ptero.assets.json["bg_tutorial_layers"]);
+			bg.vectorAnimsToLoad = [
+				'baby_mountain_blue',
+				'adult_mountain_green',
+			];
+			bg.pteroPaths = [
+				Ptero.assets.json["tutorial_path00"],
+				Ptero.assets.json["tutorial_path01"],
+				Ptero.assets.json["tutorial_path02"],
+				Ptero.assets.json["tutorial_path03"],
+				Ptero.assets.json["tutorial_path04"],
+				Ptero.assets.json["tutorial_path05"],
+			];
+			return bg;
+		})(),
+
 	};
 
 	// Let each background know its own name.

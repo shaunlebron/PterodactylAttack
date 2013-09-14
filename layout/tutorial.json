@@ -1,0 +1,139 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"name": "title",
+			"x": 0.5,
+			"y": 0.09076946924603184,
+			"centerX": 249.65714285714296,
+			"centerY": 69.14285714285717,
+			"w": 499.3142857142859,
+			"h": 138.28571428571433,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "lesson 1"
+		},
+		{
+			"name": "subtitle",
+			"x": 0.5,
+			"y": 0.19219246031746032,
+			"centerX": 245.02857142857147,
+			"centerY": 45.99999999999997,
+			"w": 490.0571428571428,
+			"h": 91.99999999999994,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "hit giants 2 times"
+		},
+		{
+			"name": "message",
+			"x": 0.5,
+			"y": 0.1333085317460318,
+			"centerX": 341.87499999999983,
+			"centerY": 73.48214285714288,
+			"w": 683.7499999999998,
+			"h": 146.96428571428578,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "now you know!"
+		},
+		{
+			"name": "arrow",
+			"x": 0,
+			"y": 0.6171428571428572,
+			"centerX": 0,
+			"centerY": 0,
+			"w": 70,
+			"h": 146,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "arrow"
+		},
+		{
+			"name": "nethelp1",
+			"x": 0,
+			"y": 0.6194080162674637,
+			"centerX": -62.581712372448976,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "hold"
+		},
+		{
+			"name": "nethelp2",
+			"x": 0.0019618443080357205,
+			"y": 0.6905691964285712,
+			"centerX": -62.581712372448976,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "while"
+		},
+		{
+			"name": "nethelp3",
+			"x": 0,
+			"y": 0.7568359374999997,
+			"centerX": -62.581712372448976,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "shooting"
+		},
+		{
+			"name": "arrow2",
+			"x": 1,
+			"y": 0.6138392857142857,
+			"centerX": 70,
+			"centerY": 0,
+			"w": 70,
+			"h": 146,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "arrow2"
+		},
+		{
+			"name": "nethelp4",
+			"x": 1,
+			"y": 0.6138392857142857,
+			"centerX": 419.56114477040813,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "right",
+			"text": "hold"
+		},
+		{
+			"name": "nethelp5",
+			"x": 0.9980381556919641,
+			"y": 0.6766183035714286,
+			"centerX": 419.56114477040813,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "right",
+			"text": "while"
+		},
+		{
+			"name": "nethelp6",
+			"x": 1,
+			"y": 0.7463727678571429,
+			"centerX": 419.56114477040813,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "right",
+			"text": "shooting"
+		}
+	]
+}

@@ -252,7 +252,7 @@ Ptero.Enemy.prototype = {
 			this.boomSprite.update(dt);
 			if (this.boomSprite.isDone()) {
 				this.die();
-				this.afterHit && this.afterHit();
+				this.onDie && this.onDie();
 			}
 		}
 		else {

@@ -73,11 +73,6 @@ Ptero.scene_play = (function() {
 	function init() {
 		isPaused = false;
 
-		Ptero.orb.enableGuide(false);
-
-		// set the background
-		switchBackground('mountain');
-
 		// reset the score
 		Ptero.score.reset();
 
@@ -85,6 +80,7 @@ Ptero.scene_play = (function() {
 		var btns = buttonList.namedButtons;
 
 		scoreBtn = btns["score"];
+		scoreBtn.shouldDraw = false;
 
 		pauseBtn = btns["pause"];
 		pauseBtn.onclick = pause;
@@ -124,6 +120,14 @@ Ptero.scene_play = (function() {
 
 		var alpha;
 		var timer;
+		var shown = {
+			"health": true,
+			"score": true,
+		};
+
+		function show(name, on) {
+			shown[name] = on;
+		}
 
 		function hide() {
 			alpha = null;
@@ -170,13 +174,19 @@ Ptero.scene_play = (function() {
 		function draw(ctx) {
 			if (alpha) {
 				ctx.globalAlpha = alpha;
-				Ptero.player.drawHealth(ctx, isNetEnabled);
+				if (shown["health"]) {
+					Ptero.player.drawHealth(ctx, isNetEnabled);
+				}
+				if (shown["score"]) {
+					scoreBtn.draw(ctx);
+				}
 				buttonList.draw(ctx);
 				ctx.globalAlpha = 1;
 			}
 		}
 
 		return {
+			show: show,
 			hide: hide,
 			fadeIn: fadeIn,
 			fadeOut: fadeOut,
@@ -185,9 +195,10 @@ Ptero.scene_play = (function() {
 		};
 	})();
 
-	function fadeToNextStage(onDone) {
+	function fadeToNextStage(onDone, name) {
 		hud.fadeOut(1, function() {
-			var nextName = Ptero.getNextBgName();
+			var nextName = name || Ptero.getNextBgName();
+			console.log(nextName);
 			Ptero.background.exit();
 			Ptero.background.onExitDone = function() {
 				switchBackground(nextName);
@@ -287,6 +298,7 @@ Ptero.scene_play = (function() {
 	}
 
 	return {
+		hud: hud,
 		init: init,
 		update: update,
 		draw: draw,
@@ -295,5 +307,6 @@ Ptero.scene_play = (function() {
 		pause: pause,
 		unpause: unpause,
 		fadeToNextStage: fadeToNextStage,
+		switchBackground: switchBackground,
 	};
 })();

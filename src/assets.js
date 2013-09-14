@@ -18,7 +18,11 @@ Ptero.assets = (function(){
 	};
 
 	var imageSources = {
-		"bg_menu" : "bg/menu/bg_menu.jpg",
+		"arrow" : "img/arrow.png",
+		"arrow2" : "img/arrow2.png",
+
+		"bg_menu"     : "bg/menu/bg_menu.jpg",
+		"bg_tutorial" : "bg/tutorial/bg_tutorial.png",
 
 		"button_plank" : "img/plank.png",
 
@@ -178,6 +182,7 @@ Ptero.assets = (function(){
 		"bg_ice_layers"      : "bg/ice/layers.json",
 		"bg_volcano_layers"  : "bg/volcano/layers.json",
 		"bg_menu_layers"     : "bg/menu/layers.json",
+		"bg_tutorial_layers" : "bg/tutorial/layers.json",
 
 		// misc paths
 		"mainmenu_paths"   : "paths/mainmenu.json",
@@ -185,6 +190,7 @@ Ptero.assets = (function(){
 		"highscores_paths" : "paths/highscores.json",
 
 		// button layouts
+		"btns_tutorial"  : "layout/tutorial.json",
 		"btns_wave"      : "layout/wave.json",
 		"btns_options"   : "layout/options.json",
 		"btns_highscore" : "layout/highscore.json",
@@ -225,6 +231,13 @@ Ptero.assets = (function(){
 		"volcano_path05": "paths/volcano/path05.json",
 		"volcano_path06": "paths/volcano/path06.json",
 		"volcano_path07": "paths/volcano/path07.json",
+
+		"tutorial_path00": "paths/tutorial/path00.json",
+		"tutorial_path01": "paths/tutorial/path01.json",
+		"tutorial_path02": "paths/tutorial/path02.json",
+		"tutorial_path03": "paths/tutorial/path03.json",
+		"tutorial_path04": "paths/tutorial/path04.json",
+		"tutorial_path05": "paths/tutorial/path05.json",
 	};
 
 	// Add secondary sources dependent on the primary sources listed above.

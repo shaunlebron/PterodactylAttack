@@ -91,6 +91,11 @@ Ptero.scene_bgpos = (function(){
 				[0.958001063309298, -0.9765259457489804],
 			];
 		}
+		else if (bg.name == 'tutorial') {
+			layerExtremes = [
+				[0.4763541198775515, -0.47635411987755144],
+			];
+		}
 		else {
 			for (i=0; i<len; i++) {
 				layerExtremes.push([0,0]);
@@ -112,7 +117,7 @@ Ptero.scene_bgpos = (function(){
 	}
 
 	function init() {
-		setBg('mountain');
+		setBg('tutorial');
 
 		Ptero.input.addTouchHandler(touchHandler);
 		window.addEventListener('keyup', function(e) {

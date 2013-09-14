@@ -249,6 +249,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			"menu_scroll",
 			"btn_back",
 			"pause",
+			"arrow",
+			"arrow2",
 		];
 		var i,len=images.length;
 		for (i=0; i<len; i++) {

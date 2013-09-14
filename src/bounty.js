@@ -42,7 +42,7 @@ Ptero.Bounty.prototype = {
 	makeColorTable: function() {
 		// associate color indexes to this stage's particular colors and enemies
 		var stage = Ptero.background.name;
-		if (stage == "mountain") {
+		if (stage == "mountain" || stage == 'tutorial') {
 			this.colors = [
 				'#7EBBED',
 				'#BF56F6',
@@ -91,6 +91,10 @@ Ptero.Bounty.prototype = {
 		this.numColors = this.colors.length;
 	},
 	addEnemy: function(e) {
+		if (this.isBlackHole) {
+			e.die();
+			return;
+		}
 
 		// get the color index of the given enemy
 		var colorIndex = null;

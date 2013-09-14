@@ -2,11 +2,9 @@
 
 Ptero.makeOverlord = function() {
 	if (Ptero.settings.isTutorialEnabled()) {
-		Ptero.scene_play.enableNet(false);
 		return new Ptero.OverlordTutor();
 	}
 	else {
-		Ptero.scene_play.enableNet(true);
 		return new Ptero.OverlordWaves();
 	}
 };
@@ -15,19 +13,199 @@ Ptero.makeOverlord = function() {
 Ptero.OverlordTutor = function() {
 	this.enemies = [];
 	this.stopped = false;
-	this.refreshPaths();
+
+
+	var buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_tutorial"]);
+	var btns = buttonList.namedButtons;
+
+	this.lessonTitleBtn = btns["title"];
+	this.lessonSubBtn = btns["subtitle"];
+
+	this.msgBtn = btns["message"];
+
+	this.arrowBtn = btns["arrow"];
+	this.netHelpBtn1 = btns["nethelp1"];
+	this.netHelpBtn2 = btns["nethelp2"];
+	this.netHelpBtn3 = btns["nethelp3"];
+	this.arrowBtn2 = btns["arrow2"];
+	this.netHelpBtn4 = btns["nethelp4"];
+	this.netHelpBtn5 = btns["nethelp5"];
+	this.netHelpBtn6 = btns["nethelp6"];
+
+	Ptero.orb.enableGuide(true);
 };
 
 Ptero.OverlordTutor.prototype = {
 	refreshPaths: function() {
 		this.paths = Ptero.background.pteroPaths;
 	},
-	draw: function(ctx) {
-		this.drawSign && this.drawSign(ctx);
+	showLessonTitle: function(title,subtitle,fade) {
+		this.lessonTitleBtn.text = title;
+		this.lessonSubBtn.text = subtitle;
+
+		var that = this;
+		this.lessonTitle = (function(){
+			var radius = 70;
+			var transitionTime = 0.1;
+			var stayTime = 2;
+			var vals;
+			if (fade == 'in') {
+				vals = [
+					{ 'offset': -radius , 'alpha': 0 , } ,
+					{ 'offset': 0       , 'alpha': 1 , } ,
+				];
+			}
+			else if (fade == 'out') {
+				vals = [
+					{ 'offset': 0      , 'alpha': 1 , } ,
+					{ 'offset': radius , 'alpha': 0 , } ,
+				];
+			}
+			var interp = Ptero.makeInterpForObjs('linear',
+				vals,
+				['offset', 'alpha'],
+				[0, transitionTime]);
+
+			var driver = new Ptero.InterpDriver(interp);
+			if (fade == 'in') {
+				driver.freezeAtEnd = true;
+			}
+
+			function update(dt) {
+				driver.step(dt);
+				if (driver.isDone()) {
+					that.lessonTitle = null;
+				}
+			}
+			function draw(ctx) {
+				var val = driver.val;
+				if (val) {
+					ctx.save();
+					ctx.translate(0, val.offset);
+					ctx.globalAlpha = val.alpha;
+					that.lessonTitleBtn.draw(ctx);
+					that.lessonSubBtn.draw(ctx);
+					ctx.globalAlpha = 1;
+					ctx.restore();
+				}
+			}
+			return {
+				update: update,
+				draw: draw,
+			};
+		})();
+	},
+	showNetTutor: function(fade) {
+		var that = this;
+		this.netTutor = (function(){
+			var radius = 70;
+			var transitionTime = 0.1;
+			var vals;
+			if (fade == 'in') {
+				vals = [
+					{ 'offset': -radius , 'alpha': 0 , } ,
+					{ 'offset': 0       , 'alpha': 1 , } ,
+				];
+			}
+			else if (fade == 'out') {
+				vals = [
+					{ 'offset': 0      , 'alpha': 1 , } ,
+					{ 'offset': radius , 'alpha': 0 , } ,
+				];
+			}
+			var interp = Ptero.makeInterpForObjs('linear',
+				vals,
+				['offset', 'alpha'],
+				[0, transitionTime]);
+
+			var driver = new Ptero.InterpDriver(interp);
+			if (fade == 'in') {
+				driver.freezeAtEnd = true;
+			}
+
+			function update(dt) {
+				driver.step(dt);
+				if (driver.isDone()) {
+					that.netTutor = null;
+				}
+			}
+			function draw(ctx) {
+				var val = driver.val;
+				if (val) {
+					ctx.save();
+					ctx.translate(0, val.offset);
+					ctx.globalAlpha = val.alpha;
+
+
+					var side = Ptero.settings.getNetSide();
+					if (side == "left") {
+						that.arrowBtn.draw(ctx);
+						that.netHelpBtn1.draw(ctx);
+						that.netHelpBtn2.draw(ctx);
+						that.netHelpBtn3.draw(ctx);
+					}
+					else if (side == "right") {
+						that.arrowBtn2.draw(ctx);
+						that.netHelpBtn4.draw(ctx);
+						that.netHelpBtn5.draw(ctx);
+						that.netHelpBtn6.draw(ctx);
+					}
+					ctx.globalAlpha = 1;
+					ctx.restore();
+				}
+			}
+			return {
+				update: update,
+				draw: draw,
+			};
+		})();
+	},
+	showMessage: function(text) {
+		this.msgBtn.text = text;
+		var that = this;
+		this.message = (function(){
+			var radius = 70;
+			var transitionTime = 0.1;
+			var stayTime = 2;
+			var interp = Ptero.makeInterpForObjs('linear',
+				[
+					{ 'offset': -radius , 'alpha': 0 , } ,
+					{ 'offset': 0       , 'alpha': 1 , } ,
+					{ 'offset': 0       , 'alpha': 1 , } ,
+					{ 'offset': radius  , 'alpha': 0 , }
+				],
+				['offset', 'alpha'],
+				[0, transitionTime, stayTime, transitionTime]);
+
+			var driver = new Ptero.InterpDriver(interp);
+
+			function update(dt) {
+				driver.step(dt);
+				if (driver.isDone()) {
+					that.message = null;
+				}
+			}
+			function draw(ctx) {
+				var val = driver.val;
+				if (val) {
+					ctx.save();
+					ctx.translate(0, val.offset);
+					ctx.globalAlpha = val.alpha;
+					that.msgBtn.draw(ctx);
+					ctx.globalAlpha = 1;
+					ctx.restore();
+				}
+			}
+			return {
+				update: update,
+				draw: draw,
+			};
+		})();
 	},
 	createRandomEnemy: function(d) {
 		var enemyNames = Ptero.bounty.enemyNames;
 		var enemyType;
+		d = d || {};
 		if (d.age == 'baby') {
 			enemyType = enemyNames[Math.floor(Math.random()*2)];
 		}
@@ -51,416 +229,118 @@ Ptero.OverlordTutor.prototype = {
 		};
 		return Ptero.Enemy.fromState(state);
 	},
-	init: function() {
-		// create first enemy and attached event to kick off next checkpoint
+	createLesson1Script: function() {
 		var that = this;
-		this.checkpoint = 0;
 
-		this.signTime = 0;
-		this.signLen = 3;
-
-		this.checkpoints = [
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_tut1'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, that.signLen*1000);
-			},
-			function() {
-				// spawn babies 1 by 1 until hit
-				// "KILL THE BABY PTERODACTYL!"
-				var enemy = that.createRandomEnemy({age:'baby'});
-				enemy.onAttack = function() {
-					exec();
-				};
-				enemy.afterHit = function() {
-					that.checkpoint += 1;
-					exec();
-				};
-				that.enemies.push(enemy);
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_complete'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, that.signLen*1000);
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_tut2'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, that.signLen*1000);
-			},
-			function() {
-				// spawn adults 1 by 1 until hit
-				// "KILL THE BIG PTERODACTYL!"
-				var enemy = that.createRandomEnemy({age:'adult'});
-				enemy.onAttack = function() {
-					exec();
-				};
-				enemy.afterHit = function() {
-					that.checkpoint += 1;
-					exec();
-				};
-				that.enemies.push(enemy);
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_complete'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, 1500);
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_tut3'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, that.signLen*1000);
-			},
-			function() {
-				// spawn 1 baby and 1 adult until hit
-				// "KILL THE GROUP OF PTERODACTYLS!"
-				var enemies = [
-					that.createRandomEnemy({age:'baby'}),
-					that.createRandomEnemy({age:'adult'}),
-					that.createRandomEnemy({age:'baby'}),
-					that.createRandomEnemy({age:'adult'}),
-				];
-				var i,len=enemies.length;
-				var numKilled = 0;
-				var endTotal = 0;
-				function onEnd(isKilled) {
-					endTotal += 1;
-					if (isKilled) {
-						numKilled += 1;
-					}
-					if (numKilled == len) {
-						that.checkpoint += 1;
-						exec();
-					}
-					else if (endTotal == len) {
-						exec();
-					}
-				}
-				for (i=0; i<len; i++) {
-					enemies[i].onAttack = function() { onEnd(false); };
-					enemies[i].afterHit = function() { onEnd(true); };
-					setTimeout((function(enemy){
-						return function() {
-							that.enemies.push(enemy);
-						};
-					})(enemies[i]),2000*i);
-				}
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_complete'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, 1500);
-			},
-			//function() {
-			//	that.signTime = that.signLen;
-			//	that.drawSign = function(ctx) {
-			//		var s = Ptero.assets.sprites['msg_tut4'];
-			//		var pos = {
-			//			x: 0,
-			//			y: 0,
-			//			z: Ptero.frustum.near,
-			//		};
-			//		s.draw(ctx, pos);
-			//	};
-			//	setTimeout(function(){
-			//		that.checkpoint += 1;
-			//		exec();
-			//	}, that.signTime*1000);
-			//},
-			(function(){
-				var first = true;
-				return function() {
-					that.drawSign = function(ctx) {
-						var s = Ptero.assets.mosaics['msg_helpnet'];
-						var pos = {
-							x: 0,
-							y: 0,
-							z: Ptero.frustum.near,
-						};
-						s.draw(ctx, pos, "help");
-						if (!first) {
-							s = Ptero.assets.sprites['msg_tryagain'];
-							pos.y += 0.1;
-							s.draw(ctx, pos);
-						}
-					};
-					setTimeout(function(){
-						that.checkpoint += 1;
-						first = false;
-						that.drawSign = null;
-						exec();
-					}, that.signLen*1000);
-					Ptero.scene_play.enableNet(true);
-
-					var bounty = new Ptero.Bounty();
-					Ptero.bounty = bounty;
-					var babyIndex = 0;
-					var adultIndex = 2;
-					bounty.setItems([babyIndex,adultIndex]);
-				};
-			})(),
-			function() {
-				// "CAPTURE THE PTERODACTYLS TO GAIN HEALTH!"
-
-				var babyIndex = 0;
-				var adultIndex = 2;
-				var enemies = [
-					that.createRandomEnemy({colorIndex:babyIndex}),
-					that.createRandomEnemy({colorIndex:adultIndex}),
-				];
-				
-				var i,len=enemies.length;
-				var endTotal = 0;
-				var numCaught = 0;
-				function onEnd(isCaught) {
-					endTotal += 1;
-					if (isCaught) {
-						numCaught += 1;
-					}
-					if (numCaught == len) {
-						that.checkpoint += 1;
-						exec();
-					}
-					else if (endTotal == len) {
-						that.checkpoint -= 1;
-						exec();
-					}
-				}
-				for (i=0; i<len; i++) {
-					enemies[i].onAttack = function() { onEnd(false); };
-					enemies[i].afterHit = function() { onEnd(false); };
-					enemies[i].onCaught = function() { onEnd(true); };
-					setTimeout((function(enemy){
-						return function() {
-							that.enemies.push(enemy);
-						};
-					})(enemies[i]),2000*(i+1));
-				}
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_complete'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, that.signLen*1000);
-			},
-			//function() {
-			//	that.signTime = that.signLen;
-			//	that.drawSign = function(ctx) {
-			//		var s = Ptero.assets.sprites['msg_tut5'];
-			//		var pos = {
-			//			x: 0,
-			//			y: 0,
-			//			z: Ptero.frustum.near,
-			//		};
-			//		s.draw(ctx, pos);
-			//	};
-			//	setTimeout(function(){
-			//		that.checkpoint += 1;
-			//		exec();
-			//	}, that.signTime*1000);
-
-			//	var bounty = new Ptero.Bounty();
-			//	Ptero.bounty = bounty;
-			//	var bountyIndexes = [2,3];
-			//	bounty.setItems(bountyIndexes);
-
-			//},
-			(function(){
-
-				var first = true;
-				return function() {
-					var bounty = new Ptero.Bounty();
-					Ptero.bounty = bounty;
-					var bountyIndexes = [2,3];
-					bounty.setItems(bountyIndexes);
-
-					that.drawSign = function(ctx) {
-						var s = Ptero.assets.mosaics['msg_helpbounty'];
-						var pos = {
-							x: 0,
-							y: 0,
-							z: Ptero.frustum.near,
-						};
-						s.draw(ctx, pos, "help");
-						if (!first) {
-							s = Ptero.assets.sprites['msg_tryagain'];
-							pos.y += 0.1;
-							s.draw(ctx, pos);
-						}
-					};
-					setTimeout(function(){
-						that.checkpoint += 1;
-						first = false;
-						that.drawSign = null;
-						exec();
-					}, that.signLen*1000);
-				};
-			})(),
-			function() {
-				// "CAPTURE THE CORRECT PTERODACTYLS!"
-
-				var indexes = [ 0,1,2,3 ];
-				var i,len=indexes.length;
-				var enemies = [];
-				for (i=0; i<len; i++) {
-					enemies.push(that.createRandomEnemy({colorIndex:i}));
-				}
-				
-				var endTotal = 0;
-				var numCaught = 0;
-				var bountyLen = 2;
-				function onEnd(isCaught) {
-					endTotal += 1;
-					console.log(isCaught);
-					if (isCaught) {
-						numCaught += 1;
-					}
-					if (endTotal == len) {
-						if (numCaught == bountyLen) {
-							that.checkpoint += 1;
-							exec();
-						}
-						else {
-							that.checkpoint -= 1;
-							exec();
-						}
-					}
-				}
-				for (i=0; i<len; i++) {
-					enemies[i].onAttack = function() { onEnd(false); };
-					enemies[i].afterHit = function() { onEnd(false); };
-					if (i >= 2) {
-						enemies[i].onCaught = function() { onEnd(true); };
-					}
-					setTimeout((function(enemy){
-						return function() {
-							that.enemies.push(enemy);
-						};
-					})(enemies[i]),2000*(i+1));
-				}
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_complete'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					that.checkpoint += 1;
-					that.drawSign = null;
-					exec();
-				}, that.signLen*1000);
-			},
-			function() {
-				that.drawSign = function(ctx) {
-					var s = Ptero.assets.sprites['msg_ready'];
-					var pos = {
-						x: 0,
-						y: 0,
-						z: Ptero.frustum.near,
-					};
-					s.draw(ctx, pos);
-				};
-				setTimeout(function(){
-					Ptero.settings.enableTutorial(false);
-					that.drawSign = null;
-					Ptero.refreshBounty();
-					Ptero.overlord = Ptero.makeOverlord();
-					Ptero.orb.setTargets(Ptero.overlord.enemies);
-				}, that.signLen*1000);
-			},
-		];
-
-		function exec() {
-			console.log('checkpoint '+that.checkpoint);
-			that.checkpoints[that.checkpoint]();
+		function end() {
+			that.showLessonTitle('Lesson 1','Hit babies 2 times','out');
+			setTimeout(function() {
+				that.createLesson2Script();
+			}, 500);
 		}
-		setTimeout(exec, 2000);
+
+		function addBaby() {
+			var baby = that.createRandomEnemy({age:'baby'});
+			baby.onDie = function() {
+				end();
+				Ptero.audio.play('bountyCorrect');
+			};
+			baby.onAttack = function() {
+				addBaby();
+				Ptero.audio.play('bountyWrong');
+			};
+			that.enemies.push(baby);
+		}
+
+		that.showLessonTitle('Lesson 1','Hit babies 2 times','in');
+		addBaby();
+	},
+	createLesson2Script: function() {
+		var that = this;
+
+		function end() {
+			that.showLessonTitle('Lesson 2','Hit adults 3 times','out');
+			setTimeout(function() {
+				that.createLesson3Script();
+			}, 500);
+		}
+
+		function addAdult() {
+			var adult = that.createRandomEnemy({age:'adult'});
+			adult.onDie = function() {
+				Ptero.audio.play('bountyCorrect');
+				end();
+			};
+			adult.onAttack = function() {
+				addAdult();
+				Ptero.audio.play('bountyWrong');
+			};
+			that.enemies.push(adult);
+		}
+
+		that.showLessonTitle('Lesson 2','Hit adults 3 times','in');
+		addAdult();
+	},
+	createLesson3Script: function() {
+		var that = this;
+
+		function end() {
+			that.showLessonTitle('Lesson 3','Capture a pterodactyl','out');
+			that.showNetTutor('out');
+		}
+
+		function addPtero() {
+			var p = that.createRandomEnemy();
+			p.onCaught = function () {
+				Ptero.audio.play('bountyCorrect');
+				end();
+			};
+			p.onDie = function() {
+				Ptero.audio.play('bountyWrong');
+				addPtero();
+			};
+			p.onAttack = function() {
+				Ptero.audio.play('bountyWrong');
+				addPtero();
+			};
+			that.enemies.push(p);
+		}
+
+		Ptero.bounty.isBlackHole = true;
+		Ptero.scene_play.enableNet(true);
+		that.showLessonTitle('Lesson 3','Capture a pterodactyl','in');
+		that.showNetTutor('in');
+		addPtero();
+	},
+	init: function() {
+		console.log('initing tutor');
+		Ptero.player.setGod(true);
+		Ptero.scene_play.switchBackground('tutorial');
+		Ptero.scene_play.enableNet(false);
+		Ptero.scene_play.hud.show("score", false);
+		Ptero.scene_play.hud.show("health", false);
+		this.refreshPaths();
+		Ptero.refreshBounty();
+		this.message = null;
+
+		this.createLesson1Script();
 	},
 	stopScript: function() {
 		this.stopped = true;
 	},
+	draw: function(ctx) {
+		this.message && this.message.draw(ctx);
+		this.lessonTitle && this.lessonTitle.draw(ctx);
+		this.netTutor && this.netTutor.draw(ctx);
+	},
 	update: function(dt) {
+		this.message && this.message.update(dt);
+		this.lessonTitle && this.lessonTitle.update(dt);
+		this.netTutor && this.netTutor.update(dt);
+
+		if (!this.stopped) {
+			this.script && this.script.update(dt);
+		}
 
 		// update enemies
 		var e,pos;
@@ -502,6 +382,9 @@ Ptero.OverlordWaves = function() {
 
 	var buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_wave"]);
 	this.waveBtn = buttonList.namedButtons["wave"];
+
+	Ptero.scene_play.switchBackground('mountain');
+	Ptero.orb.enableGuide(false);
 };
 
 Ptero.OverlordWaves.prototype = {
@@ -668,6 +551,13 @@ Ptero.OverlordWaves.prototype = {
 		return Ptero.Enemy.fromState(state);
 	},
 	init: function() {
+
+		Ptero.player.setGod(false);
+
+		Ptero.scene_play.enableNet(true);
+		Ptero.scene_play.hud.show("score", true);
+		Ptero.scene_play.hud.show("health", true);
+
 		// empty enemies list
 		this.enemies.length = 0;
 		this.refreshPaths();
@@ -731,209 +621,6 @@ Ptero.OverlordWaves.prototype = {
 					that.createWaveScript(that.waveNum + 1);
 					that.init();
 				});
-			}
-		}
-	},
-};
-
-//////////////////////////////////////////////////////////////////////////////
-
-Ptero.OverlordPattern = function(paths) {
-	this.paths = paths;
-	this.enemies = [];
-	this.createScript();
-	this.stopped = false;
-};
-
-Ptero.OverlordPattern.prototype = {
-	draw: function(ctx) {
-	},
-	stopScript: function() {
-		this.stopped = true;
-	},
-	createScript: function() {
-
-		var t = 0;
-		var events = [];
-		var that = this;
-		function addEnemy(num) {
-			if (num==undefined) {
-				num = 1;
-			}
-			var i;
-			for (i=0; i<num; i++) {
-				that.enemies.push(that.createRandomEnemy());
-			}
-		}
-		function addEvent(dt,action) {
-			t += dt;
-			events.push({ time: t, action: action });
-		}
-		function addLineup(waves) {
-			var i,len=waves.length;
-			var j;
-			for (i=0; i<len; i++) {
-				var w = waves[i];
-				var dt = w[0];
-				var count = w[1];
-
-				addEvent(dt, addEnemy);
-
-				dt = 0.75;
-				for (j=1; j<count; j++) {
-					addEvent(dt, addEnemy);
-				}
-			}
-		}
-
-		addLineup([
-			[2, 1],
-			[3, 2],
-			[4, 3],
-			[5, 4],
-			[6, 5],
-			[5, 6],
-			[9, 2],
-			[3, 3],
-			[6, 4],
-			[2, 8],
-			[3, 3],
-		]);
-
-		this.script = new Ptero.TimedScript(events);
-	},
-	createRandomEnemy: function() {
-		var enemyNames = Ptero.bounty.enemyNames;
-		var enemyType = enemyNames[Math.floor(Math.random()*enemyNames.length)];
-		var path = this.paths[Math.floor(Math.random()*this.paths.length)];
-		return this.createEnemy(path,enemyType);
-	},
-	createEnemy: function(path, enemyType) {
-		var state = {
-			isAttack: true,
-			enemyType: enemyType,
-			points: path.models[0].points,
-		};
-		return Ptero.Enemy.fromState(state);
-	},
-	init: function() {
-		// empty enemies list
-		this.enemies.length = 0;
-
-		this.script.init();
-	},
-	update: function(dt) {
-
-		if (!this.stopped) {
-			this.script.update(dt);
-		}
-
-		// update enemies
-		var e,pos;
-		var i,len=this.enemies.length;
-		for (i=0; this.enemies[i];) {
-			e = this.enemies[i];
-			if (e.isDead) {
-				// remove enemy if needed
-				this.enemies.splice(i,1);
-			}
-			else {
-				e.update(dt);
-				pos = e.getPosition();
-				if (pos) {
-					Ptero.deferredSprites.defer(
-						(function(e) {
-							return function(ctx){
-								e.draw(ctx);
-							};
-						})(e),
-						pos.z);
-				}
-				i++;
-			}
-		}
-	},
-};
-
-//////////////////////////////////////////////////////////////////////////////
-
-Ptero.OverlordRandom = function(paths) {
-	this.paths = paths;
-	this.enemies = [];
-};
-
-Ptero.OverlordRandom.prototype = {
-	draw: function(ctx) {
-	},
-	createRandomEnemy: function(age) {
-		var enemyNames = Ptero.bounty.enemyNames;
-		var enemyType;
-		if (age == 'baby') {
-			enemyType = enemyNames[Math.floor(Math.random()*2)];
-		}
-		else if (age == 'adult') {
-			enemyType = enemyNames[Math.floor(Math.random()*2)+2];
-		}
-		else {
-			enemyType = enemyNames[Math.floor(Math.random()*enemyNames.length)];
-		}
-		var path = this.paths[Math.floor(Math.random()*this.paths.length)];
-		return this.createEnemy(path,enemyType);
-	},
-	createEnemy: function(path, enemyType) {
-		var state = {
-			isAttack: true,
-			enemyType: enemyType,
-			points: path.models[0].points,
-		};
-		return Ptero.Enemy.fromState(state);
-	},
-	getNextDelayTime: function() {
-		var max = 7;
-		var min = 2;
-		var t = Math.floor(Math.random()*(max-min))+min;
-		return t;
-	},
-	init: function() {
-		// empty enemies list
-		this.enemies.length = 0;
-
-		// refresh countdown to enemy release
-		this.time = this.getNextDelayTime();
-	},
-	update: function(dt) {
-
-		this.time -= dt;
-		if (this.time <= 0) {
-			// add random enemy
-			this.enemies.push(this.createRandomEnemy());
-			
-			// refresh countdown to enemy release
-			this.time = this.getNextDelayTime();
-		}
-
-		// update enemies
-		var e,pos;
-		var i,len=this.enemies.length;
-		for (i=0; this.enemies[i];) {
-			e = this.enemies[i];
-			if (e.isDead) {
-				// remove enemy if needed
-				this.enemies.splice(i,1);
-			}
-			else {
-				e.update(dt);
-				pos = e.getPosition();
-				if (pos) {
-					Ptero.deferredSprites.defer(
-						(function(e) {
-							return function(ctx){
-								e.draw(ctx);
-							};
-						})(e),
-						pos.z);
-				}
-				i++;
 			}
 		}
 	},
