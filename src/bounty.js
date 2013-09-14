@@ -11,6 +11,8 @@ Ptero.Bounty = function() {
 	// populate items (i.e. random colors) in the bounty
 	var numColors = this.numColors;
 	this.setRandomItems(5);
+
+	this.autoReset = true;
 };
 
 Ptero.Bounty.prototype = {
@@ -90,6 +92,37 @@ Ptero.Bounty.prototype = {
 		}
 		this.numColors = this.colors.length;
 	},
+	isEnemyDesired: function(e) {
+		var colorIndex = this.getColorIndexFromEnemy(e);
+		var itemIndex = this.getDesiredItemIndexFromColor(colorIndex);
+		return itemIndex != null;
+	},
+	getColorIndexFromEnemy: function(e) {
+		var i;
+		for (i=0; i<this.numColors; i++) {
+			if (e.typeName == this.enemyNames[i]) {
+				return i;
+			}
+		}
+		return null;
+	},
+	getDesiredItemIndexFromColor: function(c) {
+		var i,len=this.size;
+		for (i=0; i<len; i++) {
+			if (this.items[i] == c && !this.caught[i]) {
+				return i;
+			}
+		}
+		return null;
+	},
+	isComplete: function() {
+		for (i=0; i<this.size; i++) {
+			if (!this.caught[i]) {
+				return false;
+			}
+		}
+		return true;
+	},
 	addEnemy: function(e) {
 		if (this.isBlackHole) {
 			e.die();
@@ -97,23 +130,10 @@ Ptero.Bounty.prototype = {
 		}
 
 		// get the color index of the given enemy
-		var colorIndex = null;
-		var i;
-		for (i=0; i<this.numColors; i++) {
-			if (e.typeName == this.enemyNames[i]) {
-				colorIndex = i;
-				break;
-			}
-		}
+		var colorIndex = this.getColorIndexFromEnemy(e);
 
 		// determine if and where the enemy fits in the remaining items in the bounty
-		var itemIndex = null;
-		for (i=0; i<this.size; i++) {
-			if (!this.caught[i] && colorIndex == this.items[i]) {
-				itemIndex = i;
-				break;
-			}
-		}
+		var itemIndex = this.getDesiredItemIndexFromColor(colorIndex);
 
 		// add this enemy to the cage
 		this.cagedEnemies.push(e);
@@ -124,16 +144,7 @@ Ptero.Bounty.prototype = {
 			// flag the caught enemy
 			this.caught[itemIndex] = true;
 
-			// determine if bounty is complete
-			var isComplete = true;
-			for (i=0; i<this.size; i++) {
-				if (!this.caught[i]) {
-					isComplete = false;
-					break;
-				}
-			}
-
-			if (isComplete) {
+			if (this.isComplete()) {
 				// signal bounty completion with sound
 				Ptero.audio.play('bountyComplete');
 				Ptero.score.addBounties(1);
@@ -148,11 +159,13 @@ Ptero.Bounty.prototype = {
 				}
 
 				// create new bounty
-				if (this.random) {
-					Ptero.refreshBounty();
-				}
-				else {
-					this.setItems(this.items);
+				if (this.autoReset) {
+					if (this.random) {
+						Ptero.refreshBounty();
+					}
+					else {
+						this.setItems(this.items);
+					}
 				}
 			}
 			else {
@@ -169,6 +182,8 @@ Ptero.Bounty.prototype = {
 			// signal bad bounty with sound
 			Ptero.audio.play('bountyWrong');
 			Ptero.score.addFailedBounties(1);
+
+			e.onMiscatch && e.onMiscatch();
 
 			// release all caged enemies
 			var len = this.cagedEnemies.length;

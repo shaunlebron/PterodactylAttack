@@ -562,7 +562,11 @@ Ptero.createBackgrounds = function() {
 			bg.loadLayersData(Ptero.assets.json["bg_tutorial_layers"]);
 			bg.vectorAnimsToLoad = [
 				'baby_mountain_blue',
+				'baby_mountain_purple',
+				'adult_mountain_red',
 				'adult_mountain_green',
+				'baby_white',
+				'adult_white',
 			];
 			bg.pteroPaths = [
 				Ptero.assets.json["tutorial_path00"],

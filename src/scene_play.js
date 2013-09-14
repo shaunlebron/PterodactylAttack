@@ -57,7 +57,7 @@ Ptero.scene_play = (function() {
 	}
 
 	function enableControls() {
-		buttonList.enable();
+		pauseBtn.enable();
 		if (isNetEnabled) {
 			enableNet(true);
 		}
@@ -111,9 +111,6 @@ Ptero.scene_play = (function() {
 
 		// initialize pause menu
 		Ptero.pause_menu.init();
-
-		// enable input
-		enableControls();
 	};
 
 	var hud = (function(){
@@ -198,7 +195,7 @@ Ptero.scene_play = (function() {
 	function fadeToNextStage(onDone, name) {
 		hud.fadeOut(1, function() {
 			var nextName = name || Ptero.getNextBgName();
-			console.log(nextName);
+			disableControls();
 			Ptero.background.exit();
 			Ptero.background.onExitDone = function() {
 				switchBackground(nextName);
@@ -208,12 +205,14 @@ Ptero.scene_play = (function() {
 	}
 
 	function switchBackground(name) {
+		disableControls();
 		state = "intro";
 		hud.hide();
 		Ptero.orb.init();
 		Ptero.orb.setNextOrigin(0,-1);
 		Ptero.setBackground(name);
 		Ptero.background.onIdle = function() {
+			enableControls();
 			hud.fadeIn(1, function(){
 				state = "active";
 			});

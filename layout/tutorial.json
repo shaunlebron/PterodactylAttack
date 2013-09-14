@@ -23,7 +23,7 @@
 			"h": 91.99999999999994,
 			"font": "whitefont",
 			"textAlign": "center",
-			"text": "hit giants 2 times"
+			"text": "babies require 2 hits"
 		},
 		{
 			"name": "message",
@@ -134,6 +134,55 @@
 			"font": "whitefont",
 			"textAlign": "right",
 			"text": "shooting"
+		},
+		{
+			"name": "arrow3",
+			"x": 0,
+			"y": 0.2571428571428571,
+			"centerX": -67.88571428571429,
+			"centerY": 0,
+			"w": 70,
+			"h": 146,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "arrow"
+		},
+		{
+			"name": "bountyhelp1",
+			"x": 0,
+			"y": 0.26142857142857145,
+			"centerX": -139.72456951530611,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "capture"
+		},
+		{
+			"name": "bountyhelp2",
+			"x": 0,
+			"y": 0.3291428571428572,
+			"centerX": -139.72456951530611,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "these"
+		},
+		{
+			"name": "bountyhelp3",
+			"x": 0,
+			"y": 0.40278857142857155,
+			"centerX": -139.72456951530611,
+			"centerY": 4.009485998288053,
+			"w": 343.1361607142856,
+			"h": 74.44196428571433,
+			"font": "whitefont",
+			"textAlign": "left",
+			"text": "only"
 		}
 	]
 }
