@@ -509,6 +509,7 @@ Ptero.OverlordTutor.prototype = {
 			Ptero.audio.play('bountyWrong');
 			Ptero.scene_play.enableNet(false);
 			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.hud.show('bounty', false);
 			that.showLessonTitle('Final Lesson','Collect health bounties','out');
 			that.showBountyTutor('out');
 
@@ -644,6 +645,7 @@ Ptero.OverlordTutor.prototype = {
 				dt: 0.75,
 				action: function() {
 					Ptero.scene_play.hud.show('health', true);
+					Ptero.scene_play.hud.show('bounty', true);
 					that.showBountyTutor('in');
 				},
 			},
@@ -662,6 +664,7 @@ Ptero.OverlordTutor.prototype = {
 		Ptero.scene_play.enableNet(false);
 		Ptero.scene_play.hud.show("score", false);
 		Ptero.scene_play.hud.show("health", false);
+		Ptero.scene_play.hud.show("bounty", false);
 		this.refreshPaths();
 		Ptero.refreshBounty();
 		this.message = null;
@@ -902,6 +905,7 @@ Ptero.OverlordWaves.prototype = {
 		Ptero.scene_play.enableNet(true);
 		Ptero.scene_play.hud.show("score", true);
 		Ptero.scene_play.hud.show("health", true);
+		Ptero.scene_play.hud.show("bounty", true);
 
 		// empty enemies list
 		this.enemies.length = 0;

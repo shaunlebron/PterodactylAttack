@@ -50,6 +50,10 @@ Ptero.scene_play = (function() {
 	var pauseBtn;
 	var scoreBtn;
 	var netLeftBtn, netRightBtn;
+	var eggBtns;
+
+	var healthBorderBtn;
+	var healthContentBtn;
 
 	function cleanup() {
 		Ptero.bulletpool.clear();
@@ -87,6 +91,19 @@ Ptero.scene_play = (function() {
 
 		netLeftBtn = btns["netLeft"];
 		netRightBtn = btns["netRight"];
+
+		healthBorderBtn = btns["healthBorder"];
+		healthBorderBtn.shouldDraw = false;
+		healthContentBtn = btns["healthContent"];
+		healthContentBtn.shouldDraw = false;
+		eggBtns = [];
+		var i,len=5;
+		for (i=1; i<=len; i++) {
+			var b = btns["egg"+i];
+			b.shouldDraw = false;
+			eggBtns.push(b);
+		}
+
 		netLeftBtn.ontouchstart = netRightBtn.ontouchstart = function(x,y) { Ptero.orb.enableNet(true); };
 		netLeftBtn.ontouchend   = netRightBtn.ontouchend   = function(x,y) { Ptero.orb.enableNet(false); };
 		netLeftBtn.ontouchenter = netRightBtn.ontouchenter = function(x,y) { Ptero.orb.enableNet(true); };
@@ -119,6 +136,7 @@ Ptero.scene_play = (function() {
 		var timer;
 		var shown = {
 			"health": true,
+			"bounty": true,
 			"score": true,
 		};
 
@@ -168,11 +186,71 @@ Ptero.scene_play = (function() {
 			timer && timer.update(dt);
 		}
 
+		function drawHealth(ctx) {
+			healthBorderBtn.draw(ctx);
+			var pos = healthBorderBtn.pos;
+			var b = healthContentBtn.billboard;
+			var w = b.w;
+			var h = b.h;
+			var healthPercent = Ptero.player.health / Ptero.player.maxHealth;
+			ctx.save();
+			b.transform(ctx,pos);
+			ctx.fillStyle = "#555";
+			ctx.fillRect(0,0,w,h);
+			ctx.fillStyle = "#DDD";
+			ctx.fillRect(0,0, healthPercent * w, h);
+			ctx.restore();
+		}
+
+		function drawEgg(ctx,color) {
+			function egg() {
+				ctx.scale(0.98,0.98);
+				ctx.translate(-8014,-6764);
+				ctx.beginPath();
+				ctx.moveTo(8052,6798);
+				ctx.bezierCurveTo(8052,6811,8044,6818,8034,6818);
+				ctx.bezierCurveTo(8023,6818,8015,6811,8015,6798);
+				ctx.bezierCurveTo(8015,6785,8023,6765,8034,6765);
+				ctx.bezierCurveTo(8044,6765,8052,6785,8052,6798);
+				ctx.closePath();
+			}
+			egg();
+			ctx.fillStyle = color;
+			ctx.fill();
+		}
+
+		function drawEggs(ctx) {
+			var bounty = Ptero.bounty;
+			var i,len=bounty.size;
+			var btn,board;
+			for (i=0; i<len; i++) {
+				var j = bounty.items[i];
+				var isCaught = bounty.caught[i];
+				var color = isCaught ? "rgba(0,0,0,0.3)" : bounty.colors[j];
+
+				btn = eggBtns[i];
+				board = btn.billboard;
+				ctx.save();
+				board.transform(ctx, btn.pos);
+				if (isCaught) {
+					var scale = 0.5;
+					ctx.translate(board.w/2, board.h/2);
+					ctx.scale(scale,scale);
+					ctx.translate(-board.w/2, -board.h/2);
+				}
+				drawEgg(ctx, color);
+				ctx.restore();
+			}
+		}
+
 		function draw(ctx) {
 			if (alpha) {
 				ctx.globalAlpha = alpha;
 				if (shown["health"]) {
-					Ptero.player.drawHealth(ctx, isNetEnabled);
+					drawHealth(ctx);
+				}
+				if (shown["bounty"]) {
+					drawEggs(ctx);
 				}
 				if (shown["score"]) {
 					scoreBtn.draw(ctx);

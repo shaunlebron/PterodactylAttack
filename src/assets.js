@@ -18,7 +18,9 @@ Ptero.assets = (function(){
 	};
 
 	var imageSources = {
-		"arrow" : "img/arrow.png",
+		"health" : "img/health.png",
+		"egg"    : "img/egg.png",
+		"arrow"  : "img/arrow.png",
 		"arrow2" : "img/arrow2.png",
 
 		"bg_menu"     : "bg/menu/bg_menu.jpg",
