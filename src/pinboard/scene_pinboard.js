@@ -239,6 +239,8 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		var str="";
 		str += "<li><a onclick=\"Ptero.Pinboard.scene_pinboard.selectImage(null)\" href=\"#\">(empty image)</a></li>";
 		var images = [
+			"health",
+			"egg",
 			"logo",
 			"backplate_mountain",
 			"backplate_ice",
@@ -528,7 +530,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		var touchRadiusSq = 100;
 
 		function snap(val,valToSnap) {
-			var snapRadius = 10 / Ptero.screen.getWindowScale();
+			var snapRadius = 5 / Ptero.screen.getWindowScale();
 			return (Math.abs(val-valToSnap) < snapRadius) ? valToSnap : val;
 		}
 
@@ -553,6 +555,20 @@ Ptero.Pinboard.scene_pinboard = (function(){
 						wy = snap(wy, windowRect.y);
 						wy = snap(wy, windowRect.y + windowRect.h/2);
 						wy = snap(wy, windowRect.y + windowRect.h);
+					}
+					var rect = {
+						x: 0,
+						y: 0,
+						w: Ptero.screen.getWindowWidth(),
+						h: Ptero.screen.getWindowHeight(),
+					};
+					if (isSnapKey) {
+						wx = snap(wx, rect.x);
+						wx = snap(wx, rect.x + rect.w/2);
+						wx = snap(wx, rect.x + rect.w);
+						wy = snap(wy, rect.y);
+						wy = snap(wy, rect.y + rect.h/2);
+						wy = snap(wy, rect.y + rect.h);
 					}
 					if (!isMoveYOnly) {
 						billboard.centerX = wx - windowRect.x;
@@ -886,7 +902,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 					var scaleFactor = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
 
 					var scale = Ptero.screen.getWindowScale() * scaleFactor;
-					var maxScale = Ptero.screen.getWindowFitScale() * 2;
+					var maxScale = Ptero.screen.getWindowFitScale() * 4;
 					var minScale = maxScale / 8;
 					scale = Math.max(minScale, Math.min(maxScale, scale));
 
