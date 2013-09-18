@@ -113,7 +113,7 @@
 		},
 		{
 			"name": "rightNetMsg2",
-			"x": 0.9980381556919641,
+			"x": 0.998038155691964,
 			"y": 0.6766183035714286,
 			"centerX": 419.56114477040813,
 			"centerY": 4.009485998288053,
@@ -137,12 +137,12 @@
 		},
 		{
 			"name": "bountyArrow",
-			"x": 0,
+			"x": 0.0012480194351020416,
 			"y": 0.14918399999999996,
-			"centerX": -11.0592,
+			"centerX": -9.461735123069387,
 			"centerY": 0,
-			"w": 70,
-			"h": 146,
+			"w": 59.88873142857142,
+			"h": 98.60342857142855,
 			"font": "whitefont",
 			"textAlign": "center",
 			"text": "",
@@ -183,6 +183,43 @@
 			"font": "whitefont",
 			"textAlign": "left",
 			"text": "health"
+		},
+		{
+			"name": "skipMsg1",
+			"x": 1,
+			"y": 0.7013797302857141,
+			"centerX": 380.2200272008695,
+			"centerY": 0,
+			"w": 318.07214185229884,
+			"h": 78.04644753443199,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "color blind?"
+		},
+		{
+			"name": "skipMsg2",
+			"x": 1,
+			"y": 0.7767130697142858,
+			"centerX": 414.14868992000015,
+			"centerY": 0,
+			"w": 383.5650757676166,
+			"h": 50.70080000000007,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "i'm sorry! you can skip"
+		},
+		{
+			"name": "skipArrow",
+			"x": 1,
+			"y": 0.891783492063492,
+			"centerX": 70,
+			"centerY": 92.28388571428582,
+			"w": 70,
+			"h": 92.28388571428582,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "arrow3"
 		}
 	]
 }

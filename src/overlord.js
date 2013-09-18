@@ -33,6 +33,9 @@ Ptero.OverlordTutor = function() {
 	this.bountyMsg1Btn    = btns["bountyMsg1"];
 	this.bountyMsg2Btn    = btns["bountyMsg2"];
 	this.healthMsgBtn     = btns["healthMsg"];
+	this.skipArrowBtn     = btns["skipArrow"];
+	this.skipMsg1Btn      = btns["skipMsg1"];
+	this.skipMsg2Btn      = btns["skipMsg2"];
 
 	Ptero.orb.enableGuide(true);
 };
@@ -154,6 +157,71 @@ Ptero.OverlordTutor.prototype = {
 					that.bountyArrowBtn.draw(ctx);
 					that.bountyMsg1Btn.draw(ctx);
 					that.bountyMsg2Btn.draw(ctx);
+
+					ctx.globalAlpha = 1;
+					ctx.restore();
+				}
+			}
+			return {
+				update: update,
+				draw: draw,
+				show: show,
+			};
+		})();
+	},
+	showSkipTutor: function(fade) {
+		var that = this;
+		this.skipTutor = (function(){
+			var radius = 70;
+			var transitionTime = 0.1;
+			var vals;
+			if (fade == 'in') {
+				vals = [
+					{ 'offset': -radius , 'alpha': 0 , } ,
+					{ 'offset': 0       , 'alpha': 1 , } ,
+				];
+			}
+			else if (fade == 'out') {
+				vals = [
+					{ 'offset': 0      , 'alpha': 1 , } ,
+					{ 'offset': radius , 'alpha': 0 , } ,
+				];
+			}
+			var interp = Ptero.makeInterpForObjs('linear',
+				vals,
+				['offset', 'alpha'],
+				[0, transitionTime]);
+
+			var driver = new Ptero.InterpDriver(interp);
+			if (fade == 'in') {
+				driver.freezeAtEnd = true;
+			}
+
+			var shouldShow = true;
+			function show(on) {
+				shouldShow = on;
+			}
+
+			function update(dt) {
+				driver.step(dt);
+				if (driver.isDone()) {
+					that.skipTutor = null;
+				}
+			}
+			function draw(ctx) {
+				if (!shouldShow) {
+					return;
+				}
+
+				var val = driver.val;
+				if (val) {
+					ctx.save();
+					ctx.translate(0, val.offset);
+					ctx.globalAlpha = val.alpha;
+
+					that.skipArrowBtn.draw(ctx);
+					that.skipMsg1Btn.draw(ctx);
+					that.skipMsg2Btn.draw(ctx);
 
 					ctx.globalAlpha = 1;
 					ctx.restore();
@@ -604,14 +672,15 @@ Ptero.OverlordTutor.prototype = {
 		function end() {
 			that.lessonTitle.fadeOut();
 			that.showBountyTutor('out');
+			that.showSkipTutor('out');
 			that.script.addEventsAfterNow([
 				{
 					time: 1,
 					action: function() {
 						that.showMessage("Now, get out there!");
 						Ptero.orb.setNextOrigin(0,-2);
-						Ptero.settings.enableTutorial(false);
 						Ptero.scene_play.cleanup();
+						Ptero.settings.enableTutorial(false);
 						Ptero.scene_play.hud.fadeOut(1, function() {
 							Ptero.background.exit();
 							Ptero.background.onExitDone = function() {
@@ -636,6 +705,7 @@ Ptero.OverlordTutor.prototype = {
 			Ptero.scene_play.hud.show('bounty', false);
 			that.lessonTitle.fadeOut();
 			that.showBountyTutor('out');
+			that.showSkipTutor('out');
 
 			Ptero.orb.setNextOrigin(0,-2);
 			Ptero.orb.disableTouch();
@@ -777,6 +847,12 @@ Ptero.OverlordTutor.prototype = {
 			},
 			{
 				dt: 0.75,
+				action: function() {
+					that.showSkipTutor('in');
+				},
+			},
+			{
+				dt: 0.75,
 				action: addPtero,
 			},
 		]);
@@ -805,6 +881,7 @@ Ptero.OverlordTutor.prototype = {
 		this.lessonTitle && this.lessonTitle.draw(ctx);
 		this.netTutor && this.netTutor.draw(ctx);
 		this.bountyTutor && this.bountyTutor.draw(ctx);
+		this.skipTutor && this.skipTutor.draw(ctx);
 		this.isShowHealthMsg && this.healthMsgBtn.draw(ctx);
 	},
 	update: function(dt) {
@@ -812,6 +889,7 @@ Ptero.OverlordTutor.prototype = {
 		this.lessonTitle && this.lessonTitle.update(dt);
 		this.netTutor && this.netTutor.update(dt);
 		this.bountyTutor && this.bountyTutor.update(dt);
+		this.skipTutor && this.skipTutor.update(dt);
 
 		if (!this.stopped) {
 			this.script && this.script.update(dt);

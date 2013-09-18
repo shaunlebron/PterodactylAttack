@@ -4,7 +4,7 @@
 		{
 			"name": "backplate",
 			"x": 0.5,
-			"y": 0.5,
+			"y": 0.4957142857142857,
 			"centerX": 638.5714285714286,
 			"centerY": 359.1964285714287,
 			"w": 1277.142857142857,
@@ -100,7 +100,7 @@
 			"imageName": "button_plank"
 		},
 		{
-			"x": 0.4951785714285714,
+			"x": 0.49517857142857125,
 			"y": 0.6257142857142854,
 			"centerX": 241.8912141691908,
 			"centerY": 39.31428571428569,
@@ -159,6 +159,19 @@
 			"font": "whitefont",
 			"textAlign": "center",
 			"text": "paused"
+		},
+		{
+			"name": "skip",
+			"x": 1,
+			"y": 0.7635826285714283,
+			"centerX": 234.28571428571422,
+			"centerY": 0,
+			"w": 234.28571428571422,
+			"h": 105.54085668571418,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "skip>",
+			"imageName": "button_plank"
 		}
 	]
 }

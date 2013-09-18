@@ -7,6 +7,7 @@ Ptero.pause_menu = (function(){
 	var musicBtn;
 	var vibrateBtn;
 	var netSideBtn;
+	var skipBtn;
 
 	var backplateBtn;
 	var backplateVolcanoBtn;
@@ -17,6 +18,9 @@ Ptero.pause_menu = (function(){
 
 	function enable() {
 		buttonList.enable();
+		if (!Ptero.settings.isTutorialEnabled()) {
+			skipBtn.disable();
+		}
 
 		enableSound(Ptero.settings.isSoundEnabled());
 		enableMusic(Ptero.settings.isMusicEnabled());
@@ -75,6 +79,17 @@ Ptero.pause_menu = (function(){
 		backplateVolcanoBtn = btns["backplateVolcano"];
 		backplateBtn.shouldDraw = false;
 		backplateVolcanoBtn.shouldDraw = false;
+
+		skipBtn = btns["skip"];
+		skipBtn.onclick = function() {
+			Ptero.scene_play.exitTutorial();
+		};
+		if (Ptero.settings.isTutorialEnabled()) {
+			skipBtn.shouldDraw = true;
+		}
+		else {
+			skipBtn.shouldDraw = false;
+		}
 
 		soundBtn = btns["sound"];
 		soundBtn.onclick = toggleSound;

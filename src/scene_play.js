@@ -56,6 +56,7 @@ Ptero.scene_play = (function() {
 	var healthContentBtn;
 
 	function cleanup() {
+		Ptero.pause_menu.disable();
 		Ptero.bulletpool.clear();
 		disableControls();
 	}
@@ -302,6 +303,11 @@ Ptero.scene_play = (function() {
 		};
 	})();
 
+	function exitTutorial() {
+		Ptero.settings.enableTutorial(false);
+		Ptero.setScene(Ptero.scene_play);
+	}
+
 	function fadeToNextStage(onDone, name) {
 		hud.fadeOut(1, function() {
 			var nextName = name || Ptero.getNextBgName();
@@ -417,5 +423,6 @@ Ptero.scene_play = (function() {
 		unpause: unpause,
 		fadeToNextStage: fadeToNextStage,
 		switchBackground: switchBackground,
+		exitTutorial: exitTutorial,
 	};
 })();

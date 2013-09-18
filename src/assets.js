@@ -22,6 +22,7 @@ Ptero.assets = (function(){
 		"egg"    : "img/egg.png",
 		"arrow"  : "img/arrow.png",
 		"arrow2" : "img/arrow2.png",
+		"arrow3" : "img/arrow3.png",
 
 		"bg_menu"     : "bg/menu/bg_menu.jpg",
 		"bg_tutorial" : "bg/tutorial/bg_tutorial.png",
