@@ -50,6 +50,7 @@ Ptero.assets = (function(){
 
 		"btn_back"         : "img/buttons/btn_back.png",
 
+		"cliff" : "img/cliff.png",
 		"title" : "img/title.png",
 
 		"backplate_mountain" : "img/backplate_menu_mountain.png",

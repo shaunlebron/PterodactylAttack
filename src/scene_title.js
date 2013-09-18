@@ -13,17 +13,31 @@ Ptero.scene_title = (function(){
 		Ptero.background.goToIdle();
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json['btns_loading']);
+		Ptero.audio.play('theme');
+		time = 0;
+		vel = 0;
+		displacement = 0;
 	}
 
+	var time;
+	var accel = 8000;
+	var displacement;
+
 	function update(dt) {
-		// this is only update once, since we're using to play the music and to initially load the pterodactyls for the main menu.
-		Ptero.setScene(Ptero.scene_menu);
-		Ptero.audio.play('theme');
+		time += dt;
+		vel += accel*dt;
+		displacement += vel*dt;
+		if (time > 0.5) {
+			Ptero.setScene(Ptero.scene_menu);
+		}
 	}
 
 	function draw(ctx) {
 		Ptero.deferredSprites.draw(ctx);
+		ctx.save();
+		ctx.translate(0,displacement);
 		buttonList.draw(ctx);
+		ctx.restore();
 	}
 
 	return {
