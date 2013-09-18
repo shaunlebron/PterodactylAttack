@@ -65,6 +65,18 @@ Ptero.scene_menu = (function(){
 
 			// create enemy
 			var e = Ptero.Enemy.fromState(models[j]);
+			if (j == 0) {
+				e.setType([
+					"baby_ice_yellow",
+					"baby_ice_purple",
+				][Math.floor(Math.random()*2)]);
+			}
+			else if (j == 1) {
+				e.setType([
+					"adult_ice_red",
+					"adult_ice_green",
+				][Math.floor(Math.random()*2)]);
+			}
 			e.path.freezeAtEnd = true;
 			e.whenHit = (function(e,action){
 				return function() {

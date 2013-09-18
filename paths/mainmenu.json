@@ -3,7 +3,7 @@
 	"models": [
 		{
 			"index": 1,
-			"enemyType": "baby_mountain_blue",
+			"enemyType": "baby_ice_yellow",
 			"points": [
 				{
 					"t": 0,
@@ -31,7 +31,7 @@
 		{
 			"index": 2,
 			"isAttack": false,
-			"enemyType": "adult_mountain_green",
+			"enemyType": "adult_ice_red",
 			"points": [
 				{
 					"t": 0,

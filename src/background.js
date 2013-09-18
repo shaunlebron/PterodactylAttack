@@ -548,8 +548,10 @@ Ptero.createBackgrounds = function() {
 			];
 			bg.loadLayersData(Ptero.assets.json["bg_menu_layers"]);
 			bg.vectorAnimsToLoad = [
-				'baby_mountain_blue',
-				'adult_mountain_green',
+				'baby_ice_purple',
+				'baby_ice_yellow',
+				'adult_ice_red',
+				'adult_ice_green',
 			];
 			return bg;
 		})(),
