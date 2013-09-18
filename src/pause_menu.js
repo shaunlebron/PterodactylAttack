@@ -27,10 +27,10 @@ Ptero.pause_menu = (function(){
 	function setNetSide(side) {
 		Ptero.settings.setNetSide(side);
 		if (side == 'left') {
-			netSideBtn.text = "LEFT";
+			netSideBtn.text = "<<<";
 		}
 		else if (side == 'right') {
-			netSideBtn.text = "RIGHT";
+			netSideBtn.text = ">>>";
 		}
 	}
 	function toggleNetSide() {
