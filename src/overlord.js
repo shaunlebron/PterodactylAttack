@@ -315,9 +315,6 @@ Ptero.OverlordTutor.prototype = {
 
 		function end() {
 			that.lessonTitle.fadeOut();
-			that.isShowHealthMsg = false;
-			Ptero.scene_play.hud.show('health', false);
-			Ptero.scene_play.hud.show('bounty', false);
 			that.script.addEventAfterNow({
 				time: 0.5,
 				action: function() {
@@ -332,7 +329,6 @@ Ptero.OverlordTutor.prototype = {
 			Ptero.audio.play('bountyWrong');
 			Ptero.scene_play.enableNet(false);
 			Ptero.scene_play.hud.show('health', false);
-			Ptero.scene_play.hud.show('bounty', false);
 			that.lessonTitle.fadeOut();
 
 			Ptero.orb.setNextOrigin(0,-2);
@@ -407,9 +403,6 @@ Ptero.OverlordTutor.prototype = {
 
 		function end() {
 			that.lessonTitle.fadeOut();
-			that.isShowHealthMsg = false;
-			Ptero.scene_play.hud.show('health', false);
-			Ptero.scene_play.hud.show('bounty', false);
 			that.script.addEventAfterNow({
 				time: 0.5,
 				action: function() {
@@ -492,11 +485,8 @@ Ptero.OverlordTutor.prototype = {
 		var that = this;
 
 		function end() {
-			that.isShowHealthMsg = false;
 			that.lessonTitle.fadeOut();
 			that.showNetTutor('out');
-			Ptero.scene_play.hud.show('health', false);
-			Ptero.scene_play.hud.show('bounty', false);
 			that.script.addEventAfterNow({
 				time: 0.5,
 				action: function() {
@@ -774,6 +764,7 @@ Ptero.OverlordTutor.prototype = {
 					Ptero.scene_play.enableNet(true);
 					Ptero.scene_play.hud.show("health", true);
 					Ptero.scene_play.hud.show("bounty", false);
+					that.isShowHealthMsg = false;
 					that.showLessonTitle('Last Lesson','Bounties');
 				},
 			},
