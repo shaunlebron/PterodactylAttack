@@ -140,6 +140,28 @@ Ptero.scene_play = (function() {
 			"score": true,
 		};
 
+		var health = 0;
+		var nextHealth;
+		var healthTime = 0;
+		var healthColor;
+		function updateHealth(dt) {
+			healthTime += dt;
+			nextHealth = Ptero.player.health;
+			var healthSpeed = 2;
+			if (health < nextHealth) {
+				health = Math.min(nextHealth, health + healthSpeed*dt);
+			}
+			else {
+				health = Math.max(nextHealth, health - healthSpeed*dt);
+			}
+			if (nextHealth == 1 && Math.floor(healthTime*5) % 2 == 0) {
+				healthColor = "#F00";
+			}
+			else {
+				healthColor = "#DDD";
+			}
+		}
+
 		function show(name, on) {
 			shown[name] = on;
 		}
@@ -184,6 +206,7 @@ Ptero.scene_play = (function() {
 
 		function update(dt) {
 			timer && timer.update(dt);
+			updateHealth(dt);
 		}
 
 		function drawHealth(ctx) {
@@ -192,12 +215,12 @@ Ptero.scene_play = (function() {
 			var b = healthContentBtn.billboard;
 			var w = b.w;
 			var h = b.h;
-			var healthPercent = Ptero.player.health / Ptero.player.maxHealth;
+			var healthPercent = health / Ptero.player.maxHealth;
 			ctx.save();
 			b.transform(ctx,pos);
 			ctx.fillStyle = "#555";
 			ctx.fillRect(0,0,w,h);
-			ctx.fillStyle = "#DDD";
+			ctx.fillStyle = healthColor;
 			ctx.fillRect(0,0, healthPercent * w, h);
 			ctx.restore();
 		}
