@@ -215,6 +215,9 @@ Ptero.scene_play = (function() {
 				ctx.closePath();
 			}
 			egg();
+			ctx.lineWidth = 5;
+			ctx.strokeStyle = "rgba(0,0,0,0.3)";
+			ctx.stroke();
 			ctx.fillStyle = color;
 			ctx.fill();
 		}
