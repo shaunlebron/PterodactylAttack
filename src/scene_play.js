@@ -154,11 +154,17 @@ Ptero.scene_play = (function() {
 			else {
 				health = Math.max(nextHealth, health - healthSpeed*dt);
 			}
-			if (nextHealth == 1 && Math.floor(healthTime*5) % 2 == 0) {
-				healthColor = "#F00";
-			}
-			else {
-				healthColor = "#DDD";
+			healthColor = "#DDD";
+			if (Math.floor(healthTime*6) % 2 == 0) {
+				if (health < nextHealth) {
+					healthColor = "#0F0";
+				}
+				else if (health > nextHealth) {
+					healthColor = "#F00";
+				}
+				else if (health == 1) {
+					healthColor = "#F00";
+				}
 			}
 		}
 
