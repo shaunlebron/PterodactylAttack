@@ -921,6 +921,7 @@ Ptero.OverlordWaves.prototype = {
 		this.stopped = true;
 	},
 	createWaveScript: function(waveNum) {
+		this.waveNum = waveNum;
 
 		var t = 0;
 		var events = [];
@@ -945,7 +946,6 @@ Ptero.OverlordWaves.prototype = {
 
 		// Show wave count
 		addEvent(0, function() {
-			that.waveNum = waveNum;
 			that.showWaveTitle("wave " + (waveNum+1).toString());
 			Ptero.score.addWaves(1);
 		});
@@ -1046,9 +1046,11 @@ Ptero.OverlordWaves.prototype = {
 		// empty enemies list
 		this.enemies.length = 0;
 		this.refreshPaths();
-		Ptero.refreshBounty();
 		this.waitingForTheEnd = false;
 		this.waveTitle = null;
+
+		Ptero.bountySize = Math.min(5, this.waveNum+2);
+		Ptero.refreshBounty();
 
 		this.script.init();
 	},

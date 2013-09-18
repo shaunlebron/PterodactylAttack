@@ -1,16 +1,17 @@
 
+Ptero.bountySize = 5;
 Ptero.refreshBounty = function() {
-	Ptero.bounty = new Ptero.Bounty();
+	Ptero.bounty = new Ptero.Bounty(Ptero.bountySize);
 };
 
-Ptero.Bounty = function() {
+Ptero.Bounty = function(size) {
 
 	// number of different colors
 	this.makeColorTable();
 
 	// populate items (i.e. random colors) in the bounty
 	var numColors = this.numColors;
-	this.setRandomItems(5);
+	this.setRandomItems(size);
 
 	this.autoReset = true;
 };
