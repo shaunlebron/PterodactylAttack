@@ -10,7 +10,6 @@ Ptero.scene_highscore = (function(){
 	function init() {
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_highscore"]);
-		buttonList.enable();
 
 		var btns = buttonList.namedButtons;
 
@@ -41,6 +40,8 @@ Ptero.scene_highscore = (function(){
 		b.onclick = function() {
 			Ptero.setScene(Ptero.scene_menu);
 		};
+
+		buttonList.enable();
 	}
 
 	function update(dt) {

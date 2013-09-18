@@ -24,8 +24,12 @@ Ptero.ButtonList = function(dict) {
 Ptero.ButtonList.prototype = {
 	enable: function() {
 		var name;
+		var b;
 		for (name in this.namedButtons) {
-			this.namedButtons[name].enable();
+			b = this.namedButtons[name];
+			if (b.onclick || b.ontouchstart) {
+				b.enable();
+			}
 		}
 	},
 	disable: function() {

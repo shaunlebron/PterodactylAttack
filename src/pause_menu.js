@@ -8,6 +8,9 @@ Ptero.pause_menu = (function(){
 	var vibrateBtn;
 	var netSideBtn;
 
+	var backplateBtn;
+	var backplateVolcanoBtn;
+
 	function disable() {
 		buttonList.disable();
 	}
@@ -68,6 +71,11 @@ Ptero.pause_menu = (function(){
 
 		var btns = buttonList.namedButtons;
 
+		backplateBtn = btns["backplate"];
+		backplateVolcanoBtn = btns["backplateVolcano"];
+		backplateBtn.shouldDraw = false;
+		backplateVolcanoBtn.shouldDraw = false;
+
 		soundBtn = btns["sound"];
 		soundBtn.onclick = toggleSound;
 
@@ -93,8 +101,29 @@ Ptero.pause_menu = (function(){
 
 	function draw(ctx) {
 
+		var maxDisplacement = Ptero.screen.getWindowWidth();
+		var alpha = (displacement / maxDisplacement - 1) * -0.5;
+		ctx.fillStyle = "rgba(0,0,0," + alpha + ")";
+		ctx.fillRect(0,0,Ptero.screen.getWindowWidth(),Ptero.screen.getWindowHeight());
+
 		ctx.save();
 		ctx.translate(displacement, 0);
+
+		var stage = Ptero.background.name;
+		var btn;
+		if (stage == "ice") {
+			btn = backplateBtn;
+			btn.image = Ptero.assets.images["backplate_ice"];
+		}
+		else if (stage == "volcano") {
+			btn = backplateVolcanoBtn;
+		}
+		else {
+			btn = backplateBtn;
+			btn.image = Ptero.assets.images["backplate_mountain"];
+		}
+		btn.draw(ctx);
+
 		buttonList.draw(ctx);
 		ctx.restore();
 	}

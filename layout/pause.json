@@ -2,6 +2,7 @@
 	"localImages": {},
 	"objects": [
 		{
+			"name": "backplate",
 			"x": 0.5,
 			"y": 0.5,
 			"centerX": 638.5714285714286,
@@ -11,7 +12,20 @@
 			"font": "whitefont",
 			"textAlign": "center",
 			"text": "",
-			"imageName": "backplate_mountain"
+			"imageName": "backplate_ice"
+		},
+		{
+			"name": "backplateVolcano",
+			"x": 0.5,
+			"y": 0.5214285714285715,
+			"centerX": 297.03881401617264,
+			"centerY": 419.81485714285725,
+			"w": 594.0776280323453,
+			"h": 839.6297142857145,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "backplate_volcano"
 		},
 		{
 			"name": "sound",

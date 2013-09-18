@@ -82,7 +82,6 @@ Ptero.scene_options = (function(){
 	function init() {
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_options"]);
-		buttonList.enable();
 
 		var btns = buttonList.namedButtons;
 
@@ -118,6 +117,8 @@ Ptero.scene_options = (function(){
 
 		netSideBtn = btns["netSide"];
 		netSideBtn.onclick = toggleNetSide;
+
+		buttonList.enable();
 
 		enableSound(Ptero.settings.isSoundEnabled());
 		enableMusic(Ptero.settings.isMusicEnabled());

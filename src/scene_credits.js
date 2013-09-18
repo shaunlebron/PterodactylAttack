@@ -10,7 +10,6 @@ Ptero.scene_credits = (function(){
 
 	function init() {
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_credits"]);
-		buttonList.enable();
 
 		var btns = buttonList.namedButtons;
 
@@ -31,6 +30,7 @@ Ptero.scene_credits = (function(){
 		b.onclick = function() {
 			Ptero.setScene(Ptero.scene_menu);
 		};
+		buttonList.enable();
 	}
 
 	function update(dt) {

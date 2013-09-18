@@ -244,6 +244,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			"logo",
 			"backplate_mountain",
 			"backplate_ice",
+			"backplate_volcano",
 			"net",
 			"button_plank",
 			"menu_wrench",

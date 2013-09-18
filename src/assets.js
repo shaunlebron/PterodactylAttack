@@ -68,6 +68,7 @@ Ptero.assets = (function(){
 
 		"backplate_mountain" : "img/backplate_menu_mountain.png",
 		"backplate_ice"      : "img/backplate_menu_ice.png",
+		"backplate_volcano"  : "img/backplate_menu_volcano.png",
 
 		"net": "img/net_01.png",
 	};
