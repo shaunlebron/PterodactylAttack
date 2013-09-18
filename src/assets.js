@@ -59,6 +59,13 @@ Ptero.assets = (function(){
 		"backplate_volcano"  : "img/backplate_menu_volcano.png",
 
 		"net": "img/net_01.png",
+
+		"shaun"     : "img/people/shaun.png",
+		"johnny"    : "img/people/johnny.png",
+		"joey"      : "img/people/joey.png",
+		"jwadd"      : "img/people/jwadd.png",
+		"brandon"   : "img/people/brandon.png",
+		"christian" : "img/people/christian.png",
 	};
 
 	var vectorSources = {

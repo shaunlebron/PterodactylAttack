@@ -256,6 +256,12 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			"arrow",
 			"arrow2",
 			"arrow3",
+			"shaun",
+			"johnny",
+			"joey",
+			"jwadd",
+			"brandon",
+			"christian",
 		];
 		var i,len=images.length;
 		for (i=0; i<len; i++) {
