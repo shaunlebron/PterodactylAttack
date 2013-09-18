@@ -33,19 +33,6 @@ Ptero.assets = (function(){
 		"scorefont"    : "fonts/scorefont.png",
 		"redscorefont" : "fonts/redscorefont.png",
 
-		"msg_complete"   : "img/msg/msg_complete.png",
-		"msg_tut1"       : "img/msg/msg_tut1.png",
-		"msg_tut2"       : "img/msg/msg_tut2.png",
-		"msg_tut3"       : "img/msg/msg_tut3.png",
-		"msg_tut4"       : "img/msg/msg_tut4.png",
-		"msg_tut5"       : "img/msg/msg_tut5.png",
-		"msg_helpbounty" : "img/msg/msg_helpbounty.png",
-		"msg_helpnet"    : "img/msg/msg_helpnet.png",
-		"msg_tryagain"   : "img/msg/msg_tryagain.png",
-		"msg_ready"      : "img/msg/msg_ready.png",
-
-		"credits": "img/credits.png",
-
 		"menu_wrench"       : "img/menu/menu_wrench.png",
 		"menu_strong"       : "img/menu/menu_strong.png",
 		"menu_scroll"       : "img/menu/menu_scroll.png",
@@ -57,7 +44,6 @@ Ptero.assets = (function(){
 		"bullet": "img/bullet.png",
 		"netbullet": "img/netbullet.png",
 
-		"play"      : "img/play.png",
 		"pause"     : "img/pause.png",
 		"logo"      : "img/logo.png",
 		"swipe"     : "img/swipe.png",
