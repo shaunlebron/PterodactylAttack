@@ -18,23 +18,21 @@ Ptero.OverlordTutor = function() {
 	var buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_tutorial"]);
 	var btns = buttonList.namedButtons;
 
-	this.lessonTitleBtn = btns["title"];
-	this.lessonSubBtn = btns["subtitle"];
-
-	this.msgBtn = btns["message"];
-
-	this.arrowBtn = btns["arrow"];
-	this.netHelpBtn1 = btns["nethelp1"];
-	this.netHelpBtn2 = btns["nethelp2"];
-	this.netHelpBtn3 = btns["nethelp3"];
-	this.arrowBtn2 = btns["arrow2"];
-	this.netHelpBtn4 = btns["nethelp4"];
-	this.netHelpBtn5 = btns["nethelp5"];
-	this.netHelpBtn6 = btns["nethelp6"];
-	this.arrowBtn3 = btns["arrow3"];
-	this.bountyHelpBtn1 = btns["bountyhelp1"];
-	this.bountyHelpBtn2 = btns["bountyhelp2"];
-	this.bountyHelpBtn3 = btns["bountyhelp3"];
+	this.lessonTitleBtn   = btns["title"];
+	this.lessonSubBtn     = btns["subtitle"];
+	this.msgBtn           = btns["message"];
+	this.leftNetArrowBtn  = btns["leftNetArrow"];
+	this.leftNetMsg1Btn   = btns["leftNetMsg1"];
+	this.leftNetMsg2Btn   = btns["leftNetMsg2"];
+	this.leftNetMsg3Btn   = btns["leftNetMsg3"];
+	this.rightNetArrowBtn = btns["rightNetArrow"];
+	this.rightNetMsg1Btn  = btns["rightNetMsg1"];
+	this.rightNetMsg2Btn  = btns["rightNetMsg2"];
+	this.rightNetMsg3Btn  = btns["rightNetMsg3"];
+	this.bountyArrowBtn   = btns["bountyArrow"];
+	this.bountyMsg1Btn    = btns["bountyMsg1"];
+	this.bountyMsg2Btn    = btns["bountyMsg2"];
+	this.healthMsgBtn     = btns["healthMsg"];
 
 	Ptero.orb.enableGuide(true);
 };
@@ -43,12 +41,12 @@ Ptero.OverlordTutor.prototype = {
 	refreshPaths: function() {
 		this.paths = Ptero.background.pteroPaths;
 	},
-	showLessonTitle: function(title,subtitle,fade) {
+	showLessonTitle: function(title,subtitle) {
 		this.lessonTitleBtn.text = title;
 		this.lessonSubBtn.text = subtitle;
 
 		var that = this;
-		this.lessonTitle = (function(){
+		function makeLessonTitle(fade) {
 			var radius = 70;
 			var transitionTime = 0.1;
 			var stayTime = 2;
@@ -97,7 +95,11 @@ Ptero.OverlordTutor.prototype = {
 				update: update,
 				draw: draw,
 			};
-		})();
+		}
+		this.lessonTitle = makeLessonTitle("in")
+		this.lessonTitle.fadeOut = function() {
+			that.lessonTitle = makeLessonTitle("out");
+		};
 	},
 	showBountyTutor: function(fade) {
 		var that = this;
@@ -149,10 +151,9 @@ Ptero.OverlordTutor.prototype = {
 					ctx.translate(0, val.offset);
 					ctx.globalAlpha = val.alpha;
 
-					that.arrowBtn3.draw(ctx);
-					that.bountyHelpBtn1.draw(ctx);
-					that.bountyHelpBtn2.draw(ctx);
-					that.bountyHelpBtn3.draw(ctx);
+					that.bountyArrowBtn.draw(ctx);
+					that.bountyMsg1Btn.draw(ctx);
+					that.bountyMsg2Btn.draw(ctx);
 
 					ctx.globalAlpha = 1;
 					ctx.restore();
@@ -218,16 +219,16 @@ Ptero.OverlordTutor.prototype = {
 
 					var side = Ptero.settings.getNetSide();
 					if (side == "left") {
-						that.arrowBtn.draw(ctx);
-						that.netHelpBtn1.draw(ctx);
-						that.netHelpBtn2.draw(ctx);
-						that.netHelpBtn3.draw(ctx);
+						that.leftNetArrowBtn.draw(ctx);
+						that.leftNetMsg1Btn.draw(ctx);
+						that.leftNetMsg2Btn.draw(ctx);
+						that.leftNetMsg3Btn.draw(ctx);
 					}
 					else if (side == "right") {
-						that.arrowBtn2.draw(ctx);
-						that.netHelpBtn4.draw(ctx);
-						that.netHelpBtn5.draw(ctx);
-						that.netHelpBtn6.draw(ctx);
+						that.rightNetArrowBtn.draw(ctx);
+						that.rightNetMsg1Btn.draw(ctx);
+						that.rightNetMsg2Btn.draw(ctx);
+						that.rightNetMsg3Btn.draw(ctx);
 					}
 					ctx.globalAlpha = 1;
 					ctx.restore();
@@ -313,13 +314,48 @@ Ptero.OverlordTutor.prototype = {
 		var that = this;
 
 		function end() {
-			that.showLessonTitle('Lesson 1','Hit babies 2 times','out');
+			that.lessonTitle.fadeOut();
+			that.isShowHealthMsg = false;
+			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.hud.show('bounty', false);
 			that.script.addEventAfterNow({
 				time: 0.5,
 				action: function() {
 					that.createLesson2Script();
 				},
 			});
+		}
+
+		function die() {
+			that.isShowHealthMsg = false;
+			that.enemies.length = 0;
+			Ptero.audio.play('bountyWrong');
+			Ptero.scene_play.enableNet(false);
+			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.hud.show('bounty', false);
+			that.lessonTitle.fadeOut();
+
+			Ptero.orb.setNextOrigin(0,-2);
+			Ptero.orb.disableTouch();
+
+			that.script.addEventsAfterNow([
+				{
+					time: 0.7,
+					action: function() {
+						that.showMessage('You Died. Try again.');
+					},
+				},
+				{
+					dt: 2.5,
+					action: revive,
+				},
+			]);
+		}
+
+		function revive() {
+			Ptero.orb.setNextOrigin(0,-1);
+			Ptero.orb.enableTouch();
+			that.createLesson1Script();
 		}
 
 		function addBaby() {
@@ -329,11 +365,17 @@ Ptero.OverlordTutor.prototype = {
 				Ptero.audio.play('bountyCorrect');
 			};
 			baby.onAttack = function() {
-				Ptero.audio.play('bountyWrong');
-				that.script.addEventAfterNow({
-					time: 0.5,
-					action: addBaby,
-				});
+				if (Ptero.player.health <= 0) {
+					Ptero.player.reset();
+					die();
+				}
+				else {
+					Ptero.audio.play('bountyWrong');
+					that.script.addEventAfterNow({
+						time: 0.5,
+						action: addBaby,
+					});
+				}
 			};
 			that.enemies.push(baby);
 		}
@@ -342,7 +384,10 @@ Ptero.OverlordTutor.prototype = {
 			{
 				time: 0,
 				action: function() {
-					that.showLessonTitle('Lesson 1','Hit babies 2 times','in');
+					that.showLessonTitle('Lesson 1','Hit babies 2 times');
+					Ptero.scene_play.hud.show("health", true);
+					Ptero.scene_play.hud.show("bounty", false);
+					that.isShowHealthMsg = true;
 				},
 			},
 			{
@@ -361,13 +406,48 @@ Ptero.OverlordTutor.prototype = {
 		var that = this;
 
 		function end() {
-			that.showLessonTitle('Lesson 2','Hit adults 3 times','out');
+			that.lessonTitle.fadeOut();
+			that.isShowHealthMsg = false;
+			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.hud.show('bounty', false);
 			that.script.addEventAfterNow({
 				time: 0.5,
 				action: function() {
 					that.createLesson3Script();
 				},
 			});
+		}
+
+		function die() {
+			that.isShowHealthMsg = false;
+			that.enemies.length = 0;
+			Ptero.audio.play('bountyWrong');
+			Ptero.scene_play.enableNet(false);
+			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.hud.show('bounty', false);
+			that.lessonTitle.fadeOut();
+
+			Ptero.orb.setNextOrigin(0,-2);
+			Ptero.orb.disableTouch();
+
+			that.script.addEventsAfterNow([
+				{
+					time: 0.7,
+					action: function() {
+						that.showMessage('You Died. Try again.');
+					},
+				},
+				{
+					dt: 2.5,
+					action: revive,
+				},
+			]);
+		}
+
+		function revive() {
+			Ptero.orb.setNextOrigin(0,-1);
+			Ptero.orb.enableTouch();
+			that.createLesson2Script();
 		}
 
 		function addAdult() {
@@ -377,11 +457,17 @@ Ptero.OverlordTutor.prototype = {
 				end();
 			};
 			adult.onAttack = function() {
-				Ptero.audio.play('bountyWrong');
-				that.script.addEventAfterNow({
-					time: 0.5,
-					action: addAdult,
-				});
+				if (Ptero.player.health <= 0) {
+					Ptero.player.reset();
+					die();
+				}
+				else {
+					Ptero.audio.play('bountyWrong');
+					that.script.addEventAfterNow({
+						time: 0.5,
+						action: addAdult,
+					});
+				}
 			};
 			that.enemies.push(adult);
 		}
@@ -390,7 +476,10 @@ Ptero.OverlordTutor.prototype = {
 			{
 				time: 0,
 				action: function() {
-					that.showLessonTitle('Lesson 2','Hit adults 3 times','in');
+					that.showLessonTitle('Lesson 2','Hit adults 3 times');
+					Ptero.scene_play.hud.show("health", true);
+					Ptero.scene_play.hud.show("bounty", false);
+					that.isShowHealthMsg = true;
 				},
 			},
 			{
@@ -403,14 +492,50 @@ Ptero.OverlordTutor.prototype = {
 		var that = this;
 
 		function end() {
-			that.showLessonTitle('Lesson 3','Capture a pterodactyl','out');
+			that.isShowHealthMsg = false;
+			that.lessonTitle.fadeOut();
 			that.showNetTutor('out');
+			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.hud.show('bounty', false);
 			that.script.addEventAfterNow({
 				time: 0.5,
 				action: function() {
 					that.createLesson4Script();
 				},
 			});
+		}
+
+		function die() {
+			that.isShowHealthMsg = false;
+			that.enemies.length = 0;
+			Ptero.audio.play('bountyWrong');
+			Ptero.scene_play.enableNet(false);
+			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.hud.show('bounty', false);
+			that.lessonTitle.fadeOut();
+			that.showNetTutor('out');
+
+			Ptero.orb.setNextOrigin(0,-2);
+			Ptero.orb.disableTouch();
+
+			that.script.addEventsAfterNow([
+				{
+					time: 0.7,
+					action: function() {
+						that.showMessage('You Died. Try again.');
+					},
+				},
+				{
+					dt: 2.5,
+					action: revive,
+				},
+			]);
+		}
+
+		function revive() {
+			Ptero.orb.setNextOrigin(0,-1);
+			Ptero.orb.enableTouch();
+			that.createLesson3Script();
 		}
 
 		function addPtero() {
@@ -447,8 +572,14 @@ Ptero.OverlordTutor.prototype = {
 				spawnNextPtero(0);
 			};
 			p.onAttack = function() {
-				Ptero.audio.play('bountyWrong');
-				spawnNextPtero(1);
+				if (Ptero.player.health <= 0) {
+					Ptero.player.reset();
+					die();
+				}
+				else {
+					Ptero.audio.play('bountyWrong');
+					spawnNextPtero(1);
+				}
 			};
 			that.enemies.push(p);
 		}
@@ -458,7 +589,10 @@ Ptero.OverlordTutor.prototype = {
 				time: 0,
 				action: function() {
 					Ptero.bounty.isBlackHole = true;
-					that.showLessonTitle('Lesson 3','Capture a pterodactyl','in');
+					that.showLessonTitle('Lesson 3','Capture a pterodactyl');
+					Ptero.scene_play.hud.show("health", true);
+					Ptero.scene_play.hud.show("bounty", false);
+					that.isShowHealthMsg = true;
 				},
 			},
 			{
@@ -478,7 +612,7 @@ Ptero.OverlordTutor.prototype = {
 		var that = this;
 
 		function end() {
-			that.showLessonTitle('Final Lesson','Collect health bounties','out');
+			that.lessonTitle.fadeOut();
 			that.showBountyTutor('out');
 			that.script.addEventsAfterNow([
 				{
@@ -510,7 +644,7 @@ Ptero.OverlordTutor.prototype = {
 			Ptero.scene_play.enableNet(false);
 			Ptero.scene_play.hud.show('health', false);
 			Ptero.scene_play.hud.show('bounty', false);
-			that.showLessonTitle('Final Lesson','Collect health bounties','out');
+			that.lessonTitle.fadeOut();
 			that.showBountyTutor('out');
 
 			Ptero.orb.setNextOrigin(0,-2);
@@ -638,13 +772,14 @@ Ptero.OverlordTutor.prototype = {
 					Ptero.player.setGod(false);
 					Ptero.bounty.isBlackHole = false;
 					Ptero.scene_play.enableNet(true);
-					that.showLessonTitle('Final Lesson','Collect health bounties','in');
+					Ptero.scene_play.hud.show("health", true);
+					Ptero.scene_play.hud.show("bounty", false);
+					that.showLessonTitle('Last Lesson','Bounties');
 				},
 			},
 			{
 				dt: 0.75,
 				action: function() {
-					Ptero.scene_play.hud.show('health', true);
 					Ptero.scene_play.hud.show('bounty', true);
 					that.showBountyTutor('in');
 				},
@@ -657,7 +792,7 @@ Ptero.OverlordTutor.prototype = {
 	},
 	init: function() {
 		console.log('initing tutor');
-		Ptero.player.setGod(true);
+		Ptero.player.setGod(false);
 		Ptero.scene_play.switchBackground('tutorial');
 		Ptero.orb.setOrigin(0,-2);
 		Ptero.orb.setNextOrigin(0,-2);
@@ -679,6 +814,7 @@ Ptero.OverlordTutor.prototype = {
 		this.lessonTitle && this.lessonTitle.draw(ctx);
 		this.netTutor && this.netTutor.draw(ctx);
 		this.bountyTutor && this.bountyTutor.draw(ctx);
+		this.isShowHealthMsg && this.healthMsgBtn.draw(ctx);
 	},
 	update: function(dt) {
 		this.message && this.message.update(dt);

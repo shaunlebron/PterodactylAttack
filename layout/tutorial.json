@@ -23,7 +23,7 @@
 			"h": 91.99999999999994,
 			"font": "whitefont",
 			"textAlign": "center",
-			"text": "babies require 2 hits"
+			"text": "bounties"
 		},
 		{
 			"name": "message",
@@ -38,7 +38,7 @@
 			"text": "now you know!"
 		},
 		{
-			"name": "arrow",
+			"name": "leftNetArrow",
 			"x": 0,
 			"y": 0.6171428571428572,
 			"centerX": 0,
@@ -51,7 +51,7 @@
 			"imageName": "arrow"
 		},
 		{
-			"name": "nethelp1",
+			"name": "leftNetMsg1",
 			"x": 0,
 			"y": 0.6194080162674637,
 			"centerX": -62.581712372448976,
@@ -63,7 +63,7 @@
 			"text": "hold"
 		},
 		{
-			"name": "nethelp2",
+			"name": "leftNetMsg2",
 			"x": 0.0019618443080357205,
 			"y": 0.6905691964285712,
 			"centerX": -62.581712372448976,
@@ -75,7 +75,7 @@
 			"text": "while"
 		},
 		{
-			"name": "nethelp3",
+			"name": "leftNetMsg3",
 			"x": 0,
 			"y": 0.7568359374999997,
 			"centerX": -62.581712372448976,
@@ -87,7 +87,7 @@
 			"text": "shooting"
 		},
 		{
-			"name": "arrow2",
+			"name": "rightNetArrow",
 			"x": 1,
 			"y": 0.6138392857142857,
 			"centerX": 70,
@@ -100,7 +100,7 @@
 			"imageName": "arrow2"
 		},
 		{
-			"name": "nethelp4",
+			"name": "rightNetMsg1",
 			"x": 1,
 			"y": 0.6138392857142857,
 			"centerX": 419.56114477040813,
@@ -112,7 +112,7 @@
 			"text": "hold"
 		},
 		{
-			"name": "nethelp5",
+			"name": "rightNetMsg2",
 			"x": 0.9980381556919641,
 			"y": 0.6766183035714286,
 			"centerX": 419.56114477040813,
@@ -124,7 +124,7 @@
 			"text": "while"
 		},
 		{
-			"name": "nethelp6",
+			"name": "rightNetMsg3",
 			"x": 1,
 			"y": 0.7463727678571429,
 			"centerX": 419.56114477040813,
@@ -136,10 +136,10 @@
 			"text": "shooting"
 		},
 		{
-			"name": "arrow3",
+			"name": "bountyArrow",
 			"x": 0,
-			"y": 0.2571428571428571,
-			"centerX": -67.88571428571429,
+			"y": 0.14918399999999996,
+			"centerX": -11.0592,
 			"centerY": 0,
 			"w": 70,
 			"h": 146,
@@ -149,40 +149,40 @@
 			"imageName": "arrow"
 		},
 		{
-			"name": "bountyhelp1",
+			"name": "bountyMsg1",
 			"x": 0,
-			"y": 0.26142857142857145,
-			"centerX": -139.72456951530611,
-			"centerY": 4.009485998288053,
+			"y": 0.24379126944682208,
+			"centerX": -60.434055229591905,
+			"centerY": 0,
 			"w": 343.1361607142856,
-			"h": 74.44196428571433,
+			"h": 63.38276428571436,
 			"font": "whitefont",
 			"textAlign": "left",
-			"text": "capture"
+			"text": "capture these colors"
 		},
 		{
-			"name": "bountyhelp2",
+			"name": "bountyMsg2",
 			"x": 0,
-			"y": 0.3291428571428572,
-			"centerX": -139.72456951530611,
-			"centerY": 4.009485998288053,
+			"y": 0.30245856767201856,
+			"centerX": -76.52914094387754,
+			"centerY": 0,
 			"w": 343.1361607142856,
-			"h": 74.44196428571433,
+			"h": 63.38276428571436,
 			"font": "whitefont",
 			"textAlign": "left",
-			"text": "these"
+			"text": "to earn health"
 		},
 		{
-			"name": "bountyhelp3",
+			"name": "healthMsg",
 			"x": 0,
-			"y": 0.40278857142857155,
-			"centerX": -139.72456951530611,
-			"centerY": 4.009485998288053,
+			"y": 0.049292434285714296,
+			"centerX": -13.637050429591824,
+			"centerY": 0,
 			"w": 343.1361607142856,
-			"h": 74.44196428571433,
+			"h": 56.102650914285796,
 			"font": "whitefont",
 			"textAlign": "left",
-			"text": "only"
+			"text": "health"
 		}
 	]
 }
