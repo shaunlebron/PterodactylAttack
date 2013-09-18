@@ -46,7 +46,7 @@
 			"centerY": 39.31428571428569,
 			"w": 251.42857142857082,
 			"h": 78.6285714285714,
-			"font": "buttonfont",
+			"font": "whitefont",
 			"textAlign": "center",
 			"text": "sound"
 		},
@@ -57,7 +57,7 @@
 			"centerY": 39.31428571428569,
 			"w": 251.42857142857082,
 			"h": 78.6285714285714,
-			"font": "buttonfont",
+			"font": "whitefont",
 			"textAlign": "center",
 			"text": "music"
 		},
@@ -81,7 +81,7 @@
 			"centerY": 39.31428571428569,
 			"w": 251.42857142857082,
 			"h": 78.6285714285714,
-			"font": "buttonfont",
+			"font": "whitefont",
 			"textAlign": "center",
 			"text": "vibrate"
 		},
@@ -105,7 +105,7 @@
 			"centerY": 39.31428571428569,
 			"w": 251.42857142857082,
 			"h": 78.6285714285714,
-			"font": "buttonfont",
+			"font": "whitefont",
 			"textAlign": "center",
 			"text": "tutorial"
 		},
@@ -129,7 +129,7 @@
 			"centerY": 39.31428571428569,
 			"w": 251.42857142857082,
 			"h": 78.6285714285714,
-			"font": "buttonfont",
+			"font": "whitefont",
 			"textAlign": "center",
 			"text": "net side"
 		},

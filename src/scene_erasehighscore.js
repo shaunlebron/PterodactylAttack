@@ -1,5 +1,5 @@
 
-Ptero.scene_highscore = (function(){
+Ptero.scene_erasehighscore = (function(){
 
 	var buttonList;
 
@@ -9,19 +9,18 @@ Ptero.scene_highscore = (function(){
 
 	function init() {
 
-		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_highscore"]);
+		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_erasehighscore"]);
 		buttonList.enable();
 
 		var btns = buttonList.namedButtons;
 
-		btns["score"].text    = Ptero.settings.get("high_score").toString();
-		btns["waves"].text    = Ptero.settings.get("high_waves").toString();
-		btns["kills"].text    = Ptero.settings.get("high_kills").toString();
-		btns["caps"].text     = Ptero.settings.get("high_captures").toString();
-		btns["bounties"].text = Ptero.settings.get("high_bounties").toString();
-
 		btns["erase"].onclick = function() {
-			Ptero.setScene(Ptero.scene_erasehighscore);
+			Ptero.settings.clearHighScores();
+			Ptero.setScene(Ptero.scene_highscore);
+		};
+
+		btns["cancel"].onclick = function() {
+			Ptero.setScene(Ptero.scene_highscore);
 		};
 
 		btns["wrench"].onclick = function() {

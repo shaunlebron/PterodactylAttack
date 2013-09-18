@@ -168,6 +168,19 @@
 			"font": "redscorefont",
 			"textAlign": "right",
 			"text": "1"
+		},
+		{
+			"name": "erase",
+			"x": 0.5,
+			"y": 0.8438888888888889,
+			"centerX": 168.21355030511674,
+			"centerY": 39.828571428571564,
+			"w": 336.4271006102334,
+			"h": 79.65714285714307,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "erase",
+			"imageName": "button_plank"
 		}
 	]
 }

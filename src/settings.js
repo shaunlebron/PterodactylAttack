@@ -31,6 +31,14 @@ Ptero.settings = (function(){
 	var key = "settings";
 
 	return {
+		clearHighScores: function() {
+			values["high_score"] = 0;
+			values["high_waves"] = 0;
+			values["high_kills"] = 0;
+			values["high_captures"] = 0;
+			values["high_bounties"] = 0;
+			this.save();
+		},
 		set: function(key,value) {
 			values[key] = value;
 			this.save();
