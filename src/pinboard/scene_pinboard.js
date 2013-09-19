@@ -262,6 +262,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			"jwadd",
 			"brandon",
 			"christian",
+			"dead",
 		];
 		var i,len=images.length;
 		for (i=0; i<len; i++) {
@@ -418,6 +419,10 @@ Ptero.Pinboard.scene_pinboard = (function(){
 		}
 	}
 
+	function getDefaultSpawnPos() {
+		return Ptero.screen.getTopLeftScreenCornerInWindowCoords();
+	}
+
 	function duplicateSelectedObject() {
 		if (selectedIndex != null) {
 			var obj = objects[selectedIndex];
@@ -425,7 +430,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			var obj2 = {
 				image:     obj.image,
 				imageName: obj.imageName,
-				pos:       {x:0, y:0},
+				pos:       getDefaultSpawnPos(),
 				billboard: new Ptero.Billboard(b.centerX, b.centerY, b.w, b.h),
 				font:      obj.font,
 				textAlign: obj.textAlign,
@@ -466,7 +471,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 					billboard: new Ptero.Billboard(0,0,200,200),
 				};
 			}
-			obj.pos =       {x:0, y:0};
+			obj.pos =       getDefaultSpawnPos();
 			obj.font =      'whitefont';
 			obj.textAlign = 'center';
 			obj.text =      '';

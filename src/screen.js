@@ -204,6 +204,13 @@ Ptero.screen = (function(){
 		centerWindowAtPixel: centerWindowAtPixel,
 		zoomWindow: zoomWindow,
 
+		getTopLeftScreenCornerInWindowCoords: function() {
+			return {
+				x: -windowLeft/windowScale,
+				y: -windowTop/windowScale,
+			};
+		},
+
 		getWindowPos: function() {
 			return {
 				x: windowLeft,

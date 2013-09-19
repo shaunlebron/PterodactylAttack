@@ -66,6 +66,7 @@ Ptero.assets = (function(){
 		"jwadd"      : "img/people/jwadd.png",
 		"brandon"   : "img/people/brandon.png",
 		"christian" : "img/people/christian.png",
+		"dead" : "img/people/dead.png",
 	};
 
 	var vectorSources = {
@@ -193,6 +194,7 @@ Ptero.assets = (function(){
 		"btns_options"        : "layout/options.json",
 		"btns_highscore"      : "layout/highscore.json",
 		"btns_credits"        : "layout/credits.json",
+		"btns_credits_content": "layout/credits_content.json",
 		"btns_game"           : "layout/game.json",
 		"btns_pause"          : "layout/pause.json",
 		"btns_gameover"       : "layout/gameover.json",
