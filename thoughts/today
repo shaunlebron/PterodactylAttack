@@ -66,28 +66,32 @@ _ DONE Fix strange loss of orb control after game over screen
 	- scroll credits
 	- click each name in credits to see dedicate page with face and text
 	- short history and words of encouragement and something funny about how difficult this was
+
+- DONE Shaun's special thanks
+
+	- for unending support:
+		- Ashlee Harris
+		- Susan Harris
+
+	- for community:
+		- IGDA Houston
+		- /r/gamedev
+
+	- for inspiration
+		- John Carmack
+		- Jonathan Blow
+		- Andreas Illiger
+
+	- for tech
+		- Ludei
+
+- DONE move explosion cache to middle so it isn't seen when screen shakes
+
+=================================================================================
+
+	- record new video
 	
 	- Make sure game is hard enough
-
-	- move explosion cache to middle so it isn't seen when screen shakes
-
-	- Shaun's special thanks
-
-		- for unending support:
-			- Ashlee Harris
-			- Susan Harris
-
-		- for community:
-			- IGDA Houston
-			- /r/gamedev
-
-		- for inspiration
-			- John Carmack
-			- Jonathan Blow
-			- Andreas Illiger
-
-		- for tech
-			- Ludei
 
 	- backgrounds
 		- define parallax shifts
@@ -100,6 +104,5 @@ _ DONE Fix strange loss of orb control after game over screen
 		- check memory log to start removing the largest textures first (e.g. boom, backplates)
 		- email to cocoon support
 	
-	- record new video
 
 - DO A FULL TEST OF EVERYTHING IMAGINABLE

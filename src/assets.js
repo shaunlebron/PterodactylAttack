@@ -528,9 +528,11 @@ Ptero.assets = (function(){
 		// We try to draw it in the smallest surface area possible.
 		if (!navigator.isCocoonJS) {
 			var s = 10;
-			ctx.drawImage(Ptero.assets.images["boom1"],0,0,s,s);
-			ctx.drawImage(Ptero.assets.images["boom2"],0,0,s,s);
-			ctx.drawImage(Ptero.assets.images["boom3"],0,0,s,s);
+			var x = Ptero.screen.getWindowWidth()/2;
+			var y = Ptero.screen.getWindowHeight()/2;
+			ctx.drawImage(Ptero.assets.images["boom1"],x,y,s,s);
+			ctx.drawImage(Ptero.assets.images["boom2"],x,y,s,s);
+			ctx.drawImage(Ptero.assets.images["boom3"],x,y,s,s);
 		}
 	}
 
