@@ -21,10 +21,10 @@
 			"centerY": 38.597210481825755,
 			"w": 194.71428571428552,
 			"h": 77.19442096365145,
-			"font": "whitefont",
+			"font": "buttonfont",
 			"textAlign": "center",
-			"text": "",
-			"imageName": "btn_back"
+			"text": "HOME",
+			"imageName": "button_plank"
 		},
 		{
 			"name": "wrench",
