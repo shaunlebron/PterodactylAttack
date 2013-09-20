@@ -69,6 +69,8 @@ _ DONE Fix strange loss of orb control after game over screen
 	
 	- Make sure game is hard enough
 
+	- move explosion cache to middle so it isn't seen when screen shakes
+
 	- Shaun's special thanks
 
 		- for unending support:

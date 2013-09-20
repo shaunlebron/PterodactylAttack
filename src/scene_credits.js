@@ -6,6 +6,8 @@ Ptero.scene_credits = (function(){
 	var contentList;
 	var yearTitleBtn;
 	var yearSubtitleBtn;
+	var thanksBtn;
+	var thanksY;
 
 	function cleanup() {
 		buttonList.disable();
@@ -37,8 +39,14 @@ Ptero.scene_credits = (function(){
 		};
 
 		contentList = new Ptero.ButtonList(Ptero.assets.json["btns_credits_content"]);
-		contentList.enable();
 		btns = contentList.namedButtons;
+
+		thanksBtn = btns["thanks"];
+		thanksBtn.onclick = function() {
+			Ptero.setScene(Ptero.scene_thanks);
+		};
+		thanksBtn.shouldDraw = false;
+		thanksY = Ptero.screen.spaceToWindow(thanksBtn.pos).y;
 
 		yearTitleBtn = btns["yearTitle"];
 		yearSubtitleBtn = btns["yearSubtitle"];
@@ -53,13 +61,14 @@ Ptero.scene_credits = (function(){
 		btns["human4"].pos.y = y;
 		btns["human5"].pos.y = y;
 
-		buttonList.enable();
-
 		scroll.resetPos();
 		scroll.setAutoScroll(true);
 
 		Ptero.input.addTouchHandler(touchHandler);
 		scroll.animateIn();
+
+		buttonList.enable();
+		contentList.enable();
 	}
 
 	var scroll = (function(){
@@ -74,8 +83,19 @@ Ptero.scene_credits = (function(){
 
 		var isAutoScroll;
 
+		var returnPos = null;
+		function setReturnPos(p) {
+			returnPos = p;
+		}
+
 		function resetPos() {
-			pos = maxPos;
+			if (returnPos != null) {
+				pos = returnPos;
+				returnPos = null;
+			}
+			else {
+				pos = maxPos;
+			}
 		}
 
 		function getPos() {
@@ -126,16 +146,21 @@ Ptero.scene_credits = (function(){
 					vel = Math.max(0, vel - decel*dt);
 				}
 
-				// make sure the user sees the midpoint for when pteros go extinct
 				var oldPos = pos;
 				pos += vel*dt;
-				var midPos = yearToWindow(-65 * 1000 * 1000) - Ptero.screen.getWindowHeight()*0.4;
-				console.log(oldPos,midPos,pos);
-				if (-oldPos <= midPos && midPos <= -pos ||
-					-pos <= midPos && midPos <= -oldPos) {
-					vel = 0;
-					pos = -midPos;
+
+				// when quickly scrolling, make sure the screen snaps to this position so the user sees it
+				function stopAt(y) {
+					if (oldPos <= y && y <= pos ||
+						pos <= y && y <= oldPos) {
+						vel = 0;
+						pos = y;
+					}
 				}
+
+				stopAt(-(yearToWindow(-220 * 1000 * 1000) - Ptero.screen.getWindowHeight()*0.4));
+				stopAt(-(yearToWindow(-65 * 1000 * 1000) - Ptero.screen.getWindowHeight()*0.4));
+				stopAt(-4539);
 
 				if (pos > maxPos) {
 					vel = 0;
@@ -154,9 +179,19 @@ Ptero.scene_credits = (function(){
 					}
 				}
 			}
+
+			updateButtonPositions();
+		}
+
+		// button positions have to be adjusted since canvas transforms do not affect click coordinates
+		function updateButtonPositions() {
+			thanksBtn.pos.y = Ptero.screen.windowToSpace({x:0,y:pos+displacement+thanksY}).y;
+			console.log(thanksY, thanksBtn.pos.y);
 		}
 
 		function draw(ctx) {
+			thanksBtn.draw(ctx);
+
 			ctx.save();
 			ctx.translate(0, pos+displacement);
 			drawTimeline(ctx);
@@ -307,6 +342,7 @@ Ptero.scene_credits = (function(){
 			draw: draw,
 			setAutoScroll: setAutoScroll,
 			animateIn: animateIn,
+			setReturnPos: setReturnPos,
 		}
 	})();
 
@@ -368,11 +404,16 @@ Ptero.scene_credits = (function(){
 		scroll.draw(ctx);
 	}
 
+	function resumePreviousScroll() {
+		scroll.setReturnPos(scroll.getPos());
+	}
+
 	return {
 		init: init,
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
+		resumePreviousScroll: resumePreviousScroll,
 	};
 
 })();
