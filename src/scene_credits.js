@@ -4,6 +4,8 @@ Ptero.scene_credits = (function(){
 	var buttonList;
 
 	var contentList;
+	var yearTitleBtn;
+	var yearSubtitleBtn;
 
 	function cleanup() {
 		buttonList.disable();
@@ -36,6 +38,20 @@ Ptero.scene_credits = (function(){
 
 		contentList = new Ptero.ButtonList(Ptero.assets.json["btns_credits_content"]);
 		contentList.enable();
+		btns = contentList.namedButtons;
+
+		yearTitleBtn = btns["yearTitle"];
+		yearSubtitleBtn = btns["yearSubtitle"];
+
+		var y = Ptero.screen.windowToSpace({
+			x: 0,
+			y: 243347.15,
+		}).y;
+		btns["human1"].pos.y = y;
+		btns["human2"].pos.y = y;
+		btns["human3"].pos.y = y;
+		btns["human4"].pos.y = y;
+		btns["human5"].pos.y = y;
 
 		buttonList.enable();
 
@@ -48,7 +64,7 @@ Ptero.scene_credits = (function(){
 
 	var scroll = (function(){
 
-		var minPos = -3605;
+		var minPos = -242910;
 		var maxPos = 0;
 		var displacement;
 
@@ -67,6 +83,7 @@ Ptero.scene_credits = (function(){
 		}
 
 		function setPos(y) {
+			console.log(y);
 			pos = y;
 			
 			var h = Ptero.screen.getWindowHeight();
@@ -131,6 +148,7 @@ Ptero.scene_credits = (function(){
 		function draw(ctx) {
 			ctx.save();
 			ctx.translate(0, pos+displacement);
+			drawTimeline(ctx);
 			contentList.draw(ctx);
 			ctx.restore();
 		}
@@ -148,7 +166,126 @@ Ptero.scene_credits = (function(){
 		function animateIn() {
 			displacement = Ptero.screen.getWindowHeight();
 		}
-		
+
+		var yearStartInWindow = 4957.57;
+		var yearStart = -220.5 * 1000 * 1000;
+		var yearNotch = 100 * 1000;
+		var yearMark = 1000 * 1000;
+		var yearEnd = 0;
+
+		function getYearsPerUnit() {
+			var h = Ptero.screen.getWindowHeight();
+			return 1000000 / (1.5*h);
+		}
+
+		function yearToWindow(year) {
+			return yearStartInWindow + (year-yearStart) / getYearsPerUnit();
+		}
+
+		function windowToYear(y) {
+			return (y - yearStartInWindow) * getYearsPerUnit() + yearStart;
+		}
+
+		function getYearWindowRange() {
+			return {
+				topYear: windowToYear(-pos),
+				bottomYear: windowToYear(-pos + Ptero.screen.getWindowHeight()),
+			};
+		}
+
+		function drawTimeline(ctx) {
+			var r = getYearWindowRange();
+			var yearBuffer = 0;
+			if (r.bottomYear < yearStart || r.topYear > yearEnd) {
+				return;
+			}
+
+			var firstVisibleYear = Math.max(yearStart, r.topYear);
+			var lastVisibleYear = Math.min(yearEnd, r.bottomYear);
+
+			// draw base line
+			ctx.beginPath();
+			var x = Ptero.screen.getWindowWidth()/2;
+			var y1 = yearToWindow(firstVisibleYear);
+			var y2 = yearToWindow(lastVisibleYear);
+			ctx.moveTo(x, y1);
+			ctx.lineTo(x, y2);
+			ctx.lineWidth = 10;
+			ctx.strokeStyle = "rgba(0,0,0,0.8)";
+			ctx.stroke();
+
+			function drawSteps(w, stepSize) {
+				ctx.beginPath();
+				var yr;
+				var firstVisibleYearNotch = Math.ceil(firstVisibleYear / stepSize) * stepSize;
+				for (yr = firstVisibleYearNotch; yr <= lastVisibleYear; yr += stepSize) {
+					var y = yearToWindow(yr);
+					ctx.moveTo(x-w, y);
+					ctx.lineTo(x+w, y);
+				}
+				ctx.stroke();
+			}
+
+			ctx.lineWidth = 1.5;
+			drawSteps(10, yearNotch/10);
+
+			ctx.lineWidth = 3;
+			drawSteps(15, yearNotch);
+
+			var firstVisibleYearMark = Math.floor(firstVisibleYear / yearMark) * yearMark;
+			var lastVisibleYearMark = Math.ceil(firstVisibleYear / yearMark) * yearMark;
+
+			var distFirst = Math.abs(firstVisibleYearMark - firstVisibleYear);
+			var distLast = Math.abs(lastVisibleYearMark - lastVisibleYear);
+			var visibleYearMark = (distFirst < distLast) ? firstVisibleYearMark : lastVisibleYearMark;
+
+			function zeroPad(numDigits,number) {
+				var result = (""+number);
+				var len = result.length;
+				var i;
+				for (i=len; i<numDigits; i++) {
+					result = "0" + result;
+				}
+				return result;
+			}
+
+			function getYearString(year) {
+				s = "";
+				year = Math.abs(Math.floor(year));
+				while (year) {
+					if (year < 1000) {
+						s = year.toString() + s;
+					}
+					else {
+						s = "," + zeroPad(3,year % 1000) + s;
+					}
+					year = Math.floor(year/1000);
+				}
+				return s;
+			}
+
+			var y = Ptero.screen.windowToSpace({
+				x: 0,
+				y: yearToWindow(visibleYearMark),
+			}).y;
+			yearTitleBtn.pos.y = y;
+			yearSubtitleBtn.pos.y = y;
+			yearTitleBtn.text = getYearString(visibleYearMark) + " years ago";
+			if (visibleYearMark == -220 * 1000 * 1000) {
+				yearSubtitleBtn.text = "Pterosaurs show up.";
+			}
+			else if (visibleYearMark == -65 * 1000 * 1000) {
+				yearSubtitleBtn.text = "Last Pterosaurs die.";
+			}
+			else if (visibleYearMark == 0) {
+				yearTitleBtn.text = "TODAY";
+				yearSubtitleBtn.text = "Pterodactyl Attack.";
+			}
+			else {
+				yearSubtitleBtn.text = "";
+			}
+		}
+
 		return {
 			enablePhysics: enablePhysics,
 			resetPos: resetPos,
