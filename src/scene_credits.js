@@ -45,7 +45,7 @@ Ptero.scene_credits = (function(){
 
 		var y = Ptero.screen.windowToSpace({
 			x: 0,
-			y: 243347.15,
+			y: 242912 + Ptero.screen.getWindowHeight(),
 		}).y;
 		btns["human1"].pos.y = y;
 		btns["human2"].pos.y = y;
@@ -125,7 +125,18 @@ Ptero.scene_credits = (function(){
 				else if (vel > 0) {
 					vel = Math.max(0, vel - decel*dt);
 				}
+
+				// make sure the user sees the midpoint for when pteros go extinct
+				var oldPos = pos;
 				pos += vel*dt;
+				var midPos = yearToWindow(-65 * 1000 * 1000) - Ptero.screen.getWindowHeight()*0.4;
+				console.log(oldPos,midPos,pos);
+				if (-oldPos <= midPos && midPos <= -pos ||
+					-pos <= midPos && midPos <= -oldPos) {
+					vel = 0;
+					pos = -midPos;
+				}
+
 				if (pos > maxPos) {
 					vel = 0;
 					var dtLeft = dt;
@@ -175,7 +186,7 @@ Ptero.scene_credits = (function(){
 
 		function getYearsPerUnit() {
 			var h = Ptero.screen.getWindowHeight();
-			return 1000000 / (1.5*h);
+			return 1000 * 1000 / (1.5*h);
 		}
 
 		function yearToWindow(year) {

@@ -61,21 +61,19 @@ _ DONE Fix strange loss of orb control after game over screen
 
 - DONE add Skip button to tutorial pause menu, on the right
 - DONE point at pause button when dead in lesson 4, "Color blind? :( Skip here:"
+
+- DONE add in a secret/surprise, a touch of love somewhere
+	- scroll credits
+	- click each name in credits to see dedicate page with face and text
+	- short history and words of encouragement and something funny about how difficult this was
 	
 	- Make sure game is hard enough
-
-	- add in a secret/surprise, a touch of love somewhere
-		- scroll credits
-		- click each name in credits to see dedicate page with face and text
-		- short history and words of encouragement and something funny about how difficult this was
-
 
 	- Shaun's special thanks
 
 		- for unending support:
 			- Ashlee Harris
-
-		- for the Haters
+			- Susan Harris
 
 		- for community:
 			- IGDA Houston
@@ -89,14 +87,17 @@ _ DONE Fix strange loss of orb control after game over screen
 		- for tech
 			- Ludei
 
-		- FYI
-		- There have been ~1200 Pteranodon fossils recovered from 80+ million years ago.
-		- So far, you've thwarted the scientific preservation of 3452 of them.
-		- Thanks for playing!
-
 	- backgrounds
 		- define parallax shifts
 		- implement tilting again
 		- implement collision
+	
+	- eliminate loading errors
+		- find one in version control that works
+		- remember that loading the old cocoon.zip on the phone, and then exiting to reload the new one seems to work.
+		- check memory log to start removing the largest textures first (e.g. boom, backplates)
+		- email to cocoon support
+	
+	- record new video
 
 - DO A FULL TEST OF EVERYTHING IMAGINABLE
