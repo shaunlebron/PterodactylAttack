@@ -87,9 +87,12 @@ _ DONE Fix strange loss of orb control after game over screen
 
 - DONE move explosion cache to middle so it isn't seen when screen shakes
 
-=================================================================================
+- DONE add high score title to high score screen
 
-	- record new video
+- DONE record new video
+- DONE upload new video
+
+=================================================================================
 	
 	- Make sure game is hard enough
 

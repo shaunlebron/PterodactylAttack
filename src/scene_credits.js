@@ -260,6 +260,7 @@ Ptero.scene_credits = (function(){
 			ctx.strokeStyle = "rgba(0,0,0,0.8)";
 			ctx.stroke();
 
+			// draw notches
 			function drawSteps(w, stepSize) {
 				ctx.beginPath();
 				var yr;
@@ -277,6 +278,13 @@ Ptero.scene_credits = (function(){
 
 			ctx.lineWidth = 3;
 			drawSteps(15, yearNotch);
+
+			// draw start spot
+			var y = yearToWindow(yearStart);
+			ctx.beginPath();
+			ctx.arc(x,y,15,0,Math.PI*2);
+			ctx.fillStyle = "#000";
+			ctx.fill();
 
 			var firstVisibleYearMark = Math.floor(firstVisibleYear / yearMark) * yearMark;
 			var lastVisibleYearMark = Math.ceil(firstVisibleYear / yearMark) * yearMark;
