@@ -251,7 +251,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			"menu_wrench",
 			"menu_strong",
 			"menu_scroll",
-			"btn_back",
 			"pause",
 			"arrow",
 			"arrow2",

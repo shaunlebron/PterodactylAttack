@@ -49,8 +49,6 @@ Ptero.assets = (function(){
 		"logo"      : "img/logo.png",
 		"swipe"     : "img/swipe.png",
 
-		"btn_back"         : "img/buttons/btn_back.png",
-
 		"cliff" : "img/cliff.png",
 		"title" : "img/title.png",
 
