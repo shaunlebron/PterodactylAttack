@@ -243,8 +243,6 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			"egg",
 			"logo",
 			"backplate_mountain",
-			"backplate_ice",
-			"backplate_volcano",
 			"cliff",
 			"net",
 			"button_plank",

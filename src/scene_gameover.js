@@ -3,9 +3,6 @@ Ptero.scene_gameover = (function(){
 
 	var buttonList;
 
-	var backplateBtn;
-	var backplateVolcanoBtn;
-
 	var isNewHigh;
 
 	function cleanup() {
@@ -45,11 +42,6 @@ Ptero.scene_gameover = (function(){
 			Ptero.audio.play('theme');
 		};
 
-		backplateBtn = btns["backplate"];
-		backplateVolcanoBtn = btns["backplateVolcano"];
-		backplateBtn.shouldDraw = false;
-		backplateVolcanoBtn.shouldDraw = false;
-
 		// enable controls after one second to prevent inadvertent selection if swipe actions spill over from the game
 		setTimeout(function() {
 			btns["replay"].enable();
@@ -67,21 +59,6 @@ Ptero.scene_gameover = (function(){
 		ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.fillRect(0,0,Ptero.screen.getWindowWidth(),Ptero.screen.getWindowHeight());
 		if (!isExiting) {
-
-			var stage = Ptero.background.name;
-			var btn;
-			if (stage == "ice") {
-				btn = backplateBtn;
-				btn.image = Ptero.assets.images["backplate_ice"];
-			}
-			else if (stage == "volcano") {
-				btn = backplateVolcanoBtn;
-			}
-			else {
-				btn = backplateBtn;
-				btn.image = Ptero.assets.images["backplate_mountain"];
-			}
-			btn.draw(ctx);
 
 			buttonList.draw(ctx);
 		}
