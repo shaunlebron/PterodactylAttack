@@ -25,7 +25,6 @@ Ptero.assets = (function(){
 		"arrow3" : "img/arrow3.png",
 
 		"bg_menu"     : "bg/menu/bg_menu.jpg",
-		"bg_tutorial" : "bg/tutorial/bg_tutorial.png",
 
 		"button_plank" : "img/plank.png",
 
@@ -108,6 +107,7 @@ Ptero.assets = (function(){
 		"bg_volcano_09": "bg/volcano/09.svg",
 		"bg_volcano_10": "bg/volcano/10.svg",
 
+		"bg_tutorial_00": "bg/tutorial/00.svg",
 	};
 
 	// populated by "addPteroVectorAnim"

@@ -48,8 +48,8 @@ Ptero.BackgroundLayer.prototype = {
 			return;
 		}
 
-		this.path = this.exitPath;
-		this.exitPath.reset();
+		this.path = this.outroPath;
+		this.outroPath.reset();
 	},
 	goToIdle: function() {
 		if (this.idlePath) {
@@ -234,7 +234,7 @@ Ptero.Background.prototype = {
 		// trigger onExitDone event if needed
 		if (!this.isExitDone) {
 			var layer = this.animLayerRef;
-			this.isExitDone = (layer.path == layer.exitPath && layer.path.time >= layer.path.totalTime);
+			this.isExitDone = (layer.path == layer.outroPath && layer.path.time >= layer.path.totalTime);
 			if (this.isExitDone) {
 				this.onExitDone && this.onExitDone();
 			}
@@ -376,12 +376,21 @@ Ptero.Background.prototype = {
 				false);
 
 			// build exit path by reversing intro points
-			layer.exitPath = new Ptero.InterpDriver(
-				Ptero.makeInterp('linear',
-					[d.introPath.values[1], d.introPath.values[0]],
-					d.introPath.deltaTimes),
-				false);
-			layer.exitPath.freezeAtEnd = true;
+			if (d.outroPath) {
+				layer.outroPath = new Ptero.InterpDriver(
+					Ptero.makeInterp('linear',
+						d.outroPath.values,
+						d.outroPath.deltaTimes),
+					false);
+			}
+			else {
+				layer.outroPath = new Ptero.InterpDriver(
+					Ptero.makeInterp('linear',
+						[d.introPath.values[1], d.introPath.values[0]],
+						d.introPath.deltaTimes),
+					false);
+			}
+			layer.outroPath.freezeAtEnd = true;
 
 			// build idle path from points
 			if (d.idlePath.values.length == 0) {
@@ -558,9 +567,9 @@ Ptero.createBackgrounds = function() {
 
 		"tutorial": (function(){
 			var bg = new Ptero.Background();
-			bg.sprites = [
-				Ptero.assets.sprites["bg_tutorial"],
-			];
+			setSprites(bg, [
+				"bg_tutorial_00",
+			]);
 			bg.loadLayersData(Ptero.assets.json["bg_tutorial_layers"]);
 			bg.vectorAnimsToLoad = [
 				'baby_mountain_blue',

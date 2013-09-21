@@ -8,11 +8,12 @@
 		"parallaxOffset": 0,
 		"collisionShapes": [],
 		"introPath": {
-			"values": [0.4763541198775515, -0.47635411987755144],
-			"deltaTimes": [
-				0,
-				2
-			]
+			"values": [0.9554, 0],
+			"deltaTimes": [ 0, 2 ]
+		},
+		"outroPath": {
+			"values": [0, -0.9554],
+			"deltaTimes": [ 0, 2 ]
 		},
 		"idlePath": {
 			"values": [],
