@@ -684,7 +684,9 @@ Ptero.OverlordTutor.prototype = {
 						Ptero.scene_play.hud.fadeOut(1, function() {
 							Ptero.background.exit();
 							Ptero.background.onExitDone = function() {
-								Ptero.setScene(Ptero.scene_play);
+								setTimeout(function(){
+									Ptero.setScene(Ptero.scene_play);
+								}, 1000);
 							};
 						});
 					},

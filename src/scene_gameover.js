@@ -32,7 +32,9 @@ Ptero.scene_gameover = (function(){
 			Ptero.audio.fadeOut('score',1.0);
 			Ptero.background.exit();
 			Ptero.background.onExitDone = function() {
-				Ptero.setScene(Ptero.scene_play);
+				setTimeout(function(){
+					Ptero.setScene(Ptero.scene_play);
+				}, 1000);
 			};
 		};
 

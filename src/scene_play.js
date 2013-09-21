@@ -314,8 +314,10 @@ Ptero.scene_play = (function() {
 			disableControls();
 			Ptero.background.exit();
 			Ptero.background.onExitDone = function() {
-				switchBackground(nextName);
-				onDone && onDone();
+				setTimeout(function(){
+					switchBackground(nextName);
+					onDone && onDone();
+				}, 1000);
 			};
 		});
 	}
