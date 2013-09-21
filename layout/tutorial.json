@@ -206,7 +206,7 @@
 			"h": 50.70080000000007,
 			"font": "whitefont",
 			"textAlign": "center",
-			"text": "i'm sorry! you can skip"
+			"text": "i'm sorry! skip this"
 		},
 		{
 			"name": "skipArrow",
