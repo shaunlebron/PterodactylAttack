@@ -103,7 +103,6 @@ Ptero.scene_credits = (function(){
 		}
 
 		function setPos(y) {
-			console.log(y);
 			pos = y;
 			
 			var h = Ptero.screen.getWindowHeight();
@@ -186,7 +185,6 @@ Ptero.scene_credits = (function(){
 		// button positions have to be adjusted since canvas transforms do not affect click coordinates
 		function updateButtonPositions() {
 			thanksBtn.pos.y = Ptero.screen.windowToSpace({x:0,y:pos+displacement+thanksY}).y;
-			console.log(thanksY, thanksBtn.pos.y);
 		}
 
 		function draw(ctx) {
