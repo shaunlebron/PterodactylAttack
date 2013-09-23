@@ -2878,8 +2878,11 @@ Ptero.jsonData = {
         "scale": 0.072, 
         "height": 20000
     }, 
-    "img/stop.png.json": {
-        "scale": 1
+    "bg/mountain/16.svg.json": {
+        "width": 11143, 
+        "vector": true, 
+        "scale": 0.6666666666666666, 
+        "height": 1080
     }, 
     "paths/tutorial/path04.json": {
         "models": [
@@ -8747,12 +8750,6 @@ Ptero.jsonData = {
         "vector": true, 
         "scale": 0.09, 
         "height": 8000
-    }, 
-    "bg/mountain/16.svg.json": {
-        "width": 11143, 
-        "vector": true, 
-        "scale": 0.6666666666666666, 
-        "height": 1080
     }, 
     "swf/pteros/baby_mountain_purple/3.svg.json": {
         "width": 11000, 
