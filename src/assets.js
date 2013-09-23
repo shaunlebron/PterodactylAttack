@@ -24,6 +24,8 @@ Ptero.assets = (function(){
 	};
 
 	var imageSources = {
+		"controlcenter" : "img/controlcenter.png",
+		"warn" : "img/warn.png",
 		"health" : "img/health.png",
 		"egg"    : "img/egg.png",
 		"arrow"  : "img/arrow.png",
@@ -191,6 +193,8 @@ Ptero.assets = (function(){
 		"highscores_paths" : "paths/highscores.json",
 
 		// button layouts
+		"btns_controlcenter"   : "layout/controlcenter.json",
+		"btns_warn"            : "layout/warn.json",
 		"btns_tutorial"        : "layout/tutorial.json",
 		"btns_wave"            : "layout/wave.json",
 		"btns_options"         : "layout/options.json",

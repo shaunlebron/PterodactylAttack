@@ -1001,12 +1001,41 @@ Ptero.jsonData = {
         "scale": 0.072, 
         "height": 20000
     }, 
-    "swf/pteros/adult_volcano_blue/2.svg.json": {
-        "width": 30000, 
-        "vector": true, 
-        "scale": 0.072, 
-        "height": 20000
-    }, 
+    "bg/tutorial/layers.json": [
+        {
+            "introPath": {
+                "values": [
+                    0.9554, 
+                    0
+                ], 
+                "deltaTimes": [
+                    0, 
+                    2
+                ]
+            }, 
+            "collisionShapes": [], 
+            "depth": 19.872663139329806, 
+            "idlePath": {
+                "values": [], 
+                "deltaTimes": []
+            }, 
+            "images": [
+                0
+            ], 
+            "outroPath": {
+                "values": [
+                    0, 
+                    -0.9554
+                ], 
+                "deltaTimes": [
+                    0, 
+                    2
+                ]
+            }, 
+            "parallaxOffset": 0, 
+            "desc": "bg"
+        }
+    ], 
     "paths/ice/path09.json": {
         "models": [
             {
@@ -1747,11 +1776,11 @@ Ptero.jsonData = {
         "scale": 0.6666666666666666, 
         "height": 1080
     }, 
-    "swf/pteros/baby_volcano_purple/5.svg.json": {
-        "width": 11000, 
+    "bg/volcano/09.white.svg.json": {
+        "width": 5893.651, 
         "vector": true, 
-        "scale": 0.09, 
-        "height": 8000
+        "scale": 0.6666666666666666, 
+        "height": 1080
     }, 
     "bg/mountain/10.svg.json": {
         "width": 11143, 
@@ -1789,6 +1818,9 @@ Ptero.jsonData = {
         "scale": 0.072, 
         "height": 20000
     }, 
+    "img/warn.png.json": {
+        "scale": 1
+    }, 
     "img/pause.png.json": {
         "scale": 1
     }, 
@@ -1797,6 +1829,36 @@ Ptero.jsonData = {
         "vector": true, 
         "scale": 0.6666666666666666, 
         "height": 1080
+    }, 
+    "layout/controlcenter.json": {
+        "localImages": {}, 
+        "objects": [
+            {
+                "centerX": 315.3379604251998, 
+                "h": 534.3828571428572, 
+                "imageName": "controlcenter", 
+                "text": "", 
+                "w": 636.5689207344393, 
+                "centerY": 267.1914285714286, 
+                "y": 0.4239285714285715, 
+                "x": 0.5, 
+                "font": "whitefont", 
+                "textAlign": "center"
+            }, 
+            {
+                "font": "buttonfont", 
+                "name": "home", 
+                "h": 93.82857142857141, 
+                "imageName": "button_plank", 
+                "text": "home", 
+                "w": 258.9714285714287, 
+                "centerY": 46.91428571428571, 
+                "y": 0.9024358730158726, 
+                "x": 0.5, 
+                "centerX": 129.48571428571438, 
+                "textAlign": "center"
+            }
+        ]
     }, 
     "bg/ice/06.red.svg.json": {
         "width": 7987, 
@@ -2437,6 +2499,24 @@ Ptero.jsonData = {
         "scale": 0.072, 
         "height": 20000
     }, 
+    "layout/warn.json": {
+        "localImages": {}, 
+        "objects": [
+            {
+                "font": "whitefont", 
+                "name": "warn", 
+                "h": 128, 
+                "imageName": "warn", 
+                "text": "", 
+                "w": 128, 
+                "centerY": 139.1223954285715, 
+                "y": 1, 
+                "x": 0, 
+                "centerX": -14.155776000000003, 
+                "textAlign": "center"
+            }
+        ]
+    }, 
     "swf/pteros/adult_white/3.svg.json": {
         "width": 30000, 
         "vector": true, 
@@ -2798,11 +2878,8 @@ Ptero.jsonData = {
         "scale": 0.072, 
         "height": 20000
     }, 
-    "bg/mountain/16.svg.json": {
-        "width": 11143, 
-        "vector": true, 
-        "scale": 0.6666666666666666, 
-        "height": 1080
+    "img/stop.png.json": {
+        "scale": 1
     }, 
     "paths/tutorial/path04.json": {
         "models": [
@@ -5820,41 +5897,12 @@ Ptero.jsonData = {
     "img/netbullet.png.json": {
         "scale": 4.0
     }, 
-    "bg/tutorial/layers.json": [
-        {
-            "introPath": {
-                "values": [
-                    0.9554, 
-                    0
-                ], 
-                "deltaTimes": [
-                    0, 
-                    2
-                ]
-            }, 
-            "collisionShapes": [], 
-            "depth": 19.872663139329806, 
-            "idlePath": {
-                "values": [], 
-                "deltaTimes": []
-            }, 
-            "images": [
-                0
-            ], 
-            "outroPath": {
-                "values": [
-                    0, 
-                    -0.9554
-                ], 
-                "deltaTimes": [
-                    0, 
-                    2
-                ]
-            }, 
-            "parallaxOffset": 0, 
-            "desc": "bg"
-        }
-    ], 
+    "swf/pteros/adult_volcano_blue/2.svg.json": {
+        "width": 30000, 
+        "vector": true, 
+        "scale": 0.072, 
+        "height": 20000
+    }, 
     "bg/ice/02.svg.json": {
         "width": 7987, 
         "vector": true, 
@@ -7258,9 +7306,6 @@ Ptero.jsonData = {
         "scale": 0.072, 
         "height": 20000
     }, 
-    "img/cc.png.json": {
-        "scale": 1
-    }, 
     "bg/volcano/06.red.svg.json": {
         "width": 5893.651, 
         "vector": true, 
@@ -7272,6 +7317,9 @@ Ptero.jsonData = {
         "vector": true, 
         "scale": 0.072, 
         "height": 20000
+    }, 
+    "img/controlcenter.png.json": {
+        "scale": 1
     }, 
     "paths/mountain/path04.json": {
         "models": [
@@ -8113,35 +8161,6 @@ Ptero.jsonData = {
         "scale": 0.09, 
         "height": 8000
     }, 
-    "layout/cc.json": {
-        "localImages": {}, 
-        "objects": [
-            {
-                "centerX": 315.3379604251998, 
-                "h": 534.3828571428572, 
-                "imageName": "cc", 
-                "text": "", 
-                "w": 636.5689207344393, 
-                "centerY": 267.1914285714286, 
-                "y": 0.4239285714285715, 
-                "x": 0.5, 
-                "font": "whitefont", 
-                "textAlign": "center"
-            }, 
-            {
-                "centerX": 129.48571428571438, 
-                "h": 93.82857142857141, 
-                "imageName": "button_plank", 
-                "text": "home", 
-                "w": 258.9714285714287, 
-                "centerY": 46.91428571428571, 
-                "y": 0.9024358730158726, 
-                "x": 0.5, 
-                "font": "buttonfont", 
-                "textAlign": "center"
-            }
-        ]
-    }, 
     "bg/mountain/01.red.svg.json": {
         "width": 11143, 
         "vector": true, 
@@ -8729,6 +8748,12 @@ Ptero.jsonData = {
         "scale": 0.09, 
         "height": 8000
     }, 
+    "bg/mountain/16.svg.json": {
+        "width": 11143, 
+        "vector": true, 
+        "scale": 0.6666666666666666, 
+        "height": 1080
+    }, 
     "swf/pteros/baby_mountain_purple/3.svg.json": {
         "width": 11000, 
         "vector": true, 
@@ -8740,6 +8765,12 @@ Ptero.jsonData = {
         "vector": true, 
         "scale": 0.6666666666666666, 
         "height": 1080
+    }, 
+    "swf/pteros/baby_volcano_purple/5.svg.json": {
+        "width": 11000, 
+        "vector": true, 
+        "scale": 0.09, 
+        "height": 8000
     }, 
     "swf/pteros/adult_ice_green/4.svg.json": {
         "width": 30000, 
@@ -12528,12 +12559,6 @@ Ptero.jsonData = {
         "vector": true, 
         "scale": 0.09, 
         "height": 8000
-    }, 
-    "bg/volcano/09.white.svg.json": {
-        "width": 5893.651, 
-        "vector": true, 
-        "scale": 0.6666666666666666, 
-        "height": 1080
     }, 
     "swf/pteros/adult_mountain_red/7.svg.json": {
         "width": 30000, 

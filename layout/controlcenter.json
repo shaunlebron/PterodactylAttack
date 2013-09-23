@@ -1,0 +1,30 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"x": 0.5,
+			"y": 0.4239285714285715,
+			"centerX": 315.3379604251998,
+			"centerY": 267.1914285714286,
+			"w": 636.5689207344393,
+			"h": 534.3828571428572,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "controlcenter"
+		},
+		{
+			"name": "home",
+			"x": 0.5,
+			"y": 0.9024358730158726,
+			"centerX": 129.48571428571438,
+			"centerY": 46.91428571428571,
+			"w": 258.9714285714287,
+			"h": 93.82857142857141,
+			"font": "buttonfont",
+			"textAlign": "center",
+			"text": "home",
+			"imageName": "button_plank"
+		}
+	]
+}

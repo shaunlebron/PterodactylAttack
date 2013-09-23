@@ -1,0 +1,18 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"name": "warn",
+			"x": 0,
+			"y": 1,
+			"centerX": -14.155776000000003,
+			"centerY": 139.1223954285715,
+			"w": 128,
+			"h": 128,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "warn"
+		}
+	]
+}
