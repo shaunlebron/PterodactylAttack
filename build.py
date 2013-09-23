@@ -24,7 +24,7 @@ def cat(in_names,out_name):
 	destination.close()
 
 def isIgnoredFile(filename):
-	for ext in ('.html','.swf','.svg','.red.svg.json', '.white.svg.json','.py','.sh','.DS_Store','notes'):
+	for ext in ('.html','.swf','.svg','.json','.py','.sh','.DS_Store','notes'):
 		if filename.endswith(ext):
 			return True
 
@@ -54,6 +54,12 @@ def create_zip(in_names,out_name):
 	archive.close()
 
 if __name__ == "__main__":
+	print "Generating vector path data script..."
+	subprocess.call(["./genVectorPathData.py"], stdout=open('src/vectorPathData.js','w'))
+
+	print "Generating json data script..."
+	subprocess.call(["./genJsonData.py"], stdout=open('src/jsonData.js','w'))
+
 	print "Creating cocoon.js ..."
 	includes = get_all_js_includes("play.html")
 	for i in includes:
@@ -61,9 +67,11 @@ if __name__ == "__main__":
 	cat(includes, 'cocoon.js')
 	print "done."
 
+
 	print "Creating cocoon.zip ..."
 	create_zip(['cocoon.js','layout','swf','bg','img','audio','levels','paths','fonts'], 'cocoon.zip')
 	print "done."
+
 
 	"""
 	print "Copying to android device ..."

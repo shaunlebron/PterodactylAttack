@@ -1,6 +1,12 @@
 
 Ptero.assets = (function(){
 
+	// because the loading of external JSON files seems to break CocoonJS,
+	// I am pre-loading an auto-generated "src/jsonData.js" which contains
+	// an object mapping a filename to its JSON object, essentially
+	// a concantenated file of external json files.
+	var usePreloadedJson = true;
+
 	var sfxSources = {
 		"shoot"          : "audio/shoot04.wav",
 		"explode"        : "audio/explode04.wav",
@@ -374,11 +380,9 @@ Ptero.assets = (function(){
 		};
 		img.onload = function() {
 			console.log("loaded image: "+ name);
-			var jsonSrc = jsonSources[name];
-			var req = new XMLHttpRequest();
-			req.onload = function() {
-				json[name] = JSON.parse(this.responseText);
-				console.log("loaded json: "+ name);
+			if (usePreloadedJson) {
+				json[name] = Ptero.jsonData[jsonSources[name]];
+				console.log("pre-loaded json: "+ name);
 
 				// process the loading image
 				postProcessImage(name);
@@ -388,9 +392,26 @@ Ptero.assets = (function(){
 
 				// load the rest of the resources
 				loadRest();
-			};
-			req.open('GET', jsonSrc, true);
-			req.send();
+			}
+			else {
+				var jsonSrc = jsonSources[name];
+				var req = new XMLHttpRequest();
+				req.onload = function() {
+					json[name] = JSON.parse(this.responseText);
+					console.log("loaded json: "+ name);
+
+					// process the loading image
+					postProcessImage(name);
+
+					// signal to the caller that the loading image is ready to use
+					onStart && onStart();
+
+					// load the rest of the resources
+					loadRest();
+				};
+				req.open('GET', jsonSrc, true);
+				req.send();
+			}
 		};
 		images[name] = img;
 
@@ -451,22 +472,29 @@ Ptero.assets = (function(){
 					continue;
 				}
 				src = jsonSources[name];
-				req = new XMLHttpRequest();
-				req.onload = (function(name){
-					return function() {
-						try {
-							json[name] = JSON.parse(this.responseText);
-							console.log("loaded json: "+ name);
-							handleLoad();
-						}
-						catch (e) {
-							console.log("ERROR: could not load json file",name);
-							console.error("could not load json file",name);
-						}
-					};
-				})(name);
-				req.open('GET', src, true);
-				req.send();
+				if (usePreloadedJson) {
+					json[name] = Ptero.jsonData[src];
+					console.log("pre-loaded json: "+ name);
+					handleLoad();
+				}
+				else {
+					req = new XMLHttpRequest();
+					req.onload = (function(name){
+						return function() {
+							try {
+								json[name] = JSON.parse(this.responseText);
+								console.log("loaded json: "+ name);
+								handleLoad();
+							}
+							catch (e) {
+								console.log("ERROR: could not load json file",name);
+								console.error("could not load json file",name);
+							}
+						};
+					})(name);
+					req.open('GET', src, true);
+					req.send();
+				}
 			}
 
 			// load sound effects
