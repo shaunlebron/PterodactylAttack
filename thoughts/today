@@ -98,6 +98,14 @@ _ DONE Fix strange loss of orb control after game over screen
 	- remember that loading the old cocoon.zip on the phone, and then exiting to reload the new one seems to work.
 	- DONE email to cocoon support
 
+- DONE address iOS 7 control center swipe interference
+	- at beginning of tutorial on iOS version, say the following
+		- "iPhone/iPad users may want to disable interfering swipe menus:"
+		- "iOS Settings > Control Center > Disable Access within Apps"
+		- screenshot
+
+- DONE Make a flow diagram of the final game visuals
+
 =================================================================================
 	
 	- Make sure game is hard enough
@@ -106,12 +114,6 @@ _ DONE Fix strange loss of orb control after game over screen
 		- minimize overdraw by cutting out invisible area on background layers
 		- make targeting algorithm more efficient
 	
-	- address iOS 7 control center swipe interference
-		- at beginning of tutorial on iOS version, say the following
-			- "iPhone/iPad users may want to disable interfering swipe menus:"
-			- "iOS Settings > Control Center > Disable Access within Apps"
-			- screenshot
-
 	- backgrounds
 		- define parallax shifts
 		- implement tilting again
