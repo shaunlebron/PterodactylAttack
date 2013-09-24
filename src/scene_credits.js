@@ -78,6 +78,7 @@ Ptero.scene_credits = (function(){
 		var displacement;
 
 		var pos;
+		var desiredPos;
 		var vel;
 		var decel = 2000;
 
@@ -90,11 +91,11 @@ Ptero.scene_credits = (function(){
 
 		function resetPos() {
 			if (returnPos != null) {
-				pos = returnPos;
+				setPos(returnPos);
 				returnPos = null;
 			}
 			else {
-				pos = maxPos;
+				setPos(maxPos);
 			}
 		}
 
@@ -102,8 +103,17 @@ Ptero.scene_credits = (function(){
 			return pos;
 		}
 
+		function getDesiredPos() {
+			return desiredPos;
+		}
+
+		function syncDesiredPos() {
+			desiredPos = pos;
+		}
+
 		function setPos(y) {
 			pos = y;
+			desiredPos = y;
 			
 			var h = Ptero.screen.getWindowHeight();
 			var s;
@@ -343,6 +353,8 @@ Ptero.scene_credits = (function(){
 			resetPos: resetPos,
 			getPos: getPos,
 			setPos: setPos,
+			getDesiredPos: getDesiredPos,
+			syncDesiredPos: syncDesiredPos,
 			setVel: setVel,
 			update: update,
 			draw: draw,
@@ -354,39 +366,60 @@ Ptero.scene_credits = (function(){
 
 	var touchHandler = (function(){
 
-		var startTouchPos;
-		var startScrollPos;
 		var speed = 0;
 		var speedAvgFactor = 0.8;
-		var lastPos;
+		var lastPos = [];
 
-		function start(x,y) {
-			startTouchPos = y;
-			startScrollPos = scroll.getPos();
+		function start(x,y,i) {
 
 			scroll.setAutoScroll(false);
 			scroll.enablePhysics(false);
+			if (!isTouching()) {
+				scroll.syncDesiredPos();
+			}
 
+			lastPos[i] = y;
 			speed = 0;
-			lastPos = y;
 		}
 
-		function move(x,y) {
-			scroll.setPos(startScrollPos + (y-startTouchPos));
+		function move(x,y,i) {
+			var dy = y - lastPos[i];
+			console.log(i,lastPos[i],y);
+			var pos = scroll.getDesiredPos();
+			scroll.setPos(pos + dy);
 
-			var currSpeed = (y-lastPos)/lastDt;
+			var currSpeed = dy/lastDt;
 			var a = speedAvgFactor;
 			speed = a*currSpeed + (1-a)*speed;
-			lastPos = y;
+
+			lastPos[i] = y;
 		}
 
-		function end(x,y) {
+		function isTouching() {
+			var i,len=lastPos.length;
+			for (i=0; i<len; i++) {
+				if (lastPos[i] != undefined) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function release() {
 			scroll.setVel(speed);
 			scroll.enablePhysics(true);
 		}
 
-		function cancel(x,y) {
-			end(x,y);
+		function end(x,y,i) {
+			lastPos[i] = undefined;
+			if (!isTouching()) {
+				release();
+				lastPos = [];
+			}
+		}
+
+		function cancel(x,y,i) {
+			end(x,y,i);
 		}
 
 		return {

@@ -110,6 +110,10 @@ _ DONE Fix strange loss of orb control after game over screen
 	
 	- Make sure game is hard enough
 
+	- Add multi-touch scrolling to credits
+
+	- Make orb blink red when animating guide
+
 	- make sure game works on Android	
 		- minimize overdraw by cutting out invisible area on background layers
 		- make targeting algorithm more efficient
