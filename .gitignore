@@ -9,3 +9,7 @@ node_modules
 # ignore files that are pushed to the server by our tools
 img/bgLayerDepths.json
 levels/fourier-level
+
+# ignore generated files
+src/jsonData.js
+src/vectorPathData.js
