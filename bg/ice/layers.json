@@ -90,7 +90,7 @@
 			3
 		],
 		"depth": 16.955978835978833,
-		"parallaxOffset": 0,
+		"parallaxOffset": 0.0030244706023971413,
 		"collisionShapes": [],
 		"introPath": {
 			"values": [
@@ -113,7 +113,7 @@
 			4
 		],
 		"depth": 12.49516754850088,
-		"parallaxOffset": 0,
+		"parallaxOffset": 0.006048941204794283,
 		"collisionShapes": [],
 		"introPath": {
 			"values": [
@@ -136,7 +136,7 @@
 			5
 		],
 		"depth": 11.122610229276894,
-		"parallaxOffset": 0,
+		"parallaxOffset": 0.009073411807191423,
 		"collisionShapes": [],
 		"introPath": {
 			"values": [
@@ -159,7 +159,7 @@
 			6
 		],
 		"depth": 8.549065255731922,
-		"parallaxOffset": 0,
+		"parallaxOffset": 0.012097882409588671,
 		"collisionShapes": [],
 		"introPath": {
 			"values": [
@@ -182,7 +182,7 @@
 			7
 		],
 		"depth": 5.80395061728395,
-		"parallaxOffset": 0,
+		"parallaxOffset": 0.015122353011985811,
 		"collisionShapes": [],
 		"introPath": {
 			"values": [
@@ -205,7 +205,7 @@
 			8
 		],
 		"depth": 3.745114638447972,
-		"parallaxOffset": 0,
+		"parallaxOffset": 0.021171294216780094,
 		"collisionShapes": [],
 		"introPath": {
 			"values": [
@@ -228,7 +228,7 @@
 			9
 		],
 		"depth": 2.200987654320987,
-		"parallaxOffset": 0,
+		"parallaxOffset": 0.028732470722772952,
 		"collisionShapes": [],
 		"introPath": {
 			"values": [
