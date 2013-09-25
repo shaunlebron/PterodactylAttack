@@ -185,18 +185,18 @@ $(function(){
 		var slider = $('#parallax-slider');
 		var down = false;
 		slider.mousedown(function() {
-			Ptero.background.setSelectedLayer(null);
+			Ptero.Baklava.model.selectLayer(null);
 			down = true;
 		});
 		slider.mousemove(function(){
 			if (down) {
-				Ptero.background.setParallaxMultiplier(slider.val());
+				Ptero.screen.setParallaxMultiplier(slider.val());
 			}
 		});
 		slider.mouseup(function() {
 			slider.val(0);
 			down = false;
-			Ptero.background.setParallaxMultiplier(0);
+			Ptero.screen.setParallaxMultiplier(0);
 		});
 	});
 	</script>

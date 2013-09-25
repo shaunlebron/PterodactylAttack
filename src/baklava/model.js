@@ -23,11 +23,6 @@ Ptero.Baklava.Model.prototype = {
 		);
 	},
 	setMode: function(mode) {
-		// for now, we are preventing non-working modes
-		if (mode == 'parallax') {
-			return;
-		}
-		console.log(mode);
 
 		this.mode = mode;
 		$("#btn-position").removeClass("active");

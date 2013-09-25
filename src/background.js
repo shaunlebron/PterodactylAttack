@@ -79,8 +79,15 @@ Ptero.BackgroundLayer.prototype = {
 		var sprites = this.sprites;
 		var i,len=sprites.length;
 
-		// TODO: displace based on parallax offset
-		var pos = this.position;
+		// get displace position of layer due to parallax
+		// FIXME: scale parallax offset appropriately if we ever have layer positions away from the near plane
+		var k = Ptero.screen.getParallaxMultiplier();
+		var offset = this.parallaxOffset;
+		var pos = {
+			x: this.position.x + k*offset,
+			y: this.position.y,
+			z: this.position.z,
+		};
 
 		Ptero.deferredSprites.defer(
 			function(ctx) {
@@ -247,11 +254,6 @@ Ptero.Background.prototype = {
 		}
 	},
 
-	getLayerCollisions: function() {
-		// placeholder until we implement collisions
-		// (see usage in orb.js)
-		return [];
-	},
 	setShade: function(color) {
 		var i,len=this.layers.length;
 		for (i=0; i<len; i++) {

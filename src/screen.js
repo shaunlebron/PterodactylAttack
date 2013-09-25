@@ -93,6 +93,33 @@ Ptero.screen = (function(){
 		fitWindow();
 
 		initShake();
+		initParallaxEvent();
+	}
+
+	// Parallax effect from screen tilting
+	var parallaxMultiplier;
+	function initParallaxEvent() {
+		var maxAngle = 30;
+		if (navigator.isCocoonJS) {
+			window.addEventListener('deviceorientation', function(orientData) {
+				// the beta angle ranges between -90 and 90 degrees
+				var beta = orientData.beta;
+
+				// limit the beta angle to be between -30 and 30 degrees
+				beta = Math.max(beta, -maxAngle);
+				beta = Math.min(beta, maxAngle);
+
+				// set the multiplier to be between -1 to 1
+				parallaxMultiplier = beta / maxAngle;
+			});
+		}
+		parallaxMultiplier = 0;
+	}
+	function setParallaxMultiplier(k) {
+		parallaxMultiplier = k;
+	}
+	function getParallaxMultiplier() {
+		return parallaxMultiplier;
 	}
 
 	// Screen-shaking
@@ -231,6 +258,9 @@ Ptero.screen = (function(){
 		update: update,
 
 		shake: shake,
+
+		setParallaxMultiplier: setParallaxMultiplier,
+		getParallaxMultiplier: getParallaxMultiplier,
 	};
 })();
 

@@ -335,11 +335,11 @@ Ptero.orb = (function(){
 			endZ = bullet.pos.z + bullet.dir.z * bullet.speed * bullet.collideTime;
 
 			// test against all layers between Z bounds
-			var layerCollisions = Ptero.background.getLayerCollisions();
-			var i,len=layerCollisions.length;
+			var layers = Ptero.background.layers;
+			var i,len=layers.length;
 			for (i=0; i<len; i++) {
-				var shapeGroup = layerCollisions[i];
-				if (shapeGroup) {
+				var shapeGroup = layers[i].collisionShapes;
+				if (shapeGroup && shapeGroup.length) {
 
 					// get this layer's depth
 					var z = shapeGroup[0].points[0].z;
@@ -378,11 +378,11 @@ Ptero.orb = (function(){
 		else {
 
 			// test against all layers after start Z
-			var layerCollisions = Ptero.background.getLayerCollisions();
-			var i,len=layerCollisions.length;
+			var layers = Ptero.background.layers;
+			var i,len=layers.length;
 			for (i=0; i<len; i++) {
-				var shapeGroup = layerCollisions[i];
-				if (shapeGroup) {
+				var shapeGroup = layers[i].collisionShapes;
+				if (shapeGroup && shapeGroup.length) {
 
 					// get this layer's depth
 					var z = shapeGroup[0].points[0].z;

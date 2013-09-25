@@ -4,6 +4,18 @@ Ptero.Baklava.LivePane = function() {
 
 	this.hudScale = Ptero.screen.getWindowHeight() / (Ptero.Baklava.screen.getPaneHeight()*2);
 	this.nodeRadius = 4 * this.hudScale;
+
+	var that = this;
+	window.addEventListener("keydown", function(e) {
+		if (e.keyCode == 16) { //shift
+			that.isSelectLayerKey = true;
+		}
+	});
+	window.addEventListener("keyup", function(e) {
+		if (e.keyCode == 16) {
+			that.isSelectLayerKey = false;
+		}
+	});
 };
 
 Ptero.Baklava.LivePane.prototype = {
@@ -57,7 +69,7 @@ Ptero.Baklava.LivePane.prototype = {
 		else if (mode == "collision") {
 
 			// select a layer if one is not already selected
-			if (model.selectedLayer == null) {
+			if (model.selectedLayer == null || this.isSelectLayerKey) {
 				var layer = Ptero.background.getLayerFromPixel(x,y);
 				model.selectLayer(layer);
 				return {};
@@ -185,6 +197,14 @@ Ptero.Baklava.LivePane.prototype = {
 
 		}
 		else if (mode == "parallax") {
+
+			// select a layer if one is not already selected
+			if (model.selectedLayer == null || this.isSelectLayerKey) {
+				var layer = Ptero.background.getLayerFromPixel(x,y);
+				model.selectLayer(layer);
+				return {};
+			}
+
 			var offset = Ptero.background.getLayerParallaxOffset();
 			var frustum = Ptero.frustum;
 			var leftPos = { x: offset, y: 0, z: frustum.near };
