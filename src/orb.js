@@ -51,13 +51,13 @@ Ptero.orb = (function(){
 	var blinkPeriod = 0.125;
 	var blinkFillStyle = "rgba(0,0,0,0.5)";
 	function blink() {
-		blinkTimer = 1;
+		blinkTimer = 0.5;
 	}
 	function updateBlinkTimer(dt) {
 		blinkTimer = Math.max(0, blinkTimer-dt);
 
-		var on = "rgba(0,255,255,0.5)";
-		var off = "rgba(255,255,255,0)";
+		var on = "rgba(255,0,0,0.5)";
+		var off = "rgba(0,0,0,0.5)";
 		blinkFillStyle = (Math.floor(blinkTimer / blinkPeriod) % 2) ? on : off;
 	}
 	
@@ -229,8 +229,8 @@ Ptero.orb = (function(){
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToWindow(origin);
 
-		//ctx.fillStyle = blinkFillStyle;
-		ctx.fillStyle = "rgba(0,0,0,0.5)";
+		ctx.fillStyle = blinkFillStyle;
+		//ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
 		ctx.arc(p.x,p.y,radius, 0, 2*Math.PI);
 		ctx.fill();
