@@ -82,6 +82,13 @@ Ptero.BackgroundLayer.prototype = {
 		// get displace position of layer due to parallax
 		// FIXME: scale parallax offset appropriately if we ever have layer positions away from the near plane
 		var k = Ptero.screen.getParallaxMultiplier();
+
+		// do not allow parallax shifting when in background is in intro or outro
+		// (because the black fullscreen can't be shifted)
+		if (!Ptero.background.isIdle) {
+			k = 0;
+		}
+
 		var offset = this.parallaxOffset;
 		var pos = {
 			x: this.position.x + k*offset,
