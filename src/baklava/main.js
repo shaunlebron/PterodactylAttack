@@ -24,7 +24,7 @@ window.onload = function() {
 				var bgType;
 				var str="";
 				for (bgType in Ptero.backgrounds) {
-					str += "<li><a onclick=\"Ptero.setBackground('" + bgType + "')\" href=\"#\">" + bgType + "</a></li>";
+					str += "<li><a onclick=\"Ptero.Baklava.model.setBackground('" + bgType + "')\" href=\"#\">" + bgType + "</a></li>";
 				}
 				$('#bgTypeMenu').html(str);
 			})();

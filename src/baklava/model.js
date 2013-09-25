@@ -3,15 +3,28 @@ Ptero.Baklava.Model = function() {
 	this.adultSprite = Ptero.assets.makeAnimSprite('adult');
 	this.enemySprite = Ptero.assets.makeAnimSprite('baby');
 	this.enemyPos = {x:0,y:0,z:Ptero.frustum.near*2};
-
-	this.collisionDraft = null;
-	this.setCollisionMode("select");
 };
 
 Ptero.Baklava.Model.prototype = {
+	reset: function() {
+		this.collisionDraft = null;
+		this.setCollisionMode("select");
+		this.selectedLayer = null;
+	},
+	setBackground: function(bg) {
+		var that = this;
+		bootbox.confirm('Are you sure you want to switch backgrounds?  All unsaved data will be lost.',
+			function(result) {
+				if (result) {
+					that.reset();
+					Ptero.setBackground(bg);
+				}
+			}
+		);
+	},
 	setMode: function(mode) {
 		// for now, we are preventing non-working modes
-		if (mode == 'collision' || mode == 'parallax') {
+		if (mode == 'parallax') {
 			return;
 		}
 

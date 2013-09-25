@@ -1,7 +1,9 @@
 
 Ptero.Baklava.LivePane = function() {
 	this.scene = Ptero.Baklava.scene_parallax;
-	this.nodeRadius = 4;
+
+	this.hudScale = Ptero.screen.getWindowHeight() / (Ptero.Baklava.screen.getPaneHeight()*2);
+	this.nodeRadius = 4 * this.hudScale;
 };
 
 Ptero.Baklava.LivePane.prototype = {
@@ -53,6 +55,13 @@ Ptero.Baklava.LivePane.prototype = {
 			}
 		}
 		else if (mode == "collision") {
+
+			// select a layer if one is not already selected
+			if (Ptero.Baklava.model.selectedLayer == null) {
+				var layer = Ptero.background.getLayerFromPixel(x,y);
+				Ptero.Baklava.model.selectLayer(layer);
+			}
+
 			var collisionMode = model.collisionMode;
 			var collisionDraft = model.collisionDraft;
 			var near = Ptero.frustum.near;
@@ -85,7 +94,7 @@ Ptero.Baklava.LivePane.prototype = {
 
 			// WHEN SELECTING, WE EITHER SELECT A SHAPE VERTEX OR ITS INSIDE REGION
 			else if (collisionMode == "select") {
-				var shapes = Ptero.background.getCurrentLayerCollisionShapes();
+				var shapes = Ptero.background.getLayerCollisionShapes();
 				if (shapes) {
 					var i,numShapes=shapes.length;
 
@@ -175,7 +184,7 @@ Ptero.Baklava.LivePane.prototype = {
 
 		}
 		else if (mode == "parallax") {
-			var offset = Ptero.background.getCurrentLayerParallaxOffset();
+			var offset = Ptero.background.getLayerParallaxOffset();
 			var frustum = Ptero.frustum;
 			var leftPos = { x: offset, y: 0, z: frustum.near };
 			var rightPos = { x: -offset, y: 0, z: frustum.near };
@@ -278,7 +287,7 @@ Ptero.Baklava.LivePane.prototype = {
 				var spaceClick = this.windowToSpace(x,y,this.selectedPoint.z);
 				this.selectedPoint.x = spaceClick.x + this.selectedOffsetX;
 				this.selectedPoint.y = spaceClick.y + this.selectedOffsetY;
-				Ptero.Baklava.loader.backup();
+				//Ptero.Baklava.loader.backup();
 			}
 			else if (this.selectedShape != null) {
 				var shape = this.selectedShape;
@@ -289,7 +298,7 @@ Ptero.Baklava.LivePane.prototype = {
 					shape.points[i].x = spaceClick.x + offsets[i].x;
 					shape.points[i].y = spaceClick.y + offsets[i].y;
 				}
-				Ptero.Baklava.loader.backup();
+				//Ptero.Baklava.loader.backup();
 			}
 		}
 		else if (mode == "parallax") {
@@ -297,8 +306,8 @@ Ptero.Baklava.LivePane.prototype = {
 				var frustum = Ptero.frustum;
 				var spaceClick = this.windowToSpace(x,y,frustum.near);
 				var offset = Math.abs(spaceClick.x + this.selectedOffset);
-				Ptero.background.setCurrentLayerParallaxOffset(offset);
-				Ptero.Baklava.loader.backup();
+				Ptero.background.setLayerParallaxOffset(offset);
+				//Ptero.Baklava.loader.backup();
 			}
 		}
 	},
@@ -369,7 +378,7 @@ Ptero.Baklava.LivePane.prototype = {
 		ctx.beginPath();
 		var pos = this.transform(spacePos);
 		ctx.arc(pos.x, pos.y, radius, 0, Math.PI*2);
-		ctx.lineWidth = thickness;
+		ctx.lineWidth = thickness * this.hudScale;
 		ctx.strokeStyle = color;
 		ctx.stroke();
 	},
@@ -381,19 +390,19 @@ Ptero.Baklava.LivePane.prototype = {
 		this.createPath(ctx, points, shape.isComplete);
 		if (shape.isComplete) {
 			if (shape == this.selectedShape && this.selectedPoint == null) {
-				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				ctx.fillStyle = "rgba(0,0,255,0.2)";
 			}
 			else {
 				ctx.fillStyle = "rgba(255,255,255,0.2)";
 			}
 			ctx.fill();
 			ctx.strokeStyle = "#333";
-			ctx.lineWidth = 2;
+			ctx.lineWidth = 2 * this.hudScale;
 			ctx.stroke();
 		}
 		else {
 			ctx.strokeStyle = "#333";
-			ctx.lineWidth = 2;
+			ctx.lineWidth = 2 * this.hudScale;
 			ctx.stroke();
 		}
 		var i,len = points.length;
@@ -412,7 +421,7 @@ Ptero.Baklava.LivePane.prototype = {
 		if (mode == "collision") {
 			var collisionMode = model.collisionMode;
 
-			var shapes = Ptero.background.getCurrentLayerCollisionShapes();
+			var shapes = Ptero.background.getLayerCollisionShapes();
 			if (shapes) {
 				var i,len=shapes.length;
 				for (i=0; i<len; i++) {
@@ -426,29 +435,29 @@ Ptero.Baklava.LivePane.prototype = {
 			}
 		}
 		else if (mode == "parallax") {
-			var offset = Ptero.background.getCurrentLayerParallaxOffset();
+			var offset = Ptero.background.getLayerParallaxOffset();
 			var frustum = Ptero.frustum;
 			var painter = Ptero.painter;
 			if (offset != null) {
 				ctx.beginPath();
 				painter.moveTo(ctx,{ x: 0, y: frustum.nearTop, z: frustum.near, });
 				painter.lineTo(ctx,{ x: 0, y: frustum.nearBottom, z: frustum.near, });
-				ctx.strokeStyle = "rgba(255,0,0,0.5)";
-				ctx.lineWidth = 1;
+				ctx.strokeStyle = "rgba(0,0,255,0.5)";
+				ctx.lineWidth = 1 * this.hudScale;
 				ctx.stroke();
 
 				ctx.beginPath();
 				painter.moveTo(ctx,{ x: offset, y: frustum.nearTop, z: frustum.near, });
 				painter.lineTo(ctx,{ x: offset, y: frustum.nearBottom, z: frustum.near, });
-				ctx.strokeStyle = "#F00";
-				ctx.lineWidth = 2;
+				ctx.strokeStyle = "#00F";
+				ctx.lineWidth = 2 * this.hudScale;
 				ctx.stroke();
 
 				ctx.beginPath();
 				painter.moveTo(ctx,{ x: -offset, y: frustum.nearTop, z: frustum.near, });
 				painter.lineTo(ctx,{ x: -offset, y: frustum.nearBottom, z: frustum.near, });
-				ctx.strokeStyle = "#F00";
-				ctx.lineWidth = 2;
+				ctx.strokeStyle = "#00F";
+				ctx.lineWidth = 2 * this.hudScale;
 				ctx.stroke();
 			}
 		}

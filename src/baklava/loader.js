@@ -14,6 +14,8 @@ Ptero.Baklava.loader = (function(){
 			}
 		}
 		else if (mode == 'collision') {
+			for (i=0; i<len; i++) {
+			}
 		}
 		else if (mode == 'parallax') {
 		}
