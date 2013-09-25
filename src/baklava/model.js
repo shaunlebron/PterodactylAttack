@@ -27,6 +27,7 @@ Ptero.Baklava.Model.prototype = {
 		if (mode == 'parallax') {
 			return;
 		}
+		console.log(mode);
 
 		this.mode = mode;
 		$("#btn-position").removeClass("active");
@@ -37,6 +38,10 @@ Ptero.Baklava.Model.prototype = {
 		$("#toolbar-parallax").css("display", "none");
 		$("#btn-"+mode).addClass('active');
 		$("#toolbar-"+mode).css('display', 'inherit');
+
+		if (mode == 'collision') {
+			this.collisionMode = 'select';
+		}
 	},
 
 	setCollisionMode: function(mode) {

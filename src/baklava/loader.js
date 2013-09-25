@@ -15,9 +15,17 @@ Ptero.Baklava.loader = (function(){
 		}
 		else if (mode == 'collision') {
 			for (i=0; i<len; i++) {
+				layers.push({
+					'collisionShapes': bg.layers[i].getCollisionStates(),
+				});
 			}
 		}
 		else if (mode == 'parallax') {
+			for (i=0; i<len; i++) {
+				layers.push({
+					'parallaxOffset': bg.layers[i].parallaxOffset,
+				});
+			}
 		}
 
 		var data = JSON.stringify(layers);

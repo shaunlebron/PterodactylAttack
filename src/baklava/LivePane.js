@@ -46,20 +46,21 @@ Ptero.Baklava.LivePane.prototype = {
 		var mode = model.mode;
 		if (mode == "position") {
 			var layer = Ptero.background.getLayerFromPixel(x,y);
-			if (layer == Ptero.Baklava.model.selectedLayer) {
-				Ptero.Baklava.model.selectLayer(null);
+			if (layer == model.selectedLayer) {
+				model.selectLayer(null);
 			}
 			else {
-				Ptero.Baklava.model.selectLayer(layer);
+				model.selectLayer(layer);
 				this.updateEnemyPos(x,y);
 			}
 		}
 		else if (mode == "collision") {
 
 			// select a layer if one is not already selected
-			if (Ptero.Baklava.model.selectedLayer == null) {
+			if (model.selectedLayer == null) {
 				var layer = Ptero.background.getLayerFromPixel(x,y);
-				Ptero.Baklava.model.selectLayer(layer);
+				model.selectLayer(layer);
+				return {};
 			}
 
 			var collisionMode = model.collisionMode;
@@ -172,7 +173,7 @@ Ptero.Baklava.LivePane.prototype = {
 					points.splice(i,0,point1);
 				}
 
-				Ptero.Baklava.model.setCollisionMode('select');
+				model.setCollisionMode('select');
 				return {
 					shape: this.selectedShape,
 					point: point1,

@@ -117,6 +117,29 @@ Ptero.BackgroundLayer.prototype = {
 
 		this.deferSprites();
 	},
+	getCollisionStates: function() {
+		var result = [];
+		var i,numShapes = this.collisionShapes.length;
+		for (i=0; i<numShapes; i++) {
+			var shape = this.collisionShapes[i];
+			result.push(shape.getState());
+		}
+		return result;
+	},
+	setCollisionStates: function(result) {
+		this.collisionShapes.length = 0;
+		if (!result) {
+			return;
+		}
+
+		var i,numShapes = result.length;
+		for (i=0; i<numShapes; i++) {
+			var shapeState = result[i];
+			var shape = Ptero.CollisionShape.fromState(shapeState)
+			shape.projectToZ(this.depth);
+			this.collisionShapes.push(shape);
+		}
+	},
 };
 
 Ptero.Background = function() {
@@ -323,10 +346,9 @@ Ptero.Background.prototype = {
 
 			// transfer verbatim attributes
 			layer.desc = d.desc;
-			layer.parallaxOffset = d.parallaxOffset;
-			layer.collisionShapes = d.collisionShapes;
-
 			layer.depth = d.depth;
+			layer.parallaxOffset = d.parallaxOffset;
+			layer.setCollisionStates(d.collisionShapes);
 
 			// build sprite array from indexes
 			var j,numImages = d.images.length;
