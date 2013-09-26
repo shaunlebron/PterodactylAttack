@@ -108,27 +108,45 @@ _ DONE Fix strange loss of orb control after game over screen
 
 - DONE (kinda) Add multi-touch scrolling to credits
 - DONE Make orb blink red when animating guide
+	
+- DONE backgrounds
+	- DONE define parallax shifts
+	- DONE implement tilting again
+	- DONE implement collision
+
+- PROBABLY Make sure game is hard enough
+
+- DONE keep only one explosion (without boom text) and change probability of boom animations
+- DONE create resize script
+- DONE resize logo
+- DONE resize menu backplate
+- DONE resize cliff
+- DONE resize bg_menu
 
 =================================================================================
-	
-	- Make sure game is hard enough
 
 	- make sure game works on Android	
 		- minimize overdraw by cutting out invisible area on background layers
 		- make targeting algorithm more efficient
-	
-	- backgrounds
-		- define parallax shifts
-		- implement tilting again
-		- implement collision
-		- speed up background blob speeds to see if it's more aesthetic
+
+	- speed up background blob speeds to see if it's more aesthetic
+	- fix cloud stutters
+
+	- remove splash image from game and just use the three images from the title screen
 
 	- optimize memory
-		- keep only one explosion (without boom text) and change probability of boom animations
-		- create resize script
+		- cut down vectors
+			- eliminate redundant body and head vectors and record positions
+			- eliminate redundant wing by flipping "scale(-1,1)"
+			- eliminate redundant color by drawing without paths every time
 	
 	- test game at Best Buy
 		- Android phones and tablets
 		- iPhones and iPads
 
 - DO A FULL TEST OF EVERYTHING IMAGINABLE
+
+Trey's phone:
+	Model number: Galaxy Nexus
+	Android Version: 4.2.2
+	Build number JDQ39
