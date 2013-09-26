@@ -96,6 +96,7 @@ Ptero.scene_play = (function() {
 
 			function trigger() {
 				if (debugBtn1Pressed && debugBtn2Pressed) {
+					Ptero.overlord.enemies.length = 0;
 					Ptero.overlord.triggerNextWave();
 				}
 			}
