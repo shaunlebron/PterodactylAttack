@@ -4,14 +4,11 @@ Ptero.Enemy = function() {
 
 	this.boom1Sprite = new Ptero.AnimSprite({mosaic:Ptero.assets.mosaics.boom1});
 	this.boom1Sprite.setRepeat(false);
-	this.boom2Sprite = new Ptero.AnimSprite({mosaic:Ptero.assets.mosaics.boom2});
-	this.boom2Sprite.setRepeat(false);
 	this.boom3Sprite = new Ptero.AnimSprite({mosaic:Ptero.assets.mosaics.boom3});
 	this.boom3Sprite.setRepeat(false);
 
 	this.boomSprites = [
 		this.boom1Sprite,
-		this.boom2Sprite,
 		this.boom3Sprite,
 	];
 	this.randomizeBoom();
@@ -87,7 +84,7 @@ Ptero.Enemy.prototype = {
 	},
 	randomizeBoom: function randomizeBoom() {
 		var numBooms = this.boomSprites.length;
-		var i = Math.floor(Math.random()*numBooms);
+		var i = Math.random() < 0.3333 ? 1 : 0;
 		this.boomSprite = this.boomSprites[i];
 		this.boomSprite.restart();
 	},

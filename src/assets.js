@@ -45,9 +45,8 @@ Ptero.assets = (function(){
 		"menu_strong"       : "img/menu/menu_strong.png",
 		"menu_scroll"       : "img/menu/menu_scroll.png",
 
-		"boom1": "img/boom1.png",
-		"boom2": "img/boom2.png",
-		"boom3": "img/boom3.png",
+		"boom1": "img/boom1s.png",
+		"boom3": "img/boom3s.png",
 
 		"bullet": "img/bullet.png",
 		"netbullet": "img/netbullet.png",
@@ -57,7 +56,6 @@ Ptero.assets = (function(){
 		"swipe"     : "img/swipe.png",
 
 		"cliff" : "img/cliff.png",
-		"title" : "img/title.png",
 
 		"backplate_mountain" : "img/backplate_menu_mountain.png",
 
@@ -303,20 +301,28 @@ Ptero.assets = (function(){
 		var meta = json[name];
 
 		if (meta.rows != undefined) {
-			console.log("creating table",name);
-			tables[name] = new Ptero.SpriteTable(images[name], meta);
+			if (!tables[name]) {
+				console.log("creating table",name);
+				tables[name] = new Ptero.SpriteTable(images[name], meta);
+			}
 		}
 		else if (meta.mosaic != undefined) {
-			console.log("creating mosaic",name);
-			mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
+			if (!mosaics[name]) {
+				console.log("creating mosaic",name);
+				mosaics[name] = new Ptero.SpriteMosaic(images[name], meta);
+			}
 		}
 		else if (meta.font != undefined) {
-			console.log("creating font",name);
-			fonts[name] = new Ptero.SpriteFont(images[name], meta);
+			if (!fonts[name]) {
+				console.log("creating font",name);
+				fonts[name] = new Ptero.SpriteFont(images[name], meta);
+			}
 		}
 		else {
-			console.log("creating sprite",name);
-			sprites[name] = new Ptero.Sprite(images[name], meta);
+			if (!sprites[name]) {
+				console.log("creating sprite",name);
+				sprites[name] = new Ptero.Sprite(images[name], meta);
+			}
 		}
 	};
 
@@ -366,172 +372,199 @@ Ptero.assets = (function(){
 		for (name in vectorSources) {
 			postProcessVector(name);
 		}
-	};
+	}
 
-	function load(d) {
+	function loadAfterPreloadImages(d) {
 
-		var loadingImageName = d.loadingImageName;
+		// kludge: load the "btns_loading" data for the loading screen
+		(function() {
+			var name = "btns_loading";
+			var src = jsonSources[name];
+			json[name] = Ptero.jsonData[src];
+		})();
+
+		var preloadImageNames = d.preloadImageNames;
 		var onStart = d.onStart;
 		var onDone = d.onDone;
 
-		// Load the loading image first.
-		var name = loadingImageName;
-		var src = imageSources[name];
-		var img = new Image();
-		img.src = src;
-		img.onerror = function() {
-			console.error("couldn't load image: "+ name);
-		};
-		img.onload = function() {
-			console.log("loaded image: "+ name);
-			if (usePreloadedJson) {
-				json[name] = Ptero.jsonData[jsonSources[name]];
-				console.log("pre-loaded json: "+ name);
+		var i,len=preloadImageNames.length;
+		var totalCount = len;
+		var count = 0;
 
-				// process the loading image
-				postProcessImage(name);
+		function handleAllDone() {
+			// signal to the caller that the loading image is ready to use
+			onStart && onStart();
+			// load the rest of the resources
+			loadAll(onDone);
+		}
 
-				// signal to the caller that the loading image is ready to use
-				onStart && onStart();
-
-				// load the rest of the resources
-				loadRest();
-			}
-			else {
-				var jsonSrc = jsonSources[name];
-				var req = new XMLHttpRequest();
-				req.onload = function() {
-					json[name] = JSON.parse(this.responseText);
-					console.log("loaded json: "+ name);
-
-					// process the loading image
-					postProcessImage(name);
-
-					// signal to the caller that the loading image is ready to use
-					onStart && onStart();
-
-					// load the rest of the resources
-					loadRest();
-				};
-				req.open('GET', jsonSrc, true);
-				req.send();
-			}
-		};
-		images[name] = img;
-
-		function loadRest() {
-
-			// Determine the number of files we are loading.
-			var totalCount = 0;
-			for (name in imageSources) { totalCount++; }
-			for (name in jsonSources) { totalCount++; }
-			for (name in sfxSources) { totalCount++; }
-			for (name in songSources) { totalCount++; }
-
-			// Running count of how many files have been loaded.
-			var count = 2; // already loaded "loading" image and json
-
-			// Called when all files are loaded.
-			function handleAllDone() {
-				postProcess();
-				onDone && onDone();
-			}
-
-			// Called after a file is loaded.
-			function handleLoad() {
-				count++;
-				//console.log(count, totalCount);
-				if (count == totalCount) {
-					handleAllDone();
-				}
-			}
-
-			// Load images
-			var img,name,src,req;
-			for (name in imageSources) {
-				if (name == loadingImageName) {
-					continue;
-				}
-				src = imageSources[name];
-				console.log('image',name, src);
-				img = new Image();
-				img.src = src;
-				img.onerror = (function(name){
-					return function() {
-						console.error("couldn't load image: "+ name);
-					};
-				})(name);
-				img.onload = (function(name){
-					return function() {
-						console.log("loaded image: "+ name);
-						handleLoad();
-					};
-				})(name);
-				images[name] = img;
-			}
-
-			// Load json data.
-			for (name in jsonSources) {
-				if (name == loadingImageName) {
-					continue;
-				}
-				src = jsonSources[name];
-				if (usePreloadedJson) {
-					json[name] = Ptero.jsonData[src];
-					console.log("pre-loaded json: "+ name);
-					handleLoad();
-				}
-				else {
-					req = new XMLHttpRequest();
-					req.onload = (function(name){
-						return function() {
-							try {
-								json[name] = JSON.parse(this.responseText);
-								console.log("loaded json: "+ name);
-								handleLoad();
-							}
-							catch (e) {
-								console.log("ERROR: could not load json file",name);
-								console.error("could not load json file",name);
-							}
-						};
-					})(name);
-					req.open('GET', src, true);
-					req.send();
-				}
-			}
-
-			// load sound effects
-			var audio;
-			for (name in sfxSources) {
-				audio = new Audio();
-				audio.src = sfxSources[name];
-				sfx[name] = audio;
-				console.log("loaded sfx: ", name);
-				handleLoad();
-			}
-
-			// load songs and create song objects
-			for (name in songSources) {
-				audio = new Audio();
-				src = songSources[name];
-				if (audio.canPlayType('audio/ogg')) {
-					audio.src = src+".ogg";
-				}
-				else if (audio.canPlayType('audio/mp3')) {
-					audio.src = src+".mp3";
-				}
-				else {
-					audio = null;
-					console.error("no song found for: ", name);
-					continue;
-				}
-				console.log("loaded song: ", name);
-				songs[name] = new Ptero.Song(audio);
-				handleLoad();
+		// Called after a file is loaded.
+		function handleLoad() {
+			count++;
+			if (count == totalCount) {
+				handleAllDone();
 			}
 		}
-	};
+		
+		// load the priority images
+		for (i=0; i<len; i++) {
+			var name = preloadImageNames[i];
+			var src = imageSources[name];
+
+			var img = new Image();
+			img.src = src;
+			img.onerror = (function(name){
+				return function() {
+					console.error("couldn't load image: "+ name);
+				};
+			})(name);
+			img.onload = (function(name){
+				return function() {
+					console.log("loaded image: "+ name);
+					if (usePreloadedJson) {
+						json[name] = Ptero.jsonData[jsonSources[name]];
+						console.log("pre-loaded json: "+ name);
+
+						// process the loading image
+						postProcessImage(name);
+
+						handleLoad();
+					}
+					else {
+						var jsonSrc = jsonSources[name];
+						var req = new XMLHttpRequest();
+						req.onload = function() {
+							json[name] = JSON.parse(this.responseText);
+							console.log("loaded json: "+ name);
+
+							// process the loading image
+							postProcessImage(name);
+
+							handleLoad();
+						};
+						req.open('GET', jsonSrc, true);
+						req.send();
+					}
+				};
+			})(name);
+			images[name] = img;
+		}
+	}
+
+	function loadAll(onDone) {
+
+		// Determine the number of files we are loading.
+		var totalCount = 0;
+		for (name in imageSources) { totalCount++; }
+		for (name in jsonSources) { totalCount++; }
+		for (name in sfxSources) { totalCount++; }
+		for (name in songSources) { totalCount++; }
+
+		// Running count of how many files have been loaded.
+		var count = 0;
+
+		// Called when all files are loaded.
+		function handleAllDone() {
+			postProcess();
+			onDone && onDone();
+		}
+
+		// Called after a file is loaded.
+		function handleLoad() {
+			count++;
+			//console.log(count, totalCount);
+			if (count == totalCount) {
+				handleAllDone();
+			}
+		}
+
+		// Load images
+		var img,name,src,req;
+		for (name in imageSources) {
+			if (images[name]) {
+				handleLoad();
+				continue;
+			}
+			src = imageSources[name];
+			console.log('image',name, src);
+			img = new Image();
+			img.src = src;
+			img.onerror = (function(name){
+				return function() {
+					console.error("couldn't load image: "+ name);
+				};
+			})(name);
+			img.onload = (function(name){
+				return function() {
+					console.log("loaded image: "+ name);
+					handleLoad();
+				};
+			})(name);
+			images[name] = img;
+		}
+
+		// Load json data.
+		for (name in jsonSources) {
+			if (json[name]) {
+				handleLoad();
+				continue;
+			}
+			src = jsonSources[name];
+			if (usePreloadedJson) {
+				json[name] = Ptero.jsonData[src];
+				console.log("pre-loaded json: "+ name);
+				handleLoad();
+			}
+			else {
+				req = new XMLHttpRequest();
+				req.onload = (function(name){
+					return function() {
+						try {
+							json[name] = JSON.parse(this.responseText);
+							console.log("loaded json: "+ name);
+							handleLoad();
+						}
+						catch (e) {
+							console.log("ERROR: could not load json file",name);
+							console.error("could not load json file",name);
+						}
+					};
+				})(name);
+				req.open('GET', src, true);
+				req.send();
+			}
+		}
+
+		// load sound effects
+		var audio;
+		for (name in sfxSources) {
+			audio = new Audio();
+			audio.src = sfxSources[name];
+			sfx[name] = audio;
+			console.log("loaded sfx: ", name);
+			handleLoad();
+		}
+
+		// load songs and create song objects
+		for (name in songSources) {
+			audio = new Audio();
+			src = songSources[name];
+			if (audio.canPlayType('audio/ogg')) {
+				audio.src = src+".ogg";
+			}
+			else if (audio.canPlayType('audio/mp3')) {
+				audio.src = src+".mp3";
+			}
+			else {
+				audio = null;
+				console.error("no song found for: ", name);
+				continue;
+			}
+			console.log("loaded song: ", name);
+			songs[name] = new Ptero.Song(audio);
+			handleLoad();
+		}
+	}
 
 	function cacheVectorAnim(ctx,vectorName) {
 		var anim = vectorAnims[vectorName];
@@ -561,7 +594,6 @@ Ptero.assets = (function(){
 			var x = Ptero.screen.getWindowWidth()/2;
 			var y = Ptero.screen.getWindowHeight()/2;
 			ctx.drawImage(Ptero.assets.images["boom1"],x,y,s,s);
-			ctx.drawImage(Ptero.assets.images["boom2"],x,y,s,s);
 			ctx.drawImage(Ptero.assets.images["boom3"],x,y,s,s);
 		}
 	}
@@ -588,7 +620,7 @@ Ptero.assets = (function(){
 
 	return {
 		json: json,
-		load: load,
+		loadAfterPreloadImages: loadAfterPreloadImages,
 		sfx: sfx,
 		songs: songs,
 		images: images,

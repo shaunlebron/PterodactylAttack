@@ -46,11 +46,15 @@ window.onload = function() {
 	console.log("initing screen");
 	Ptero.screen.init(canvas,w,h);
 
-	Ptero.assets.load({
-		loadingImageName: 'title',
+	Ptero.assets.loadAfterPreloadImages({
+		preloadImageNames: [
+			'bg_menu',
+			'cliff',
+			'logo',
+		],
 		onStart: function() {
-			console.log('starting loading scene');
-			Ptero.setScene(Ptero.scene_loading);
+			console.log('starting title scene');
+			Ptero.setScene(Ptero.scene_title);
 			Ptero.executive.start();
 		},
 		onDone: function() {
@@ -60,8 +64,8 @@ window.onload = function() {
 			Ptero.createBackgrounds();
 			console.log("initing input");
 			Ptero.input.init();
-			console.log("setting scene");
-			Ptero.setScene(Ptero.scene_title);
+			console.log("animating title scene out");
+			Ptero.scene_title.animateOut();
 		},
 	});
 };
