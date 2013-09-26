@@ -1128,6 +1128,14 @@ Ptero.OverlordWaves.prototype = {
 	draw: function(ctx) {
 		this.waveTitle && this.waveTitle.draw(ctx);
 	},
+	triggerNextWave: function() {
+		var that = this;
+		this.waitingForTheEnd = false;
+		Ptero.scene_play.fadeToNextStage(function(){
+			that.createWaveScript(that.waveNum + 1);
+			that.init();
+		});
+	},
 	update: function(dt) {
 		this.waveTitle && this.waveTitle.update(dt);
 
@@ -1173,12 +1181,8 @@ Ptero.OverlordWaves.prototype = {
 				return true;
 			}
 			if (readyToEnd()) {
-				this.waitingForTheEnd = false;
 				this.showWaveTitle("WAVE COMPLETE!");
-				Ptero.scene_play.fadeToNextStage(function(){
-					that.createWaveScript(that.waveNum + 1);
-					that.init();
-				});
+				this.triggerNextWave();
 			}
 		}
 	},

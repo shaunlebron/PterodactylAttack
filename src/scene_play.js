@@ -52,6 +52,9 @@ Ptero.scene_play = (function() {
 	var netLeftBtn, netRightBtn;
 	var eggBtns;
 
+	var debugBtn1, debugBtn2;
+	var debugBtn1Pressed, debugBtn2Pressed;
+
 	var healthBorderBtn;
 	var healthContentBtn;
 
@@ -65,6 +68,10 @@ Ptero.scene_play = (function() {
 		pauseBtn.enable();
 		if (isNetEnabled) {
 			enableNet(true);
+		}
+		if (!Ptero.settings.isTutorialEnabled()) {
+			debugBtn1.enable();
+			debugBtn2.enable();
 		}
 		Ptero.orb.enableTouch();
 	}
@@ -83,6 +90,24 @@ Ptero.scene_play = (function() {
 
 		buttonList = new Ptero.ButtonList(Ptero.assets.json["btns_game"]);
 		var btns = buttonList.namedButtons;
+
+		debugBtn1Pressed = debugBtn2Pressed = false;
+		if (!Ptero.settings.isTutorialEnabled()) {
+
+			function trigger() {
+				if (debugBtn1Pressed && debugBtn2Pressed) {
+					Ptero.overlord.triggerNextWave();
+				}
+			}
+
+			debugBtn1 = btns["debug1"];
+			debugBtn2 = btns["debug2"];
+			
+			debugBtn1.ontouchstart = function() { debugBtn1Pressed = true; trigger(); };
+			debugBtn1.ontouchend   = function() { debugBtn1Pressed = false; };
+			debugBtn2.ontouchstart = function() { debugBtn2Pressed = true; trigger(); };
+			debugBtn2.ontouchend   = function() { debugBtn2Pressed = false; };
+		}
 
 		scoreBtn = btns["score"];
 		scoreBtn.shouldDraw = false;

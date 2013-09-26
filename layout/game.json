@@ -141,6 +141,30 @@
 			"font": "whitefont",
 			"textAlign": "center",
 			"text": ""
+		},
+		{
+			"name": "debug1",
+			"x": 1,
+			"y": 0,
+			"centerX": 125.94285714285712,
+			"centerY": 0,
+			"w": 125.94285714285706,
+			"h": 125.94285714285715,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": ""
+		},
+		{
+			"name": "debug2",
+			"x": 0,
+			"y": 1,
+			"centerX": 0,
+			"centerY": 125.94285714285715,
+			"w": 125.94285714285706,
+			"h": 125.94285714285715,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": ""
 		}
 	]
 }
