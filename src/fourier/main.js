@@ -29,8 +29,6 @@ window.onload = function() {
 
 		console.log("initing input");
 		Ptero.input.init();
-		console.log("initing audio");
-		Ptero.audio.init();
 		console.log("initing wave list");
 		Ptero.Fourier.wave_list = new Ptero.Fourier.WaveList();
 		var ignoreState = false;
