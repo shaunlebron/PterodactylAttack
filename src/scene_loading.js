@@ -1,7 +1,5 @@
 
-Ptero.Baklava.scene_loading = (function(){
-
-	var bgSprite, bgPos;
+Ptero.scene_loading = (function(){
 
 	var time;
 
@@ -11,14 +9,6 @@ Ptero.Baklava.scene_loading = (function(){
 
 	return {
 		init: function() {
-			bgSprite = Ptero.assets.sprites['title'];
-			var frustum = Ptero.frustum;
-			bgPos = {
-				x:0,
-				y:0,
-				z: frustum.near,
-			};
-
 			time = 0;
 			
 			var x = wheelRadius;
@@ -28,8 +18,8 @@ Ptero.Baklava.scene_loading = (function(){
 			wheelBillboard = new Ptero.Billboard(x,y,w,h,1);
 			wheelPos = {
 				x: 0,
-				y: frustum.nearBottom/2,
-				z: frustum.near,
+				y: 0,
+				z: Ptero.frustum.near,
 			};
 		},
 		update: function(dt) {
@@ -38,7 +28,8 @@ Ptero.Baklava.scene_loading = (function(){
 		draw: function(ctx) {
 			ctx.save();
 			Ptero.screen.transformToWindow();
-			bgSprite.draw(ctx, bgPos);
+			ctx.fillStyle = "#000";
+			ctx.fillRect(0,0,Ptero.screen.getWindowWidth(),Ptero.screen.getWindowHeight());
 
 			ctx.save();
 			wheelBillboard.transform(ctx, wheelPos);

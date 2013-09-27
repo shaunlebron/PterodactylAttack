@@ -374,7 +374,7 @@ Ptero.assets = (function(){
 		}
 	}
 
-	function loadAfterPreloadImages(d) {
+	function loadAfterPreload(d) {
 
 		// kludge: load the "btns_loading" data for the loading screen
 		(function() {
@@ -384,8 +384,8 @@ Ptero.assets = (function(){
 		})();
 
 		var preloadImageNames = d.preloadImageNames;
-		var onStart = d.onStart;
-		var onDone = d.onDone;
+		var onPreload = d.onPreload;
+		var onLoad = d.onLoad;
 
 		var i,len=preloadImageNames.length;
 		var totalCount = len;
@@ -393,9 +393,9 @@ Ptero.assets = (function(){
 
 		function handleAllDone() {
 			// signal to the caller that the loading image is ready to use
-			onStart && onStart();
+			onPreload && onPreload();
 			// load the rest of the resources
-			loadAll(onDone);
+			load(onLoad);
 		}
 
 		// Called after a file is loaded.
@@ -451,7 +451,7 @@ Ptero.assets = (function(){
 		}
 	}
 
-	function loadAll(onDone) {
+	function load(onLoad) {
 
 		// Determine the number of files we are loading.
 		var totalCount = 0;
@@ -466,7 +466,7 @@ Ptero.assets = (function(){
 		// Called when all files are loaded.
 		function handleAllDone() {
 			postProcess();
-			onDone && onDone();
+			onLoad && onLoad();
 		}
 
 		// Called after a file is loaded.
@@ -620,7 +620,8 @@ Ptero.assets = (function(){
 
 	return {
 		json: json,
-		loadAfterPreloadImages: loadAfterPreloadImages,
+		loadAfterPreload: loadAfterPreload,
+		load: load,
 		sfx: sfx,
 		songs: songs,
 		images: images,

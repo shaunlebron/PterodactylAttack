@@ -46,18 +46,18 @@ window.onload = function() {
 	console.log("initing screen");
 	Ptero.screen.init(canvas,w,h);
 
-	Ptero.assets.loadAfterPreloadImages({
+	Ptero.assets.loadAfterPreload({
 		preloadImageNames: [
 			'bg_menu',
 			'cliff',
 			'logo',
 		],
-		onStart: function() {
+		onPreload: function() {
 			console.log('starting title scene');
 			Ptero.setScene(Ptero.scene_title);
 			Ptero.executive.start();
 		},
-		onDone: function() {
+		onLoad: function() {
 			console.log('loading settings');
 			Ptero.settings.load();
 			console.log('creating backgrounds');
