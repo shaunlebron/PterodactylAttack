@@ -123,14 +123,15 @@ _ DONE Fix strange loss of orb control after game over screen
 - DONE resize cliff
 - DONE resize bg_menu
 - DONE remove splash image from game and just use the three images from the title screen
+- DONE don't let title drop or music play until the menu background has been cached
 
 =================================================================================
-
-	- don't let title drop or music play until the menu background has been cached
 
 	- minimize overdraw by cutting out invisible area on background layers
 
 	- see if removing translucent background layers help framerate
+	- see if removing collision detection helps framerate
+	- profile for different android phones to find slow functions
 
 	- optimize targeting algorithm
 

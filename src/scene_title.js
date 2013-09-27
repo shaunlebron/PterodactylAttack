@@ -3,6 +3,9 @@ Ptero.scene_title = (function(){
 
 	var buttonList;
 	var isAnimating;
+	var isCached;
+
+	var mode;
 
 	var bgSprite, bgPos;
 
@@ -23,12 +26,13 @@ Ptero.scene_title = (function(){
 		time = 0;
 		vel = 0;
 		displacement = 0;
-		isAnimating = false;
+
+		mode = 'waiting';
 	}
 
 	function animateOut() {
-		isAnimating = true;
-		Ptero.audio.play('theme');
+		Ptero.setBackground('menu');
+		mode = 'caching';
 	}
 
 	var time;
@@ -36,7 +40,13 @@ Ptero.scene_title = (function(){
 	var displacement;
 
 	function update(dt) {
-		if (isAnimating) {
+		if (mode == 'waiting') {
+		}
+		else if (mode == 'caching') {
+			Ptero.background.update(dt);
+		}
+		else if (mode == 'animating') {
+			Ptero.background.update(dt);
 			time += dt;
 			vel += accel*dt;
 			displacement += vel*dt;
@@ -47,7 +57,17 @@ Ptero.scene_title = (function(){
 	}
 
 	function draw(ctx) {
-		bgSprite.draw(ctx, bgPos);
+		if (mode == 'waiting') {
+			bgSprite.draw(ctx, bgPos);
+		}
+		else if (mode == 'caching') {
+			Ptero.deferredSprites.draw(ctx);
+			Ptero.audio.play('theme');
+			mode = 'animating';
+		}
+		else if (mode == 'animating') {
+			Ptero.deferredSprites.draw(ctx);
+		}
 		ctx.save();
 		ctx.translate(0,displacement);
 		buttonList.draw(ctx);
