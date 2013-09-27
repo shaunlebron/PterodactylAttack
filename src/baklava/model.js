@@ -28,9 +28,13 @@ Ptero.Baklava.Model.prototype = {
 		$("#btn-position").removeClass("active");
 		$("#btn-collision").removeClass("active");
 		$("#btn-parallax").removeClass("active");
+		$("#btn-anim").removeClass("active");
+
 		$("#toolbar-position").css("display", "none");
 		$("#toolbar-collision").css("display", "none");
 		$("#toolbar-parallax").css("display", "none");
+		$("#toolbar-anim").css("display", "none");
+
 		$("#btn-"+mode).addClass('active');
 		$("#toolbar-"+mode).css('display', 'inherit');
 

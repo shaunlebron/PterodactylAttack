@@ -32,24 +32,28 @@
 
 	#toolbar-position {
 		display: none;
-		float: left;
-		margin: 15px 0 0 15px;
 	}
 
 	#toolbar-collision {
 		display: none;
-		float: left;
-		margin: 15px 0 0 5px;
 	}
 
 	#toolbar-parallax {
 		display: none;
-		float: left;
-		margin: 15px 0 0 15px;
+	}
+
+	#toolbar-anim {
+		display: none;
 	}
 
 	#parallax-slider {
 		width:130px;
+	}
+
+	#anim-slider {
+		width:130px;
+		margin-left:15px;
+		margin-right:15px;
 	}
 
 	</style>
@@ -142,7 +146,7 @@ $(function(){
 		<button
 			class="btn dropdown-toggle"
 			data-toggle="dropdown">
-			<span id="bg-type-label">BG</span> <span class="caret"></span>
+			<span id="bg-type-label">background</span> <span class="caret"></span>
 			</button>
 
 		<ul id="bgTypeMenu" class="dropdown-menu"></ul>
@@ -155,7 +159,7 @@ $(function(){
 			rel="tooltip"
 			data-placement="bottom"
 			data-title="Adjust position"
-			>Position</button>
+			>Depth</button>
 		<button
 			id="btn-collision"
 			class="btn"
@@ -172,7 +176,19 @@ $(function(){
 			data-placement="bottom"
 			data-title="Adjust parallax shift"
 			>Parallax</button>
+		<button
+			id="btn-anim"
+			class="btn"
+			onclick="Ptero.Baklava.model.setMode('anim')"
+			rel="tooltip"
+			data-placement="bottom"
+			data-title="Create animation"
+			>Animation</button>
 	</div>
+</div>
+
+<div id='container'>
+	<canvas id='canvas'></canvas>
 </div>
 
 <div class="btn-toolbar" id="toolbar-position">
@@ -209,7 +225,7 @@ $(function(){
 			class="btn"
 			onclick="Ptero.Baklava.model.createShape()"
 			rel="tooltip"
-			data-placement="bottom"
+			data-placement="top"
 			data-title="New Shape"
 			><i class="icon-plus"></i></button>
 		<button
@@ -217,14 +233,14 @@ $(function(){
 			class="btn"
 			onclick="Ptero.Baklava.model.deleteShape()"
 			rel="tooltip"
-			data-placement="bottom"
+			data-placement="top"
 			data-title="Delete Shape"
 			><i class="icon-remove"></i></button>
 		<button
 			class="btn"
 			onclick="Ptero.Baklava.model.deletePoint()"
 			rel="tooltip"
-			data-placement="bottom"
+			data-placement="top"
 			data-title="Delete Point"
 			><i class="icon-minus-sign"></i></button>
 		<button
@@ -232,15 +248,84 @@ $(function(){
 			class="btn"
 			onclick="Ptero.Baklava.model.setCollisionMode('insert')"
 			rel="tooltip"
-			data-placement="bottom"
+			data-placement="top"
 			data-title="Insert Point"
 			><i class="icon-chevron-sign-down"></i></button>
 	</div>
 </div>
 
-<div id='container'>
-	<canvas id='canvas'></canvas>
+<div class="btn-toolbar" id="toolbar-anim">
+	<div class="btn-group">
+		<button
+			class="btn"
+			onclick="Ptero.Baklava.model.setAnimMode('a')"
+			rel="tooltip"
+			data-placement="top"
+			data-title="View/Adjust first control point"
+			>Position 1</button>
+		<button
+			class="btn"
+			onclick="Ptero.Baklava.model.setAnimMode('b')"
+			rel="tooltip"
+			data-placement="top"
+			data-title="View/Adjust second control point"
+			>Position 2</button>
+		<button
+			class="btn"
+			onclick="Ptero.Baklava.model.setAnimMode('play')"
+			rel="tooltip"
+			data-placement="top"
+			data-title="Play animation"
+			>Play</button>
+	</div>
+
+	<input type="range" value="0" min="0" max="1" step="0.001" id="anim-slider" />
+	<script>
+	$(function(){
+		var slider = $('#anim-slider');
+		var down = false;
+		var origMode;
+		var origSelection;
+		slider.mousedown(function() {
+			origMode = Ptero.Baklava.model.getAnimMode();
+			origSelection = Ptero.Baklava.model.selectedLayer;
+			Ptero.Baklava.model.setAnimMode('track');
+			Ptero.Baklava.model.selectLayer(null);
+			down = true;
+		});
+		slider.mousemove(function(){
+			if (down) {
+				Ptero.Baklava.model.setAnimTrack(slider.val());
+			}
+		});
+		slider.mouseup(function() {
+			down = false;
+			Ptero.Baklava.model.setAnimMode(origMode);
+			Ptero.Baklava.model.selectLayer(origSelection);
+		});
+	});
+	</script>
+
+	<div class="btn-group dropup">
+		<button
+			rel="tooltip"
+			data-placement="top"
+			data-title="Animation Type for Layer"
+			class="btn dropdown-toggle"
+			data-toggle="dropdown">
+			<span id="animation-type">Type</span> <span class="caret"></span>
+			</button>
+
+		<ul class="dropdown-menu">
+			<li> <a onclick="Ptero.Baklava.model.setLayerAnimType('intro')" href="#" >intro</a> </li>
+			<li> <a onclick="Ptero.Baklava.model.setLayerAnimType('idle-restart')" href="#" >idle restart</a>
+			<li> <a onclick="Ptero.Baklava.model.setLayerAnimType('idle-roundtrip')" href="#" >idle roundtrip</a>
+			</li>
+		</ul>
+	</div>
+
 </div>
+
 
 </body>
 
