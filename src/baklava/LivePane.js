@@ -2,25 +2,81 @@
 Ptero.Baklava.LivePane = function() {
 	this.scene = Ptero.Baklava.scene_parallax;
 
-	this.hudScale = Ptero.screen.getWindowHeight() / (Ptero.Baklava.screen.getPaneHeight()*2);
-	this.nodeRadius = 4 * this.hudScale;
+	this.computeHudScale();
 
 	var that = this;
 	window.addEventListener("keydown", function(e) {
 		if (e.keyCode == 16) { //shift
 			that.isSelectLayerKey = true;
 		}
+		else if (e.keyCode == 18) { // alt
+			that.isZoomPanKey = true;
+		}
+		else if (e.keyCode == 48) { // 0
+			Ptero.screen.fitWindow();
+		}
 	});
 	window.addEventListener("keyup", function(e) {
 		if (e.keyCode == 16) {
 			that.isSelectLayerKey = false;
 		}
+		else if (e.keyCode == 18) { // alt
+			that.isZoomPanKey = false;
+		}
 	});
+
+	var zoomPanTouchHandler = (function(){
+		var dx,dy;
+		var isZoomPan;
+		
+		return {
+			coord: "canvas",
+			start: function(cx,cy) {
+				isZoomPan = that.isZoomPanKey;
+				if (isZoomPan) {
+					var c = Ptero.screen.getWindowPos();
+					dx = cx - c.x;
+					dy = cy - c.y;
+				}
+			},
+			move: function(cx,cy) {
+				if (isZoomPan) {
+					Ptero.screen.setWindowPos(cx-dx, cy-dy);
+				}
+			},
+			end: function(cx,cy) {
+				isZoomPan = false;
+			},
+			cancel: function(cx,cy) {
+				isZoomPan = false;
+			},
+			scroll: function(cx,cy,delta,deltaX,deltaY) {
+				if (that.isZoomPanKey) {
+					// from: http://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
+					var scaleFactor = Math.pow(1 + Math.abs(deltaY)/4 , deltaY > 0 ? 1 : -1);
+
+					var scale = Ptero.screen.getWindowScale() * scaleFactor;
+					var maxScale = Ptero.screen.getWindowFitScale() * 4;
+					var minScale = maxScale / 16;
+					scale = Math.max(minScale, Math.min(maxScale, scale));
+
+					Ptero.screen.zoomWindow(scale, cx, cy);
+				}
+			},
+		};
+	})();
+
+	Ptero.input.addTouchHandler(zoomPanTouchHandler);
 };
 
 Ptero.Baklava.LivePane.prototype = {
 
 	/* COORDINATE FUNCTIONS */
+
+	computeHudScale: function() {
+		//this.hudScale = Ptero.screen.getWindowHeight() / (Ptero.Baklava.screen.getPaneHeight()*2);
+		this.hudScale = 1/Ptero.screen.getWindowScale();
+	},
 
 	windowToSpace: function(x,y,spaceZ) {
 		var frustum = Ptero.frustum;
@@ -53,6 +109,9 @@ Ptero.Baklava.LivePane.prototype = {
 	/* INPUT FUNCTIONS */
 
 	getNodeInfoFromCursor: function(x,y) {
+		if (this.isZoomPanKey) {
+			return {};
+		}
 
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
@@ -231,6 +290,36 @@ Ptero.Baklava.LivePane.prototype = {
 				};
 			}
 		}
+		else if (mode == 'anim') {
+			var layer = model.selectedLayer;
+
+			// select a layer if one is not already selected
+			if (layer == null || this.isSelectLayerKey) {
+				var layer = Ptero.background.getLayerFromPixel(x,y);
+				model.selectLayer(layer);
+				return {};
+			}
+
+			var spaceClick = this.windowToSpace(x,y,Ptero.frustum.near);
+			var index;
+			if (model.animMode == 'a') {
+				index = 0;
+			}
+			else if (model.animMode == 'b') {
+				index = 1;
+			}
+			else {
+				return {};
+			}
+			var pos = Ptero.background.layersData[layer].anim.values[index];
+
+			return {
+				anim: true,
+				index: index,
+				offset_x: pos - spaceClick.x,
+			};
+
+		}
 
 		// Return an empty object if we cannot deduce a click selection.
 		return {};
@@ -282,6 +371,10 @@ Ptero.Baklava.LivePane.prototype = {
 		else if (mode == "parallax") {
 			this.selectedOffset = info.offset_x;
 		}
+		else if (mode == 'anim') {
+			this.selectedOffset = info.offset_x;
+			this.selectedIndex = info.index;
+		}
 	},
 
 	updateEnemyPos: function(x,y) {
@@ -296,6 +389,10 @@ Ptero.Baklava.LivePane.prototype = {
 	},
 
 	updateNodePosition: function(x,y) {
+		if (this.isZoomPanKey) {
+			return;
+		}
+
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
 		if (mode == "position") {
@@ -329,6 +426,13 @@ Ptero.Baklava.LivePane.prototype = {
 				var offset = Math.abs(spaceClick.x + this.selectedOffset);
 				Ptero.background.setLayerParallaxOffset(offset);
 				//Ptero.Baklava.loader.backup();
+			}
+		}
+		else if (mode == 'anim') {
+			if (this.selectedOffset != null) {
+				var spaceClick = this.windowToSpace(x,y,Ptero.frustum.near);
+				var anim = Ptero.background.layersData[model.selectedLayer].anim;
+				anim.values[this.selectedIndex] = spaceClick.x + this.selectedOffset;
 			}
 		}
 	},
@@ -428,14 +532,23 @@ Ptero.Baklava.LivePane.prototype = {
 		}
 		var i,len = points.length;
 		for (i=0; i<len; i++) {
-			this.fillCircle(ctx, points[i], this.nodeRadius, points[i] == this.selectedPoint ? "#F00" : "#333");
+			this.fillCircle(ctx, points[i], 4*this.hudScale, points[i] == this.selectedPoint ? "#F00" : "#333");
 		}
 	},
 
 	draw: function(ctx) {
+		this.computeHudScale();
+
+		ctx.fillStyle = "#7e6120";
+		ctx.fillRect(0,0,Ptero.screen.getCanvasWidth(), Ptero.screen.getCanvasHeight());
+
 		ctx.save();
 		Ptero.screen.transformToWindow();
 		this.scene.draw(ctx);
+
+		ctx.strokeStyle = "#000";
+		ctx.lineWidth = 3 * this.hudScale;
+		ctx.strokeRect(0,0,Ptero.screen.getWindowWidth(), Ptero.screen.getWindowHeight());
 
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;

@@ -22,7 +22,9 @@ Ptero.InterpDriver.prototype = {
 		this.time = 0;
 		this.step(t);
 	},
-
+	stepRandom: function() {
+		this.step(Math.random()*this.totalTime);
+	},
 	step: function step(dt) {
 		this.time += dt;
 		if (this.loop) {

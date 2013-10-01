@@ -26,9 +26,12 @@ Ptero.BackgroundLayer = function() {
 
 Ptero.BackgroundLayer.prototype = {
 	init: function() {
-		this.introPath.reset();
+		if (this.introPath) {
+			this.introPath.reset();
+		}
 		if (this.idlePath) {
 			this.idlePath.reset();
+			this.idlePath.stepRandom();
 		}
 
 		this.path = this.introPath;
@@ -96,13 +99,20 @@ Ptero.BackgroundLayer.prototype = {
 			z: this.position.z,
 		};
 
+		var depth = this.depth;
+
+		// set visual depth drawing order so we can see the layer over other while adjusting its anim position
+		if (Ptero.Baklava && Ptero.Baklava.model.mode == 'anim' && this.isSelected) {
+			depth = 0;
+		}
+
 		Ptero.deferredSprites.defer(
 			function(ctx) {
 				for (i=0; i<len; i++) {
 					sprites[i].draw(ctx, pos, color);
 				}
 			},
-			this.depth);
+			depth);
 	},
 	syncPositionToPath: function() {
 		this.setX(this.path.val);
@@ -119,13 +129,6 @@ Ptero.BackgroundLayer.prototype = {
 			// update current path
 			this.path.step(dt);
 
-			// update current path
-			// (it is possible here that the introPath never finishes and just freezes at the end, so idlePath is never used).
-			if (this.path == this.introPath && this.introPath.isDone()) {
-				this.path = this.idlePath;
-				this.idlePath.reset();
-			}
-			
 			this.syncPositionToPath();
 		}
 
@@ -217,6 +220,7 @@ Ptero.Background.prototype = {
 				color = 'white';
 			}
 			this.layers[i].setShade(color);
+			this.layers[i].isSelected = (i == j);
 		}
 	},
 
@@ -336,6 +340,11 @@ Ptero.Background.prototype = {
 		}
 	},
 	loadLayersData: function(layersData) {
+		// layersData defaults to the current layersData
+		layersData = layersData || this.layersData;
+
+		this.layersData = layersData;
+		this.layers.length = 0;
 
 		// ms is the expected duration of the interpolation
 		function getBezierEpsilon(ms) {
@@ -365,41 +374,42 @@ Ptero.Background.prototype = {
 				layer.sprites.push(this.sprites[d.images[j]]);
 			}
 
-			// build intro path from points
-			layer.introPath = new Ptero.InterpDriver(
-				Ptero.makeInterp(Ptero.bezier(0.25, 0, 0.25, 1, getBezierEpsilon(2000)),
-				//Ptero.makeInterp('linear',
-					d.introPath.values,
-					d.introPath.deltaTimes),
-				false);
-
-			// build exit path by reversing intro points
-			if (d.outroPath) {
-				layer.outroPath = new Ptero.InterpDriver(
-					Ptero.makeInterp('linear',
-						d.outroPath.values,
-						d.outroPath.deltaTimes),
-					false);
+			console.log(d);
+			if (!d.anim) {
+				d.anim = {
+					"values": [0,0],
+					"type": "intro",
+					"time": 0,
+				};
 			}
-			else {
-				layer.outroPath = new Ptero.InterpDriver(
-					Ptero.makeInterp('linear',
-						[d.introPath.values[1], d.introPath.values[0]],
-						d.introPath.deltaTimes),
-					false);
-			}
-			layer.outroPath.freezeAtEnd = true;
 
-			// build idle path from points
-			if (d.idlePath.values.length == 0) {
-				layer.idlePath = null;
+			var vals = d.anim.values;
+			if (d.anim.type == 'intro') {
+				layer.introPath = new Ptero.InterpDriver(
+					Ptero.makeInterp(Ptero.bezier(0.25, 0, 0.25, 1, getBezierEpsilon(2000)),
+						vals,
+						[0,2]),
+					false);
 				layer.introPath.freezeAtEnd = true;
+				layer.outroPath = new Ptero.InterpDriver(
+					Ptero.makeInterp('linear',
+						[vals[1], vals[0]],
+						[0,2]),
+					false);
+				layer.outroPath.freezeAtEnd = true;
 			}
-			else {
+			else if (d.anim.type == 'idle-restart') {
 				layer.idlePath = new Ptero.InterpDriver(
 					Ptero.makeInterp('linear',
-						d.idlePath.values,
-						d.idlePath.deltaTimes),
+						vals,
+						[0,d.anim.time]),
+					true);
+			}
+			else if (d.anim.type == 'idle-roundtrip') {
+				layer.idlePath = new Ptero.InterpDriver(
+					Ptero.makeInterp('linear',
+						[vals[0], vals[1], vals[0]],
+						[0,d.anim.time,d.anim.time]),
 					true);
 			}
 

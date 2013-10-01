@@ -27,6 +27,13 @@ Ptero.Baklava.loader = (function(){
 				});
 			}
 		}
+		else if (mode == 'anim') {
+			for (i=0; i<len; i++) {
+				layers.push({
+					'anim': bg.layersData[i].anim,
+				});
+			}
+		}
 
 		var data = JSON.stringify(layers);
 		$.ajax({

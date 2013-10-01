@@ -325,6 +325,10 @@ Ptero.Baklava.Pane.prototype = {
 	},
 
 	updateNodePosition: function(x,y) {
+		if (Ptero.Baklava.model.mode != "position") {
+			return;
+		}
+
 		var layer = Ptero.Baklava.model.selectedLayer;
 		if (layer != null) {
 			var z = this.windowToSpace(x,y).z;

@@ -16,8 +16,9 @@ Ptero.Baklava.Model.prototype = {
 		bootbox.confirm('Are you sure you want to switch backgrounds?  All unsaved data will be lost.',
 			function(result) {
 				if (result) {
-					that.reset();
 					Ptero.setBackground(bg);
+					Ptero.background.loadLayersData();
+					that.reset();
 				}
 			}
 		);
@@ -40,6 +41,10 @@ Ptero.Baklava.Model.prototype = {
 
 		if (mode == 'collision') {
 			this.collisionMode = 'select';
+		}
+		else if (mode == 'anim') {
+			this.refreshLayerAnimDisplay();
+			this.setAnimMode('b');
 		}
 	},
 
@@ -76,7 +81,87 @@ Ptero.Baklava.Model.prototype = {
 			$("#btn-insert-point").addClass('active');
 		}
 	},
+	setAnimMode: function(mode) {
+		this.animMode = mode;
 
+		$("#anim-mode-a").removeClass('active');
+		$("#anim-mode-b").removeClass('active');
+		$("#anim-mode-play").removeClass('active');
+
+		if (mode == 'a') {
+			Ptero.background.setAnimating(false);
+			$("#anim-mode-a").addClass('active');
+		}
+		else if (mode == 'b') {
+			Ptero.background.setAnimating(false);
+			$("#anim-mode-b").addClass('active');
+		}
+		else if (mode == 'play') {
+			Ptero.background.loadLayersData();
+			Ptero.background.init();
+			Ptero.background.setAnimating(true);
+			$("#anim-mode-play").addClass('active');
+		}
+		else if (mode == 'track') {
+			Ptero.background.setAnimating(false);
+		}
+	},
+	setLayerAnimType: function(type) {
+		var layer = this.selectedLayer;
+		var anim;
+		if (layer != null) {
+			anim = Ptero.background.layersData[layer].anim;
+			anim.type = type;
+			if (anim.time == 0) {
+				anim.time = 2;
+			}
+		}
+		this.refreshLayerAnimDisplay();
+	},
+	refreshLayerAnimDisplay: function() {
+		var data = Ptero.background.layersData[this.selectedLayer];
+		if (data != null) {
+			$("#anim-type-dropdown").css("visibility", "visible");
+			$("#anim-type-label").html(data.anim.type);
+			if (data.anim.type == "intro") {
+				$("#anim-idle-time").css("visibility", "hidden");
+			}
+			else {
+				$("#anim-idle-time").css("visibility", "visible");
+				$("#anim-idle-time-label").html(data.anim.time+"s");
+			}
+		}
+		else {
+			$("#anim-type-dropdown").css("visibility", "hidden");
+			$("#anim-idle-time").css("visibility", "hidden");
+		}
+	},
+	setAnimTrack: function(val) {
+		var bg = Ptero.background;
+		var i,len = bg.layers.length;
+		var vals,x0,x1;
+		for (i=0; i<len; i++) {
+			vals = bg.layersData[i].anim.values;
+			x0 = vals[0];
+			x1 = vals[1];
+			bg.layers[i].setX(x0 + (x1-x0) * val);
+		}
+	},
+	promptLayerIdleTime: function() {
+		var data = Ptero.background.layersData[this.selectedLayer];
+		if (data) {
+			var that = this;
+			bootbox.prompt("Set layer idle time loop duration:", "Cancel", "OK", function(result) {
+				if (result) {
+					data.anim.time = parseInt(result);
+					that.refreshLayerAnimDisplay();
+					Ptero.background.loadLayersData();
+					Ptero.background.init();
+					Ptero.background.goToIdle();
+				}
+			}, data.anim.time);
+		}
+	},
 	createShape: function() {
 		this.setCollisionMode("create");
 	},
@@ -98,18 +183,29 @@ Ptero.Baklava.Model.prototype = {
 	selectLayer: function(i) {
 		Ptero.background.setSelectedLayer(i);
 		this.selectedLayer = i;
+		this.refreshLayerAnimDisplay();
 	},
 	update: function(dt) {
-		if (this.mode == "position" && this.selectedLayer != null) {
-			this.enemySprite.update(dt);
-			this.adultSprite.update(dt);
-			var pos = this.enemyPos;
-			var sprite = this.enemySprite;
-			var sprite2 = this.adultSprite;
-			Ptero.deferredSprites.defer(function(ctx) {
-				sprite2.draw(ctx,pos);
-				sprite.draw(ctx,pos);
-			}, this.enemyPos.z);
+		if (this.mode == "position") {
+			if (this.selectedLayer != null) {
+				this.enemySprite.update(dt);
+				this.adultSprite.update(dt);
+				var pos = this.enemyPos;
+				var sprite = this.enemySprite;
+				var sprite2 = this.adultSprite;
+				Ptero.deferredSprites.defer(function(ctx) {
+					sprite2.draw(ctx,pos);
+					sprite.draw(ctx,pos);
+				}, this.enemyPos.z);
+			}
+		}
+		else if (this.mode == "anim") {
+			if (this.animMode == "a") {
+				this.setAnimTrack(0);
+			}
+			else if (this.animMode == "b") {
+				this.setAnimTrack(1);
+			}
 		}
 	},
 };

@@ -7,19 +7,13 @@
 		"depth": 19.872663139329806,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				-1.4952226540600921,
 				-1.4938994481715433
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	},
 	{
@@ -30,27 +24,13 @@
 		"depth": 19.357954144620813,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
-		"introPath": {
-			"values": [
-				-1.4912530363944454,
-				-1.3629020652052166
-			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
+		"anim": {
+			"type": "idle-roundtrip",
 			"values": [
 				-1.3629020652052166,
-				-1.4912530363944454,
-				-1.3629020652052166
+				-1.4912530363944454
 			],
-			"deltaTimes": [
-				0,
-				40,
-				40
-			]
+			"time": 4
 		}
 	},
 	{
@@ -61,27 +41,13 @@
 		"depth": 18.843245149911816,
 		"parallaxOffset": 0,
 		"collisionShapes": [],
-		"introPath": {
-			"values": [
-				-1.2504295646785724,
-				-1.4925762422829942
-			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
+		"anim": {
+			"type": "idle-roundtrip",
 			"values": [
 				-1.4925762422829942,
-				-1.2504295646785724,
-				-1.4925762422829942
+				-1.3331299327128694
 			],
-			"deltaTimes": [
-				0,
-				50,
-				50
-			]
+			"time": 10
 		}
 	},
 	{
@@ -92,19 +58,13 @@
 		"depth": 16.955978835978833,
 		"parallaxOffset": 0.0030244706023971413,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				-1.4224463301899106,
 				-1.4846370069517019
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	},
 	{
@@ -115,19 +75,13 @@
 		"depth": 12.49516754850088,
 		"parallaxOffset": 0.006048941204794283,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				-1.0360702107336746,
 				-1.485960212840251
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	},
 	{
@@ -138,19 +92,13 @@
 		"depth": 11.122610229276894,
 		"parallaxOffset": 0.009073411807191423,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				-1.0003436517428579,
 				-1.4819905951746044
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	},
 	{
@@ -161,19 +109,13 @@
 		"depth": 8.549065255731922,
 		"parallaxOffset": 0.012097882409588671,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				-1.016222122405443,
 				-1.4700817421776655
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	},
 	{
@@ -184,19 +126,13 @@
 		"depth": 5.80395061728395,
 		"parallaxOffset": 0.015122353011985811,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				-0.49355579642868513,
 				-1.4899298305058968
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	},
 	{
@@ -207,19 +143,13 @@
 		"depth": 3.745114638447972,
 		"parallaxOffset": 0.021171294216780094,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				0.26728758948684833,
 				-1.4846370069517025
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	},
 	{
@@ -230,19 +160,13 @@
 		"depth": 2.200987654320987,
 		"parallaxOffset": 0.028732470722772952,
 		"collisionShapes": [],
-		"introPath": {
+		"anim": {
+			"type": "intro",
 			"values": [
 				1.4833138010631532,
 				-1.4978690658371896
 			],
-			"deltaTimes": [
-				0,
-				2
-			]
-		},
-		"idlePath": {
-			"values": [],
-			"deltaTimes": []
+			"time": 0
 		}
 	}
 ]

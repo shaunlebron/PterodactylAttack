@@ -125,19 +125,35 @@ _ DONE Fix strange loss of orb control after game over screen
 - DONE remove splash image from game and just use the three images from the title screen
 - DONE don't let title drop or music play until the menu background has been cached
 
+- DONE integrate scene_bgpos into baklava
+	- add new tab (intro)
+	- slider for testing animation
+		- onmousedown, mode = tracking
+		- onmouseup, mode = left|right
+	- two buttons for left|right mode
+	- shift click to select layer
+	- dropdown for selected layer:
+		- intro
+		- idle wrap
+		- idle loop
+	- click drag to move current layer
+	- alt scroll/drag to zoom/pan
+
+- DONE speed up background blob speeds to see if it's more aesthetic
+
+- DONE remove extra control point in bg idle animations
+	- fix cloud stutters
+
 =================================================================================
 
 	- minimize overdraw by cutting out invisible area on background layers
+		- waiting on Johnny
 
 	- see if removing translucent background layers help framerate
 	- see if removing collision detection helps framerate
 	- profile for different android phones to find slow functions
 
 	- optimize targeting algorithm
-
-	- speed up background blob speeds to see if it's more aesthetic
-
-	- fix cloud stutters
 
 	- cut down vectors
 		- eliminate redundant body and head vectors and record positions
@@ -148,8 +164,7 @@ _ DONE Fix strange loss of orb control after game over screen
 		- Android phones and tablets
 		- iPhones and iPads
 
-- DO A FULL TEST OF EVERYTHING IMAGINABLE
-
+- DO A FULL TEST OF EVERYTHING IMAGINABLE 
 Trey's phone:
 	Model number: Galaxy Nexus
 	Android Version: 4.2.2
