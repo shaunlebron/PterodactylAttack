@@ -13,3 +13,5 @@ levels/fourier-level
 # ignore generated files
 src/jsonData.js
 src/vectorPathData.js
+
+thoughts
