@@ -25,7 +25,7 @@ Ptero.Baklava.LivePane = function() {
 		}
 	});
 
-	var zoomPanTouchHandler = (function(){
+	this.zoomPanTouchHandler = (function(){
 		var dx,dy;
 		var isZoomPan;
 		
@@ -65,8 +65,6 @@ Ptero.Baklava.LivePane = function() {
 			},
 		};
 	})();
-
-	Ptero.input.addTouchHandler(zoomPanTouchHandler);
 };
 
 Ptero.Baklava.LivePane.prototype = {
@@ -109,10 +107,6 @@ Ptero.Baklava.LivePane.prototype = {
 	/* INPUT FUNCTIONS */
 
 	getNodeInfoFromCursor: function(x,y) {
-		if (this.isZoomPanKey) {
-			return {};
-		}
-
 		var model = Ptero.Baklava.model;
 		var mode = model.mode;
 		if (mode == "position") {
@@ -438,24 +432,42 @@ Ptero.Baklava.LivePane.prototype = {
 	},
 
 	mouseStart: function(x,y) {
-		var p = Ptero.screen.canvasToWindow(x,y);
-		x = p.x;
-		y = p.y;
-		var info = this.getNodeInfoFromCursor(x,y);
+		var info = {};
+		if (this.isZoomPanKey) {
+			this.zoomPanTouchHandler.start(x,y);
+		}
+		else {
+			var p = Ptero.screen.canvasToWindow(x,y);
+			x = p.x;
+			y = p.y;
+			var info = this.getNodeInfoFromCursor(x,y);
+		}
 		this.selectNode(info);
 	},
 
 	mouseMove: function(x,y) {
-		var p = Ptero.screen.canvasToWindow(x,y);
-		x = p.x;
-		y = p.y;
-		this.updateNodePosition(x,y);
+		if (this.isZoomPanKey) {
+			this.zoomPanTouchHandler.move(x,y);
+		}
+		else {
+			var p = Ptero.screen.canvasToWindow(x,y);
+			x = p.x;
+			y = p.y;
+			this.updateNodePosition(x,y);
+		}
 	},
 
 	mouseEnd: function(x,y) {
 		var p = Ptero.screen.canvasToWindow(x,y);
 		x = p.x;
 		y = p.y;
+		this.zoomPanTouchHandler.end(x,y);
+	},
+
+	mouseScroll: function(x, y, delta,deltaX,deltaY) {
+		if (this.isZoomPanKey) {
+			this.zoomPanTouchHandler.scroll(x,y, delta, deltaX, deltaY);
+		}
 	},
 
 	/* PAINTER FUNCTIONS */
