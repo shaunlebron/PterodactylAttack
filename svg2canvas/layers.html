@@ -1,0 +1,149 @@
+
+<!doctype html>
+<html>
+<head>
+<script src="jquery.min.js"></script>
+<script src="oss.canvg.min.js"></script>
+<script src="svg2canvas.js"></script>
+<style>
+textarea {
+	width: 500px;
+	height: 200px;
+}
+</head>
+</style>
+<body>
+<h1>SVG to Layer files</h1>
+<strong>Convert an SVG file to a background that can be used in-game</strong>.
+<p>
+Here, you input a single SVG file.  Top level "g" tags are extracted to form the layers and all their respective files are generated and pushed to the given named directory.
+</p>
+<p>
+Afterwards, make sure to:
+<ul>
+<li>go to the background directory and run "./genPaths.sh all" and "./genColorLayers.sh"</li>
+<li>manually fix translucency problems in ??.svg.js files with the help of "./printOpacity.py ??.svg"</li>
+<li>set the "shapeCompatible" property in the svg.js files to false if it contains translucency.</li>
+<li>include paths to these vectors in assets.js</li>
+<li>include references to the image assets in background.js when creating the background</li>
+</ul>
+</p>
+<h3>SVG Input</h3>
+<textarea id="txtAreaSvg"></textarea><br/>
+Bg Name <input type='text' id='txtName'></input> <button id="btnGenerate">Generate</button>
+<div id="result"></div>
+<canvas id="canvasCanvgResult" style="display:none"></canvas>
+<script>
+
+var div;
+function addDownloadLink(num,ext,text) {
+	if (!div) {
+		div = document.createelement('div');
+		document.body.appendchild(div);
+	}
+	if (num < 10) {
+		num = "0"+num;
+	}
+	var name = num+"."+ext;
+	var a = document.createElement('a');
+	a.setAttribute('style','display:block');
+	a.innerHTML = name;
+	if (ext == "svg") {
+		a.href = "data:image/svg+xml;base64," + btoa(text);
+	}
+	else if (ext == "svg.json") {
+		a.href = "data:application/json;base64," + btoa(text);
+	}
+	else if (ext == "js") {
+		a.href = "data:application/javascript;base64," + btoa(text);
+	}
+	a.download = name;
+	div.appendChild(a);
+}
+
+function pushFile(bgName, num, ext, text) {
+	if (!div) {
+		div = document.createElement('div');
+		document.body.appendChild(div);
+	}
+	if (num < 10) {
+		num = "0"+num;
+	}
+
+	var filename = num+"."+ext;
+	$.ajax({
+		url: '../bg/'+bgName+'/'+filename,
+		type: 'POST',
+		data: text,
+	}).done(function(data) {
+		div.innerHTML += "wrote "+filename+"<br/>";
+	}).fail(function(data) {
+		div.innerHTML += "<strong>failed</strong> "+filename+"<br/>";
+	});
+}
+
+
+var doc;
+$(function(){
+
+	$('#btnGenerate').on('click', function() {
+		if (div) {
+			div.innerHTML = "";
+		}
+
+		input = $('#txtAreaSvg').val();
+		var bgName = $('#txtName').val();
+		if (!bgName) {
+			alert('please input a background name');
+			return;
+		}
+
+		var header = input.substring(0, input.indexOf("<g"));
+		var footer = "</svg>";
+
+		var parser = new DOMParser();
+		doc = parser.parseFromString(input, "application/xml");
+
+		var root = doc.documentElement;
+
+		var w = root.getAttribute("width");
+		w = parseInt(w.substring(0,w.indexOf("p")));
+		var h = root.getAttribute("height");
+		h = parseInt(h.substring(0,h.indexOf("p")));
+		var jsonText = JSON.stringify({
+			'vector': true,
+			'scale': 720/h,
+			'width': w,
+			'height': h,
+		}, null, '\t');
+
+		var nodes = root.children;
+		var i,len=nodes.length;
+		var node;
+		var count = 0;
+		var content;
+		for (i=0; i<len; i++) {
+			node = nodes[i];
+			console.log(node.nodeName);
+			if (node.nodeName == "g") {
+
+				pushFile(bgName, count, 'svg.json', jsonText);
+
+				content = new XMLSerializer().serializeToString(node);
+				var svgText = header + content + footer;
+				pushFile(bgName, count, 'svg', svgText);
+
+				(function(count,svgText){
+					svg2canvas(svgText, function(jsText) {
+						pushFile(bgName, count, 'js', jsText);
+					});
+				})(count, svgText);
+				count++;
+			}
+		}
+		console.log(count);
+	});
+});
+</script>
+</body>
+</html>

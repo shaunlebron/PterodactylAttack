@@ -24,6 +24,23 @@ app.post('/levels/:level', function (req,res) {
     });
 });
 
+app.post('/bg/:bg/:file', function (req,res) {
+	var body = '';
+	req.on('data', function(data) {
+		body += data;
+	});
+    req.on('end', function() {
+        fs.writeFile('bg/'+req.params.bg+'/'+req.params.file, body, function(err) {
+            if (err) {
+                res.status(400).send("failed to write level");
+            }
+            else {
+				res.send("wrote file");
+            }
+        });
+    });
+});
+
 // serves post request from Baklava (background tool)
 app.post('/bgtool/:bg', function (req,res) {
     var body = '';
