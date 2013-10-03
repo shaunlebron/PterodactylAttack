@@ -456,8 +456,6 @@ Ptero.createBackgrounds = function() {
 				"bg_mountain_13",
 				"bg_mountain_14",
 				"bg_mountain_15",
-				"bg_mountain_16",
-				"bg_mountain_17",
 			]);
 			bg.loadLayersData(Ptero.assets.json["bg_mountain_layers"]);
 			bg.vectorAnimsToLoad = [

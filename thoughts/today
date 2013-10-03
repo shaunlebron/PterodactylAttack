@@ -147,8 +147,6 @@ _ DONE Fix strange loss of orb control after game over screen
 =================================================================================
 
 	- minimize overdraw by cutting out invisible area on background layers
-		- waiting on Johnny
-
 	- see if removing translucent background layers help framerate
 	- see if removing collision detection helps framerate
 	- profile for different android phones to find slow functions
@@ -169,3 +167,25 @@ Trey's phone:
 	Model number: Galaxy Nexus
 	Android Version: 4.2.2
 	Build number JDQ39
+
+=================================================================================
+
+	- make a trailer
+	- make feature screenshots for store
+	- make icon
+	- dress up website
+
+=================================================================================
+
+	- write articles as a way to hash out what is interesting for video coverage
+	- look up marques brownlee's tips for making good videos
+	- buy a good camera, tripod, mic, and light
+	- make videos
+	- send personal emails to journalists who are looking to tell a story
+		- http://www.gamasutra.com/view/news/198381/How_to_talk_to_the_video_game_press_in_2013.php
+		- shut down by namco
+		- started from scratch in an age of Unity
+		- HTML5 and javascript
+		- sharing back my development with articles and videos
+	
+

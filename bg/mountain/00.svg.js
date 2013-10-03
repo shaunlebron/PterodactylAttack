@@ -2,7 +2,7 @@
 (function(){
 	var paths = [
 		function(ctx) {
-			ctx.fillStyle='#00FFFF';
+			ctx.fillStyle='#00ffff';
 			ctx.strokeStyle='#000000';
 			ctx.miterLimit='10';
 			ctx.beginPath();

@@ -87,9 +87,7 @@
 	{
 		"desc": "volcano",
 		"images": [
-			5,
-			7,
-			8
+			5
 		],
 		"depth": 18.035877180952383,
 		"parallaxOffset": 0.0030244706023972467,
@@ -123,7 +121,7 @@
 	{
 		"desc": "back_mountains",
 		"images": [
-			9
+			7
 		],
 		"depth": 14.191160143915347,
 		"parallaxOffset": 0.006048941204794281,
@@ -329,7 +327,7 @@
 	{
 		"desc": "back_cloud_left",
 		"images": [
-			10
+			8
 		],
 		"depth": 10.773702388712518,
 		"parallaxOffset": 0,
@@ -346,7 +344,7 @@
 	{
 		"desc": "back_cloud_right",
 		"images": [
-			11
+			9
 		],
 		"depth": 13.392861528042328,
 		"parallaxOffset": 0,
@@ -363,7 +361,7 @@
 	{
 		"desc": "mid_mountains",
 		"images": [
-			12
+			10
 		],
 		"depth": 11.092775235273368,
 		"parallaxOffset": 0.010585647108389995,
@@ -490,7 +488,7 @@
 	{
 		"desc": "mid_cloud",
 		"images": [
-			13
+			11
 		],
 		"depth": 10.349278747089945,
 		"parallaxOffset": 0,
@@ -507,7 +505,7 @@
 	{
 		"desc": "front_mountains",
 		"images": [
-			14
+			12
 		],
 		"depth": 8.674639373544974,
 		"parallaxOffset": 0.01965905891558152,
@@ -619,7 +617,7 @@
 	{
 		"desc": "back_hills",
 		"images": [
-			15
+			13
 		],
 		"depth": 5.9458759788359785,
 		"parallaxOffset": 0.0362936472287659,
@@ -636,7 +634,7 @@
 	{
 		"desc": "front_hills",
 		"images": [
-			16
+			14
 		],
 		"depth": 4.59861897707231,
 		"parallaxOffset": 0.04083035313236162,
@@ -653,7 +651,7 @@
 	{
 		"desc": "foreground",
 		"images": [
-			17
+			15
 		],
 		"depth": 1.2254673721340388,
 		"parallaxOffset": 0.060489412047943045,

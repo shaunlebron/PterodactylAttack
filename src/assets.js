@@ -87,8 +87,6 @@ Ptero.assets = (function(){
 		"bg_mountain_13": "bg/mountain/13.svg",
 		"bg_mountain_14": "bg/mountain/14.svg",
 		"bg_mountain_15": "bg/mountain/15.svg",
-		"bg_mountain_16": "bg/mountain/16.svg",
-		"bg_mountain_17": "bg/mountain/17.svg",
 
 		"bg_ice_00": "bg/ice/00.svg",
 		"bg_ice_01": "bg/ice/01.svg",

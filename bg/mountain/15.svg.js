@@ -2,1930 +2,2726 @@
 (function(){
 	var paths = [
 		function(ctx) {
-			ctx.fillStyle='#475E19';
 			ctx.beginPath();
-			ctx.moveTo(9184,729);
-			ctx.bezierCurveTo(8290,474,7412,1029,7412,1029);
-			ctx.bezierCurveTo(7412,1029,7730,1461,6808,875);
-			ctx.bezierCurveTo(5886,289,5020,838,5020,838);
-			ctx.lineTo(5019,839);
-			ctx.bezierCurveTo(5016,881,5013,923,5012,965);
-			ctx.bezierCurveTo(5009,1037,5010,1110,5010,1182);
-			ctx.bezierCurveTo(5009,1255,5009,1328,5011,1400);
-			ctx.bezierCurveTo(5011,1412,5011,1425,5012,1437);
-			ctx.lineTo(9852,1437);
-			ctx.lineTo(10448,1103);
-			ctx.bezierCurveTo(10448,1103,10078,983,9184,729);
+			ctx.moveTo(5523,867);
+			ctx.bezierCurveTo(5675,847,5828,832,5980,816);
+			ctx.bezierCurveTo(6249,788,6513,763,6784,782);
+			ctx.bezierCurveTo(7109,805,7423,879,7751,872);
+			ctx.bezierCurveTo(7916,868,8108,871,8263,819);
+			ctx.bezierCurveTo(8338,793,8407,752,8486,737);
+			ctx.bezierCurveTo(8635,708,8790,771,8940,771);
+			ctx.bezierCurveTo(9034,771,9208,975,9508,1020);
+			ctx.bezierCurveTo(9808,1066,10053,1119,10053,1119);
+			ctx.lineTo(8944,1107);
+			ctx.lineTo(5651,1152);
+			ctx.lineTo(4390,1152);
+			ctx.lineTo(4363,894);
+			ctx.bezierCurveTo(4363,894,4733,923,4994,923);
+			ctx.bezierCurveTo(5254,923,5523,867,5523,867);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9196,737);
-			ctx.bezierCurveTo(9179,732,9185,735,9182,734);
-			ctx.bezierCurveTo(9211,742,9195,737,9196,737);
+			ctx.moveTo(6020,845);
+			ctx.lineTo(6060,789);
+			ctx.bezierCurveTo(6060,789,6114,783,6142,789);
+			ctx.bezierCurveTo(6171,795,6243,837,6243,837);
+			ctx.lineTo(6020,845);
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6837,750);
+			ctx.lineTo(6760,801);
+			ctx.lineTo(6677,750);
+			ctx.lineTo(6622,785);
+			ctx.bezierCurveTo(6622,785,6539,701,6501,753);
+			ctx.bezierCurveTo(6462,804,6501,821,6501,821);
+			ctx.lineTo(6734,876);
+			ctx.lineTo(6837,750);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7591,907);
+			ctx.lineTo(7539,843);
+			ctx.bezierCurveTo(7539,843,7500,831,7455,860);
+			ctx.bezierCurveTo(7410,888,7302,869,7302,869);
+			ctx.lineTo(7302,833);
+			ctx.lineTo(7245,816);
+			ctx.lineTo(7207,845);
+			ctx.lineTo(7121,852);
+			ctx.bezierCurveTo(7121,852,7102,784,7055,798);
+			ctx.bezierCurveTo(7008,813,6945,837,6945,837);
+			ctx.lineTo(7191,914);
+			ctx.lineTo(7591,907);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(2173,882);
+			ctx.lineTo(2257,933);
+			ctx.lineTo(2347,882);
+			ctx.lineTo(2406,917);
+			ctx.bezierCurveTo(2406,917,2495,833,2537,885);
+			ctx.bezierCurveTo(2579,936,2537,953,2537,953);
+			ctx.lineTo(2285,1008);
+			ctx.lineTo(2173,882);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3176,917);
+			ctx.lineTo(3216,861);
+			ctx.bezierCurveTo(3216,861,3270,855,3298,861);
+			ctx.bezierCurveTo(3327,867,3399,909,3399,909);
+			ctx.lineTo(3176,917);
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7664,845);
+			ctx.bezierCurveTo(7664,845,7740,868,7749,906);
+			ctx.bezierCurveTo(7743,910,7743,910,7743,910);
+			ctx.bezierCurveTo(7743,910,7728,868,7664,845);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7686,845);
+			ctx.bezierCurveTo(7686,845,7743,876,7746,911);
+			ctx.bezierCurveTo(7741,913,7741,913,7741,913);
+			ctx.bezierCurveTo(7741,913,7733,874,7686,845);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7673,800);
+			ctx.bezierCurveTo(7673,800,7744,855,7742,905);
+			ctx.bezierCurveTo(7735,908,7735,908,7735,908);
+			ctx.bezierCurveTo(7735,908,7731,850,7673,800);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7701,805);
+			ctx.bezierCurveTo(7701,805,7761,865,7753,909);
+			ctx.bezierCurveTo(7746,911,7746,911,7746,911);
+			ctx.bezierCurveTo(7746,911,7750,859,7701,805);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7621,860);
+			ctx.bezierCurveTo(7621,860,7697,883,7706,921);
+			ctx.bezierCurveTo(7700,925,7700,925,7700,925);
+			ctx.bezierCurveTo(7700,925,7685,883,7621,860);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7643,860);
+			ctx.bezierCurveTo(7643,860,7700,891,7703,926);
+			ctx.bezierCurveTo(7698,928,7698,928,7698,928);
+			ctx.bezierCurveTo(7698,928,7690,889,7643,860);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7630,815);
+			ctx.bezierCurveTo(7630,815,7701,870,7699,920);
+			ctx.bezierCurveTo(7692,923,7692,923,7692,923);
+			ctx.bezierCurveTo(7692,923,7688,865,7630,815);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7658,820);
+			ctx.bezierCurveTo(7658,820,7718,880,7710,924);
+			ctx.bezierCurveTo(7703,926,7703,926,7703,926);
+			ctx.bezierCurveTo(7703,926,7707,874,7658,820);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6988,774);
+			ctx.bezierCurveTo(6988,774,6895,797,6885,835);
+			ctx.bezierCurveTo(6893,839,6893,839,6893,839);
+			ctx.bezierCurveTo(6893,839,6911,797,6988,774);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6961,774);
+			ctx.bezierCurveTo(6961,774,6892,805,6888,840);
+			ctx.bezierCurveTo(6894,843,6894,843,6894,843);
+			ctx.bezierCurveTo(6894,843,6904,803,6961,774);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6977,729);
+			ctx.bezierCurveTo(6977,729,6891,784,6893,834);
+			ctx.bezierCurveTo(6902,837,6902,837,6902,837);
+			ctx.bezierCurveTo(6902,837,6907,779,6977,729);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6943,735);
+			ctx.bezierCurveTo(6943,735,6870,794,6880,838);
+			ctx.bezierCurveTo(6889,840,6889,840,6889,840);
+			ctx.bezierCurveTo(6889,840,6884,788,6943,735);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7040,789);
+			ctx.bezierCurveTo(7040,789,6947,812,6937,850);
+			ctx.bezierCurveTo(6945,854,6945,854,6945,854);
+			ctx.bezierCurveTo(6945,854,6963,812,7040,789);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7013,789);
+			ctx.bezierCurveTo(7013,789,6944,820,6940,855);
+			ctx.bezierCurveTo(6946,858,6946,858,6946,858);
+			ctx.bezierCurveTo(6946,858,6956,818,7013,789);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7030,744);
+			ctx.bezierCurveTo(7030,744,6943,799,6945,849);
+			ctx.bezierCurveTo(6954,852,6954,852,6954,852);
+			ctx.bezierCurveTo(6954,852,6959,794,7030,744);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6995,750);
+			ctx.bezierCurveTo(6995,750,6922,809,6932,853);
+			ctx.bezierCurveTo(6941,855,6941,855,6941,855);
+			ctx.bezierCurveTo(6941,855,6936,803,6995,750);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8619,718);
+			ctx.bezierCurveTo(8619,718,8535,763,8535,802);
+			ctx.bezierCurveTo(8543,804,8543,804,8543,804);
+			ctx.bezierCurveTo(8543,804,8550,759,8619,718);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8593,724);
+			ctx.bezierCurveTo(8593,724,8534,772,8539,806);
+			ctx.bezierCurveTo(8546,808,8546,808,8546,808);
+			ctx.bezierCurveTo(8546,808,8545,767,8593,724);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8598,677);
+			ctx.bezierCurveTo(8598,677,8528,752,8542,800);
+			ctx.bezierCurveTo(8552,800,8552,800,8552,800);
+			ctx.bezierCurveTo(8552,800,8542,743,8598,677);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8565,691);
+			ctx.bezierCurveTo(8565,691,8510,767,8531,807);
+			ctx.bezierCurveTo(8540,806,8540,806,8540,806);
+			ctx.bezierCurveTo(8540,806,8522,757,8565,691);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8673,719);
+			ctx.bezierCurveTo(8673,719,8590,765,8589,804);
+			ctx.bezierCurveTo(8598,806,8598,806,8598,806);
+			ctx.bezierCurveTo(8598,806,8604,761,8673,719);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8648,725);
+			ctx.bezierCurveTo(8648,725,8589,773,8593,808);
+			ctx.bezierCurveTo(8600,809,8600,809,8600,809);
+			ctx.bezierCurveTo(8600,809,8599,768,8648,725);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8665,663);
+			ctx.bezierCurveTo(8665,663,8595,738,8609,786);
+			ctx.bezierCurveTo(8619,787,8619,787,8619,787);
+			ctx.bezierCurveTo(8619,787,8609,730,8665,663);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8619,692);
+			ctx.bezierCurveTo(8619,692,8564,768,8585,808);
+			ctx.bezierCurveTo(8594,808,8594,808,8594,808);
+			ctx.bezierCurveTo(8594,808,8576,759,8619,692);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8702,762);
+			ctx.bezierCurveTo(8692,727,8648,748,8629,713);
+			ctx.bezierCurveTo(8610,726,8571,720,8547,719);
+			ctx.bezierCurveTo(8517,718,8471,731,8469,766);
+			ctx.bezierCurveTo(8545,784,8626,766,8702,762);
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8768,731);
+			ctx.bezierCurveTo(8768,731,8674,746,8661,783);
+			ctx.bezierCurveTo(8668,788,8668,788,8668,788);
+			ctx.bezierCurveTo(8668,788,8689,747,8768,731);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8742,729);
+			ctx.bezierCurveTo(8742,729,8670,754,8663,788);
+			ctx.bezierCurveTo(8669,792,8669,792,8669,792);
+			ctx.bezierCurveTo(8669,792,8682,753,8742,729);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8762,686);
+			ctx.bezierCurveTo(8762,686,8671,733,8668,783);
+			ctx.bezierCurveTo(8677,787,8677,787,8677,787);
+			ctx.bezierCurveTo(8677,787,8687,730,8762,686);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8726,688);
+			ctx.bezierCurveTo(8726,688,8649,741,8655,786);
+			ctx.bezierCurveTo(8664,788,8664,788,8664,788);
+			ctx.bezierCurveTo(8664,788,8663,736,8726,688);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6522,699);
+			ctx.bezierCurveTo(6522,699,6664,786,6656,893);
+			ctx.bezierCurveTo(6641,904,6641,904,6641,904);
+			ctx.bezierCurveTo(6641,904,6638,781,6522,699);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6567,704);
+			ctx.bezierCurveTo(6567,704,6664,809,6648,907);
+			ctx.bezierCurveTo(6636,914,6636,914,6636,914);
+			ctx.bezierCurveTo(6636,914,6645,800,6567,704);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6568,575);
+			ctx.bezierCurveTo(6568,575,6679,750,6644,890);
+			ctx.bezierCurveTo(6627,896,6627,896,6627,896);
+			ctx.bezierCurveTo(6627,896,6656,733,6568,575);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6624,598);
+			ctx.bezierCurveTo(6624,598,6709,782,6663,904);
+			ctx.bezierCurveTo(6647,907,6647,907,6647,907);
+			ctx.bezierCurveTo(6647,907,6689,761,6624,598);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8814,753);
+			ctx.bezierCurveTo(8814,753,8719,768,8706,804);
+			ctx.bezierCurveTo(8713,809,8713,809,8713,809);
+			ctx.bezierCurveTo(8713,809,8735,769,8814,753);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8787,750);
+			ctx.bezierCurveTo(8787,750,8716,775,8709,809);
+			ctx.bezierCurveTo(8715,813,8715,813,8715,813);
+			ctx.bezierCurveTo(8715,813,8728,774,8787,750);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8807,707);
+			ctx.bezierCurveTo(8807,707,8716,755,8714,804);
+			ctx.bezierCurveTo(8722,808,8722,808,8722,808);
+			ctx.bezierCurveTo(8722,808,8732,751,8807,707);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(8772,709);
+			ctx.bezierCurveTo(8772,709,8695,762,8701,807);
+			ctx.bezierCurveTo(8709,810,8709,810,8709,810);
+			ctx.bezierCurveTo(8709,810,8709,757,8772,709);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6470,743);
+			ctx.bezierCurveTo(6470,743,6376,758,6363,795);
+			ctx.bezierCurveTo(6370,799,6370,799,6370,799);
+			ctx.bezierCurveTo(6370,799,6392,759,6470,743);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6444,740);
+			ctx.bezierCurveTo(6444,740,6373,766,6366,800);
+			ctx.bezierCurveTo(6371,803,6371,803,6371,803);
+			ctx.bezierCurveTo(6371,803,6385,765,6444,740);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6464,697);
+			ctx.bezierCurveTo(6464,697,6373,745,6371,794);
+			ctx.bezierCurveTo(6379,798,6379,798,6379,798);
+			ctx.bezierCurveTo(6379,798,6389,741,6464,697);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6429,700);
+			ctx.bezierCurveTo(6429,700,6351,753,6358,798);
+			ctx.bezierCurveTo(6366,800,6366,800,6366,800);
+			ctx.bezierCurveTo(6366,800,6366,748,6429,700);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5991,733);
+			ctx.bezierCurveTo(5991,733,6175,766,6200,845);
+			ctx.bezierCurveTo(6186,855,6186,855,6186,855);
+			ctx.bezierCurveTo(6186,855,6145,768,5991,733);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6043,727);
+			ctx.bezierCurveTo(6043,727,6182,782,6195,856);
+			ctx.bezierCurveTo(6184,863,6184,863,6184,863);
+			ctx.bezierCurveTo(6184,863,6159,780,6043,727);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6004,634);
+			ctx.bezierCurveTo(6004,634,6180,737,6185,844);
+			ctx.bezierCurveTo(6169,853,6169,853,6169,853);
+			ctx.bezierCurveTo(6169,853,6150,729,6004,634);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6073,639);
+			ctx.bezierCurveTo(6073,639,6223,754,6211,851);
+			ctx.bezierCurveTo(6194,857,6194,857,6194,857);
+			ctx.bezierCurveTo(6194,857,6195,743,6073,639);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5913,789);
+			ctx.bezierCurveTo(5913,789,6043,812,6061,868);
+			ctx.bezierCurveTo(6052,876,6052,876,6052,876);
+			ctx.bezierCurveTo(6052,876,6022,813,5913,789);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5949,785);
+			ctx.bezierCurveTo(5949,785,6049,824,6058,876);
+			ctx.bezierCurveTo(6050,882,6050,882,6050,882);
+			ctx.bezierCurveTo(6050,882,6032,822,5949,785);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5922,719);
+			ctx.bezierCurveTo(5922,719,6047,792,6051,868);
+			ctx.bezierCurveTo(6039,874,6039,874,6039,874);
+			ctx.bezierCurveTo(6039,874,6026,786,5922,719);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5971,722);
+			ctx.bezierCurveTo(5971,722,6078,804,6069,873);
+			ctx.bezierCurveTo(6057,877,6057,877,6057,877);
+			ctx.bezierCurveTo(6057,877,6058,796,5971,722);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7736,823);
+			ctx.bezierCurveTo(7736,823,7559,852,7535,920);
+			ctx.bezierCurveTo(7548,929,7548,929,7548,929);
+			ctx.bezierCurveTo(7548,929,7588,853,7736,823);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7686,818);
+			ctx.bezierCurveTo(7686,818,7552,866,7539,930);
+			ctx.bezierCurveTo(7550,936,7550,936,7550,936);
+			ctx.bezierCurveTo(7550,936,7575,864,7686,818);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7724,738);
+			ctx.bezierCurveTo(7724,738,7554,827,7549,920);
+			ctx.bezierCurveTo(7565,927,7565,927,7565,927);
+			ctx.bezierCurveTo(7565,927,7583,820,7724,738);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7657,742);
+			ctx.bezierCurveTo(7657,742,7513,842,7524,926);
+			ctx.bezierCurveTo(7540,930,7540,930,7540,930);
+			ctx.bezierCurveTo(7540,930,7539,832,7657,742);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4646,823);
+			ctx.bezierCurveTo(4646,823,4470,852,4446,920);
+			ctx.bezierCurveTo(4459,929,4459,929,4459,929);
+			ctx.bezierCurveTo(4459,929,4499,853,4646,823);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4597,818);
+			ctx.bezierCurveTo(4597,818,4463,866,4450,930);
+			ctx.bezierCurveTo(4461,936,4461,936,4461,936);
+			ctx.bezierCurveTo(4461,936,4485,864,4597,818);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4634,738);
+			ctx.bezierCurveTo(4634,738,4464,827,4460,920);
+			ctx.bezierCurveTo(4475,927,4475,927,4475,927);
+			ctx.bezierCurveTo(4475,927,4494,820,4634,738);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4568,742);
+			ctx.bezierCurveTo(4568,742,4423,842,4435,926);
+			ctx.bezierCurveTo(4451,930,4451,930,4451,930);
+			ctx.bezierCurveTo(4451,930,4450,832,4568,742);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9487,861);
+			ctx.bezierCurveTo(9487,861,9291,949,9282,1023);
+			ctx.bezierCurveTo(9300,1027,9300,1027,9300,1027);
+			ctx.bezierCurveTo(9300,1027,9325,940,9487,861);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9429,873);
+			ctx.bezierCurveTo(9429,873,9287,965,9290,1031);
+			ctx.bezierCurveTo(9304,1033,9304,1033,9304,1033);
+			ctx.bezierCurveTo(9304,1033,9312,955,9429,873);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9449,784);
+			ctx.bezierCurveTo(9449,784,9278,927,9298,1018);
+			ctx.bezierCurveTo(9318,1019,9318,1019,9318,1019);
+			ctx.bezierCurveTo(9318,1019,9310,910,9449,784);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9374,810);
+			ctx.bezierCurveTo(9374,810,9234,955,9271,1032);
+			ctx.bezierCurveTo(9291,1031,9291,1031,9291,1031);
+			ctx.bezierCurveTo(9291,1031,9263,937,9374,810);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(10930,1016);
+			ctx.bezierCurveTo(10930,1016,11099,1067,11114,1123);
+			ctx.bezierCurveTo(11100,1128,11100,1128,11100,1128);
+			ctx.bezierCurveTo(11100,1128,11070,1064,10930,1016);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(10979,1020);
+			ctx.bezierCurveTo(10979,1020,11104,1079,11108,1130);
+			ctx.bezierCurveTo(11097,1133,11097,1133,11097,1133);
+			ctx.bezierCurveTo(11097,1133,11082,1074,10979,1020);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(10953,953);
+			ctx.bezierCurveTo(10953,953,11107,1049,11100,1121);
+			ctx.bezierCurveTo(11084,1124,11084,1124,11084,1124);
+			ctx.bezierCurveTo(11084,1124,11079,1039,10953,953);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(11017,967);
+			ctx.bezierCurveTo(11017,967,11146,1067,11123,1129);
+			ctx.bezierCurveTo(11107,1130,11107,1130,11107,1130);
+			ctx.bezierCurveTo(11107,1130,11121,1056,11017,967);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9486,883);
+			ctx.bezierCurveTo(9486,883,9348,977,9351,1035);
+			ctx.bezierCurveTo(9365,1036,9365,1036,9365,1036);
+			ctx.bezierCurveTo(9365,1036,9373,966,9486,883);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9443,901);
+			ctx.bezierCurveTo(9443,901,9347,990,9358,1040);
+			ctx.bezierCurveTo(9369,1040,9369,1040,9369,1040);
+			ctx.bezierCurveTo(9369,1040,9365,979,9443,901);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9448,829);
+			ctx.bezierCurveTo(9448,829,9335,963,9362,1029);
+			ctx.bezierCurveTo(9378,1028,9378,1028,9378,1028);
+			ctx.bezierCurveTo(9378,1028,9358,945,9448,829);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(9394,860);
+			ctx.bezierCurveTo(9394,860,9306,990,9344,1044);
+			ctx.bezierCurveTo(9359,1040,9359,1040,9359,1040);
+			ctx.bezierCurveTo(9359,1040,9325,972,9394,860);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4797,842);
+			ctx.bezierCurveTo(4797,842,4658,953,4662,1004);
+			ctx.bezierCurveTo(4676,1002,4676,1002,4676,1002);
+			ctx.bezierCurveTo(4676,1002,4683,939,4797,842);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4753,866);
+			ctx.bezierCurveTo(4753,866,4657,965,4669,1007);
+			ctx.bezierCurveTo(4680,1005,4680,1005,4680,1005);
+			ctx.bezierCurveTo(4680,1005,4675,952,4753,866);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4756,802);
+			ctx.bezierCurveTo(4756,802,4645,943,4674,997);
+			ctx.bezierCurveTo(4689,992,4689,992,4689,992);
+			ctx.bezierCurveTo(4689,992,4667,923,4756,802);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4702,840);
+			ctx.bezierCurveTo(4702,840,4615,973,4655,1013);
+			ctx.bezierCurveTo(4670,1007,4670,1007,4670,1007);
+			ctx.bezierCurveTo(4670,1007,4635,953,4702,840);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4985,795);
+			ctx.bezierCurveTo(4985,795,4847,906,4850,957);
+			ctx.bezierCurveTo(4864,955,4864,955,4864,955);
+			ctx.bezierCurveTo(4864,955,4871,891,4985,795);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4942,819);
+			ctx.bezierCurveTo(4942,819,4846,918,4857,960);
+			ctx.bezierCurveTo(4869,957,4869,957,4869,957);
+			ctx.bezierCurveTo(4869,957,4864,904,4942,819);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4944,754);
+			ctx.bezierCurveTo(4944,754,4833,895,4862,949);
+			ctx.bezierCurveTo(4878,944,4878,944,4878,944);
+			ctx.bezierCurveTo(4878,944,4856,875,4944,754);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4890,792);
+			ctx.bezierCurveTo(4890,792,4804,925,4843,966);
+			ctx.bezierCurveTo(4858,959,4858,959,4858,959);
+			ctx.bezierCurveTo(4858,959,4823,906,4890,792);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5020,838);
+			ctx.bezierCurveTo(5020,838,4882,949,4886,1000);
+			ctx.bezierCurveTo(4900,998,4900,998,4900,998);
+			ctx.bezierCurveTo(4900,998,4907,935,5020,838);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4977,862);
+			ctx.bezierCurveTo(4977,862,4881,961,4893,1003);
+			ctx.bezierCurveTo(4904,1001,4904,1001,4904,1001);
+			ctx.bezierCurveTo(4904,1001,4899,948,4977,862);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4980,798);
+			ctx.bezierCurveTo(4980,798,4869,939,4897,993);
+			ctx.bezierCurveTo(4913,988,4913,988,4913,988);
+			ctx.bezierCurveTo(4913,988,4891,919,4980,798);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4926,836);
+			ctx.bezierCurveTo(4926,836,4839,969,4879,1009);
+			ctx.bezierCurveTo(4894,1003,4894,1003,4894,1003);
+			ctx.bezierCurveTo(4894,1003,4858,949,4926,836);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5045,893);
+			ctx.bezierCurveTo(5045,893,5157,966,5154,1000);
+			ctx.bezierCurveTo(5142,999,5142,999,5142,999);
+			ctx.bezierCurveTo(5142,999,5137,957,5045,893);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5080,909);
+			ctx.bezierCurveTo(5080,909,5157,974,5148,1002);
+			ctx.bezierCurveTo(5139,1001,5139,1001,5139,1001);
+			ctx.bezierCurveTo(5139,1001,5143,965,5080,909);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5078,866);
+			ctx.bezierCurveTo(5078,866,5168,959,5144,995);
+			ctx.bezierCurveTo(5131,992,5131,992,5131,992);
+			ctx.bezierCurveTo(5131,992,5149,946,5078,866);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5121,892);
+			ctx.bezierCurveTo(5121,892,5191,979,5159,1006);
+			ctx.bezierCurveTo(5147,1002,5147,1002,5147,1002);
+			ctx.bezierCurveTo(5147,1002,5176,966,5121,892);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5084,839);
+			ctx.bezierCurveTo(5084,839,5196,912,5193,945);
+			ctx.bezierCurveTo(5181,944,5181,944,5181,944);
+			ctx.bezierCurveTo(5181,944,5176,902,5084,839);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5119,854);
+			ctx.bezierCurveTo(5119,854,5197,920,5187,947);
+			ctx.bezierCurveTo(5178,946,5178,946,5178,946);
+			ctx.bezierCurveTo(5178,946,5182,911,5119,854);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5117,812);
+			ctx.bezierCurveTo(5117,812,5207,905,5184,940);
+			ctx.bezierCurveTo(5171,937,5171,937,5171,937);
+			ctx.bezierCurveTo(5171,937,5189,892,5117,812);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5161,837);
+			ctx.bezierCurveTo(5161,837,5230,925,5199,951);
+			ctx.bezierCurveTo(5186,947,5186,947,5186,947);
+			ctx.bezierCurveTo(5186,947,5215,912,5161,837);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3461,849);
+			ctx.bezierCurveTo(3461,849,3573,922,3570,956);
+			ctx.bezierCurveTo(3558,955,3558,955,3558,955);
+			ctx.bezierCurveTo(3558,955,3553,913,3461,849);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3496,865);
+			ctx.bezierCurveTo(3496,865,3573,930,3564,958);
+			ctx.bezierCurveTo(3555,957,3555,957,3555,957);
+			ctx.bezierCurveTo(3555,957,3559,921,3496,865);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3494,822);
+			ctx.bezierCurveTo(3494,822,3584,915,3560,951);
+			ctx.bezierCurveTo(3547,948,3547,948,3547,948);
+			ctx.bezierCurveTo(3547,948,3565,902,3494,822);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3537,848);
+			ctx.bezierCurveTo(3537,848,3607,935,3575,962);
+			ctx.bezierCurveTo(3563,958,3563,958,3563,958);
+			ctx.bezierCurveTo(3563,958,3592,922,3537,848);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3500,795);
+			ctx.bezierCurveTo(3500,795,3612,868,3609,901);
+			ctx.bezierCurveTo(3597,900,3597,900,3597,900);
+			ctx.bezierCurveTo(3597,900,3592,858,3500,795);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3535,810);
+			ctx.bezierCurveTo(3535,810,3613,876,3603,903);
+			ctx.bezierCurveTo(3594,902,3594,902,3594,902);
+			ctx.bezierCurveTo(3594,902,3598,867,3535,810);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3533,768);
+			ctx.bezierCurveTo(3533,768,3623,861,3600,896);
+			ctx.bezierCurveTo(3587,893,3587,893,3587,893);
+			ctx.bezierCurveTo(3587,893,3605,848,3533,768);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(3577,793);
+			ctx.bezierCurveTo(3577,793,3646,881,3615,907);
+			ctx.bezierCurveTo(3602,903,3602,903,3602,903);
+			ctx.bezierCurveTo(3602,903,3631,868,3577,793);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4157,837);
+			ctx.bezierCurveTo(4157,837,4269,910,4266,944);
+			ctx.bezierCurveTo(4254,943,4254,943,4254,943);
+			ctx.bezierCurveTo(4254,943,4249,901,4157,837);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4192,853);
+			ctx.bezierCurveTo(4192,853,4269,918,4260,946);
+			ctx.bezierCurveTo(4251,945,4251,945,4251,945);
+			ctx.bezierCurveTo(4251,945,4255,909,4192,853);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4190,810);
+			ctx.bezierCurveTo(4190,810,4280,903,4256,939);
+			ctx.bezierCurveTo(4243,936,4243,936,4243,936);
+			ctx.bezierCurveTo(4243,936,4261,890,4190,810);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4233,836);
+			ctx.bezierCurveTo(4233,836,4303,923,4271,950);
+			ctx.bezierCurveTo(4259,946,4259,946,4259,946);
+			ctx.bezierCurveTo(4259,946,4288,910,4233,836);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4196,783);
+			ctx.bezierCurveTo(4196,783,4308,856,4305,889);
+			ctx.bezierCurveTo(4293,888,4293,888,4293,888);
+			ctx.bezierCurveTo(4293,888,4288,846,4196,783);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4231,798);
+			ctx.bezierCurveTo(4231,798,4309,864,4299,891);
+			ctx.bezierCurveTo(4290,890,4290,890,4290,890);
+			ctx.bezierCurveTo(4290,890,4294,855,4231,798);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4229,756);
+			ctx.bezierCurveTo(4229,756,4319,849,4296,884);
+			ctx.bezierCurveTo(4283,881,4283,881,4283,881);
+			ctx.bezierCurveTo(4283,881,4301,836,4229,756);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4273,781);
+			ctx.bezierCurveTo(4273,781,4342,869,4311,895);
+			ctx.bezierCurveTo(4298,891,4298,891,4298,891);
+			ctx.bezierCurveTo(4298,891,4327,856,4273,781);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5532,823);
+			ctx.bezierCurveTo(5532,823,5644,897,5641,930);
+			ctx.bezierCurveTo(5629,929,5629,929,5629,929);
+			ctx.bezierCurveTo(5629,929,5624,887,5532,823);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5567,839);
+			ctx.bezierCurveTo(5567,839,5644,904,5635,932);
+			ctx.bezierCurveTo(5626,931,5626,931,5626,931);
+			ctx.bezierCurveTo(5626,931,5630,895,5567,839);
+			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(5565,796);
+			ctx.bezierCurveTo(5565,796,5655,889,5631,925);
+			ctx.bezierCurveTo(5619,922,5619,922,5619,922);
+			ctx.bezierCurveTo(5619,922,5636,876,5565,796);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9479,817);
-			ctx.lineTo(9474,816);
-			ctx.lineTo(9516,827);
-			ctx.lineTo(9479,817);
+			ctx.moveTo(5608,822);
+			ctx.bezierCurveTo(5608,822,5678,909,5647,936);
+			ctx.bezierCurveTo(5634,932,5634,932,5634,932);
+			ctx.bezierCurveTo(5634,932,5663,896,5608,822);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9743,893);
-			ctx.bezierCurveTo(9718,885,9647,866,9600,852);
-			ctx.lineTo(9592,849);
-			ctx.lineTo(9571,844);
-			ctx.bezierCurveTo(9628,860,9703,881,9743,893);
+			ctx.moveTo(5571,769);
+			ctx.bezierCurveTo(5571,769,5683,842,5680,875);
+			ctx.bezierCurveTo(5669,874,5669,874,5669,874);
+			ctx.bezierCurveTo(5669,874,5663,832,5571,769);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9882,938);
-			ctx.bezierCurveTo(9874,935,9913,946,9850,928);
-			ctx.bezierCurveTo(9853,929,9854,929,9855,930);
-			ctx.bezierCurveTo(9861,931,9869,934,9882,938);
+			ctx.moveTo(5606,784);
+			ctx.bezierCurveTo(5606,784,5684,850,5674,877);
+			ctx.bezierCurveTo(5665,876,5665,876,5665,876);
+			ctx.bezierCurveTo(5665,876,5669,841,5606,784);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9855,930);
-			ctx.bezierCurveTo(9828,921,9873,936,9855,930);
-			ctx.lineTo(9855,930);
+			ctx.moveTo(5604,742);
+			ctx.bezierCurveTo(5604,742,5694,835,5671,870);
+			ctx.bezierCurveTo(5658,867,5658,867,5658,867);
+			ctx.bezierCurveTo(5658,867,5676,822,5604,742);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9984,967);
-			ctx.lineTo(9947,957);
-			ctx.bezierCurveTo(9954,960,9987,969,9975,966);
-			ctx.bezierCurveTo(10012,977,10005,974,9984,967);
+			ctx.moveTo(5648,767);
+			ctx.bezierCurveTo(5648,767,5718,855,5686,881);
+			ctx.bezierCurveTo(5673,877,5673,877,5673,877);
+			ctx.bezierCurveTo(5673,877,5702,842,5648,767);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10018,977);
-			ctx.lineTo(9999,971);
-			ctx.bezierCurveTo(10003,972,10008,974,10018,977);
+			ctx.moveTo(6905,221);
+			ctx.bezierCurveTo(6903,281,6900,331,6898,344);
+			ctx.bezierCurveTo(6892,399,6860,444,6854,500);
+			ctx.bezierCurveTo(6842,594,6830,687,6808,779);
+			ctx.bezierCurveTo(6802,807,6808,846,6808,875);
+			ctx.bezierCurveTo(6817,880,6924,928,6923,935);
+			ctx.lineTo(6954,627);
+			ctx.bezierCurveTo(6968,555,6970,457,7004,392);
+			ctx.bezierCurveTo(7009,381,7022,376,7027,365);
+			ctx.bezierCurveTo(7040,338,7037,294,7042,264);
+			ctx.bezierCurveTo(7033,264,7024,256,7015,256);
+			ctx.bezierCurveTo(7023,256,7029,-20,7026,-46);
+			ctx.bezierCurveTo(6979,-54,6931,-62,6885,-70);
+			ctx.bezierCurveTo(6910,-65,6910,99,6905,221);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9959,960);
-			ctx.lineTo(9999,971);
-			ctx.bezierCurveTo(9994,970,9994,969,9981,966);
-			ctx.bezierCurveTo(9984,967,9976,965,9959,960);
+			ctx.moveTo(7072,452);
+			ctx.lineTo(7009,418);
+			ctx.lineTo(6964,404);
+			ctx.lineTo(6953,424);
+			ctx.lineTo(7016,434);
+			ctx.lineTo(7057,451);
+			ctx.lineTo(7103,502);
+			ctx.lineTo(7072,452);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9937,953);
-			ctx.bezierCurveTo(9916,946,9890,938,9927,949);
-			ctx.bezierCurveTo(9857,928,9867,932,9937,953);
+			ctx.moveTo(7075,111);
+			ctx.lineTo(7033,110);
+			ctx.lineTo(7005,115);
+			ctx.lineTo(7005,128);
+			ctx.lineTo(7041,117);
+			ctx.lineTo(7067,114);
+			ctx.lineTo(7106,129);
+			ctx.lineTo(7075,111);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9757,896);
-			ctx.lineTo(9729,887);
-			ctx.lineTo(9705,881);
-			ctx.bezierCurveTo(9717,884,9758,897,9757,896);
+			ctx.moveTo(6818,501);
+			ctx.lineTo(6869,500);
+			ctx.lineTo(6900,490);
+			ctx.lineTo(6895,467);
+			ctx.lineTo(6856,490);
+			ctx.lineTo(6826,496);
+			ctx.lineTo(6774,475);
+			ctx.lineTo(6818,501);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(6928,146);
+			ctx.lineTo(7101,46);
+			ctx.lineTo(7182,66);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7149,21);
+			ctx.lineTo(7209,79);
+			ctx.bezierCurveTo(7209,79,7242,117,7223,119);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7091,55);
+			ctx.bezierCurveTo(7091,55,7137,17,7116,2);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7191,31);
+			ctx.lineTo(7217,4);
+			ctx.lineTo(7219,-20);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7201,71);
+			ctx.lineTo(7201,97);
+			ctx.lineTo(7212,133);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7136,35);
+			ctx.lineTo(7143,1);
+			ctx.lineTo(7178,-8);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7154,-4);
+			ctx.lineTo(7147,-38);
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
 			ctx.beginPath();
-			ctx.moveTo(10211,1036);
-			ctx.bezierCurveTo(10213,1037,10199,1032,10196,1031);
-			ctx.lineTo(10169,1023);
-			ctx.bezierCurveTo(10183,1027,10209,1035,10211,1036);
+			ctx.moveTo(6959,54);
+			ctx.lineTo(6825,83);
+			ctx.lineTo(6796,121);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(6789,92);
+			ctx.lineTo(6789,136);
+			ctx.bezierCurveTo(6789,136,6793,162,6802,156);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(6834,82);
+			ctx.bezierCurveTo(6834,82,6793,86,6796,72);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(6774,112);
+			ctx.lineTo(6747,112);
+			ctx.lineTo(6734,103);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(6789,130);
+			ctx.lineTo(6802,140);
+			ctx.lineTo(6815,157);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(6802,92);
+			ctx.lineTo(6782,83);
+			ctx.lineTo(6760,92);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(6774,84);
+			ctx.lineTo(6760,69);
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(4939,234);
+			ctx.bezierCurveTo(4922,319,4910,388,4907,406);
+			ctx.bezierCurveTo(4896,484,4918,550,4907,628);
+			ctx.bezierCurveTo(4890,760,4874,890,4869,1021);
+			ctx.bezierCurveTo(4868,1060,4848,1113,4838,1153);
+			ctx.bezierCurveTo(4826,1159,4689,1211,4688,1220);
+			ctx.lineTo(4752,791);
+			ctx.bezierCurveTo(4759,689,4788,553,4770,458);
+			ctx.bezierCurveTo(4768,442,4755,433,4753,417);
+			ctx.bezierCurveTo(4747,378,4755,371,4760,329);
+			ctx.bezierCurveTo(4770,330,4792,267,4802,268);
+			ctx.bezierCurveTo(4792,267,4875,-116,4887,-152);
+			ctx.bezierCurveTo(4943,-156,5001,-161,5056,-165);
+			ctx.bezierCurveTo(5026,-163,4973,66,4939,234);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10196,1031);
-			ctx.lineTo(10236,1042);
-			ctx.bezierCurveTo(10200,1031,10194,1030,10196,1031);
+			ctx.moveTo(4641,503);
+			ctx.lineTo(4724,462);
+			ctx.lineTo(4781,448);
+			ctx.lineTo(4787,479);
+			ctx.lineTo(4711,485);
+			ctx.lineTo(4659,503);
+			ctx.lineTo(4588,570);
+			ctx.lineTo(4641,503);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10025,977);
-			ctx.lineTo(9959,959);
-			ctx.lineTo(10038,981);
-			ctx.lineTo(10025,977);
+			ctx.moveTo(4752,10);
+			ctx.lineTo(4801,14);
+			ctx.lineTo(4832,25);
+			ctx.lineTo(4827,45);
+			ctx.lineTo(4790,23);
+			ctx.lineTo(4761,15);
+			ctx.lineTo(4712,31);
+			ctx.lineTo(4752,10);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10364,1083);
-			ctx.lineTo(10341,1077);
-			ctx.bezierCurveTo(10341,1077,10352,1080,10362,1083);
-			ctx.bezierCurveTo(10367,1084,10372,1086,10376,1087);
-			ctx.bezierCurveTo(10380,1088,10382,1089,10382,1089);
-			ctx.bezierCurveTo(10382,1089,10378,1087,10373,1086);
-			ctx.bezierCurveTo(10369,1085,10364,1083,10364,1083);
+			ctx.moveTo(4915,609);
+			ctx.lineTo(4857,601);
+			ctx.lineTo(4825,581);
+			ctx.lineTo(4839,550);
+			ctx.lineTo(4875,587);
+			ctx.lineTo(4907,600);
+			ctx.lineTo(4974,578);
+			ctx.lineTo(4915,609);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4909,81);
+			ctx.lineTo(4744,-87);
+			ctx.lineTo(4645,-70);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4698,-130);
+			ctx.lineTo(4610,-55);
+			ctx.bezierCurveTo(4610,-55,4560,-4,4580,0);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4754,-73);
+			ctx.bezierCurveTo(4754,-73,4713,-134,4743,-152);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4646,-121);
+			ctx.lineTo(4626,-163);
+			ctx.lineTo(4633,-200);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4622,-65);
+			ctx.lineTo(4613,-26);
+			ctx.lineTo(4588,22);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4709,-108);
+			ctx.lineTo(4711,-158);
+			ctx.lineTo(4675,-177);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4701,-167);
+			ctx.lineTo(4721,-216);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(4904,-56);
+			ctx.lineTo(5048,4);
+			ctx.lineTo(5069,63);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(5086,22);
+			ctx.lineTo(5071,86);
+			ctx.bezierCurveTo(5071,86,5058,123,5049,113);
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
 			ctx.beginPath();
-			ctx.moveTo(10427,1108);
-			ctx.bezierCurveTo(10428,1107,10428,1107,10429,1106);
-			ctx.bezierCurveTo(10429,1106,10429,1106,10429,1106);
-			ctx.bezierCurveTo(10429,1106,10429,1106,10429,1106);
-			ctx.bezierCurveTo(10429,1106,10429,1106,10429,1106);
-			ctx.bezierCurveTo(10429,1106,10429,1106,10429,1106);
-			ctx.bezierCurveTo(10429,1106,10429,1106,10429,1106);
-			ctx.bezierCurveTo(10429,1106,10429,1106,10429,1106);
-			ctx.bezierCurveTo(10429,1106,10429,1106,10429,1106);
-			ctx.bezierCurveTo(10428,1106,10428,1106,10427,1107);
-			ctx.bezierCurveTo(10426,1107,10425,1108,10423,1109);
-			ctx.bezierCurveTo(10418,1111,10413,1114,10421,1109);
-			ctx.bezierCurveTo(10396,1123,10374,1136,10355,1147);
-			ctx.bezierCurveTo(10376,1135,10398,1123,10427,1108);
+			ctx.moveTo(5038,2);
+			ctx.bezierCurveTo(5038,2,5084,13,5085,-6);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(5097,53);
+			ctx.lineTo(5127,57);
+			ctx.lineTo(5146,46);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(5074,77);
+			ctx.lineTo(5055,89);
+			ctx.lineTo(5035,112);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(5071,20);
+			ctx.lineTo(5098,10);
+			ctx.lineTo(5120,26);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(5106,13);
+			ctx.lineTo(5128,-5);
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(2187,75);
+			ctx.bezierCurveTo(2191,166,2192,241,2192,260);
+			ctx.bezierCurveTo(2191,344,2161,411,2159,495);
+			ctx.bezierCurveTo(2156,637,2152,777,2138,915);
+			ctx.bezierCurveTo(2133,957,2144,1016,2147,1060);
+			ctx.bezierCurveTo(2157,1067,2275,1142,2275,1152);
+			ctx.lineTo(2278,689);
+			ctx.bezierCurveTo(2286,581,2279,432,2309,335);
+			ctx.bezierCurveTo(2314,319,2327,311,2331,294);
+			ctx.bezierCurveTo(2342,254,2335,245,2337,200);
+			ctx.bezierCurveTo(2328,200,2317,130,2308,130);
+			ctx.bezierCurveTo(2317,130,2296,-286,2291,-326);
+			ctx.bezierCurveTo(2240,-338,2188,-351,2138,-364);
+			ctx.bezierCurveTo(2166,-357,2181,-107,2187,75);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10323,1166);
-			ctx.bezierCurveTo(10333,1160,10344,1154,10355,1147);
-			ctx.bezierCurveTo(10344,1153,10334,1160,10323,1166);
+			ctx.moveTo(2420,401);
+			ctx.lineTo(2351,346);
+			ctx.lineTo(2301,323);
+			ctx.lineTo(2291,355);
+			ctx.lineTo(2359,372);
+			ctx.lineTo(2404,398);
+			ctx.lineTo(2459,479);
+			ctx.lineTo(2420,401);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10305,1064);
-			ctx.bezierCurveTo(10308,1065,10314,1067,10336,1074);
-			ctx.lineTo(10321,1068);
-			ctx.bezierCurveTo(10316,1067,10310,1065,10305,1064);
+			ctx.moveTo(2390,-135);
+			ctx.lineTo(2345,-138);
+			ctx.lineTo(2316,-130);
+			ctx.lineTo(2317,-109);
+			ctx.lineTo(2354,-127);
+			ctx.lineTo(2382,-130);
+			ctx.lineTo(2424,-107);
+			ctx.lineTo(2390,-135);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10320,1068);
-			ctx.lineTo(10321,1068);
-			ctx.bezierCurveTo(10338,1074,10350,1077,10355,1079);
-			ctx.bezierCurveTo(10351,1078,10340,1074,10320,1068);
+			ctx.moveTo(2155,474);
+			ctx.lineTo(2209,473);
+			ctx.lineTo(2241,457);
+			ctx.lineTo(2233,422);
+			ctx.lineTo(2195,456);
+			ctx.lineTo(2164,465);
+			ctx.lineTo(2106,432);
+			ctx.lineTo(2155,474);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2237,-82);
+			ctx.lineTo(2411,-237);
+			ctx.lineTo(2499,-205);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2460,-275);
+			ctx.lineTo(2529,-184);
+			ctx.bezierCurveTo(2529,-184,2568,-123,2548,-121);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2401,-223);
+			ctx.bezierCurveTo(2401,-223,2446,-282,2422,-305);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2506,-259);
+			ctx.lineTo(2530,-301);
+			ctx.lineTo(2529,-341);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2520,-196);
+			ctx.lineTo(2523,-154);
+			ctx.lineTo(2538,-98);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2447,-254);
+			ctx.lineTo(2452,-307);
+			ctx.lineTo(2488,-323);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2462,-316);
+			ctx.lineTo(2452,-370);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2261,-227);
+			ctx.lineTo(2121,-183);
+			ctx.lineTo(2093,-124);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2084,-169);
+			ctx.lineTo(2088,-100);
+			ctx.bezierCurveTo(2088,-100,2094,-58,2104,-68);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2131,-184);
+			ctx.bezierCurveTo(2131,-184,2087,-179,2089,-200);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2069,-138);
+			ctx.lineTo(2041,-139);
+			ctx.lineTo(2026,-153);
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
 			ctx.beginPath();
-			ctx.moveTo(10301,1062);
-			ctx.bezierCurveTo(10302,1063,10303,1063,10305,1064);
-			ctx.bezierCurveTo(10303,1063,10303,1063,10301,1062);
+			ctx.moveTo(2087,-110);
+			ctx.lineTo(2103,-94);
+			ctx.lineTo(2118,-67);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2098,-169);
+			ctx.lineTo(2075,-184);
+			ctx.lineTo(2052,-170);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2066,-181);
+			ctx.lineTo(2050,-205);
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(7644,195);
+			ctx.bezierCurveTo(7663,270,7660,335,7660,351);
+			ctx.bezierCurveTo(7658,435,7726,471,7726,540);
+			ctx.bezierCurveTo(7726,661,7726,804,7700,906);
+			ctx.bezierCurveTo(7691,941,7727,1000,7738,1035);
+			ctx.bezierCurveTo(7751,1038,7981,1035,7983,1044);
+			ctx.lineTo(7871,756);
+			ctx.bezierCurveTo(7863,663,7812,371,7812,371);
+			ctx.lineTo(7792,250);
+			ctx.bezierCurveTo(7792,250,7695,-143,7682,-174);
+			ctx.bezierCurveTo(7619,-166,7555,-157,7493,-149);
+			ctx.bezierCurveTo(7527,-154,7606,45,7644,195);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10131,1009);
-			ctx.bezierCurveTo(10137,1011,10145,1013,10152,1015);
-			ctx.bezierCurveTo(10159,1017,10166,1019,10171,1021);
-			ctx.bezierCurveTo(10180,1023,10181,1023,10157,1015);
-			ctx.bezierCurveTo(10148,1013,10151,1014,10151,1014);
-			ctx.bezierCurveTo(10151,1015,10151,1014,10148,1014);
-			ctx.bezierCurveTo(10145,1013,10140,1012,10131,1009);
+			ctx.moveTo(7839,180);
+			ctx.lineTo(7752,217);
+			ctx.lineTo(7700,253);
+			ctx.lineTo(7712,281);
+			ctx.lineTo(7775,223);
+			ctx.lineTo(7825,194);
+			ctx.lineTo(7917,187);
+			ctx.lineTo(7839,180);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10282,1055);
-			ctx.lineTo(10239,1042);
-			ctx.bezierCurveTo(10240,1042,10247,1045,10236,1042);
-			ctx.lineTo(10282,1055);
+			ctx.moveTo(7789,-42);
+			ctx.lineTo(7734,-28);
+			ctx.lineTo(7700,-11);
+			ctx.lineTo(7705,5);
+			ctx.lineTo(7747,-23);
+			ctx.lineTo(7779,-35);
+			ctx.lineTo(7834,-32);
+			ctx.lineTo(7789,-42);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10303,1061);
-			ctx.lineTo(10282,1055);
-			ctx.lineTo(10297,1060);
-			ctx.lineTo(10303,1061);
+			ctx.moveTo(7739,619);
+			ctx.lineTo(7804,598);
+			ctx.lineTo(7840,573);
+			ctx.lineTo(7824,547);
+			ctx.lineTo(7784,590);
+			ctx.lineTo(7748,609);
+			ctx.lineTo(7673,602);
+			ctx.lineTo(7739,619);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7774,231);
+			ctx.lineTo(7870,122);
+			ctx.lineTo(7925,116);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7897,94);
+			ctx.lineTo(7944,118);
+			ctx.bezierCurveTo(7944,118,7971,136,7959,142);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7864,131);
+			ctx.bezierCurveTo(7864,131,7889,94,7873,89);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7925,90);
+			ctx.lineTo(7938,66);
+			ctx.lineTo(7935,49);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7938,115);
+			ctx.lineTo(7942,133);
+			ctx.lineTo(7954,154);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7890,106);
+			ctx.lineTo(7890,82);
+			ctx.lineTo(7911,66);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7896,75);
+			ctx.lineTo(7887,54);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7726,329);
+			ctx.lineTo(7607,394);
+			ctx.lineTo(7590,438);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7576,412);
+			ctx.lineTo(7588,454);
+			ctx.bezierCurveTo(7588,454,7599,478,7606,469);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7616,390);
+			ctx.bezierCurveTo(7616,390,7578,406,7577,392);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7567,435);
+			ctx.lineTo(7542,443);
+			ctx.lineTo(7527,438);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7586,448);
+			ctx.lineTo(7602,454);
+			ctx.lineTo(7618,466);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(7588,409);
+			ctx.lineTo(7566,406);
+			ctx.lineTo(7548,421);
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
 			ctx.beginPath();
-			ctx.moveTo(10390,1129);
-			ctx.bezierCurveTo(10374,1139,10355,1149,10334,1161);
-			ctx.bezierCurveTo(10357,1149,10380,1136,10402,1124);
-			ctx.bezierCurveTo(10405,1122,10414,1116,10390,1129);
+			ctx.moveTo(7559,410);
+			ctx.lineTo(7542,399);
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(6725,341);
+			ctx.lineTo(6709,487);
+			ctx.bezierCurveTo(6709,487,6725,573,6698,659);
+			ctx.bezierCurveTo(6672,744,6677,806,6677,806);
+			ctx.lineTo(6699,808);
+			ctx.lineTo(6692,724);
+			ctx.lineTo(6708,654);
+			ctx.lineTo(6723,543);
+			ctx.lineTo(6720,487);
+			ctx.lineTo(6738,310);
+			ctx.lineTo(6725,341);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10416,1098);
-			ctx.bezierCurveTo(10417,1099,10419,1099,10420,1099);
-			ctx.bezierCurveTo(10418,1099,10416,1098,10416,1098);
+			ctx.moveTo(5690,280);
+			ctx.lineTo(5680,470);
+			ctx.bezierCurveTo(5680,470,5720,581,5683,695);
+			ctx.bezierCurveTo(5645,810,5663,889,5663,889);
+			ctx.lineTo(5702,889);
+			ctx.lineTo(5680,781);
+			ctx.lineTo(5700,688);
+			ctx.lineTo(5712,542);
+			ctx.lineTo(5699,470);
+			ctx.lineTo(5708,238);
+			ctx.lineTo(5690,280);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10129,1276);
-			ctx.bezierCurveTo(10130,1275,10131,1275,10133,1274);
-			ctx.bezierCurveTo(10133,1274,10133,1274,10133,1274);
-			ctx.lineTo(10129,1276);
+			ctx.moveTo(5627,136);
+			ctx.lineTo(5655,371);
+			ctx.bezierCurveTo(5655,371,5648,510,5680,649);
+			ctx.bezierCurveTo(5712,787,5712,886,5712,886);
+			ctx.lineTo(5693,889);
+			ctx.lineTo(5692,755);
+			ctx.lineTo(5671,641);
+			ctx.lineTo(5647,461);
+			ctx.lineTo(5645,372);
+			ctx.lineTo(5613,85);
+			ctx.lineTo(5627,136);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10406,1122);
-			ctx.bezierCurveTo(10414,1117,10421,1113,10426,1110);
-			ctx.bezierCurveTo(10428,1109,10429,1108,10430,1108);
-			ctx.bezierCurveTo(10431,1107,10432,1107,10432,1107);
-			ctx.bezierCurveTo(10433,1106,10434,1106,10435,1105);
-			ctx.bezierCurveTo(10434,1106,10432,1106,10431,1107);
-			ctx.bezierCurveTo(10428,1109,10425,1110,10422,1112);
-			ctx.bezierCurveTo(10416,1116,10409,1120,10402,1124);
-			ctx.bezierCurveTo(10400,1125,10400,1125,10406,1122);
+			ctx.moveTo(5322,-64);
+			ctx.lineTo(5308,265);
+			ctx.bezierCurveTo(5308,265,5163,436,5248,647);
+			ctx.bezierCurveTo(5334,859,5262,986,5262,986);
+			ctx.lineTo(5146,970);
+			ctx.lineTo(5238,795);
+			ctx.lineTo(5199,628);
+			ctx.lineTo(5195,372);
+			ctx.lineTo(5250,256);
+			ctx.lineTo(5275,-144);
+			ctx.lineTo(5322,-64);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10266,1198);
-			ctx.bezierCurveTo(10275,1194,10285,1188,10295,1183);
-			ctx.bezierCurveTo(10287,1187,10269,1197,10266,1198);
+			ctx.moveTo(4526,-4);
+			ctx.lineTo(4565,321);
+			ctx.bezierCurveTo(4565,321,4622,506,4622,704);
+			ctx.bezierCurveTo(4623,902,4656,1035,4656,1035);
+			ctx.lineTo(4685,1033);
+			ctx.lineTo(4641,850);
+			ctx.lineTo(4633,690);
+			ctx.lineTo(4607,440);
+			ctx.lineTo(4579,319);
+			ctx.lineTo(4529,-77);
+			ctx.lineTo(4526,-4);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10426,1102);
-			ctx.bezierCurveTo(10426,1101,10425,1101,10424,1101);
-			ctx.bezierCurveTo(10430,1103,10429,1102,10426,1102);
+			ctx.moveTo(6743,-57);
+			ctx.lineTo(6731,249);
+			ctx.bezierCurveTo(6731,249,6768,428,6731,611);
+			ctx.bezierCurveTo(6695,794,6711,922,6711,922);
+			ctx.lineTo(6747,924);
+			ctx.lineTo(6727,749);
+			ctx.lineTo(6747,600);
+			ctx.lineTo(6761,364);
+			ctx.lineTo(6749,249);
+			ctx.lineTo(6761,-124);
+			ctx.lineTo(6743,-57);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10426,1102);
-			ctx.bezierCurveTo(10428,1102,10429,1102,10430,1102);
-			ctx.bezierCurveTo(10430,1103,10430,1103,10431,1103);
-			ctx.bezierCurveTo(10432,1103,10432,1103,10433,1103);
-			ctx.bezierCurveTo(10434,1104,10435,1104,10436,1104);
-			ctx.lineTo(10436,1104);
-			ctx.lineTo(10436,1104);
-			ctx.bezierCurveTo(10436,1104,10436,1104,10436,1104);
-			ctx.lineTo(10436,1104);
-			ctx.lineTo(10435,1105);
-			ctx.bezierCurveTo(10435,1105,10436,1104,10436,1104);
-			ctx.bezierCurveTo(10436,1104,10436,1104,10436,1104);
-			ctx.lineTo(10436,1104);
-			ctx.lineTo(10436,1104);
-			ctx.lineTo(10435,1104);
-			ctx.bezierCurveTo(10434,1103,10433,1103,10432,1103);
-			ctx.bezierCurveTo(10431,1103,10431,1102,10430,1102);
-			ctx.bezierCurveTo(10429,1102,10428,1102,10427,1101);
-			ctx.bezierCurveTo(10425,1101,10423,1100,10420,1099);
-			ctx.bezierCurveTo(10423,1100,10425,1101,10426,1102);
+			ctx.moveTo(7876,320);
+			ctx.lineTo(7884,522);
+			ctx.bezierCurveTo(7884,522,7923,636,7903,758);
+			ctx.bezierCurveTo(7884,881,7904,963,7904,963);
+			ctx.lineTo(7933,962);
+			ctx.lineTo(7908,849);
+			ctx.lineTo(7916,750);
+			ctx.lineTo(7914,595);
+			ctx.lineTo(7898,520);
+			ctx.lineTo(7887,275);
+			ctx.lineTo(7876,320);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10070,1316);
-			ctx.bezierCurveTo(10072,1313,10116,1288,10155,1267);
-			ctx.bezierCurveTo(10192,1246,10166,1257,10133,1274);
-			ctx.bezierCurveTo(10132,1275,10132,1275,10093,1297);
-			ctx.bezierCurveTo(10107,1290,10179,1250,10147,1269);
-			ctx.bezierCurveTo(10096,1298,10105,1293,10080,1306);
-			ctx.bezierCurveTo(10102,1295,10016,1344,10028,1339);
-			ctx.lineTo(10072,1313);
-			ctx.bezierCurveTo(10073,1313,10057,1322,10070,1316);
+			ctx.moveTo(7946,-42);
+			ctx.lineTo(7979,262);
+			ctx.bezierCurveTo(7979,262,8041,434,8031,621);
+			ctx.bezierCurveTo(8022,807,8056,932,8056,932);
+			ctx.lineTo(8093,928);
+			ctx.lineTo(8047,758);
+			ctx.lineTo(8046,607);
+			ctx.lineTo(8025,372);
+			ctx.lineTo(7997,260);
+			ctx.lineTo(7954,-111);
+			ctx.lineTo(7946,-42);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10206,1233);
-			ctx.lineTo(10222,1224);
-			ctx.bezierCurveTo(10204,1234,10191,1241,10167,1254);
-			ctx.bezierCurveTo(10140,1269,10135,1272,10133,1274);
-			ctx.lineTo(10211,1230);
-			ctx.lineTo(10206,1233);
+			ctx.moveTo(5843,-66);
+			ctx.lineTo(5882,238);
+			ctx.bezierCurveTo(5882,238,5834,420,5906,599);
+			ctx.bezierCurveTo(5979,778,5961,907,5961,907);
+			ctx.lineTo(5900,913);
+			ctx.lineTo(5922,737);
+			ctx.lineTo(5879,590);
+			ctx.lineTo(5841,356);
+			ctx.lineTo(5852,240);
+			ctx.lineTo(5808,-131);
+			ctx.lineTo(5843,-66);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10293,1184);
-			ctx.bezierCurveTo(10281,1192,10243,1214,10267,1201);
-			ctx.bezierCurveTo(10314,1175,10299,1183,10327,1167);
-			ctx.bezierCurveTo(10252,1209,10348,1154,10294,1184);
-			ctx.bezierCurveTo(10309,1176,10322,1168,10334,1161);
-			ctx.bezierCurveTo(10321,1169,10308,1176,10295,1183);
-			ctx.bezierCurveTo(10296,1182,10296,1182,10297,1182);
-			ctx.lineTo(10297,1181);
-			ctx.bezierCurveTo(10297,1181,10297,1182,10297,1182);
-			ctx.bezierCurveTo(10301,1180,10302,1179,10298,1181);
-			ctx.bezierCurveTo(10298,1181,10297,1182,10296,1182);
-			ctx.bezierCurveTo(10296,1183,10295,1183,10293,1184);
-			ctx.bezierCurveTo(10271,1196,10290,1186,10296,1182);
-			ctx.bezierCurveTo(10297,1182,10297,1182,10297,1182);
-			ctx.bezierCurveTo(10297,1182,10297,1182,10297,1182);
-			ctx.lineTo(10222,1224);
-			ctx.bezierCurveTo(10238,1215,10258,1204,10293,1184);
+			ctx.moveTo(5963,328);
+			ctx.lineTo(5901,294);
+			ctx.lineTo(5856,280);
+			ctx.lineTo(5845,300);
+			ctx.lineTo(5908,310);
+			ctx.lineTo(5949,327);
+			ctx.lineTo(5995,378);
+			ctx.lineTo(5963,328);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10201,1027);
-			ctx.bezierCurveTo(10204,1028,10204,1028,10204,1028);
-			ctx.bezierCurveTo(10209,1030,10211,1030,10201,1027);
+			ctx.moveTo(5886,98);
+			ctx.lineTo(5862,107);
+			ctx.lineTo(5847,117);
+			ctx.lineTo(5850,125);
+			ctx.lineTo(5868,109);
+			ctx.lineTo(5882,102);
+			ctx.lineTo(5907,100);
+			ctx.lineTo(5886,98);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10235,1038);
-			ctx.bezierCurveTo(10229,1036,10224,1035,10204,1029);
-			ctx.bezierCurveTo(10188,1023,10205,1029,10204,1028);
-			ctx.bezierCurveTo(10192,1025,10163,1016,10199,1028);
-			ctx.lineTo(10205,1029);
-			ctx.bezierCurveTo(10238,1040,10281,1054,10275,1052);
-			ctx.bezierCurveTo(10265,1049,10257,1045,10235,1038);
+			ctx.moveTo(5858,498);
+			ctx.lineTo(5890,561);
+			ctx.lineTo(5906,607);
+			ctx.lineTo(5896,616);
+			ctx.lineTo(5878,554);
+			ctx.lineTo(5861,513);
+			ctx.lineTo(5822,465);
+			ctx.lineTo(5858,498);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10427,1099);
-			ctx.bezierCurveTo(10427,1099,10430,1100,10435,1101);
-			ctx.bezierCurveTo(10436,1102,10438,1102,10439,1103);
-			ctx.bezierCurveTo(10440,1103,10440,1103,10441,1103);
-			ctx.bezierCurveTo(10441,1103,10442,1103,10442,1104);
-			ctx.lineTo(10442,1104);
-			ctx.bezierCurveTo(10442,1104,10442,1104,10442,1104);
-			ctx.lineTo(10442,1104);
-			ctx.lineTo(10441,1104);
-			ctx.bezierCurveTo(10439,1105,10436,1107,10433,1109);
-			ctx.bezierCurveTo(10418,1117,10403,1126,10403,1126);
-			ctx.lineTo(10435,1109);
-			ctx.bezierCurveTo(10435,1109,10434,1109,10434,1109);
-			ctx.bezierCurveTo(10433,1109,10433,1109,10433,1109);
-			ctx.bezierCurveTo(10436,1107,10439,1106,10442,1104);
-			ctx.bezierCurveTo(10442,1104,10443,1104,10443,1104);
-			ctx.bezierCurveTo(10443,1104,10443,1104,10443,1104);
-			ctx.lineTo(10443,1103);
-			ctx.lineTo(10444,1103);
-			ctx.bezierCurveTo(10444,1103,10444,1103,10444,1103);
-			ctx.bezierCurveTo(10443,1103,10442,1103,10442,1103);
-			ctx.bezierCurveTo(10441,1102,10440,1102,10439,1102);
-			ctx.bezierCurveTo(10435,1101,10433,1100,10432,1100);
-			ctx.bezierCurveTo(10431,1100,10431,1100,10431,1100);
-			ctx.bezierCurveTo(10430,1100,10430,1099,10430,1099);
-			ctx.bezierCurveTo(10430,1099,10429,1099,10429,1099);
-			ctx.bezierCurveTo(10428,1099,10428,1099,10427,1099);
+			ctx.moveTo(4074,283);
+			ctx.lineTo(4064,473);
+			ctx.bezierCurveTo(4064,473,4104,584,4067,698);
+			ctx.bezierCurveTo(4029,813,4047,892,4047,892);
+			ctx.lineTo(4086,892);
+			ctx.lineTo(4064,784);
+			ctx.lineTo(4084,691);
+			ctx.lineTo(4096,545);
+			ctx.lineTo(4083,473);
+			ctx.lineTo(4092,241);
+			ctx.lineTo(4074,283);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10122,1280);
-			ctx.lineTo(10130,1274);
-			ctx.lineTo(10094,1296);
-			ctx.lineTo(10122,1280);
+			ctx.moveTo(4011,139);
+			ctx.lineTo(4039,374);
+			ctx.bezierCurveTo(4039,374,4032,513,4064,652);
+			ctx.bezierCurveTo(4096,790,4096,889,4096,889);
+			ctx.lineTo(4077,892);
+			ctx.lineTo(4076,758);
+			ctx.lineTo(4055,644);
+			ctx.lineTo(4031,464);
+			ctx.lineTo(4029,375);
+			ctx.lineTo(3997,88);
+			ctx.lineTo(4011,139);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(10040,1325);
-			ctx.lineTo(10043,1323);
-			ctx.lineTo(10022,1335);
-			ctx.lineTo(10040,1325);
+			ctx.moveTo(3706,-61);
+			ctx.lineTo(3692,268);
+			ctx.bezierCurveTo(3692,268,3547,439,3632,650);
+			ctx.bezierCurveTo(3718,862,3646,989,3646,989);
+			ctx.lineTo(3530,973);
+			ctx.lineTo(3622,798);
+			ctx.lineTo(3583,631);
+			ctx.lineTo(3579,375);
+			ctx.lineTo(3634,259);
+			ctx.lineTo(3659,-141);
+			ctx.lineTo(3706,-61);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(5005,1227);
-			ctx.lineTo(5005,1206);
-			ctx.bezierCurveTo(5005,1216,5005,1222,5005,1227);
+			ctx.moveTo(2910,-1);
+			ctx.lineTo(2949,324);
+			ctx.bezierCurveTo(2949,324,3006,509,3006,707);
+			ctx.bezierCurveTo(3007,905,3040,1038,3040,1038);
+			ctx.lineTo(3069,1036);
+			ctx.lineTo(3025,853);
+			ctx.lineTo(3017,693);
+			ctx.lineTo(2991,443);
+			ctx.lineTo(2963,322);
+			ctx.lineTo(2913,-74);
+			ctx.lineTo(2910,-1);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(5006,1380);
-			ctx.lineTo(5006,1384);
-			ctx.bezierCurveTo(5006,1377,5006,1374,5006,1380);
+			ctx.moveTo(4227,-63);
+			ctx.lineTo(4266,241);
+			ctx.bezierCurveTo(4266,241,4218,423,4290,602);
+			ctx.bezierCurveTo(4363,781,4345,910,4345,910);
+			ctx.lineTo(4284,916);
+			ctx.lineTo(4306,740);
+			ctx.lineTo(4263,593);
+			ctx.lineTo(4225,359);
+			ctx.lineTo(4236,243);
+			ctx.lineTo(4192,-128);
+			ctx.lineTo(4227,-63);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(7778,1432);
-			ctx.bezierCurveTo(7747,1431,7713,1430,7716,1431);
-			ctx.lineTo(7726,1432);
-			ctx.bezierCurveTo(7747,1431,7764,1431,7778,1432);
+			ctx.moveTo(4347,331);
+			ctx.lineTo(4285,297);
+			ctx.lineTo(4240,283);
+			ctx.lineTo(4229,303);
+			ctx.lineTo(4292,313);
+			ctx.lineTo(4333,330);
+			ctx.lineTo(4379,381);
+			ctx.lineTo(4347,331);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(6207,1437);
-			ctx.bezierCurveTo(6210,1437,6213,1437,6216,1437);
-			ctx.bezierCurveTo(6224,1437,6231,1437,6237,1436);
-			ctx.bezierCurveTo(6228,1436,6218,1437,6207,1437);
+			ctx.moveTo(4270,101);
+			ctx.lineTo(4246,110);
+			ctx.lineTo(4231,120);
+			ctx.lineTo(4234,128);
+			ctx.lineTo(4252,112);
+			ctx.lineTo(4266,105);
+			ctx.lineTo(4291,103);
+			ctx.lineTo(4270,101);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(6186,1440);
-			ctx.lineTo(6145,1440);
-			ctx.bezierCurveTo(6154,1440,6167,1440,6186,1440);
+			ctx.moveTo(4242,501);
+			ctx.lineTo(4274,564);
+			ctx.lineTo(4290,610);
+			ctx.lineTo(4280,619);
+			ctx.lineTo(4262,557);
+			ctx.lineTo(4245,516);
+			ctx.lineTo(4206,468);
+			ctx.lineTo(4242,501);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(5429,664);
-			ctx.bezierCurveTo(5429,664,5435,662,5441,660);
-			ctx.bezierCurveTo(5444,659,5447,658,5449,658);
-			ctx.bezierCurveTo(5451,657,5453,656,5453,656);
-			ctx.bezierCurveTo(5448,658,5444,659,5441,660);
-			ctx.bezierCurveTo(5438,660,5436,661,5434,662);
-			ctx.bezierCurveTo(5430,663,5429,663,5428,663);
-			ctx.bezierCurveTo(5427,664,5431,663,5429,664);
+			ctx.moveTo(7874,-40);
+			ctx.lineTo(8022,233);
+			ctx.bezierCurveTo(8022,233,8000,431,8163,568);
+			ctx.bezierCurveTo(8326,706,8336,838,8336,838);
+			ctx.lineTo(8244,872);
+			ctx.lineTo(8227,693);
+			ctx.lineTo(8118,572);
+			ctx.lineTo(7992,366);
+			ctx.lineTo(7976,249);
+			ctx.lineTo(7802,-86);
+			ctx.lineTo(7874,-40);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9115,1432);
-			ctx.bezierCurveTo(9088,1432,9067,1431,9048,1431);
-			ctx.bezierCurveTo(9080,1432,9106,1433,9115,1432);
+			ctx.moveTo(8173,283);
+			ctx.lineTo(8068,278);
+			ctx.lineTo(7993,286);
+			ctx.lineTo(7982,310);
+			ctx.lineTo(8083,291);
+			ctx.lineTo(8150,288);
+			ctx.lineTo(8236,315);
+			ctx.lineTo(8173,283);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(5014,1287);
-			ctx.bezierCurveTo(5014,1274,5014,1269,5013,1269);
-			ctx.bezierCurveTo(5014,1282,5014,1290,5014,1287);
+			ctx.moveTo(7988,97);
+			ctx.lineTo(7953,118);
+			ctx.lineTo(7934,133);
+			ctx.lineTo(7941,139);
+			ctx.lineTo(7963,116);
+			ctx.lineTo(7983,103);
+			ctx.lineTo(8021,90);
+			ctx.lineTo(7988,97);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(8972,1431);
-			ctx.bezierCurveTo(8976,1431,8981,1431,8986,1432);
-			ctx.bezierCurveTo(9005,1431,9025,1431,9048,1431);
-			ctx.bezierCurveTo(9025,1431,8998,1431,8972,1431);
+			ctx.moveTo(8059,494);
+			ctx.lineTo(8126,539);
+			ctx.lineTo(8165,575);
+			ctx.lineTo(8152,590);
+			ctx.lineTo(8107,537);
+			ctx.lineTo(8069,506);
+			ctx.lineTo(7994,478);
+			ctx.lineTo(8059,494);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(8059,749);
-			ctx.bezierCurveTo(8061,749,8064,748,8066,747);
-			ctx.bezierCurveTo(8066,747,8063,748,8059,749);
+			ctx.moveTo(2680,247);
+			ctx.bezierCurveTo(2699,322,2696,387,2696,403);
+			ctx.bezierCurveTo(2694,487,2762,523,2762,592);
+			ctx.bezierCurveTo(2762,713,2762,856,2736,958);
+			ctx.bezierCurveTo(2727,993,2763,1052,2774,1087);
+			ctx.bezierCurveTo(2787,1090,3017,1087,3019,1096);
+			ctx.lineTo(2907,808);
+			ctx.bezierCurveTo(2899,715,2848,423,2848,423);
+			ctx.lineTo(2828,302);
+			ctx.bezierCurveTo(2828,302,2731,-91,2718,-122);
+			ctx.bezierCurveTo(2655,-114,2591,-105,2529,-97);
+			ctx.bezierCurveTo(2563,-102,2642,97,2680,247);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(8932,681);
-			ctx.bezierCurveTo(8924,680,8910,678,8897,677);
-			ctx.bezierCurveTo(8903,678,8914,679,8932,681);
+			ctx.moveTo(2875,232);
+			ctx.lineTo(2788,269);
+			ctx.lineTo(2736,305);
+			ctx.lineTo(2748,333);
+			ctx.lineTo(2811,275);
+			ctx.lineTo(2861,246);
+			ctx.lineTo(2953,239);
+			ctx.lineTo(2875,232);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9695,1431);
-			ctx.bezierCurveTo(9715,1431,9698,1431,9695,1431);
-			ctx.lineTo(9695,1431);
+			ctx.moveTo(2825,9);
+			ctx.lineTo(2770,23);
+			ctx.lineTo(2736,40);
+			ctx.lineTo(2741,57);
+			ctx.lineTo(2783,28);
+			ctx.lineTo(2815,16);
+			ctx.lineTo(2870,19);
+			ctx.lineTo(2825,9);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9791,1435);
-			ctx.bezierCurveTo(9787,1435,9784,1435,9784,1435);
-			ctx.bezierCurveTo(9785,1435,9788,1435,9791,1435);
+			ctx.moveTo(2775,671);
+			ctx.lineTo(2840,650);
+			ctx.lineTo(2876,625);
+			ctx.lineTo(2860,599);
+			ctx.lineTo(2820,642);
+			ctx.lineTo(2784,661);
+			ctx.lineTo(2709,654);
+			ctx.lineTo(2775,671);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2810,283);
+			ctx.lineTo(2906,174);
+			ctx.lineTo(2961,168);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2933,146);
+			ctx.lineTo(2980,170);
+			ctx.bezierCurveTo(2980,170,3007,188,2995,194);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2900,183);
+			ctx.bezierCurveTo(2900,183,2925,146,2909,141);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2961,142);
+			ctx.lineTo(2974,118);
+			ctx.lineTo(2971,101);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2974,167);
+			ctx.lineTo(2978,185);
+			ctx.lineTo(2990,206);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2926,158);
+			ctx.lineTo(2926,134);
+			ctx.lineTo(2947,118);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2932,127);
+			ctx.lineTo(2923,106);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=7;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2762,381);
+			ctx.lineTo(2643,446);
+			ctx.lineTo(2626,490);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2612,464);
+			ctx.lineTo(2624,506);
+			ctx.bezierCurveTo(2624,506,2635,530,2642,521);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=4;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2652,442);
+			ctx.bezierCurveTo(2652,442,2614,458,2613,444);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2603,487);
+			ctx.lineTo(2578,495);
+			ctx.lineTo(2563,490);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2622,500);
+			ctx.lineTo(2638,506);
+			ctx.lineTo(2654,518);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2624,461);
+			ctx.lineTo(2602,458);
+			ctx.lineTo(2584,473);
+		},
+		function(ctx) {
+			ctx.fillStyle='rgba(0,0,0,0)';
+			ctx.strokeStyle='#000000';
+			ctx.lineWidth=2;
+			ctx.miterLimit='10';
+			ctx.beginPath();
+			ctx.moveTo(2595,462);
+			ctx.lineTo(2578,451);
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(8774,1437);
-			ctx.bezierCurveTo(8774,1437,8773,1437,8773,1437);
-			ctx.bezierCurveTo(8779,1437,8778,1437,8774,1437);
+			ctx.moveTo(2910,11);
+			ctx.lineTo(3058,285);
+			ctx.bezierCurveTo(3058,285,3036,483,3199,620);
+			ctx.bezierCurveTo(3362,758,3372,890,3372,890);
+			ctx.lineTo(3280,924);
+			ctx.lineTo(3263,745);
+			ctx.lineTo(3154,624);
+			ctx.lineTo(3028,418);
+			ctx.lineTo(3012,301);
+			ctx.lineTo(2838,-34);
+			ctx.lineTo(2910,11);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9725,1432);
-			ctx.bezierCurveTo(9718,1432,9709,1431,9700,1431);
-			ctx.bezierCurveTo(9704,1431,9711,1431,9725,1432);
+			ctx.moveTo(3209,335);
+			ctx.lineTo(3104,330);
+			ctx.lineTo(3029,338);
+			ctx.lineTo(3018,362);
+			ctx.lineTo(3119,343);
+			ctx.lineTo(3186,340);
+			ctx.lineTo(3272,367);
+			ctx.lineTo(3209,335);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9721,1431);
-			ctx.bezierCurveTo(9728,1431,9733,1431,9738,1431);
-			ctx.bezierCurveTo(9741,1431,9739,1431,9721,1431);
+			ctx.moveTo(3024,149);
+			ctx.lineTo(2989,170);
+			ctx.lineTo(2970,185);
+			ctx.lineTo(2977,191);
+			ctx.lineTo(2999,168);
+			ctx.lineTo(3019,155);
+			ctx.lineTo(3057,142);
+			ctx.lineTo(3024,149);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(9668,1431);
-			ctx.bezierCurveTo(9679,1431,9689,1431,9700,1431);
-			ctx.bezierCurveTo(9696,1431,9694,1431,9695,1431);
-			ctx.bezierCurveTo(9689,1431,9681,1431,9668,1431);
+			ctx.moveTo(3095,546);
+			ctx.lineTo(3162,591);
+			ctx.lineTo(3201,627);
+			ctx.lineTo(3188,642);
+			ctx.lineTo(3143,589);
+			ctx.lineTo(3105,558);
+			ctx.lineTo(3030,530);
+			ctx.lineTo(3095,546);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(6784,857);
-			ctx.bezierCurveTo(6785,857,6786,858,6787,859);
-			ctx.bezierCurveTo(6804,869,6797,865,6784,857);
+			ctx.moveTo(6259,-54);
+			ctx.bezierCurveTo(6300,-87,6408,-106,6388,-155);
+			ctx.bezierCurveTo(6310,-173,6220,-196,6146,-208);
+			ctx.bezierCurveTo(6150,-161,6082,-130,6069,-87);
+			ctx.bezierCurveTo(6056,-40,6045,50,6045,50);
+			ctx.bezierCurveTo(6045,50,6018,335,6032,412);
+			ctx.bezierCurveTo(6046,488,6154,708,6154,708);
+			ctx.bezierCurveTo(6154,708,6135,890,6055,942);
+			ctx.bezierCurveTo(6106,953,6239,952,6291,964);
+			ctx.bezierCurveTo(6353,979,6380,738,6386,693);
+			ctx.bezierCurveTo(6399,595,6188,451,6207,354);
+			ctx.bezierCurveTo(6220,285,6245,219,6245,148);
+			ctx.bezierCurveTo(6245,81,6198,2,6255,-51);
+			ctx.bezierCurveTo(6256,-52,6258,-53,6259,-54);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(7262,1441);
-			ctx.bezierCurveTo(7263,1441,7264,1441,7265,1441);
-			ctx.bezierCurveTo(7264,1441,7263,1441,7262,1441);
-			ctx.lineTo(7262,1441);
+			ctx.moveTo(6040,264);
+			ctx.lineTo(6060,275);
+			ctx.lineTo(6051,230);
+			ctx.lineTo(5982,102);
+			ctx.lineTo(6011,192);
+			ctx.lineTo(6040,264);
 			ctx.closePath();
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(7191,1441);
-			ctx.bezierCurveTo(7222,1440,7239,1440,7262,1441);
-			ctx.lineTo(7238,1438);
-			ctx.lineTo(7191,1441);
+			ctx.moveTo(6177,410);
+			ctx.bezierCurveTo(6200,400,6238,397,6253,374);
+			ctx.bezierCurveTo(6267,355,6274,350,6285,329);
+			ctx.bezierCurveTo(6295,310,6306,307,6327,310);
+			ctx.bezierCurveTo(6337,312,6349,310,6357,309);
+			ctx.bezierCurveTo(6302,320,6288,337,6270,390);
+			ctx.bezierCurveTo(6295,375,6320,360,6345,345);
+			ctx.bezierCurveTo(6298,374,6259,410,6209,435);
+			ctx.bezierCurveTo(6207,436,6180,412,6177,410);
 			ctx.closePath();
+			ctx.fillStyle="#000";
+			ctx.strokeStyle="rgba(0,0,0,0)";
+		},
+		function(ctx) {
+			ctx.beginPath();
+			ctx.moveTo(2040,989);
+			ctx.bezierCurveTo(2013,904,2040,843,2058,757);
+			ctx.bezierCurveTo(2082,639,2051,488,2048,357);
+			ctx.bezierCurveTo(2046,258,2024,74,2055,-33);
+			ctx.bezierCurveTo(1922,-12,1794,-32,1659,-41);
+			ctx.bezierCurveTo(1112,-80,553,7,9,-65);
+			ctx.bezierCurveTo(-36,114,-38,269,-15,452);
+			ctx.bezierCurveTo(8,636,-16,807,-17,991);
+			ctx.bezierCurveTo(-18,1214,133,1230,330,1233);
+			ctx.bezierCurveTo(683,1237,1036,1216,1390,1230);
+			ctx.bezierCurveTo(1673,1241,1952,1230,2235,1222);
+			ctx.bezierCurveTo(2659,1211,3083,1196,3506,1184);
+			ctx.bezierCurveTo(3789,1175,4112,1207,4390,1152);
+			ctx.bezierCurveTo(4434,1143,4577,1080,4577,1080);
+			ctx.bezierCurveTo(4577,1080,4542,903,4371,895);
+			ctx.bezierCurveTo(4200,888,3091,897,2953,873);
+			ctx.bezierCurveTo(2815,849,2064,951,2028,969);
+			ctx.bezierCurveTo(1992,987,2046,1227,2046,1227);
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 		function(ctx) {
-			ctx.fillStyle='#647C4A';
 			ctx.beginPath();
-			ctx.moveTo(5013,861);
-			ctx.bezierCurveTo(5013,861,5012,873,5011,886);
-			ctx.bezierCurveTo(5010,892,5010,898,5009,903);
-			ctx.bezierCurveTo(5009,908,5009,911,5009,911);
-			ctx.bezierCurveTo(5009,902,5009,894,5010,886);
-			ctx.bezierCurveTo(5010,879,5011,872,5011,865);
-			ctx.bezierCurveTo(5012,851,5012,840,5013,835);
-			ctx.bezierCurveTo(5015,833,5016,833,5018,832);
-			ctx.bezierCurveTo(5018,831,5019,831,5019,831);
-			ctx.bezierCurveTo(5019,831,5019,831,5019,831);
-			ctx.bezierCurveTo(5019,831,5019,831,5018,832);
-			ctx.bezierCurveTo(5017,832,5015,833,5012,835);
-			ctx.bezierCurveTo(5012,837,5012,840,5011,844);
-			ctx.bezierCurveTo(5011,847,5011,850,5010,854);
-			ctx.bezierCurveTo(5011,855,5011,868,5009,887);
-			ctx.bezierCurveTo(5009,892,5009,897,5009,902);
-			ctx.bezierCurveTo(5008,907,5008,913,5008,919);
-			ctx.bezierCurveTo(5007,930,5007,942,5006,954);
-			ctx.bezierCurveTo(5006,957,5006,960,5006,963);
-			ctx.bezierCurveTo(5006,966,5006,969,5006,972);
-			ctx.bezierCurveTo(5005,978,5005,984,5005,990);
-			ctx.bezierCurveTo(5005,1002,5005,1012,5005,1022);
-			ctx.bezierCurveTo(5005,1040,5005,1053,5006,1055);
-			ctx.bezierCurveTo(5006,1055,5005,1063,5005,1071);
-			ctx.bezierCurveTo(5005,1080,5005,1088,5005,1088);
-			ctx.bezierCurveTo(5005,1078,5005,1077,5005,1068);
-			ctx.bezierCurveTo(5004,1100,5005,1112,5005,1126);
-			ctx.bezierCurveTo(5006,1140,5006,1156,5006,1198);
-			ctx.bezierCurveTo(5006,1226,5005,1247,5005,1227);
-			ctx.lineTo(5005,1291);
-			ctx.bezierCurveTo(5005,1300,5005,1304,5005,1303);
-			ctx.bezierCurveTo(5005,1302,5005,1300,5005,1298);
-			ctx.bezierCurveTo(5005,1295,5005,1291,5005,1287);
-			ctx.bezierCurveTo(5005,1287,5005,1288,5005,1291);
-			ctx.bezierCurveTo(5005,1293,5005,1297,5005,1302);
-			ctx.bezierCurveTo(5005,1311,5005,1323,5005,1335);
-			ctx.bezierCurveTo(5006,1360,5006,1384,5006,1384);
-			ctx.lineTo(5006,1384);
-			ctx.bezierCurveTo(5006,1387,5006,1392,5007,1397);
-			ctx.bezierCurveTo(5007,1398,5007,1399,5007,1401);
-			ctx.bezierCurveTo(5007,1402,5007,1404,5007,1405);
-			ctx.bezierCurveTo(5007,1408,5007,1411,5007,1414);
-			ctx.bezierCurveTo(5008,1420,5008,1426,5008,1431);
-			ctx.bezierCurveTo(5009,1433,5009,1435,5009,1437);
-			ctx.bezierCurveTo(5009,1437,5009,1438,5009,1439);
-			ctx.bezierCurveTo(5009,1439,5009,1440,5009,1440);
-			ctx.lineTo(5010,1440);
-			ctx.bezierCurveTo(5010,1440,5010,1440,5011,1440);
-			ctx.bezierCurveTo(5014,1440,5017,1440,5020,1440);
-			ctx.bezierCurveTo(5032,1440,5029,1440,5024,1440);
-			ctx.bezierCurveTo(5020,1440,5016,1440,5014,1440);
-			ctx.bezierCurveTo(5010,1440,5009,1440,5011,1440);
-			ctx.lineTo(5068,1440);
-			ctx.bezierCurveTo(5079,1440,5073,1440,5060,1441);
-			ctx.bezierCurveTo(5053,1441,5045,1441,5036,1441);
-			ctx.bezierCurveTo(5031,1441,5027,1441,5022,1441);
-			ctx.bezierCurveTo(5019,1441,5015,1441,5012,1441);
-			ctx.lineTo(5009,1441);
-			ctx.lineTo(5008,1441);
-			ctx.bezierCurveTo(5008,1441,5008,1441,5008,1441);
-			ctx.lineTo(5008,1440);
-			ctx.lineTo(5008,1440);
-			ctx.bezierCurveTo(5008,1438,5008,1436,5008,1434);
-			ctx.bezierCurveTo(5008,1435,5008,1437,5008,1438);
-			ctx.bezierCurveTo(5008,1439,5008,1439,5008,1440);
-			ctx.lineTo(5008,1441);
-			ctx.lineTo(5008,1441);
-			ctx.lineTo(5008,1441);
-			ctx.lineTo(5008,1441);
-			ctx.lineTo(5008,1441);
-			ctx.lineTo(5008,1441);
-			ctx.bezierCurveTo(5010,1441,5012,1441,5015,1441);
-			ctx.bezierCurveTo(5016,1441,5017,1441,5018,1441);
-			ctx.bezierCurveTo(5018,1441,5019,1441,5019,1442);
-			ctx.bezierCurveTo(5020,1442,5020,1442,5020,1442);
-			ctx.bezierCurveTo(5022,1442,5023,1442,5024,1442);
-			ctx.bezierCurveTo(5029,1442,5033,1442,5038,1442);
-			ctx.bezierCurveTo(5046,1442,5053,1442,5063,1442);
-			ctx.bezierCurveTo(5081,1442,5107,1441,5162,1442);
-			ctx.lineTo(5110,1442);
-			ctx.bezierCurveTo(5143,1444,5183,1443,5241,1444);
-			ctx.bezierCurveTo(5227,1444,5125,1442,5184,1441);
-			ctx.bezierCurveTo(5201,1441,5222,1441,5254,1441);
-			ctx.bezierCurveTo(5254,1441,5262,1441,5275,1442);
-			ctx.bezierCurveTo(5287,1442,5305,1441,5324,1441);
-			ctx.lineTo(5321,1443);
-			ctx.bezierCurveTo(5363,1442,5360,1442,5385,1441);
-			ctx.bezierCurveTo(5431,1441,5441,1442,5452,1443);
-			ctx.bezierCurveTo(5527,1443,5400,1442,5489,1441);
-			ctx.bezierCurveTo(5551,1442,5594,1441,5669,1440);
-			ctx.bezierCurveTo(5712,1441,5661,1441,5677,1442);
-			ctx.lineTo(5715,1441);
-			ctx.bezierCurveTo(5725,1441,5722,1441,5720,1441);
-			ctx.bezierCurveTo(5753,1441,5723,1440,5774,1439);
-			ctx.bezierCurveTo(5788,1438,5879,1442,5942,1440);
-			ctx.bezierCurveTo(5957,1440,5934,1441,5939,1441);
-			ctx.bezierCurveTo(6026,1440,6013,1440,6085,1439);
-			ctx.lineTo(6145,1440);
-			ctx.bezierCurveTo(6101,1439,6158,1438,6207,1437);
-			ctx.bezierCurveTo(6192,1436,6178,1436,6169,1436);
-			ctx.lineTo(6249,1435);
-			ctx.bezierCurveTo(6258,1435,6250,1436,6237,1436);
-			ctx.bezierCurveTo(6243,1436,6248,1436,6252,1436);
-			ctx.bezierCurveTo(6280,1436,6265,1437,6245,1438);
-			ctx.bezierCurveTo(6235,1438,6226,1437,6216,1437);
-			ctx.bezierCurveTo(6197,1438,6178,1439,6182,1439);
-			ctx.bezierCurveTo(6188,1439,6198,1439,6209,1439);
-			ctx.bezierCurveTo(6203,1439,6200,1440,6203,1440);
-			ctx.bezierCurveTo(6205,1440,6214,1440,6227,1439);
-			ctx.lineTo(6245,1441);
-			ctx.lineTo(6249,1440);
-			ctx.lineTo(6353,1441);
-			ctx.bezierCurveTo(6428,1440,6492,1437,6611,1437);
-			ctx.bezierCurveTo(6581,1438,6604,1439,6603,1440);
-			ctx.bezierCurveTo(6570,1438,6511,1440,6450,1440);
-			ctx.bezierCurveTo(6482,1440,6475,1441,6467,1441);
-			ctx.lineTo(6576,1440);
-			ctx.bezierCurveTo(6574,1441,6599,1441,6628,1441);
-			ctx.bezierCurveTo(6606,1439,6709,1440,6754,1439);
-			ctx.bezierCurveTo(6756,1440,6746,1440,6691,1440);
-			ctx.bezierCurveTo(6751,1442,6769,1438,6828,1439);
-			ctx.bezierCurveTo(6814,1439,6807,1439,6802,1439);
-			ctx.bezierCurveTo(6833,1439,6909,1439,6891,1440);
-			ctx.lineTo(6878,1440);
-			ctx.bezierCurveTo(6965,1440,7145,1440,7158,1438);
-			ctx.bezierCurveTo(7159,1438,7147,1440,7141,1441);
-			ctx.lineTo(7298,1435);
-			ctx.bezierCurveTo(7285,1436,7338,1440,7265,1441);
-			ctx.bezierCurveTo(7286,1441,7312,1441,7356,1441);
-			ctx.bezierCurveTo(7341,1440,7320,1438,7340,1438);
-			ctx.bezierCurveTo(7393,1440,7377,1439,7443,1441);
-			ctx.bezierCurveTo(7421,1440,7445,1438,7479,1438);
-			ctx.bezierCurveTo(7474,1438,7482,1440,7470,1441);
-			ctx.lineTo(7554,1438);
-			ctx.bezierCurveTo(7533,1439,7550,1440,7569,1441);
-			ctx.bezierCurveTo(7560,1440,7642,1441,7664,1441);
-			ctx.lineTo(7628,1440);
-			ctx.bezierCurveTo(7723,1440,7722,1437,7817,1437);
-			ctx.bezierCurveTo(7805,1438,7788,1440,7836,1440);
-			ctx.bezierCurveTo(7858,1439,7934,1435,8017,1434);
-			ctx.lineTo(8033,1434);
-			ctx.lineTo(8097,1434);
-			ctx.bezierCurveTo(8057,1435,7945,1439,7884,1441);
-			ctx.bezierCurveTo(7920,1441,7894,1441,7948,1441);
-			ctx.bezierCurveTo(7966,1442,7919,1442,7903,1442);
-			ctx.lineTo(8027,1443);
-			ctx.bezierCurveTo(8021,1441,8122,1441,8117,1440);
-			ctx.lineTo(7982,1442);
-			ctx.bezierCurveTo(7977,1440,8060,1438,8148,1438);
-			ctx.bezierCurveTo(8170,1438,8131,1440,8133,1441);
-			ctx.bezierCurveTo(8145,1440,8217,1440,8225,1440);
-			ctx.lineTo(8187,1441);
-			ctx.bezierCurveTo(8236,1441,8267,1439,8326,1440);
-			ctx.bezierCurveTo(8346,1441,8387,1442,8390,1441);
-			ctx.bezierCurveTo(8357,1440,8351,1435,8373,1434);
-			ctx.bezierCurveTo(8380,1434,8479,1435,8502,1436);
-			ctx.bezierCurveTo(8536,1437,8452,1439,8481,1440);
-			ctx.bezierCurveTo(8482,1440,8500,1439,8508,1439);
-			ctx.bezierCurveTo(8529,1439,8499,1440,8546,1440);
-			ctx.bezierCurveTo(8553,1439,8640,1440,8568,1439);
-			ctx.bezierCurveTo(8613,1439,8616,1439,8669,1439);
-			ctx.bezierCurveTo(8652,1438,8717,1436,8762,1436);
-			ctx.bezierCurveTo(8759,1436,8770,1437,8774,1437);
-			ctx.bezierCurveTo(8867,1437,8917,1438,9004,1438);
-			ctx.bezierCurveTo(9012,1438,9054,1438,9036,1439);
-			ctx.bezierCurveTo(9048,1439,9060,1438,9086,1438);
-			ctx.bezierCurveTo(9138,1439,9027,1438,9066,1440);
-			ctx.bezierCurveTo(9070,1439,9135,1439,9173,1438);
-			ctx.bezierCurveTo(9162,1437,9085,1438,9047,1438);
-			ctx.bezierCurveTo(9047,1438,9051,1438,9059,1437);
-			ctx.bezierCurveTo(9067,1437,9078,1436,9092,1436);
-			ctx.bezierCurveTo(9120,1435,9159,1435,9204,1434);
-			ctx.bezierCurveTo(9276,1434,9235,1435,9248,1435);
-			ctx.bezierCurveTo(9383,1435,9363,1432,9475,1433);
-			ctx.bezierCurveTo(9520,1434,9477,1435,9487,1436);
-			ctx.bezierCurveTo(9428,1437,9397,1435,9357,1436);
-			ctx.lineTo(9406,1436);
-			ctx.bezierCurveTo(9387,1436,9348,1437,9327,1436);
-			ctx.bezierCurveTo(9364,1437,9555,1437,9660,1437);
-			ctx.bezierCurveTo(9678,1437,9710,1437,9695,1436);
-			ctx.lineTo(9662,1436);
-			ctx.bezierCurveTo(9632,1436,9724,1435,9682,1435);
-			ctx.bezierCurveTo(9727,1434,9776,1433,9838,1434);
-			ctx.lineTo(9850,1435);
-			ctx.bezierCurveTo(9849,1435,9809,1434,9792,1435);
-			ctx.bezierCurveTo(9798,1434,9807,1435,9818,1435);
-			ctx.bezierCurveTo(9828,1435,9840,1435,9852,1435);
-			ctx.bezierCurveTo(9857,1432,9862,1429,9867,1426);
-			ctx.bezierCurveTo(9873,1424,9878,1421,9883,1418);
-			ctx.bezierCurveTo(9892,1413,9901,1408,9907,1404);
-			ctx.lineTo(9868,1424);
-			ctx.bezierCurveTo(9907,1402,9954,1374,10002,1347);
-			ctx.bezierCurveTo(9980,1359,9991,1354,9956,1372);
-			ctx.bezierCurveTo(9987,1357,9833,1441,9882,1416);
-			ctx.bezierCurveTo(9876,1418,9871,1421,9865,1424);
-			ctx.bezierCurveTo(9860,1427,9856,1429,9851,1432);
-			ctx.lineTo(9850,1432);
-			ctx.lineTo(9847,1432);
-			ctx.bezierCurveTo(9846,1432,9844,1432,9843,1432);
-			ctx.bezierCurveTo(9839,1432,9836,1432,9833,1432);
-			ctx.bezierCurveTo(9827,1432,9820,1432,9813,1431);
-			ctx.bezierCurveTo(9799,1431,9784,1431,9766,1431);
-			ctx.bezierCurveTo(9768,1431,9785,1431,9738,1431);
-			ctx.bezierCurveTo(9736,1431,9731,1432,9728,1432);
-			ctx.bezierCurveTo(9727,1432,9726,1432,9725,1432);
-			ctx.bezierCurveTo(9726,1432,9727,1432,9727,1432);
-			ctx.bezierCurveTo(9725,1432,9725,1432,9728,1432);
-			ctx.bezierCurveTo(9739,1432,9748,1432,9752,1432);
-			ctx.bezierCurveTo(9729,1433,9655,1433,9630,1434);
-			ctx.bezierCurveTo(9603,1433,9642,1433,9627,1433);
-			ctx.lineTo(9590,1433);
-			ctx.bezierCurveTo(9586,1433,9517,1432,9581,1431);
-			ctx.lineTo(9523,1431);
-			ctx.bezierCurveTo(9489,1431,9442,1431,9412,1431);
-			ctx.bezierCurveTo(9385,1431,9343,1432,9367,1431);
-			ctx.lineTo(9275,1432);
-			ctx.lineTo(9275,1432);
-			ctx.bezierCurveTo(9184,1432,9089,1433,8986,1432);
-			ctx.bezierCurveTo(8955,1432,8924,1432,8873,1432);
-			ctx.lineTo(8863,1431);
-			ctx.bezierCurveTo(8824,1431,8746,1430,8729,1431);
-			ctx.bezierCurveTo(8687,1429,8540,1431,8472,1430);
-			ctx.lineTo(8469,1431);
-			ctx.bezierCurveTo(8422,1431,8376,1431,8318,1432);
-			ctx.lineTo(8321,1433);
-			ctx.bezierCurveTo(8271,1434,8192,1432,8112,1432);
-			ctx.bezierCurveTo(8117,1432,8137,1432,8152,1432);
-			ctx.bezierCurveTo(8056,1430,7950,1434,7864,1432);
-			ctx.bezierCurveTo(7842,1433,7826,1432,7811,1432);
-			ctx.bezierCurveTo(7813,1432,7815,1432,7817,1432);
-			ctx.bezierCurveTo(7814,1432,7811,1432,7808,1432);
-			ctx.bezierCurveTo(7798,1432,7788,1432,7778,1432);
-			ctx.bezierCurveTo(7787,1432,7796,1432,7803,1432);
-			ctx.bezierCurveTo(7786,1432,7761,1432,7736,1432);
-			ctx.lineTo(7726,1432);
-			ctx.bezierCurveTo(7724,1432,7722,1432,7720,1432);
-			ctx.bezierCurveTo(7696,1431,7701,1432,7714,1433);
-			ctx.bezierCurveTo(7701,1433,7690,1433,7681,1433);
-			ctx.bezierCurveTo(7661,1432,7616,1434,7589,1432);
-			ctx.bezierCurveTo(7572,1433,7465,1433,7451,1434);
-			ctx.bezierCurveTo(7451,1434,7443,1434,7457,1434);
-			ctx.bezierCurveTo(7429,1434,7402,1434,7377,1434);
-			ctx.lineTo(7365,1433);
-			ctx.lineTo(7305,1435);
-			ctx.bezierCurveTo(7268,1434,7253,1433,7289,1433);
-			ctx.bezierCurveTo(7202,1434,7218,1433,7144,1435);
-			ctx.lineTo(7147,1434);
-			ctx.bezierCurveTo(7121,1434,7078,1435,7062,1434);
-			ctx.bezierCurveTo(7002,1433,6767,1434,6614,1433);
-			ctx.bezierCurveTo(6643,1435,6542,1432,6536,1433);
-			ctx.bezierCurveTo(6527,1433,6506,1432,6531,1432);
-			ctx.bezierCurveTo(6453,1433,6414,1431,6360,1433);
-			ctx.bezierCurveTo(6351,1432,6376,1432,6368,1431);
-			ctx.bezierCurveTo(6362,1432,6344,1432,6335,1432);
-			ctx.bezierCurveTo(6327,1431,6347,1431,6359,1431);
-			ctx.bezierCurveTo(6279,1431,6271,1433,6265,1434);
-			ctx.bezierCurveTo(6225,1434,6205,1434,6176,1435);
-			ctx.bezierCurveTo(6162,1434,6138,1434,6188,1433);
-			ctx.bezierCurveTo(6174,1433,6131,1433,6092,1433);
-			ctx.bezierCurveTo(6052,1433,6016,1433,6014,1434);
-			ctx.bezierCurveTo(6006,1434,5975,1434,5968,1434);
-			ctx.bezierCurveTo(5905,1434,5900,1434,5838,1434);
-			ctx.lineTo(5855,1434);
-			ctx.bezierCurveTo(5831,1436,5804,1435,5755,1435);
-			ctx.lineTo(5756,1435);
-			ctx.bezierCurveTo(5643,1433,5707,1435,5595,1434);
-			ctx.lineTo(5601,1435);
-			ctx.bezierCurveTo(5591,1437,5502,1434,5437,1434);
-			ctx.lineTo(5460,1435);
-			ctx.bezierCurveTo(5425,1436,5361,1432,5325,1432);
-			ctx.bezierCurveTo(5317,1432,5337,1432,5348,1431);
-			ctx.bezierCurveTo(5255,1430,5336,1433,5267,1433);
-			ctx.bezierCurveTo(5254,1432,5283,1431,5236,1431);
-			ctx.bezierCurveTo(5213,1431,5100,1433,5036,1432);
-			ctx.bezierCurveTo(5050,1433,5064,1433,5032,1433);
-			ctx.bezierCurveTo(5029,1433,5026,1433,5022,1433);
-			ctx.bezierCurveTo(5020,1433,5018,1433,5015,1433);
-			ctx.bezierCurveTo(5015,1427,5015,1421,5015,1414);
-			ctx.bezierCurveTo(5014,1410,5014,1406,5014,1402);
-			ctx.bezierCurveTo(5014,1398,5014,1394,5014,1390);
-			ctx.bezierCurveTo(5014,1382,5014,1374,5014,1366);
-			ctx.bezierCurveTo(5014,1349,5014,1333,5014,1318);
-			ctx.bezierCurveTo(5014,1303,5013,1289,5013,1278);
-			ctx.bezierCurveTo(5013,1272,5013,1269,5013,1269);
-			ctx.bezierCurveTo(5013,1231,5013,1146,5012,1123);
-			ctx.bezierCurveTo(5014,1106,5013,1047,5014,992);
-			ctx.bezierCurveTo(5015,965,5016,939,5017,920);
-			ctx.bezierCurveTo(5018,901,5019,888,5020,889);
-			ctx.bezierCurveTo(5021,873,5022,857,5023,841);
-			ctx.bezierCurveTo(5023,841,5024,840,5025,840);
-			ctx.lineTo(5028,838);
-			ctx.bezierCurveTo(5031,836,5033,835,5036,834);
-			ctx.bezierCurveTo(5040,831,5045,828,5050,825);
-			ctx.bezierCurveTo(5060,820,5069,815,5079,809);
-			ctx.lineTo(5077,811);
-			ctx.bezierCurveTo(5093,802,5107,795,5119,790);
-			ctx.bezierCurveTo(5125,787,5131,784,5136,782);
-			ctx.bezierCurveTo(5141,779,5145,777,5150,775);
-			ctx.bezierCurveTo(5158,771,5166,767,5172,764);
-			ctx.bezierCurveTo(5179,761,5185,758,5191,756);
-			ctx.bezierCurveTo(5207,749,5195,754,5194,755);
-			ctx.bezierCurveTo(5200,752,5206,750,5212,748);
-			ctx.bezierCurveTo(5217,745,5223,743,5228,741);
-			ctx.bezierCurveTo(5233,739,5238,737,5242,735);
-			ctx.bezierCurveTo(5247,734,5251,732,5255,730);
-			ctx.bezierCurveTo(5272,724,5285,719,5298,715);
-			ctx.bezierCurveTo(5305,712,5311,710,5318,708);
-			ctx.bezierCurveTo(5324,705,5331,703,5338,700);
-			ctx.bezierCurveTo(5353,695,5370,690,5392,683);
-			ctx.bezierCurveTo(5392,683,5394,682,5396,682);
-			ctx.bezierCurveTo(5399,681,5401,681,5401,681);
-			ctx.bezierCurveTo(5413,677,5451,667,5499,656);
-			ctx.bezierCurveTo(5502,655,5505,654,5508,653);
-			ctx.bezierCurveTo(5511,653,5514,652,5518,651);
-			ctx.bezierCurveTo(5524,650,5530,649,5537,647);
-			ctx.bezierCurveTo(5543,646,5550,645,5557,643);
-			ctx.bezierCurveTo(5564,642,5570,641,5577,639);
-			ctx.bezierCurveTo(5584,638,5591,637,5598,636);
-			ctx.bezierCurveTo(5605,634,5611,633,5618,632);
-			ctx.bezierCurveTo(5632,630,5645,628,5659,626);
-			ctx.bezierCurveTo(5658,626,5655,626,5647,628);
-			ctx.bezierCurveTo(5651,627,5655,627,5658,626);
-			ctx.bezierCurveTo(5662,625,5666,625,5670,624);
-			ctx.bezierCurveTo(5678,623,5686,622,5694,621);
-			ctx.bezierCurveTo(5696,621,5698,621,5700,620);
-			ctx.bezierCurveTo(5702,620,5704,620,5706,620);
-			ctx.bezierCurveTo(5710,619,5714,619,5718,619);
-			ctx.bezierCurveTo(5722,618,5726,618,5730,617);
-			ctx.bezierCurveTo(5734,617,5738,616,5743,616);
-			ctx.bezierCurveTo(5751,615,5759,615,5767,614);
-			ctx.bezierCurveTo(5776,614,5784,613,5792,613);
-			ctx.bezierCurveTo(5796,612,5800,612,5804,612);
-			ctx.bezierCurveTo(5808,612,5812,611,5816,611);
-			ctx.bezierCurveTo(5824,611,5832,611,5840,610);
-			ctx.bezierCurveTo(5902,609,5955,610,5977,610);
-			ctx.bezierCurveTo(5977,610,5978,610,5980,610);
-			ctx.bezierCurveTo(5982,610,5983,610,5984,610);
-			ctx.bezierCurveTo(5986,610,5988,610,5989,610);
-			ctx.bezierCurveTo(5997,611,6007,611,6017,612);
-			ctx.bezierCurveTo(6019,612,6022,612,6024,612);
-			ctx.bezierCurveTo(6026,612,6029,612,6031,613);
-			ctx.bezierCurveTo(6036,613,6040,613,6044,613);
-			ctx.bezierCurveTo(6051,614,6056,614,6056,614);
-			ctx.bezierCurveTo(6031,612,6019,611,6015,611);
-			ctx.bezierCurveTo(6011,610,6015,610,6020,610);
-			ctx.bezierCurveTo(6023,610,6026,611,6029,611);
-			ctx.bezierCurveTo(6032,611,6035,611,6037,611);
-			ctx.bezierCurveTo(6040,611,6040,611,6029,610);
-			ctx.bezierCurveTo(6039,611,6051,612,6062,613);
-			ctx.bezierCurveTo(6073,614,6083,615,6090,616);
-			ctx.bezierCurveTo(6098,617,6102,618,6102,618);
-			ctx.bezierCurveTo(6102,618,6100,618,6097,618);
-			ctx.bezierCurveTo(6094,617,6090,617,6084,616);
-			ctx.lineTo(6076,615);
-			ctx.bezierCurveTo(6067,615,6099,619,6132,623);
-			ctx.bezierCurveTo(6140,625,6149,626,6157,627);
-			ctx.bezierCurveTo(6165,629,6172,630,6179,631);
-			ctx.bezierCurveTo(6191,633,6200,635,6199,635);
-			ctx.bezierCurveTo(6249,644,6297,656,6345,669);
-			ctx.bezierCurveTo(6357,673,6369,676,6381,680);
-			ctx.bezierCurveTo(6393,684,6404,687,6416,691);
-			ctx.bezierCurveTo(6419,692,6422,693,6425,694);
-			ctx.lineTo(6433,697);
-			ctx.bezierCurveTo(6439,699,6445,701,6451,703);
-			ctx.lineTo(6460,706);
-			ctx.bezierCurveTo(6462,707,6465,708,6468,710);
-			ctx.bezierCurveTo(6474,712,6480,714,6485,716);
-			ctx.bezierCurveTo(6497,721,6508,725,6519,730);
-			ctx.bezierCurveTo(6525,732,6531,734,6536,737);
-			ctx.lineTo(6545,740);
-			ctx.bezierCurveTo(6547,741,6550,742,6553,744);
-			ctx.bezierCurveTo(6564,749,6575,754,6586,759);
-			ctx.bezierCurveTo(6592,761,6597,764,6602,766);
-			ctx.bezierCurveTo(6608,769,6613,771,6619,774);
-			ctx.bezierCurveTo(6624,777,6630,779,6635,782);
-			ctx.bezierCurveTo(6640,785,6646,787,6651,790);
-			ctx.bezierCurveTo(6656,793,6662,796,6667,798);
-			ctx.bezierCurveTo(6672,801,6677,804,6683,807);
-			ctx.bezierCurveTo(6693,812,6704,818,6714,824);
-			ctx.bezierCurveTo(6717,825,6719,826,6722,828);
-			ctx.lineTo(6729,832);
-			ctx.bezierCurveTo(6734,835,6740,838,6745,841);
-			ctx.lineTo(6727,829);
-			ctx.bezierCurveTo(6727,829,6741,837,6755,846);
-			ctx.bezierCurveTo(6759,848,6762,850,6765,852);
-			ctx.bezierCurveTo(6769,854,6772,856,6774,857);
-			ctx.bezierCurveTo(6780,861,6783,863,6783,863);
-			ctx.bezierCurveTo(6798,872,6802,876,6762,851);
-			ctx.bezierCurveTo(6773,858,6790,868,6804,877);
-			ctx.bezierCurveTo(6818,885,6830,893,6831,893);
-			ctx.bezierCurveTo(6850,905,6858,910,6859,911);
-			ctx.bezierCurveTo(6860,912,6855,909,6847,904);
-			ctx.bezierCurveTo(6833,896,6812,883,6824,890);
-			ctx.lineTo(6856,910);
-			ctx.lineTo(6849,906);
-			ctx.bezierCurveTo(6862,914,6870,918,6880,924);
-			ctx.bezierCurveTo(6890,930,6902,938,6926,952);
-			ctx.bezierCurveTo(6957,971,6942,963,6954,970);
-			ctx.bezierCurveTo(6954,970,6954,970,6954,971);
-			ctx.bezierCurveTo(6955,971,6956,971,6957,972);
-			ctx.bezierCurveTo(6960,974,6965,977,6972,981);
-			ctx.bezierCurveTo(6972,981,6977,984,6983,988);
-			ctx.bezierCurveTo(6990,992,6999,997,7008,1002);
-			ctx.bezierCurveTo(7026,1013,7044,1023,7044,1023);
-			ctx.lineTo(7016,1006);
-			ctx.bezierCurveTo(7048,1024,7083,1045,7051,1025);
-			ctx.bezierCurveTo(7063,1032,7085,1045,7114,1061);
-			ctx.bezierCurveTo(7142,1077,7175,1095,7209,1111);
-			ctx.bezierCurveTo(7242,1128,7276,1143,7303,1154);
-			ctx.bezierCurveTo(7317,1160,7329,1164,7339,1168);
-			ctx.bezierCurveTo(7349,1171,7356,1174,7361,1175);
-			ctx.bezierCurveTo(7367,1177,7373,1178,7380,1180);
-			ctx.bezierCurveTo(7386,1181,7392,1182,7399,1183);
-			ctx.bezierCurveTo(7405,1184,7412,1185,7419,1185);
-			ctx.bezierCurveTo(7426,1185,7432,1185,7439,1183);
-			ctx.bezierCurveTo(7443,1182,7446,1181,7450,1179);
-			ctx.bezierCurveTo(7453,1178,7456,1175,7459,1173);
-			ctx.bezierCurveTo(7461,1170,7463,1167,7465,1163);
-			ctx.bezierCurveTo(7466,1159,7467,1156,7467,1152);
-			ctx.bezierCurveTo(7468,1144,7467,1137,7466,1129);
-			ctx.bezierCurveTo(7464,1122,7462,1114,7459,1107);
-			ctx.bezierCurveTo(7461,1114,7463,1120,7462,1118);
-			ctx.bezierCurveTo(7461,1117,7460,1114,7458,1108);
-			ctx.bezierCurveTo(7455,1101,7451,1093,7445,1080);
-			ctx.bezierCurveTo(7448,1085,7446,1080,7441,1070);
-			ctx.bezierCurveTo(7438,1064,7434,1058,7430,1051);
-			ctx.bezierCurveTo(7428,1047,7425,1043,7423,1039);
-			ctx.bezierCurveTo(7421,1037,7420,1036,7419,1034);
-			ctx.bezierCurveTo(7418,1033,7417,1031,7417,1030);
-			ctx.bezierCurveTo(7416,1030,7416,1030,7416,1030);
-			ctx.lineTo(7417,1030);
-			ctx.lineTo(7417,1030);
-			ctx.lineTo(7417,1030);
-			ctx.lineTo(7417,1030);
-			ctx.lineTo(7418,1029);
-			ctx.lineTo(7419,1028);
-			ctx.bezierCurveTo(7421,1028,7422,1027,7423,1026);
-			ctx.bezierCurveTo(7427,1024,7430,1022,7433,1020);
-			ctx.bezierCurveTo(7440,1016,7446,1013,7453,1009);
-			ctx.bezierCurveTo(7465,1002,7477,996,7486,992);
-			ctx.bezierCurveTo(7468,1001,7502,982,7534,965);
-			ctx.bezierCurveTo(7542,961,7549,957,7556,954);
-			ctx.bezierCurveTo(7563,950,7569,947,7573,945);
-			ctx.bezierCurveTo(7581,941,7581,941,7567,947);
-			ctx.bezierCurveTo(7587,937,7588,937,7588,938);
-			ctx.bezierCurveTo(7587,938,7585,939,7601,932);
-			ctx.bezierCurveTo(7649,908,7704,884,7762,861);
-			ctx.bezierCurveTo(7820,837,7882,815,7945,794);
-			ctx.bezierCurveTo(7947,793,7926,799,7953,790);
-			ctx.bezierCurveTo(7953,790,7957,788,7963,786);
-			ctx.bezierCurveTo(7969,785,7978,782,7986,780);
-			ctx.bezierCurveTo(7995,777,8003,775,8010,773);
-			ctx.bezierCurveTo(8016,771,8020,770,8020,770);
-			ctx.bezierCurveTo(8027,768,8031,767,8035,765);
-			ctx.bezierCurveTo(8039,764,8043,763,8047,761);
-			ctx.bezierCurveTo(8051,760,8056,758,8063,757);
-			ctx.bezierCurveTo(8069,755,8078,752,8090,750);
-			ctx.bezierCurveTo(8083,751,8073,753,8090,749);
-			ctx.bezierCurveTo(8098,746,8106,744,8114,742);
-			ctx.bezierCurveTo(8118,741,8122,740,8126,739);
-			ctx.bezierCurveTo(8130,738,8134,737,8138,736);
-			ctx.bezierCurveTo(8146,735,8154,733,8162,731);
-			ctx.bezierCurveTo(8170,729,8178,727,8186,725);
-			ctx.bezierCurveTo(8190,724,8194,723,8198,722);
-			ctx.bezierCurveTo(8202,721,8206,721,8210,720);
-			ctx.bezierCurveTo(8218,718,8226,716,8234,714);
-			ctx.bezierCurveTo(8250,711,8267,708,8283,705);
-			ctx.bezierCurveTo(8316,698,8348,693,8381,688);
-			ctx.bezierCurveTo(8398,686,8415,683,8431,681);
-			ctx.bezierCurveTo(8439,680,8448,679,8456,678);
-			ctx.bezierCurveTo(8464,678,8473,677,8481,676);
-			ctx.bezierCurveTo(8485,675,8489,675,8493,674);
-			ctx.lineTo(8506,673);
-			ctx.lineTo(8531,671);
-			ctx.lineTo(8556,669);
-			ctx.lineTo(8569,669);
-			ctx.lineTo(8581,668);
-			ctx.lineTo(8606,667);
-			ctx.bezierCurveTo(8615,666,8623,666,8631,666);
-			ctx.bezierCurveTo(8648,665,8665,665,8682,665);
-			ctx.lineTo(8688,665);
-			ctx.lineTo(8694,665);
-			ctx.lineTo(8707,665);
-			ctx.lineTo(8719,665);
-			ctx.lineTo(8726,666);
-			ctx.bezierCurveTo(8728,666,8730,666,8732,666);
-			ctx.bezierCurveTo(8740,666,8748,666,8757,667);
-			ctx.lineTo(8769,667);
-			ctx.lineTo(8782,668);
-			ctx.bezierCurveTo(8790,668,8798,669,8807,669);
-			ctx.lineTo(8810,669);
-			ctx.lineTo(8813,670);
-			ctx.lineTo(8819,670);
-			ctx.lineTo(8832,671);
-			ctx.lineTo(8844,672);
-			ctx.lineTo(8850,673);
-			ctx.lineTo(8856,673);
-			ctx.bezierCurveTo(8865,674,8873,675,8881,676);
-			ctx.bezierCurveTo(8863,674,8860,673,8865,674);
-			ctx.bezierCurveTo(8868,674,8872,674,8878,675);
-			ctx.bezierCurveTo(8880,675,8883,675,8887,676);
-			ctx.bezierCurveTo(8888,676,8890,676,8892,676);
-			ctx.bezierCurveTo(8893,676,8895,677,8897,677);
-			ctx.bezierCurveTo(8879,675,8897,676,8894,675);
-			ctx.bezierCurveTo(8894,675,8901,676,8911,677);
-			ctx.bezierCurveTo(8916,678,8922,679,8928,680);
-			ctx.bezierCurveTo(8930,680,8932,680,8933,680);
-			ctx.bezierCurveTo(8935,680,8937,681,8938,681);
-			ctx.bezierCurveTo(8942,682,8945,682,8949,683);
-			ctx.bezierCurveTo(8962,685,8976,687,8986,689);
-			ctx.bezierCurveTo(8997,690,9003,692,9003,692);
-			ctx.bezierCurveTo(9006,692,9010,692,9014,693);
-			ctx.bezierCurveTo(9019,694,9024,695,9030,696);
-			ctx.bezierCurveTo(9036,697,9043,698,9050,700);
-			ctx.bezierCurveTo(9052,700,9053,700,9055,701);
-			ctx.bezierCurveTo(9057,701,9059,701,9060,702);
-			ctx.bezierCurveTo(9064,702,9067,703,9071,704);
-			ctx.bezierCurveTo(9078,705,9085,707,9091,708);
-			ctx.bezierCurveTo(9095,709,9098,710,9101,710);
-			ctx.bezierCurveTo(9104,711,9107,712,9110,712);
-			ctx.bezierCurveTo(9120,715,9129,717,9131,717);
-			ctx.bezierCurveTo(9131,717,9123,715,9114,713);
-			ctx.bezierCurveTo(9110,712,9106,711,9103,710);
-			ctx.bezierCurveTo(9099,710,9097,709,9097,709);
-			ctx.bezierCurveTo(9100,710,9102,710,9104,711);
-			ctx.bezierCurveTo(9106,711,9107,711,9108,711);
-			ctx.bezierCurveTo(9109,711,9109,711,9107,710);
-			ctx.bezierCurveTo(9105,710,9102,709,9098,708);
-			ctx.bezierCurveTo(9094,706,9089,705,9084,704);
-			ctx.bezierCurveTo(9079,702,9073,701,9068,700);
-			ctx.bezierCurveTo(9065,699,9063,698,9060,698);
-			ctx.bezierCurveTo(9058,697,9055,696,9053,696);
-			ctx.bezierCurveTo(9045,694,9039,692,9041,692);
-			ctx.bezierCurveTo(9034,691,9027,690,9020,688);
-			ctx.bezierCurveTo(9019,688,9018,688,9017,688);
-			ctx.bezierCurveTo(9016,688,9015,688,9014,687);
-			ctx.bezierCurveTo(9012,687,9010,687,9008,687);
-			ctx.bezierCurveTo(9005,686,9001,685,8996,684);
-			ctx.bezierCurveTo(8992,684,8988,683,8984,682);
-			ctx.bezierCurveTo(8979,681,8975,681,8970,680);
-			ctx.bezierCurveTo(8961,679,8952,677,8943,676);
-			ctx.bezierCurveTo(8940,675,8938,675,8935,674);
-			ctx.bezierCurveTo(8933,674,8930,674,8928,673);
-			ctx.bezierCurveTo(8923,673,8918,672,8913,672);
-			ctx.bezierCurveTo(8903,670,8893,669,8882,668);
-			ctx.bezierCurveTo(8872,667,8861,666,8850,665);
-			ctx.bezierCurveTo(8840,664,8829,664,8818,663);
-			ctx.bezierCurveTo(8799,662,8834,664,8824,663);
-			ctx.bezierCurveTo(8813,662,8801,662,8786,661);
-			ctx.bezierCurveTo(8771,660,8752,660,8727,659);
-			ctx.bezierCurveTo(8727,659,8729,659,8730,659);
-			ctx.bezierCurveTo(8731,659,8733,659,8733,659);
-			ctx.bezierCurveTo(8729,659,8724,659,8720,659);
-			ctx.bezierCurveTo(8716,659,8712,659,8708,659);
-			ctx.bezierCurveTo(8704,659,8700,659,8696,659);
-			ctx.bezierCurveTo(8692,659,8688,659,8685,659);
-			ctx.bezierCurveTo(8677,659,8670,659,8663,659);
-			ctx.bezierCurveTo(8656,659,8649,659,8642,659);
-			ctx.bezierCurveTo(8635,659,8628,660,8622,660);
-			ctx.bezierCurveTo(8615,660,8609,660,8602,660);
-			ctx.bezierCurveTo(8596,661,8589,661,8583,661);
-			ctx.lineTo(8574,662);
-			ctx.lineTo(8569,662);
-			ctx.bezierCurveTo(8567,662,8566,662,8564,662);
-			ctx.bezierCurveTo(8558,663,8551,663,8545,663);
-			ctx.bezierCurveTo(8541,664,8538,664,8535,664);
-			ctx.bezierCurveTo(8533,664,8532,664,8530,664);
-			ctx.bezierCurveTo(8528,665,8527,665,8525,665);
-			ctx.bezierCurveTo(8518,665,8511,666,8504,666);
-			ctx.bezierCurveTo(8498,667,8490,668,8483,668);
-			ctx.bezierCurveTo(8468,670,8453,671,8437,673);
-			ctx.bezierCurveTo(8428,674,8420,675,8411,676);
-			ctx.bezierCurveTo(8402,678,8393,679,8383,680);
-			ctx.lineTo(8395,680);
-			ctx.bezierCurveTo(8386,681,8380,682,8374,682);
-			ctx.bezierCurveTo(8369,683,8364,684,8361,684);
-			ctx.bezierCurveTo(8353,685,8347,686,8340,687);
-			ctx.bezierCurveTo(8330,689,8331,689,8338,688);
-			ctx.bezierCurveTo(8344,687,8356,685,8367,684);
-			ctx.bezierCurveTo(8370,683,8373,683,8376,682);
-			ctx.bezierCurveTo(8379,682,8382,681,8384,681);
-			ctx.bezierCurveTo(8390,680,8394,680,8398,679);
-			ctx.bezierCurveTo(8404,679,8406,679,8398,680);
-			ctx.bezierCurveTo(8376,682,8318,691,8262,702);
-			ctx.bezierCurveTo(8207,713,8153,726,8139,728);
-			ctx.bezierCurveTo(8132,730,8128,731,8125,732);
-			ctx.bezierCurveTo(8122,733,8120,733,8119,733);
-			ctx.bezierCurveTo(8118,734,8119,734,8121,733);
-			ctx.bezierCurveTo(8125,732,8129,732,8104,738);
-			ctx.lineTo(8091,741);
-			ctx.lineTo(8079,745);
-			ctx.bezierCurveTo(8070,747,8063,749,8057,751);
-			ctx.bezierCurveTo(8051,753,8046,754,8042,755);
-			ctx.bezierCurveTo(8034,757,8029,758,8029,758);
-			ctx.bezierCurveTo(8036,756,8051,751,8059,749);
-			ctx.bezierCurveTo(8049,752,8036,755,8023,759);
-			ctx.bezierCurveTo(8016,761,8010,763,8003,765);
-			ctx.bezierCurveTo(7999,766,7996,767,7993,768);
-			ctx.bezierCurveTo(7990,770,7986,771,7983,772);
-			ctx.bezierCurveTo(7977,774,7970,776,7965,778);
-			ctx.bezierCurveTo(7959,779,7953,781,7949,783);
-			ctx.bezierCurveTo(7939,786,7932,788,7928,790);
-			ctx.bezierCurveTo(7928,790,7931,789,7935,787);
-			ctx.bezierCurveTo(7940,786,7945,784,7951,782);
-			ctx.bezierCurveTo(7957,780,7963,778,7967,777);
-			ctx.bezierCurveTo(7972,776,7975,775,7975,775);
-			ctx.bezierCurveTo(7942,785,7907,797,7871,810);
-			ctx.bezierCurveTo(7836,823,7800,837,7765,851);
-			ctx.bezierCurveTo(7693,880,7624,911,7564,942);
-			ctx.lineTo(7574,938);
-			ctx.bezierCurveTo(7551,949,7536,957,7523,964);
-			ctx.bezierCurveTo(7511,970,7501,975,7492,980);
-			ctx.bezierCurveTo(7483,985,7473,990,7461,997);
-			ctx.bezierCurveTo(7454,1000,7447,1004,7439,1009);
-			ctx.bezierCurveTo(7435,1012,7430,1014,7425,1017);
-			ctx.bezierCurveTo(7423,1019,7421,1020,7418,1022);
-			ctx.bezierCurveTo(7416,1023,7415,1024,7413,1025);
-			ctx.bezierCurveTo(7412,1025,7411,1026,7410,1027);
-			ctx.bezierCurveTo(7410,1027,7409,1027,7409,1027);
-			ctx.lineTo(7408,1028);
-			ctx.lineTo(7408,1028);
-			ctx.bezierCurveTo(7407,1028,7407,1028,7407,1028);
-			ctx.bezierCurveTo(7408,1030,7409,1031,7411,1033);
-			ctx.bezierCurveTo(7411,1034,7412,1035,7413,1036);
-			ctx.bezierCurveTo(7413,1037,7414,1038,7415,1039);
-			ctx.lineTo(7411,1034);
-			ctx.bezierCurveTo(7412,1036,7414,1037,7415,1039);
-			ctx.bezierCurveTo(7416,1040,7416,1041,7417,1042);
-			ctx.bezierCurveTo(7419,1045,7421,1047,7422,1050);
-			ctx.bezierCurveTo(7426,1055,7430,1061,7433,1067);
-			ctx.bezierCurveTo(7440,1079,7447,1093,7453,1107);
-			ctx.bezierCurveTo(7452,1104,7451,1102,7451,1102);
-			ctx.bezierCurveTo(7450,1101,7451,1102,7451,1103);
-			ctx.bezierCurveTo(7452,1106,7454,1112,7456,1118);
-			ctx.bezierCurveTo(7458,1124,7459,1129,7459,1131);
-			ctx.bezierCurveTo(7459,1132,7459,1132,7459,1131);
-			ctx.bezierCurveTo(7459,1129,7458,1127,7457,1122);
-			ctx.bezierCurveTo(7461,1135,7462,1146,7460,1154);
-			ctx.bezierCurveTo(7460,1159,7458,1162,7457,1165);
-			ctx.bezierCurveTo(7455,1167,7453,1169,7451,1171);
-			ctx.bezierCurveTo(7449,1172,7447,1174,7445,1174);
-			ctx.bezierCurveTo(7445,1175,7444,1175,7444,1175);
-			ctx.bezierCurveTo(7443,1175,7443,1175,7443,1175);
-			ctx.bezierCurveTo(7442,1176,7442,1176,7441,1176);
-			ctx.bezierCurveTo(7441,1176,7441,1176,7440,1176);
-			ctx.bezierCurveTo(7439,1177,7437,1177,7436,1177);
-			ctx.bezierCurveTo(7435,1178,7434,1178,7433,1178);
-			ctx.bezierCurveTo(7432,1178,7431,1178,7430,1179);
-			ctx.bezierCurveTo(7429,1179,7428,1179,7427,1179);
-			ctx.bezierCurveTo(7424,1179,7422,1179,7419,1179);
-			ctx.bezierCurveTo(7412,1179,7402,1179,7384,1175);
-			ctx.bezierCurveTo(7384,1175,7383,1175,7381,1175);
-			ctx.bezierCurveTo(7380,1174,7378,1174,7376,1173);
-			ctx.bezierCurveTo(7374,1172,7372,1172,7370,1171);
-			ctx.bezierCurveTo(7369,1171,7368,1171,7368,1171);
-			ctx.bezierCurveTo(7356,1168,7349,1166,7339,1162);
-			ctx.bezierCurveTo(7329,1159,7315,1154,7289,1144);
-			ctx.bezierCurveTo(7300,1148,7303,1149,7303,1149);
-			ctx.bezierCurveTo(7303,1148,7299,1147,7295,1145);
-			ctx.bezierCurveTo(7291,1143,7288,1141,7288,1141);
-			ctx.bezierCurveTo(7288,1141,7289,1142,7292,1143);
-			ctx.bezierCurveTo(7295,1144,7299,1145,7305,1148);
-			ctx.bezierCurveTo(7278,1136,7254,1125,7234,1116);
-			ctx.bezierCurveTo(7213,1106,7196,1097,7180,1089);
-			ctx.bezierCurveTo(7164,1081,7149,1074,7137,1066);
-			ctx.bezierCurveTo(7123,1059,7112,1053,7100,1045);
-			ctx.bezierCurveTo(7076,1033,7098,1046,7123,1060);
-			ctx.bezierCurveTo(7148,1073,7176,1088,7162,1081);
-			ctx.bezierCurveTo(7168,1084,7168,1084,7165,1083);
-			ctx.bezierCurveTo(7162,1081,7155,1078,7146,1074);
-			ctx.bezierCurveTo(7130,1065,7106,1052,7090,1043);
-			ctx.bezierCurveTo(7074,1034,7060,1025,7040,1013);
-			ctx.bezierCurveTo(7021,1001,6995,985,6954,961);
-			ctx.bezierCurveTo(6962,966,6963,966,6971,971);
-			ctx.bezierCurveTo(6941,952,6911,935,6875,912);
-			ctx.bezierCurveTo(6853,900,6827,882,6820,879);
-			ctx.bezierCurveTo(6820,879,6825,882,6832,886);
-			ctx.bezierCurveTo(6838,891,6848,896,6857,902);
-			ctx.bezierCurveTo(6875,914,6894,925,6894,925);
-			ctx.bezierCurveTo(6873,912,6852,900,6828,885);
-			ctx.bezierCurveTo(6823,882,6816,878,6810,874);
-			ctx.bezierCurveTo(6804,870,6797,866,6790,862);
-			ctx.bezierCurveTo(6783,857,6775,853,6768,848);
-			ctx.bezierCurveTo(6760,843,6751,838,6743,833);
-			ctx.bezierCurveTo(6746,835,6752,838,6760,843);
-			ctx.bezierCurveTo(6762,844,6764,845,6766,846);
-			ctx.bezierCurveTo(6768,847,6770,848,6772,850);
-			ctx.bezierCurveTo(6776,852,6780,854,6784,857);
-			ctx.bezierCurveTo(6779,853,6774,850,6769,847);
-			ctx.bezierCurveTo(6766,846,6764,844,6761,843);
-			ctx.bezierCurveTo(6759,841,6756,840,6754,839);
-			ctx.bezierCurveTo(6744,833,6734,827,6723,821);
-			ctx.bezierCurveTo(6725,821,6731,825,6741,830);
-			ctx.bezierCurveTo(6746,833,6751,836,6758,840);
-			ctx.bezierCurveTo(6761,841,6764,843,6767,845);
-			ctx.bezierCurveTo(6770,847,6774,849,6777,851);
-			ctx.bezierCurveTo(6784,856,6791,860,6798,864);
-			ctx.bezierCurveTo(6802,867,6806,869,6809,871);
-			ctx.bezierCurveTo(6813,873,6817,876,6820,878);
-			ctx.bezierCurveTo(6834,887,6848,895,6859,902);
-			ctx.bezierCurveTo(6849,895,6827,882,6812,872);
-			ctx.bezierCurveTo(6796,862,6786,856,6798,862);
-			ctx.bezierCurveTo(6789,858,6780,853,6770,847);
-			ctx.bezierCurveTo(6760,841,6749,834,6738,828);
-			ctx.bezierCurveTo(6735,826,6732,824,6729,822);
-			ctx.bezierCurveTo(6727,822,6726,821,6724,820);
-			ctx.bezierCurveTo(6723,819,6721,818,6720,817);
-			ctx.bezierCurveTo(6714,814,6707,810,6701,807);
-			ctx.bezierCurveTo(6694,803,6688,800,6681,796);
-			ctx.bezierCurveTo(6674,793,6667,789,6659,786);
-			ctx.lineTo(6664,787);
-			ctx.bezierCurveTo(6659,785,6652,781,6644,777);
-			ctx.bezierCurveTo(6642,776,6640,775,6638,774);
-			ctx.bezierCurveTo(6636,773,6634,772,6631,771);
-			ctx.bezierCurveTo(6627,769,6623,767,6619,765);
-			ctx.bezierCurveTo(6619,765,6626,769,6634,772);
-			ctx.bezierCurveTo(6638,774,6642,775,6645,777);
-			ctx.bezierCurveTo(6648,778,6650,779,6650,779);
-			ctx.bezierCurveTo(6638,773,6626,768,6615,762);
-			ctx.bezierCurveTo(6609,760,6604,757,6598,754);
-			ctx.bezierCurveTo(6595,753,6592,751,6589,750);
-			ctx.bezierCurveTo(6587,749,6584,748,6581,746);
-			ctx.bezierCurveTo(6575,744,6570,741,6564,739);
-			ctx.bezierCurveTo(6558,736,6553,733,6547,731);
-			ctx.bezierCurveTo(6536,726,6524,721,6513,717);
-			ctx.bezierCurveTo(6525,722,6534,726,6541,729);
-			ctx.bezierCurveTo(6549,732,6554,734,6557,736);
-			ctx.bezierCurveTo(6564,739,6565,739,6564,739);
-			ctx.bezierCurveTo(6563,739,6554,736,6574,745);
-			ctx.bezierCurveTo(6567,742,6560,739,6554,736);
-			ctx.bezierCurveTo(6548,733,6542,731,6537,729);
-			ctx.bezierCurveTo(6527,725,6518,721,6511,718);
-			ctx.bezierCurveTo(6497,713,6488,709,6479,705);
-			ctx.bezierCurveTo(6469,701,6459,697,6443,691);
-			ctx.bezierCurveTo(6439,690,6435,688,6430,686);
-			ctx.bezierCurveTo(6427,685,6425,684,6422,684);
-			ctx.bezierCurveTo(6419,683,6416,682,6413,681);
-			ctx.bezierCurveTo(6407,679,6401,677,6394,674);
-			ctx.bezierCurveTo(6392,674,6390,673,6388,673);
-			ctx.bezierCurveTo(6386,672,6384,671,6382,671);
-			ctx.bezierCurveTo(6378,670,6374,668,6370,667);
-			ctx.bezierCurveTo(6372,668,6375,669,6378,670);
-			ctx.bezierCurveTo(6381,671,6385,671,6388,673);
-			ctx.bezierCurveTo(6395,675,6403,677,6408,679);
-			ctx.bezierCurveTo(6420,683,6425,685,6411,681);
-			ctx.bezierCurveTo(6404,679,6397,676,6390,674);
-			ctx.bezierCurveTo(6388,673,6386,673,6384,672);
-			ctx.bezierCurveTo(6383,672,6381,671,6379,671);
-			ctx.bezierCurveTo(6375,669,6372,668,6368,667);
-			ctx.bezierCurveTo(6361,665,6355,663,6349,661);
-			ctx.bezierCurveTo(6343,659,6337,658,6333,657);
-			ctx.bezierCurveTo(6322,654,6313,651,6307,650);
-			ctx.bezierCurveTo(6301,648,6298,648,6296,647);
-			ctx.bezierCurveTo(6292,646,6296,647,6301,649);
-			ctx.bezierCurveTo(6311,652,6328,656,6308,651);
-			ctx.bezierCurveTo(6306,651,6304,650,6302,650);
-			ctx.bezierCurveTo(6300,649,6299,649,6297,648);
-			ctx.bezierCurveTo(6293,647,6290,647,6287,646);
-			ctx.bezierCurveTo(6280,644,6274,643,6268,642);
-			ctx.bezierCurveTo(6262,640,6255,639,6247,638);
-			ctx.bezierCurveTo(6240,636,6231,635,6221,633);
-			ctx.lineTo(6221,632);
-			ctx.bezierCurveTo(6194,626,6179,624,6170,622);
-			ctx.bezierCurveTo(6160,621,6157,621,6154,621);
-			ctx.bezierCurveTo(6151,620,6148,620,6141,619);
-			ctx.bezierCurveTo(6137,619,6131,618,6124,617);
-			ctx.bezierCurveTo(6120,616,6116,616,6111,615);
-			ctx.bezierCurveTo(6107,615,6101,614,6095,613);
-			ctx.bezierCurveTo(6095,613,6098,613,6102,614);
-			ctx.bezierCurveTo(6105,614,6111,615,6116,615);
-			ctx.bezierCurveTo(6126,616,6136,617,6136,617);
-			ctx.bezierCurveTo(6136,617,6124,616,6111,614);
-			ctx.bezierCurveTo(6108,613,6105,613,6102,613);
-			ctx.bezierCurveTo(6099,612,6096,612,6093,612);
-			ctx.bezierCurveTo(6089,611,6086,611,6086,611);
-			ctx.lineTo(6096,611);
-			ctx.bezierCurveTo(6082,610,6071,609,6061,608);
-			ctx.bezierCurveTo(6050,607,6041,606,6032,605);
-			ctx.bezierCurveTo(6023,605,6014,604,6004,603);
-			ctx.bezierCurveTo(5999,603,5993,603,5988,602);
-			ctx.bezierCurveTo(5982,602,5976,602,5969,601);
-			ctx.bezierCurveTo(5975,602,5973,602,5964,602);
-			ctx.bezierCurveTo(5962,602,5959,602,5955,602);
-			ctx.bezierCurveTo(5952,602,5948,602,5944,602);
-			ctx.bezierCurveTo(5936,602,5925,602,5913,602);
-			ctx.bezierCurveTo(5909,602,5906,602,5905,601);
-			ctx.bezierCurveTo(5903,601,5902,601,5901,601);
-			ctx.bezierCurveTo(5900,601,5902,601,5902,601);
-			ctx.bezierCurveTo(5902,601,5901,601,5901,601);
-			ctx.bezierCurveTo(5900,601,5898,601,5895,601);
-			ctx.bezierCurveTo(5893,601,5889,601,5884,601);
-			ctx.bezierCurveTo(5881,601,5878,601,5875,601);
-			ctx.bezierCurveTo(5871,601,5868,601,5863,601);
-			ctx.bezierCurveTo(5867,601,5871,601,5875,601);
-			ctx.bezierCurveTo(5880,600,5884,600,5889,600);
-			ctx.bezierCurveTo(5894,600,5899,600,5905,600);
-			ctx.bezierCurveTo(5907,600,5908,600,5910,600);
-			ctx.bezierCurveTo(5912,600,5913,600,5915,600);
-			ctx.bezierCurveTo(5918,600,5922,601,5926,601);
-			ctx.bezierCurveTo(5929,600,5941,600,5944,600);
-			ctx.bezierCurveTo(5935,600,5925,599,5915,599);
-			ctx.bezierCurveTo(5909,599,5904,599,5899,599);
-			ctx.bezierCurveTo(5893,599,5888,599,5883,599);
-			ctx.bezierCurveTo(5872,599,5862,600,5853,600);
-			ctx.bezierCurveTo(5844,600,5836,600,5830,601);
-			ctx.bezierCurveTo(5832,601,5835,601,5837,601);
-			ctx.bezierCurveTo(5840,600,5842,600,5845,600);
-			ctx.bezierCurveTo(5849,600,5854,600,5857,600);
-			ctx.bezierCurveTo(5857,600,5851,600,5841,601);
-			ctx.bezierCurveTo(5837,601,5831,601,5825,602);
-			ctx.bezierCurveTo(5820,602,5813,602,5807,603);
-			ctx.bezierCurveTo(5801,603,5795,604,5789,604);
-			ctx.bezierCurveTo(5783,605,5778,605,5773,606);
-			ctx.bezierCurveTo(5771,606,5769,606,5767,606);
-			ctx.bezierCurveTo(5765,606,5763,606,5762,607);
-			ctx.bezierCurveTo(5759,607,5758,607,5758,607);
-			ctx.bezierCurveTo(5742,608,5754,607,5767,605);
-			ctx.bezierCurveTo(5757,606,5748,607,5738,608);
-			ctx.bezierCurveTo(5736,608,5734,609,5731,609);
-			ctx.bezierCurveTo(5728,609,5726,609,5723,610);
-			ctx.bezierCurveTo(5717,610,5711,611,5703,612);
-			ctx.bezierCurveTo(5707,611,5709,611,5714,610);
-			ctx.bezierCurveTo(5720,609,5730,607,5751,605);
-			ctx.bezierCurveTo(5751,605,5745,606,5736,607);
-			ctx.bezierCurveTo(5731,607,5726,608,5721,608);
-			ctx.bezierCurveTo(5715,609,5709,610,5704,610);
-			ctx.bezierCurveTo(5698,611,5692,612,5686,613);
-			ctx.bezierCurveTo(5681,613,5676,614,5671,615);
-			ctx.bezierCurveTo(5667,615,5663,616,5661,616);
-			ctx.bezierCurveTo(5658,617,5657,617,5657,617);
-			ctx.bezierCurveTo(5654,617,5641,619,5632,620);
-			ctx.bezierCurveTo(5622,621,5615,622,5621,621);
-			ctx.bezierCurveTo(5614,622,5607,623,5600,625);
-			ctx.bezierCurveTo(5593,626,5586,627,5578,629);
-			ctx.bezierCurveTo(5574,629,5570,630,5566,631);
-			ctx.bezierCurveTo(5562,632,5558,633,5554,634);
-			ctx.bezierCurveTo(5550,634,5546,635,5542,636);
-			ctx.bezierCurveTo(5540,637,5538,637,5536,637);
-			ctx.bezierCurveTo(5534,638,5532,638,5530,639);
-			ctx.bezierCurveTo(5521,641,5513,643,5504,645);
-			ctx.bezierCurveTo(5496,647,5487,649,5478,651);
-			ctx.bezierCurveTo(5470,653,5461,656,5453,658);
-			ctx.bezierCurveTo(5448,659,5444,660,5440,661);
-			ctx.bezierCurveTo(5436,662,5431,663,5427,664);
-			ctx.bezierCurveTo(5425,665,5423,666,5419,667);
-			ctx.bezierCurveTo(5415,668,5410,670,5403,672);
-			ctx.bezierCurveTo(5371,681,5342,690,5311,700);
-			ctx.bezierCurveTo(5280,711,5249,723,5213,738);
-			ctx.bezierCurveTo(5213,738,5210,739,5207,740);
-			ctx.bezierCurveTo(5203,742,5198,744,5192,746);
-			ctx.bezierCurveTo(5187,748,5182,750,5178,751);
-			ctx.bezierCurveTo(5175,753,5172,754,5172,754);
-			ctx.bezierCurveTo(5144,766,5158,761,5167,757);
-			ctx.bezierCurveTo(5172,755,5175,754,5172,756);
-			ctx.bezierCurveTo(5170,757,5167,758,5161,761);
-			ctx.bezierCurveTo(5158,762,5154,764,5150,766);
-			ctx.bezierCurveTo(5146,768,5141,770,5135,773);
-			ctx.bezierCurveTo(5103,788,5097,792,5096,791);
-			ctx.bezierCurveTo(5095,792,5099,789,5088,794);
-			ctx.bezierCurveTo(5079,799,5068,805,5056,812);
-			ctx.bezierCurveTo(5050,815,5044,819,5037,823);
-			ctx.bezierCurveTo(5034,825,5031,827,5027,829);
-			ctx.bezierCurveTo(5026,830,5024,831,5022,832);
-			ctx.bezierCurveTo(5021,833,5020,833,5019,834);
-			ctx.lineTo(5017,835);
-			ctx.bezierCurveTo(5016,835,5016,836,5015,836);
-			ctx.bezierCurveTo(5014,843,5014,850,5013,858);
-			ctx.bezierCurveTo(5013,864,5013,871,5012,878);
-			ctx.bezierCurveTo(5012,885,5011,892,5011,899);
-			ctx.bezierCurveTo(5010,906,5010,913,5009,920);
-			ctx.bezierCurveTo(5009,914,5010,909,5010,904);
-			ctx.bezierCurveTo(5010,899,5011,895,5011,890);
-			ctx.bezierCurveTo(5011,880,5012,871,5013,861);
-			ctx.closePath();
-			ctx.moveTo(5183,1441);
-			ctx.bezierCurveTo(5168,1441,5139,1442,5129,1441);
-			ctx.bezierCurveTo(5145,1440,5158,1441,5183,1441);
-			ctx.closePath();
-			ctx.moveTo(6317,1439);
-			ctx.bezierCurveTo(6307,1439,6290,1439,6271,1438);
-			ctx.bezierCurveTo(6285,1438,6300,1438,6317,1439);
-			ctx.closePath();
-			ctx.moveTo(9478,1432);
-			ctx.bezierCurveTo(9477,1432,9477,1432,9477,1432);
-			ctx.bezierCurveTo(9444,1432,9456,1432,9478,1432);
-			ctx.closePath();
-			ctx.moveTo(9545,1432);
-			ctx.bezierCurveTo(9552,1432,9551,1432,9549,1432);
-			ctx.bezierCurveTo(9544,1432,9529,1432,9512,1432);
-			ctx.bezierCurveTo(9516,1432,9525,1433,9545,1432);
-			ctx.closePath();
-			ctx.moveTo(6960,974);
-			ctx.lineTo(6949,967);
-			ctx.bezierCurveTo(6974,982,6967,977,6960,974);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(6189,1440);
-			ctx.bezierCurveTo(6185,1440,6183,1440,6182,1439);
-			ctx.bezierCurveTo(6177,1440,6177,1440,6189,1440);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(5425,665);
-			ctx.lineTo(5427,664);
-			ctx.bezierCurveTo(5428,664,5429,664,5429,664);
-			ctx.lineTo(5425,665);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(8507,1441);
-			ctx.bezierCurveTo(8494,1440,8486,1440,8481,1440);
-			ctx.bezierCurveTo(8480,1440,8486,1441,8507,1441);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9891,1408);
-			ctx.lineTo(9854,1429);
-			ctx.bezierCurveTo(9872,1419,9878,1416,9888,1411);
-			ctx.bezierCurveTo(9887,1411,9879,1415,9891,1408);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(10219,1231);
-			ctx.bezierCurveTo(10224,1228,10231,1225,10236,1222);
-			ctx.lineTo(10234,1222);
-			ctx.bezierCurveTo(10211,1235,10195,1245,10219,1231);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9927,1391);
-			ctx.bezierCurveTo(9931,1390,9954,1377,9980,1362);
-			ctx.bezierCurveTo(9979,1363,9977,1364,9976,1365);
-			ctx.bezierCurveTo(9983,1360,9955,1375,9927,1391);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9986,1359);
-			ctx.bezierCurveTo(9994,1354,10003,1350,10011,1345);
-			ctx.bezierCurveTo(10013,1343,10001,1351,9986,1359);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9630,1432);
-			ctx.bezierCurveTo(9644,1432,9639,1431,9647,1431);
-			ctx.bezierCurveTo(9663,1430,9552,1432,9630,1432);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9950,1382);
-			ctx.lineTo(9940,1386);
-			ctx.lineTo(9926,1395);
-			ctx.lineTo(9950,1382);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9727,1436);
-			ctx.lineTo(9775,1436);
-			ctx.bezierCurveTo(9774,1436,9780,1436,9788,1436);
-			ctx.bezierCurveTo(9773,1436,9757,1436,9746,1436);
-			ctx.bezierCurveTo(9734,1436,9726,1436,9727,1436);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9788,1436);
-			ctx.bezierCurveTo(9803,1436,9818,1436,9826,1436);
-			ctx.bezierCurveTo(9818,1436,9800,1436,9788,1436);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9893,1414);
-			ctx.lineTo(9880,1421);
-			ctx.bezierCurveTo(9871,1426,9861,1431,9852,1437);
-			ctx.lineTo(9850,1437);
-			ctx.bezierCurveTo(9851,1437,9851,1437,9852,1437);
-			ctx.lineTo(9893,1414);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9210,1436);
-			ctx.lineTo(9158,1436);
-			ctx.bezierCurveTo(9153,1436,9167,1437,9187,1436);
-			ctx.bezierCurveTo(9199,1436,9219,1436,9210,1436);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9369,1438);
-			ctx.bezierCurveTo(9355,1438,9354,1438,9346,1438);
-			ctx.lineTo(9344,1439);
-			ctx.lineTo(9369,1438);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9216,1439);
-			ctx.bezierCurveTo(9211,1439,9140,1440,9207,1440);
-			ctx.bezierCurveTo(9212,1439,9264,1439,9216,1439);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(8426,1437);
-			ctx.lineTo(8440,1437);
-			ctx.lineTo(8438,1435);
-			ctx.lineTo(8426,1437);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(7730,1442);
-			ctx.bezierCurveTo(7792,1443,7745,1441,7801,1441);
-			ctx.bezierCurveTo(7816,1441,7755,1441,7770,1440);
-			ctx.bezierCurveTo(7733,1441,7713,1441,7730,1442);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(7770,1440);
-			ctx.bezierCurveTo(7776,1440,7782,1440,7789,1440);
-			ctx.bezierCurveTo(7778,1440,7773,1440,7770,1440);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9076,707);
-			ctx.bezierCurveTo(9076,707,9086,709,9096,711);
-			ctx.bezierCurveTo(9097,712,9098,712,9099,712);
-			ctx.bezierCurveTo(9100,712,9101,713,9103,713);
-			ctx.bezierCurveTo(9105,714,9107,714,9109,715);
-			ctx.bezierCurveTo(9112,716,9115,716,9115,716);
-			ctx.bezierCurveTo(9115,716,9109,714,9102,713);
-			ctx.bezierCurveTo(9099,712,9096,711,9094,711);
-			ctx.bezierCurveTo(9092,710,9090,710,9090,710);
-			ctx.lineTo(9076,707);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(9151,723);
-			ctx.lineTo(9160,727);
-			ctx.lineTo(9183,732);
-			ctx.bezierCurveTo(9174,730,9157,725,9151,723);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(5294,1444);
-			ctx.lineTo(5297,1443);
-			ctx.bezierCurveTo(5291,1443,5281,1443,5262,1443);
-			ctx.lineTo(5294,1444);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(5004,1177);
-			ctx.lineTo(5004,1186);
-			ctx.lineTo(5005,1169);
-			ctx.lineTo(5004,1177);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#647C4A';
-			ctx.beginPath();
-			ctx.moveTo(5119,777);
-			ctx.bezierCurveTo(5102,785,5083,795,5066,804);
-			ctx.bezierCurveTo(5084,794,5098,787,5108,783);
-			ctx.bezierCurveTo(5113,781,5116,779,5118,778);
-			ctx.bezierCurveTo(5120,777,5120,777,5119,777);
-			ctx.closePath();
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#475E19';
-			ctx.beginPath();
-			ctx.moveTo(10016,990);
-			ctx.bezierCurveTo(10015,989,10007,979,10004,971);
-			ctx.bezierCurveTo(9984,979,9973,962,9972,943);
-			ctx.bezierCurveTo(9958,970,9939,968,9930,934);
-			ctx.bezierCurveTo(9930,939,9929,942,9928,946);
-			ctx.bezierCurveTo(9926,941,9922,936,9920,932);
-			ctx.bezierCurveTo(9920,939,9916,944,9914,949);
-			ctx.bezierCurveTo(9905,939,9823,936,9867,903);
-			ctx.bezierCurveTo(9858,908,9852,916,9850,927);
-			ctx.bezierCurveTo(9848,928,9847,924,9844,925);
-			ctx.bezierCurveTo(9843,926,9844,930,9842,931);
-			ctx.bezierCurveTo(9833,921,9817,913,9806,903);
-			ctx.bezierCurveTo(9804,905,9803,907,9802,910);
-			ctx.bezierCurveTo(9789,899,9773,895,9758,899);
-			ctx.bezierCurveTo(9760,902,9762,905,9765,908);
-			ctx.bezierCurveTo(9748,896,9719,899,9714,875);
-			ctx.bezierCurveTo(9711,880,9705,884,9702,890);
-			ctx.bezierCurveTo(9701,887,9702,885,9702,882);
-			ctx.bezierCurveTo(9695,881,9690,879,9682,877);
-			ctx.bezierCurveTo(9681,879,9683,882,9680,884);
-			ctx.bezierCurveTo(9669,872,9656,868,9644,881);
-			ctx.bezierCurveTo(9633,873,9633,855,9634,838);
-			ctx.bezierCurveTo(9630,844,9624,852,9622,859);
-			ctx.bezierCurveTo(9621,857,9622,854,9622,851);
-			ctx.bezierCurveTo(9620,852,9617,856,9616,856);
-			ctx.bezierCurveTo(9612,854,9610,850,9606,849);
-			ctx.bezierCurveTo(9591,861,9567,834,9550,828);
-			ctx.bezierCurveTo(9551,833,9550,837,9552,842);
-			ctx.bezierCurveTo(9538,843,9528,831,9520,821);
-			ctx.bezierCurveTo(9519,824,9518,826,9518,829);
-			ctx.bezierCurveTo(9512,821,9509,809,9510,797);
-			ctx.bezierCurveTo(9506,804,9501,809,9498,816);
-			ctx.bezierCurveTo(9499,811,9499,807,9499,803);
-			ctx.bezierCurveTo(9497,805,9492,809,9490,810);
-			ctx.bezierCurveTo(9485,802,9478,797,9470,791);
-			ctx.bezierCurveTo(9471,799,9469,808,9472,816);
-			ctx.bezierCurveTo(9468,814,9464,813,9460,810);
-			ctx.bezierCurveTo(9457,813,9454,814,9450,816);
-			ctx.bezierCurveTo(9445,806,9442,795,9440,783);
-			ctx.bezierCurveTo(9440,782,9440,782,9440,783);
-			ctx.bezierCurveTo(9432,803,9393,778,9374,777);
-			ctx.bezierCurveTo(9355,777,9351,773,9334,767);
-			ctx.bezierCurveTo(9323,764,9312,752,9309,768);
-			ctx.bezierCurveTo(9267,735,9218,760,9184,708);
-			ctx.bezierCurveTo(9185,714,9184,727,9184,730);
-			ctx.bezierCurveTo(9182,722,9176,716,9172,710);
-			ctx.bezierCurveTo(9168,728,9120,703,9103,701);
-			ctx.bezierCurveTo(9130,718,9139,747,9166,757);
-			ctx.bezierCurveTo(9216,776,9268,784,9319,807);
-			ctx.bezierCurveTo(9385,837,9454,849,9524,867);
-			ctx.bezierCurveTo(9610,888,9688,937,9775,952);
-			ctx.bezierCurveTo(9803,957,9832,960,9861,961);
-			ctx.bezierCurveTo(9886,962,9916,952,9940,959);
-			ctx.bezierCurveTo(9967,966,9991,990,10018,997);
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#4E6930';
-			ctx.beginPath();
-			ctx.moveTo(9846,959);
-			ctx.bezierCurveTo(9841,954,9833,948,9826,945);
-			ctx.bezierCurveTo(9825,947,9825,950,9824,952);
-			ctx.bezierCurveTo(9817,942,9814,929,9804,918);
-			ctx.bezierCurveTo(9804,924,9802,930,9802,936);
-			ctx.bezierCurveTo(9772,906,9725,905,9685,891);
-			ctx.bezierCurveTo(9697,893,9709,900,9718,907);
-			ctx.bezierCurveTo(9706,908,9694,907,9684,903);
-			ctx.bezierCurveTo(9704,920,9739,911,9761,921);
-			ctx.bezierCurveTo(9781,930,9795,955,9819,957);
-			ctx.bezierCurveTo(9819,956,9815,954,9815,953);
-			ctx.bezierCurveTo(9827,960,9854,969,9862,982);
-			ctx.bezierCurveTo(9863,981,9869,972,9869,971);
-			ctx.bezierCurveTo(9859,968,9853,963,9844,957);
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#4E6930';
-			ctx.beginPath();
-			ctx.moveTo(9636,879);
-			ctx.bezierCurveTo(9631,872,9626,869,9626,859);
-			ctx.bezierCurveTo(9625,862,9622,868,9622,873);
-			ctx.bezierCurveTo(9618,870,9613,869,9609,865);
-			ctx.bezierCurveTo(9609,865,9614,871,9614,871);
-			ctx.bezierCurveTo(9607,869,9604,869,9597,865);
-			ctx.bezierCurveTo(9607,871,9615,879,9616,891);
-			ctx.bezierCurveTo(9617,891,9621,888,9620,888);
-			ctx.bezierCurveTo(9618,888,9622,891,9622,891);
-			ctx.bezierCurveTo(9622,888,9623,884,9624,882);
-			ctx.bezierCurveTo(9626,882,9628,881,9630,879);
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#4E6930';
-			ctx.beginPath();
-			ctx.moveTo(9520,857);
-			ctx.bezierCurveTo(9506,851,9503,832,9503,819);
-			ctx.bezierCurveTo(9502,825,9499,831,9498,836);
-			ctx.bezierCurveTo(9495,833,9491,830,9488,827);
-			ctx.bezierCurveTo(9487,828,9489,833,9486,833);
-			ctx.bezierCurveTo(9467,822,9439,818,9427,799);
-			ctx.bezierCurveTo(9418,816,9406,808,9393,801);
-			ctx.bezierCurveTo(9409,811,9427,815,9441,829);
-			ctx.bezierCurveTo(9441,827,9439,825,9438,823);
-			ctx.bezierCurveTo(9450,822,9459,831,9464,841);
-			ctx.bezierCurveTo(9476,824,9504,850,9518,857);
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#4E6930';
-			ctx.beginPath();
-			ctx.moveTo(9274,869);
-			ctx.bezierCurveTo(9268,858,9259,850,9251,841);
-			ctx.bezierCurveTo(9265,844,9273,857,9279,870);
-			ctx.bezierCurveTo(9284,850,9275,820,9267,801);
-			ctx.bezierCurveTo(9273,817,9279,837,9288,851);
-			ctx.bezierCurveTo(9288,851,9288,844,9288,844);
-			ctx.bezierCurveTo(9288,850,9290,853,9290,859);
-			ctx.bezierCurveTo(9294,858,9297,856,9300,855);
-			ctx.bezierCurveTo(9300,858,9297,861,9295,863);
-			ctx.bezierCurveTo(9298,861,9304,860,9307,859);
-			ctx.bezierCurveTo(9299,864,9297,871,9294,879);
-			ctx.strokeStyle="rgba(0,0,0,0)";
-		},
-		function(ctx) {
-			ctx.fillStyle='#4E6930';
-			ctx.beginPath();
-			ctx.moveTo(9492,955);
-			ctx.bezierCurveTo(9489,951,9487,947,9484,943);
-			ctx.bezierCurveTo(9487,945,9492,946,9496,949);
-			ctx.bezierCurveTo(9501,933,9489,909,9484,894);
-			ctx.bezierCurveTo(9488,911,9498,934,9508,949);
-			ctx.bezierCurveTo(9507,939,9508,929,9512,920);
-			ctx.bezierCurveTo(9511,929,9513,938,9512,947);
-			ctx.bezierCurveTo(9516,948,9517,946,9520,945);
-			ctx.bezierCurveTo(9519,948,9517,952,9516,955);
-			ctx.bezierCurveTo(9535,955,9553,956,9571,965);
-			ctx.bezierCurveTo(9559,968,9545,969,9534,963);
+			ctx.moveTo(3586,924);
+			ctx.lineTo(3663,868);
+			ctx.bezierCurveTo(3663,868,3767,862,3822,868);
+			ctx.bezierCurveTo(3877,874,4017,916,4017,916);
+			ctx.lineTo(3586,924);
+			ctx.fillStyle="#000";
 			ctx.strokeStyle="rgba(0,0,0,0)";
 		},
 	];
