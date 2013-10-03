@@ -21,8 +21,8 @@ if __name__ == "__main__":
 
 	svg_filename = args[0]
 
-	opacity_pattern = re.compile(r'opacity="([0-9\.]+)"')
-	fill_pattern = re.compile(r'fill="#([0-9A-Fa-f]{6})"')
+	opacity_pattern = re.compile(r'opacity:([0-9\.]+)')
+	fill_pattern = re.compile(r'fill:#([0-9A-Fa-f]{6})')
 
 	data = set()
 	opacity = None
