@@ -197,6 +197,9 @@ Ptero.input = (function(){
 			else if (e.keyCode == 66) { // b
 				Ptero.painter.toggleDebugOutline();
 			}
+			else if (e.keyCode == 71) { // g
+				Ptero.player && Ptero.player.toggleGod();
+			}
 		},false);
 	};
 

@@ -7,7 +7,14 @@ Ptero.Player = function() {
 };
 
 Ptero.Player.prototype = {
+	toggleGod: function() {
+		this.setGod(!this.isGod);
+	},
 	setGod: function(on) {
+		if (!navigator.isCocoonJS) {
+			var elm = document.getElementById('god-state');
+			elm.innerHTML = on ? "ON" : "OFF";
+		}
 		this.isGod = on;
 	},
 	reset: function() {
