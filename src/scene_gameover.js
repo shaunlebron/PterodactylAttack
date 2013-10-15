@@ -33,12 +33,14 @@ Ptero.scene_gameover = (function(){
 			Ptero.background.exit();
 			Ptero.background.onExitDone = function() {
 				setTimeout(function(){
+					Ptero.background.stopSounds();
 					Ptero.setScene(Ptero.scene_play);
 				}, 1000);
 			};
 		};
 
 		btns["quit"].onclick = function() {
+			Ptero.background.stopSounds();
 			Ptero.setScene(Ptero.scene_menu);
 			Ptero.audio.stop('score');
 			Ptero.audio.play('theme');

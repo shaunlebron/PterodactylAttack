@@ -19,8 +19,14 @@ Ptero.assets = (function(){
 	};
 
 	var songSources = {
-		"theme" : "audio/theme3",
-		"score" : "audio/score",
+		"theme"          : "audio/theme3",
+		"score"          : "audio/score",
+		"mountain_intro" : "audio/CanyonLOOPIntro1",
+		"mountain_loop"  : "audio/CanyonLoop",
+		"ice_intro"      : "audio/IceLevelLoopIntro",
+		"ice_loop"       : "audio/IceLevelLoop",
+		"volcano_intro"  : "audio/VolcanoIntroLoop1",
+		"volcano_loop"   : "audio/VolcanoLoop1",
 	};
 
 	var imageSources = {
@@ -369,6 +375,19 @@ Ptero.assets = (function(){
 		// post-process vectors
 		for (name in vectorSources) {
 			postProcessVector(name);
+		}
+
+		// audio: connect intros to loops
+		var bgs = ["mountain", "ice", "volcano"];
+		var i,len=bgs.length;
+		for (i=0; i<len; i++) {
+			var bg = bgs[i];
+			var loop = songs[bg+"_loop"];
+			var intro = songs[bg+"_intro"];
+			loop.setLoop(true);
+			intro.setContinueSong(loop);
+			loop.setInitVolume(0.1);
+			intro.setInitVolume(0.1);
 		}
 	}
 

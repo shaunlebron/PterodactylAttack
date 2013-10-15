@@ -200,6 +200,11 @@ Ptero.input = (function(){
 			else if (e.keyCode == 71) { // g
 				Ptero.player && Ptero.player.toggleGod();
 			}
+			else if (e.keyCode == 78) { //n
+				if (Ptero.scene == Ptero.scene_play && Ptero.background.isIdle) {
+					Ptero.overlord.skipThisWave();
+				}
+			}
 		},false);
 	};
 

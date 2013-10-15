@@ -95,9 +95,8 @@ Ptero.scene_play = (function() {
 		if (!Ptero.settings.isTutorialEnabled()) {
 
 			function trigger() {
-				if (debugBtn1Pressed && debugBtn2Pressed) {
-					Ptero.overlord.enemies.length = 0;
-					Ptero.overlord.triggerNextWave();
+				if (debugBtn1Pressed && debugBtn2Pressed && Ptero.background.isIdle) {
+					Ptero.overlord.skipThisWave();
 				}
 			}
 
@@ -354,7 +353,9 @@ Ptero.scene_play = (function() {
 		hud.hide();
 		Ptero.orb.init();
 		Ptero.orb.setNextOrigin(0,-1);
+		Ptero.background.stopSounds();
 		Ptero.setBackground(name);
+		Ptero.background.startSounds();
 		Ptero.background.onIdle = function() {
 			enableControls();
 			hud.fadeIn(1, function(){

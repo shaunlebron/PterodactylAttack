@@ -63,7 +63,9 @@ Ptero.audio = (function() {
 		var name,song;
 		for (name in Ptero.assets.songs) {
 			song = Ptero.assets.songs[name];
-			song.setVolume(vol);
+			if (song.initVolume == null) {
+				song.setVolume(vol);
+			}
 		}
 	}
 
@@ -79,9 +81,15 @@ Ptero.audio = (function() {
 
 Ptero.Song = function(audio) {
 	this.audio = audio;
+	this.initVolume = null;
 };
 
 Ptero.Song.prototype = {
+	setContinueSong: function(song) {
+		this.audio.addEventListener('ended', function() {
+			song.play();
+		});
+	},
 	setLoop: function() {
 		// from: http://stackoverflow.com/a/6452884/142317
 		if (typeof this.audio.loop == 'boolean')
@@ -114,6 +122,9 @@ Ptero.Song.prototype = {
 	setVolume: function(vol) {
 		this.audio.volume = vol;
 	},
+	setInitVolume: function(vol) {
+		this.initVolume = vol;
+	},
 	fadeOut: function(t) {
 		var that = this;
 		this.volumeFader = {
@@ -133,7 +144,12 @@ Ptero.Song.prototype = {
 		};
 	},
 	play: function() {
-		this.setVolume(Ptero.settings.getMusicVolume());
+		if (this.initVolume != null) {
+			this.setVolume(this.initVolume);
+		}
+		else {
+			this.setVolume(Ptero.settings.getMusicVolume());
+		}
 		this.audio.play();
 	},
 };

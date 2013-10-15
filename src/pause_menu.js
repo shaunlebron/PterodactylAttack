@@ -100,6 +100,7 @@ Ptero.pause_menu = (function(){
 		};
 
 		btns["quit"].onclick = function() {
+			Ptero.background.stopSounds();
 			Ptero.scene_play.unpause();
 			Ptero.setScene(Ptero.scene_menu);
 			Ptero.audio.play("theme");

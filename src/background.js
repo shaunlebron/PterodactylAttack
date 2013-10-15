@@ -419,6 +419,13 @@ Ptero.Background.prototype = {
 			this.layers.push(layer);
 		}
 	},
+	startSounds: function() {
+		Ptero.audio.play(this.name+"_intro");
+	},
+	stopSounds: function() {
+		Ptero.audio.stop(this.name+"_intro");
+		Ptero.audio.stop(this.name+"_loop");
+	},
 };
 
 Ptero.createBackgrounds = function() {

@@ -1128,6 +1128,10 @@ Ptero.OverlordWaves.prototype = {
 	draw: function(ctx) {
 		this.waveTitle && this.waveTitle.draw(ctx);
 	},
+	skipThisWave: function() {
+		this.enemies.length = 0;
+		this.triggerNextWave();
+	},
 	triggerNextWave: function() {
 		var that = this;
 		this.waitingForTheEnd = false;
