@@ -13,7 +13,9 @@ Ptero.Player.prototype = {
 	setGod: function(on) {
 		if (!navigator.isCocoonJS) {
 			var elm = document.getElementById('god-state');
-			elm.innerHTML = on ? "ON" : "OFF";
+			if (elm) {
+				elm.innerHTML = on ? "ON" : "OFF";
+			}
 		}
 		this.isGod = on;
 	},
