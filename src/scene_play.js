@@ -338,6 +338,7 @@ Ptero.scene_play = (function() {
 			var nextName = name || Ptero.getNextBgName();
 			disableControls();
 			Ptero.background.exit();
+			Ptero.background.playOutTrack();
 			Ptero.background.onExitDone = function() {
 				setTimeout(function(){
 					switchBackground(nextName);
@@ -353,9 +354,8 @@ Ptero.scene_play = (function() {
 		hud.hide();
 		Ptero.orb.init();
 		Ptero.orb.setNextOrigin(0,-1);
-		Ptero.background.stopSounds();
 		Ptero.setBackground(name);
-		Ptero.background.startSounds();
+		Ptero.background.startTrack();
 		Ptero.background.onIdle = function() {
 			enableControls();
 			hud.fadeIn(1, function(){

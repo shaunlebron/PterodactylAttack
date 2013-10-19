@@ -21,12 +21,15 @@ Ptero.assets = (function(){
 	var songSources = {
 		"theme"          : "audio/theme3",
 		"score"          : "audio/score",
-		"mountain_intro" : "audio/CanyonLOOPIntro1",
-		"mountain_loop"  : "audio/CanyonLoop",
-		"ice_intro"      : "audio/IceLevelLoopIntro",
-		"ice_loop"       : "audio/IceLevelLoop",
-		"volcano_intro"  : "audio/VolcanoIntroLoop1",
-		"volcano_loop"   : "audio/VolcanoLoop1",
+		"mountain_intro" : "audio/mountain-intro",
+		"mountain_loop"  : "audio/mountain-loop",
+		"mountain_outro" : "audio/mountain-outro",
+		"ice_intro"      : "audio/ice-intro",
+		"ice_loop"       : "audio/ice-loop",
+		"ice_outro"      : "audio/ice-outro",
+		"volcano_intro"  : "audio/volcano-intro",
+		"volcano_loop"   : "audio/volcano-loop",
+		"volcano_outro"  : "audio/volcano-outro",
 	};
 
 	var imageSources = {
@@ -384,10 +387,12 @@ Ptero.assets = (function(){
 			var bg = bgs[i];
 			var loop = songs[bg+"_loop"];
 			var intro = songs[bg+"_intro"];
+			var outro = songs[bg+"_outro"];
 			loop.setLoop(true);
 			intro.setContinueSong(loop);
 			loop.setInitVolume(0.1);
 			intro.setInitVolume(0.1);
+			outro.setInitVolume(0.1);
 		}
 	}
 

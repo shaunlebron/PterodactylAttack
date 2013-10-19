@@ -419,12 +419,20 @@ Ptero.Background.prototype = {
 			this.layers.push(layer);
 		}
 	},
-	startSounds: function() {
+	startTrack: function() {
 		Ptero.audio.play(this.name+"_intro");
+		Ptero.audio.stop(this.name+"_loop");
+		Ptero.audio.stop(this.name+"_outro");
 	},
-	stopSounds: function() {
+	playOutTrack: function() {
 		Ptero.audio.stop(this.name+"_intro");
 		Ptero.audio.stop(this.name+"_loop");
+		Ptero.audio.play(this.name+"_outro");
+	},
+	stopTrack: function() {
+		Ptero.audio.stop(this.name+"_intro");
+		Ptero.audio.stop(this.name+"_loop");
+		Ptero.audio.stop(this.name+"_outro");
 	},
 };
 
@@ -628,6 +636,8 @@ Ptero.getNextBgName = function(currName) {
 };
 
 Ptero.setBackground = function(bgName) {
+	Ptero.background && Ptero.background.stopTrack();
+
 	var bg = Ptero.backgrounds[bgName];
 	bg && bg.init();
 	Ptero.background = bg;
