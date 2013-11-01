@@ -8,14 +8,20 @@ Ptero.assets = (function(){
 	var usePreloadedJson = true;
 
 	var sfxSources = {
-		"shoot"          : "audio/shoot04.wav",
-		"explode"        : "audio/explode04.wav",
-		"hurt"           : "audio/hurt.wav",
-		"select"         : "audio/select04.wav",
+		"shoot"          : "audio/shoot.ogg",
+		"explode"        : "audio/explode.ogg",
+		"hurt1"          : "audio/hurt1.ogg",
+		"hurt2"          : "audio/hurt2.ogg",
+		"hurt3"          : "audio/hurt3.ogg",
+		"hurt4"          : "audio/hurt4.ogg",
+		"net"            : "audio/net.ogg",
+		"squeek"         : "audio/squeek.ogg",
+		"damage"         : "audio/damage.ogg",
+		"flap"           : "audio/flap.ogg",
+		"drop_menu"      : "audio/drop_menu.ogg",
 		"bountyCorrect"  : "audio/bounty_correct.wav",
 		"bountyWrong"    : "audio/bounty_wrong.wav",
 		"bountyComplete" : "audio/bounty_complete.wav",
-		"net"            : "audio/net.wav",
 	};
 
 	var songSources = {

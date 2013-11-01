@@ -12,6 +12,7 @@ Ptero.scene_gameover = (function(){
 	var isExiting;
 	function init() {
 		Ptero.audio.play('score');
+		Ptero.audio.play('drop_menu');
 		Ptero.overlord.stopScript();
 		isExiting = false;
 

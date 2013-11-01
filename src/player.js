@@ -35,6 +35,19 @@ Ptero.Player.prototype = {
 				navigator.vibrate && navigator.vibrate(200);
 			}
 			Ptero.screen.shake();
+			if (this.health >= 4) {
+				Ptero.audio.play('hurt1');
+			}
+			else if (this.health == 3) {
+				Ptero.audio.play('hurt2');
+			}
+			else if (this.health == 2) {
+				Ptero.audio.play('hurt3');
+			}
+			else if (this.health == 1) {
+				Ptero.audio.play('hurt4');
+			}
+			Ptero.audio.play('damage');
 			this.health -= dmg;
 			if (this.health <= 0) {
 				this.die();

@@ -120,7 +120,7 @@ Ptero.Enemy.prototype = {
 			this.explode();
 		}
 		else {
-			Ptero.audio.play('hurt');
+			Ptero.audio.play('squeek');
 
 			this.flashTime = 0.1;
 		}
@@ -177,7 +177,6 @@ Ptero.Enemy.prototype = {
 
 		if (damage < 0) {
 			// negative damage is arbitrarily used to signal a capture
-			Ptero.audio.play('net');
 			this.createCaptureAndReleasePaths();
 			this.path = this.capturePath;
 			if (Ptero.score) {
@@ -264,7 +263,22 @@ Ptero.Enemy.prototype = {
 			// FLYING TOWARD SCREEN
 			// update position
 			if (!this.isRemote) {
+				var prev_z = null;
+				var new_z = null;
+				var thresh_z = 2;
+
+				if (this.path.pos) {
+					prev_z = this.path.pos.z;
+				}
+
 				this.path.step(dt);
+
+				if (this.path.pos) {
+					new_z = this.path.pos.z;
+					if (prev_z > thresh_z && new_z <= thresh_z) {
+						Ptero.audio.play('flap');
+					}
+				}
 			}
 
 			// update flash time (hit indicator)

@@ -33,7 +33,10 @@ Ptero.audio = (function() {
 	function play(name) {
 		var sfx = Ptero.assets.sfx[name];
 		if (sfx) {
-			Ptero.settings.isSoundEnabled() && sfx.play();
+			if (Ptero.settings.isSoundEnabled()) {
+				stop(name);
+				sfx.play();
+			}
 			return;
 		}
 

@@ -463,11 +463,14 @@ Ptero.orb = (function(){
 					bullet.collideTarget = target;
 					if (isNet) {
 						bullet.damage = -1; // negative damage is arbitrarily meant to signal a capture net
+						Ptero.audio.play('net');
+					}
+					else {
+						Ptero.audio.play('shoot');
 					}
 					//target.isGoingToDie = true;
 					collideBulletWithBg(bullet);
 					Ptero.bulletpool.add(bullet);
-					Ptero.audio.play('shoot');
 					return;
 				}
 				else if (dist < minDist) {
@@ -492,14 +495,15 @@ Ptero.orb = (function(){
 		collideBulletWithBg(bullet);
 		if (isNet) {
 			bullet.damage = -1; // negative damage is arbitrarily meant to signal a capture net
+			Ptero.audio.play('net');
 		}
 		else {
+			Ptero.audio.play('shoot');
 			if (Ptero.score) {
 				Ptero.score.addMisses(1);
 			}
 		}
 		Ptero.bulletpool.add(bullet);
-		Ptero.audio.play('shoot');
 	}
 
 	// Try to fire a bullet into the given direction.
