@@ -19,9 +19,9 @@ Ptero.assets = (function(){
 		"damage"         : "audio/damage.ogg",
 		"flap"           : "audio/flap.ogg",
 		"drop_menu"      : "audio/drop_menu.ogg",
-		"bountyCorrect"  : "audio/bounty_correct.wav",
-		"bountyWrong"    : "audio/bounty_wrong.wav",
-		"bountyComplete" : "audio/bounty_complete.wav",
+		"bountyCorrect"  : "audio/bounty_correct.ogg",
+		"bountyWrong"    : "audio/bounty_wrong.ogg",
+		"bountyComplete" : "audio/bounty_complete.ogg",
 	};
 
 	var songSources = {
