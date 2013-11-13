@@ -120,7 +120,7 @@ Ptero.Enemy.prototype = {
 			this.explode();
 		}
 		else {
-			Ptero.audio.play('squeek');
+			//Ptero.audio.play('squeek');
 
 			this.flashTime = 0.1;
 		}
