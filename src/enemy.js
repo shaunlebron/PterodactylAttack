@@ -295,9 +295,9 @@ Ptero.Enemy.prototype = {
 				}
 				else if (this.path == this.capturePath) {
 					if (!this.isCaught) {
+						this.isCaught = true;
 						Ptero.bounty.addEnemy(this);
 						this.onCaught && this.onCaught();
-						this.isCaught = true;
 					}
 				}
 				else if (this.path == this.releasePath) {
