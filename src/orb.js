@@ -246,7 +246,8 @@ Ptero.orb = (function(){
 				var range = getRadius() * 0.1;
 				if (time > 0) {
 					t = maxTime - time;
-					displacement = Math.cos(t/period*Math.PI*2)*range*(time/maxTime);
+					//displacement = Math.cos(t/period*Math.PI*2)*range*(time/maxTime);
+					displacement = range*(time/maxTime);
 				}
 				else {
 					displacement = 0;
