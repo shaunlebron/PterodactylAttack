@@ -170,6 +170,7 @@ Ptero.orb = (function(){
 		updateOrigin(dt);
 		Ptero.bulletpool.update(dt);
 		charge.update(dt);
+		flickSpring.update(dt);
 		updateBlinkTimer(dt);
 		updateSwipeAnim(dt);
 	};
@@ -225,14 +226,54 @@ Ptero.orb = (function(){
 		ctx.stroke();
 	}
 
+	var flickSpring = (function(){
+		var time = 0;
+		var maxTime = 0.3;
+		var freq = 8;
+		var period = 1/freq;
+		var displacement = 0;
+		var vector = null;
+
+		return {
+			start: function(aim_vector) {
+				time = maxTime;
+				vector = aim_vector.copy();
+				vector.y *= -1;
+			},
+			update: function(dt) {
+				time = Math.max(0, time-dt);
+				var t;
+				var range = getRadius() * 0.1;
+				if (time > 0) {
+					t = maxTime - time;
+					displacement = Math.cos(t/period*Math.PI*2)*range*(time/maxTime);
+				}
+				else {
+					displacement = 0;
+				}
+			},
+			getTranslate: function() {
+				if (!vector) {
+					vector = new Ptero.Vector(0,0);
+				}
+				return vector.copy().mul(displacement);
+			},
+		};
+	})();
+
 	function draw(ctx) {
 		var radius = getRadius();
 		var p = Ptero.screen.spaceToWindow(origin);
 
+		ctx.save();
+		ctx.translate(p.x, p.y);
+		var trans = flickSpring.getTranslate();
+		ctx.translate(trans.x, trans.y);
+
 		ctx.fillStyle = blinkFillStyle;
 		//ctx.fillStyle = "rgba(0,0,0,0.5)";
 		ctx.beginPath();
-		ctx.arc(p.x,p.y,radius, 0, 2*Math.PI);
+		ctx.arc(0,0,radius, 0, 2*Math.PI);
 		ctx.fill();
 		if (isNet) {
 			ctx.strokeStyle = "#FFF";
@@ -240,20 +281,22 @@ Ptero.orb = (function(){
 			ctx.beginPath();
 			var i,len=8;
 			for (i=0; i<len; i++) {
-				ctx.moveTo(p.x,p.y);
+				ctx.moveTo(0,0);
 				var a = Math.PI/(len-1)*i;
 				var x = Math.cos(a)*radius;
 				var y = Math.sin(a)*radius;
-				ctx.lineTo(p.x+x,p.y-y);
+				ctx.lineTo(x,-y);
 			}
 			ctx.stroke();
 			len=4;
 			for (i=0; i<len; i++) {
 				ctx.beginPath();
-				ctx.arc(p.x,p.y,radius/len*(i+1),0,Math.PI*2);
+				ctx.arc(0,0,radius/len*(i+1),0,Math.PI*2);
 				ctx.stroke();
 			}
 		}
+		ctx.restore();
+
 		charge.draw(ctx,p);
 
 		if (swipePos) {
@@ -471,6 +514,7 @@ Ptero.orb = (function(){
 					//target.isGoingToDie = true;
 					collideBulletWithBg(bullet);
 					Ptero.bulletpool.add(bullet);
+					flickSpring.start(aim_vector);
 					return;
 				}
 				else if (dist < minDist) {
@@ -504,6 +548,7 @@ Ptero.orb = (function(){
 			}
 		}
 		Ptero.bulletpool.add(bullet);
+		flickSpring.start(aim_vector);
 	}
 
 	// Try to fire a bullet into the given direction.
