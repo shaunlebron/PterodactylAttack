@@ -396,7 +396,7 @@ Ptero.OverlordTutor.prototype = {
 			that.enemies.length = 0;
 			Ptero.audio.play('bountyWrong');
 			Ptero.scene_play.enableNet(false);
-			Ptero.scene_play.hud.show('health', false);
+			Ptero.scene_play.getHud().show('health', false);
 			that.lessonTitle.fadeOut();
 
 			Ptero.orb.setNextOrigin(0,-2);
@@ -449,8 +449,8 @@ Ptero.OverlordTutor.prototype = {
 				time: 0,
 				action: function() {
 					that.showLessonTitle('Lesson 1','Hit babies 2 times');
-					Ptero.scene_play.hud.show("health", true);
-					Ptero.scene_play.hud.show("bounty", false);
+					Ptero.scene_play.getHud().show("health", true);
+					Ptero.scene_play.getHud().show("bounty", false);
 					that.isShowHealthMsg = true;
 				},
 			},
@@ -484,8 +484,8 @@ Ptero.OverlordTutor.prototype = {
 			that.enemies.length = 0;
 			Ptero.audio.play('bountyWrong');
 			Ptero.scene_play.enableNet(false);
-			Ptero.scene_play.hud.show('health', false);
-			Ptero.scene_play.hud.show('bounty', false);
+			Ptero.scene_play.getHud().show('health', false);
+			Ptero.scene_play.getHud().show('bounty', false);
 			that.lessonTitle.fadeOut();
 
 			Ptero.orb.setNextOrigin(0,-2);
@@ -538,8 +538,8 @@ Ptero.OverlordTutor.prototype = {
 				time: 0,
 				action: function() {
 					that.showLessonTitle('Lesson 2','Hit adults 3 times');
-					Ptero.scene_play.hud.show("health", true);
-					Ptero.scene_play.hud.show("bounty", false);
+					Ptero.scene_play.getHud().show("health", true);
+					Ptero.scene_play.getHud().show("bounty", false);
 					that.isShowHealthMsg = true;
 				},
 			},
@@ -568,8 +568,8 @@ Ptero.OverlordTutor.prototype = {
 			that.enemies.length = 0;
 			Ptero.audio.play('bountyWrong');
 			Ptero.scene_play.enableNet(false);
-			Ptero.scene_play.hud.show('health', false);
-			Ptero.scene_play.hud.show('bounty', false);
+			Ptero.scene_play.getHud().show('health', false);
+			Ptero.scene_play.getHud().show('bounty', false);
 			that.lessonTitle.fadeOut();
 			that.showNetTutor('out');
 
@@ -648,8 +648,8 @@ Ptero.OverlordTutor.prototype = {
 				action: function() {
 					Ptero.bounty.isBlackHole = true;
 					that.showLessonTitle('Lesson 3','Capture a pterodactyl');
-					Ptero.scene_play.hud.show("health", true);
-					Ptero.scene_play.hud.show("bounty", false);
+					Ptero.scene_play.getHud().show("health", true);
+					Ptero.scene_play.getHud().show("bounty", false);
 					that.isShowHealthMsg = true;
 				},
 			},
@@ -681,7 +681,7 @@ Ptero.OverlordTutor.prototype = {
 						Ptero.orb.setNextOrigin(0,-2);
 						Ptero.scene_play.cleanup();
 						Ptero.settings.enableTutorial(false);
-						Ptero.scene_play.hud.fadeOut(1, function() {
+						Ptero.scene_play.getHud().fadeOut(1, function() {
 							Ptero.background.exit();
 							Ptero.background.onExitDone = function() {
 								setTimeout(function(){
@@ -703,8 +703,8 @@ Ptero.OverlordTutor.prototype = {
 			that.enemies.length = 0;
 			Ptero.audio.play('bountyWrong');
 			Ptero.scene_play.enableNet(false);
-			Ptero.scene_play.hud.show('health', false);
-			Ptero.scene_play.hud.show('bounty', false);
+			Ptero.scene_play.getHud().show('health', false);
+			Ptero.scene_play.getHud().show('bounty', false);
 			that.lessonTitle.fadeOut();
 			that.showBountyTutor('out');
 			that.showSkipTutor('out');
@@ -834,8 +834,8 @@ Ptero.OverlordTutor.prototype = {
 					Ptero.player.setGod(false);
 					Ptero.bounty.isBlackHole = false;
 					Ptero.scene_play.enableNet(true);
-					Ptero.scene_play.hud.show("health", true);
-					Ptero.scene_play.hud.show("bounty", false);
+					Ptero.scene_play.getHud().show("health", true);
+					Ptero.scene_play.getHud().show("bounty", false);
 					that.isShowHealthMsg = false;
 					that.showLessonTitle('Last Lesson','Bounties');
 				},
@@ -843,7 +843,7 @@ Ptero.OverlordTutor.prototype = {
 			{
 				dt: 0.75,
 				action: function() {
-					Ptero.scene_play.hud.show('bounty', true);
+					Ptero.scene_play.getHud().show('bounty', true);
 					that.showBountyTutor('in');
 				},
 			},
@@ -866,9 +866,9 @@ Ptero.OverlordTutor.prototype = {
 		Ptero.orb.setOrigin(0,-2);
 		Ptero.orb.setNextOrigin(0,-2);
 		Ptero.scene_play.enableNet(false);
-		Ptero.scene_play.hud.show("score", false);
-		Ptero.scene_play.hud.show("health", false);
-		Ptero.scene_play.hud.show("bounty", false);
+		Ptero.scene_play.getHud().show("score", false);
+		Ptero.scene_play.getHud().show("health", false);
+		Ptero.scene_play.getHud().show("bounty", false);
 		this.refreshPaths();
 		Ptero.refreshBounty();
 		this.message = null;
@@ -1110,9 +1110,9 @@ Ptero.OverlordWaves.prototype = {
 		Ptero.player.setGod(false);
 
 		Ptero.scene_play.enableNet(true);
-		Ptero.scene_play.hud.show("score", true);
-		Ptero.scene_play.hud.show("health", true);
-		Ptero.scene_play.hud.show("bounty", true);
+		Ptero.scene_play.getHud().show("score", true);
+		Ptero.scene_play.getHud().show("health", true);
+		Ptero.scene_play.getHud().show("bounty", true);
 
 		// empty enemies list
 		this.enemies.length = 0;

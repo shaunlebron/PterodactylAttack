@@ -84,6 +84,7 @@ Ptero.scene_play = (function() {
 	var time;
 	function init() {
 		isPaused = false;
+		makeHud();
 
 		// reset the score
 		Ptero.score.reset();
@@ -156,177 +157,180 @@ Ptero.scene_play = (function() {
 		Ptero.pause_menu.init();
 	};
 
-	var hud = (function(){
+	var hud;
+	function makeHud() {
+		hud = (function(){
 
-		var alpha;
-		var timer;
-		var shown = {
-			"health": true,
-			"bounty": true,
-			"score": true,
-		};
+			var alpha;
+			var timer;
+			var shown = {
+				"health": true,
+				"bounty": true,
+				"score": true,
+			};
 
-		var health = 0;
-		var nextHealth;
-		var healthTime = 0;
-		var healthColor;
-		function updateHealth(dt) {
-			healthTime += dt;
-			nextHealth = Ptero.player.health;
-			var healthSpeed = 2;
-			if (health < nextHealth) {
-				health = Math.min(nextHealth, health + healthSpeed*dt);
-			}
-			else {
-				health = Math.max(nextHealth, health - healthSpeed*dt);
-			}
-			healthColor = "#DDD";
-			if (Math.floor(healthTime*6) % 2 == 0) {
+			var health = 0;
+			var nextHealth;
+			var healthTime = 0;
+			var healthColor;
+			function updateHealth(dt) {
+				healthTime += dt;
+				nextHealth = Ptero.player.health;
+				var healthSpeed = 2;
 				if (health < nextHealth) {
-					healthColor = "#0F0";
+					health = Math.min(nextHealth, health + healthSpeed*dt);
 				}
-				else if (health > nextHealth) {
-					healthColor = "#F00";
+				else {
+					health = Math.max(nextHealth, health - healthSpeed*dt);
 				}
-				else if (health == 1) {
-					healthColor = "#F00";
+				healthColor = "#DDD";
+				if (Math.floor(healthTime*6) % 2 == 0) {
+					if (health < nextHealth) {
+						healthColor = "#0F0";
+					}
+					else if (health > nextHealth) {
+						healthColor = "#F00";
+					}
+					else if (health == 1) {
+						healthColor = "#F00";
+					}
 				}
 			}
-		}
 
-		function show(name, on) {
-			shown[name] = on;
-		}
-
-		function hide() {
-			alpha = null;
-		}
-
-		function fadeIn(t, onDone) {
-			state = "fade-in";
-			var duration = 0.25;
-			var interp = Ptero.makeInterp('linear', [0,1], [0, duration]);
-			timer = new Ptero.Timer({
-				limit: duration,
-				onUpdate: function(dt,t) {
-					alpha = interp(t);
-				},
-				onFinish: function() {
-					alpha = 1;
-					timer = null;
-					onDone && onDone();
-				},
-			});
-		}
-
-		function fadeOut(t, onDone) {
-			state = "fade-out";
-			var duration = 0.25;
-			var interp = Ptero.makeInterp('linear', [1,0], [0, duration]);
-			timer = new Ptero.Timer({
-				limit: duration,
-				onUpdate: function(dt,t) {
-					alpha = interp(t);
-				},
-				onFinish: function() {
-					alpha = 0;
-					timer = null;
-					onDone && onDone();
-				},
-			});
-		}
-
-		function update(dt) {
-			timer && timer.update(dt);
-			updateHealth(dt);
-		}
-
-		function drawHealth(ctx) {
-			healthBorderBtn.draw(ctx);
-			var pos = healthBorderBtn.pos;
-			var b = healthContentBtn.billboard;
-			var w = b.w;
-			var h = b.h;
-			var healthPercent = health / Ptero.player.maxHealth;
-			ctx.save();
-			b.transform(ctx,pos);
-			ctx.fillStyle = "#555";
-			ctx.fillRect(0,0,w,h);
-			ctx.fillStyle = healthColor;
-			ctx.fillRect(0,0, healthPercent * w, h);
-			ctx.restore();
-		}
-
-		function drawEgg(ctx,color) {
-			function egg() {
-				ctx.scale(0.98,0.98);
-				ctx.translate(-8014,-6764);
-				ctx.beginPath();
-				ctx.moveTo(8052,6798);
-				ctx.bezierCurveTo(8052,6811,8044,6818,8034,6818);
-				ctx.bezierCurveTo(8023,6818,8015,6811,8015,6798);
-				ctx.bezierCurveTo(8015,6785,8023,6765,8034,6765);
-				ctx.bezierCurveTo(8044,6765,8052,6785,8052,6798);
-				ctx.closePath();
+			function show(name, on) {
+				shown[name] = on;
 			}
-			egg();
-			ctx.lineWidth = 5;
-			ctx.strokeStyle = "rgba(0,0,0,0.3)";
-			ctx.stroke();
-			ctx.fillStyle = color;
-			ctx.fill();
-		}
 
-		function drawEggs(ctx) {
-			var bounty = Ptero.bounty;
-			var i,len=bounty.size;
-			var btn,board;
-			for (i=0; i<len; i++) {
-				var j = bounty.items[i];
-				var isCaught = bounty.caught[i];
-				var color = isCaught ? "rgba(0,0,0,0.3)" : bounty.colors[j];
+			function hide() {
+				alpha = null;
+			}
 
-				btn = eggBtns[i];
-				board = btn.billboard;
+			function fadeIn(t, onDone) {
+				state = "fade-in";
+				var duration = 0.25;
+				var interp = Ptero.makeInterp('linear', [0,1], [0, duration]);
+				timer = new Ptero.Timer({
+					limit: duration,
+					onUpdate: function(dt,t) {
+						alpha = interp(t);
+					},
+					onFinish: function() {
+						alpha = 1;
+						timer = null;
+						onDone && onDone();
+					},
+				});
+			}
+
+			function fadeOut(t, onDone) {
+				state = "fade-out";
+				var duration = 0.25;
+				var interp = Ptero.makeInterp('linear', [1,0], [0, duration]);
+				timer = new Ptero.Timer({
+					limit: duration,
+					onUpdate: function(dt,t) {
+						alpha = interp(t);
+					},
+					onFinish: function() {
+						alpha = 0;
+						timer = null;
+						onDone && onDone();
+					},
+				});
+			}
+
+			function update(dt) {
+				timer && timer.update(dt);
+				updateHealth(dt);
+			}
+
+			function drawHealth(ctx) {
+				healthBorderBtn.draw(ctx);
+				var pos = healthBorderBtn.pos;
+				var b = healthContentBtn.billboard;
+				var w = b.w;
+				var h = b.h;
+				var healthPercent = health / Ptero.player.maxHealth;
 				ctx.save();
-				board.transform(ctx, btn.pos);
-				if (isCaught) {
-					var scale = 0.5;
-					ctx.translate(board.w/2, board.h/2);
-					ctx.scale(scale,scale);
-					ctx.translate(-board.w/2, -board.h/2);
-				}
-				drawEgg(ctx, color);
+				b.transform(ctx,pos);
+				ctx.fillStyle = "#555";
+				ctx.fillRect(0,0,w,h);
+				ctx.fillStyle = healthColor;
+				ctx.fillRect(0,0, healthPercent * w, h);
 				ctx.restore();
 			}
-		}
 
-		function draw(ctx) {
-			if (alpha) {
-				ctx.globalAlpha = alpha;
-				if (shown["health"]) {
-					drawHealth(ctx);
+			function drawEgg(ctx,color) {
+				function egg() {
+					ctx.scale(0.98,0.98);
+					ctx.translate(-8014,-6764);
+					ctx.beginPath();
+					ctx.moveTo(8052,6798);
+					ctx.bezierCurveTo(8052,6811,8044,6818,8034,6818);
+					ctx.bezierCurveTo(8023,6818,8015,6811,8015,6798);
+					ctx.bezierCurveTo(8015,6785,8023,6765,8034,6765);
+					ctx.bezierCurveTo(8044,6765,8052,6785,8052,6798);
+					ctx.closePath();
 				}
-				if (shown["bounty"]) {
-					drawEggs(ctx);
-				}
-				if (shown["score"]) {
-					scoreBtn.draw(ctx);
-				}
-				buttonList.draw(ctx);
-				ctx.globalAlpha = 1;
+				egg();
+				ctx.lineWidth = 5;
+				ctx.strokeStyle = "rgba(0,0,0,0.3)";
+				ctx.stroke();
+				ctx.fillStyle = color;
+				ctx.fill();
 			}
-		}
 
-		return {
-			show: show,
-			hide: hide,
-			fadeIn: fadeIn,
-			fadeOut: fadeOut,
-			update: update,
-			draw: draw,
-		};
-	})();
+			function drawEggs(ctx) {
+				var bounty = Ptero.bounty;
+				var i,len=bounty.size;
+				var btn,board;
+				for (i=0; i<len; i++) {
+					var j = bounty.items[i];
+					var isCaught = bounty.caught[i];
+					var color = isCaught ? "rgba(0,0,0,0.3)" : bounty.colors[j];
+
+					btn = eggBtns[i];
+					board = btn.billboard;
+					ctx.save();
+					board.transform(ctx, btn.pos);
+					if (isCaught) {
+						var scale = 0.5;
+						ctx.translate(board.w/2, board.h/2);
+						ctx.scale(scale,scale);
+						ctx.translate(-board.w/2, -board.h/2);
+					}
+					drawEgg(ctx, color);
+					ctx.restore();
+				}
+			}
+
+			function draw(ctx) {
+				if (alpha) {
+					ctx.globalAlpha = alpha;
+					if (shown["health"]) {
+						drawHealth(ctx);
+					}
+					if (shown["bounty"]) {
+						drawEggs(ctx);
+					}
+					if (shown["score"]) {
+						scoreBtn.draw(ctx);
+					}
+					buttonList.draw(ctx);
+					ctx.globalAlpha = 1;
+				}
+			}
+
+			return {
+				show: show,
+				hide: hide,
+				fadeIn: fadeIn,
+				fadeOut: fadeOut,
+				update: update,
+				draw: draw,
+			};
+		})();
+	}
 
 	function exitTutorial() {
 		Ptero.settings.enableTutorial(false);
@@ -442,7 +446,7 @@ Ptero.scene_play = (function() {
 	}
 
 	return {
-		hud: hud,
+		getHud: function () { return hud; },
 		init: init,
 		update: update,
 		draw: draw,
