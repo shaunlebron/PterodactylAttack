@@ -371,7 +371,7 @@ Ptero.scene_play = (function() {
 	function update(dt) {
 		if (!isPaused) {
 			if (Ptero.player.health <= 0) {
-				Ptero.fadeToScene(Ptero.scene_gameover, 0.25);
+				Ptero.setScene(Ptero.scene_gameover);
 			}
 			else {
 				time += dt;
