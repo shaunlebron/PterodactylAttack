@@ -21,6 +21,15 @@ Ptero.scene_play = (function() {
 	var KEY_CTRL = 17;
 	var KEY_ALT = 18;
 	var KEY_A = 65;
+
+	function enableKeys() {
+		window.addEventListener("keydown", onKeyDown);
+		window.addEventListener("keyup", onKeyUp);
+	}
+	function disableKeys() {
+		window.removeEventListener("keydown", onKeyDown);
+		window.removeEventListener("keyup", onKeyUp);
+	}
 	function onKeyDown(e) {
 		if (e.keyCode == KEY_A) {
 			Ptero.orb.toggleDrawCones();
@@ -74,11 +83,13 @@ Ptero.scene_play = (function() {
 			debugBtn2.enable();
 		}
 		Ptero.orb.enableTouch();
+		enableKeys();
 	}
 
 	function disableControls() {
 		buttonList.disable();
 		Ptero.orb.disableTouch();
+		disableKeys();
 	}
 
 	var time;
@@ -148,10 +159,6 @@ Ptero.scene_play = (function() {
 
 		// initialize orb
 		Ptero.orb.setTargets(Ptero.overlord.enemies);
-
-		// add keyboard events
-		window.addEventListener("keydown", onKeyDown);
-		window.addEventListener("keyup", onKeyUp);
 
 		// initialize pause menu
 		Ptero.pause_menu.init();
