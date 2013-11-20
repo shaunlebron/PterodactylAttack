@@ -1,0 +1,31 @@
+{
+	"localImages": {},
+	"objects": [
+		{
+			"name": "netLeft",
+			"x": 0,
+			"y": 0.5,
+			"centerX": 0,
+			"centerY": 81.50693877551018,
+			"w": 157.25714285714278,
+			"h": 157.2571428571428,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "net"
+		},
+		{
+			"name": "netRight",
+			"x": 1,
+			"y": 0.5,
+			"centerX": 157.25714285714278,
+			"centerY": 78.6285714285714,
+			"w": 157.25714285714278,
+			"h": 157.2571428571428,
+			"font": "whitefont",
+			"textAlign": "center",
+			"text": "",
+			"imageName": "net"
+		}
+	]
+}

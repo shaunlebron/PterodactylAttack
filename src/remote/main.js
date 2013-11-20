@@ -1,3 +1,5 @@
+Ptero.Remote = Ptero.Remote || {};
+
 window.onload = function() {
 
 	// Create the canvas element.
@@ -46,39 +48,20 @@ window.onload = function() {
 	console.log("initing screen");
 	Ptero.screen.init(canvas,w,h);
 
-	Ptero.assets.loadAfterPreload({
-		preloadImageNames: [
-			'bg_menu',
-			'cliff',
-			'logo',
-		],
-		onPreload: function() {
-			console.log('starting title scene');
-			Ptero.setScene(Ptero.scene_title);
-			Ptero.executive.start();
-		},
-		onLoad: function() {
-			console.log('loading settings');
-			Ptero.settings.load();
-			console.log('creating backgrounds');
-			Ptero.createBackgrounds();
-			console.log("initing input");
-			Ptero.input.init();
-			console.log("animating title scene out");
-			Ptero.scene_title.animateOut();
+	Ptero.Remote.assets.load(function() {
+		console.log("initing input");
+		Ptero.input.init();
 
-			// open socket for remote control
-			Ptero.socket = io.connect('/');
-			Ptero.socket.on('clientlog', function(data) {
-				console.log(data.msg);
-				Ptero.socket.emit('serverlog', { msg: 'hello from client'} );
-			});
-			Ptero.socket.on('shoot', function(aim_vector) {
-				console.log('aim_vector',aim_vector);
-			});
-			Ptero.socket.on('net', function(on) {
-				console.log('net',on);
-			});
-		},
+		console.log('initing socket');
+		//Ptero.socket = io.connect('/');
+		Ptero.socket = io.connect('http://192.168.1.103:3001');
+		Ptero.socket.on('clientlog', function(data) {
+			console.log(data.msg);
+			Ptero.socket.emit('serverlog', { msg: 'hello from client'} );
+		});
+
+		console.log('starting scene');
+		Ptero.setScene(Ptero.Remote.scene_remote);
+		Ptero.executive.start();
 	});
 };

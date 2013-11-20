@@ -1,9 +1,10 @@
+
 <!doctype html>
 <html lang="en">
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Pterodactyl Attack - Demo</title>
+	<title>Pterodactyl Attack - Remote</title>
 
     <!-- Lock viewport on mobile devices. -->
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
@@ -15,10 +16,6 @@
     <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 	<style>
-	@font-face {
-		font-family: "SharkParty";
-		src: url('fonts/SharkParty.ttf');
-	}
 	html {
 		height: 100%;
 	}
@@ -30,104 +27,17 @@
 		margin:0;
 		height: 100%;
 	}
-	#controls {
-		font-family: sans-serif;
-		position: fixed;
-		top: -2px;
-		left: -2px;
-		color: #999;
-		z-index: 5;
-		background-color: rgba(0,0,0,0.8);
-		padding: 1em;
-		transition: width height 1s;
-		border-radius: 10px;
-		cursor: pointer;
-	}
-	a:link, a:hover, a:active, a:visited {
-		text-decoration: none;
-		color: #CCC;
-	}
-	#controls a{
-		text-decoration: none;
-	}
-	#controls li {
-		list-style-type: none;
-	}
-	#controls ul {
-		margin:0;
-		padding:0;
-	}
-	#controls-list {
-		display: none;
-	}
-	#controls table td {
-		padding:5px;
-		color: #777;
-	}
-	#controls table tr td:first-child {
-		font-weight: bold;
-		text-align: right;
-		color: #FFF;
-	}
 	</style>
 
 </head>
 
-<body onclick="showHelp(false)">
-	<div style="font-family: SharkParty;position:absolute;top:0;left:0">.</div>
-	<div id="controls">
-		<script>
-			var isShowingHelp = false;
-			function showHelp(on) {
-				var list = document.getElementById("controls-list");
-				var symbol = document.getElementById("toggleSymbol");
-				var div = document.getElementById("controls");
-				isShowingHelp = on;
-				if (isShowingHelp) {
-					list.style.display = "block";
-					toggleSymbol.innerHTML = "";
-					div.style.cursor = "default";
-				}
-				else {
-					list.style.display = "none";
-					toggleSymbol.innerHTML = "[+]";
-					div.style.cursor = "pointer";
-				}
-			}
-			function toggleHelp() {
-				showHelp(!isShowingHelp);
-			}
-			document.getElementById("controls").addEventListener("click", function(evt) {
-				if (!isShowingHelp) {
-					toggleHelp();
-				}
-				evt.stopPropagation();
-			});
-		</script>
-		<div>Help <span id="toggleSymbol">[+]</span></div>
-		<div id="controls-list">
-			<table>
-				<tr><td>A</td><td>toggle aim spotlights</td></tr>
-				<tr><td>B</td><td>toggle sprite borders</td></tr>
-				<tr><td>F</td><td>toggle framerate display</td></tr>
-				<tr><td>G</td><td>toggle godmode (<span id="god-state">OFF</span>)</td></tr>
-				<tr><td>N</td><td>next level</td></tr>
-				<tr><td>SPACE</td><td>toggle pause</td></tr>
-				<tr><td>SHIFT</td><td>hold for slow motion</td></tr>
-				<tr><td>ENTER</td><td>fullscreen</td></tr>
-				<tr><td>ALT</td><td>hold to use capture net</td></tr>
-			</table>
-		</div>
-	</div>
-
+<body>
 	<script src="lib/requestAnimationFrame.js"></script>
 	<script src="lib/socket.io.js"></script>
 
 	<script src="src/inherit.js"></script>
 	<script src="src/ptero.js"></script>
 	<script src="src/interp.js"></script>
-	<script src="src/vectorPathData.js"></script>
-	<script src="src/jsonData.js"></script>
 	<script src="src/assets.js"></script>
 	<script src="src/billboard.js"></script>
 	<script src="src/painter.js"></script>
@@ -158,7 +68,6 @@
 	<script src="src/vector.js"></script>
 
 	<script src="src/audio.js"></script>
-	<script src="src/main.js"></script>
 
 	<script src="src/timed_script.js"></script>
 	<script src="src/bounty.js"></script>
@@ -168,6 +77,11 @@
 	<script src="src/scene_credits.js"></script>
 	<script src="src/scene_thanks.js"></script>
 	<script src="src/settings.js"></script>
+
+	<script src="src/remote/main.js"></script>
+	<script src="src/remote/assets.js"></script>
+	<script src="src/remote/orb.js"></script>
+	<script src="src/remote/scene_remote.js"></script>
 
 </body>
 

@@ -2,6 +2,8 @@
 # ignore the cocoon files
 cocoon.js
 cocoon.zip
+remote.js
+remote.zip
 
 # ignore node server modules
 node_modules

@@ -3,6 +3,13 @@ var fs = require('fs');
 var cp = require('child_process');
 
 var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+
+// Start listening
+var port = 3001;
+server.listen(port);
+console.log('serving on port', port);
 
 // serves post request from Fourier (level tool)
 app.post('/levels/:level', function (req,res) {
@@ -95,11 +102,21 @@ app.post('/bgtool/:bg', function (req,res) {
     });
 });
 
-
 // Catch all to return any file requested.
 app.use(express.static(__dirname)); // Current directory is root
 
-// Start listening
-var port = 3001;
-app.listen(port);
-console.log('serving on port', port);
+// Sockets
+io.sockets.on('connection', function(socket) {
+	socket.emit('clientlog', { msg: 'hello from server' });
+	socket.on('serverlog', function(data) {
+		console.log(data.msg);
+	});
+	socket.on('shoot', function(data) {
+		console.log('shoot:',data);
+		socket.broadcast.emit('shoot',data);
+	});
+	socket.on('net', function(data) {
+		console.log('net:',data);
+		socket.broadcast.emit('net',data);
+	});
+});
