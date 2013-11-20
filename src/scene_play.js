@@ -38,8 +38,8 @@ Ptero.scene_play = (function() {
 			Ptero.executive.slowmo();
 		}
 		else if (e.keyCode == KEY_ALT) {
-			if (isNetEnabled) {
-				Ptero.orb.enableNet(true);
+			if (netBtnEnabled) {
+				Ptero.orb.engageNet(true);
 			}
 			e.preventDefault();
 		}
@@ -50,7 +50,7 @@ Ptero.scene_play = (function() {
 			Ptero.executive.regmo();
 		}
 		else if (e.keyCode == KEY_ALT) {
-			Ptero.orb.enableNet(false);
+			Ptero.orb.engageNet(false);
 		}
 	}
 
@@ -75,8 +75,8 @@ Ptero.scene_play = (function() {
 
 	function enableControls() {
 		pauseBtn.enable();
-		if (isNetEnabled) {
-			enableNet(true);
+		if (netBtnEnabled) {
+			enableNetBtn(true);
 		}
 		if (!Ptero.settings.isTutorialEnabled()) {
 			debugBtn1.enable();
@@ -88,6 +88,7 @@ Ptero.scene_play = (function() {
 
 	function disableControls() {
 		buttonList.disable();
+		enableNetBtn(false);
 		Ptero.orb.disableTouch();
 		disableKeys();
 	}
@@ -142,10 +143,10 @@ Ptero.scene_play = (function() {
 			eggBtns.push(b);
 		}
 
-		netLeftBtn.ontouchstart = netRightBtn.ontouchstart = function(x,y) { Ptero.orb.enableNet(true); };
-		netLeftBtn.ontouchend   = netRightBtn.ontouchend   = function(x,y) { Ptero.orb.enableNet(false); };
-		netLeftBtn.ontouchenter = netRightBtn.ontouchenter = function(x,y) { Ptero.orb.enableNet(true); };
-		netLeftBtn.ontouchleave = netRightBtn.ontouchleave = function(x,y) { Ptero.orb.enableNet(false); };
+		netLeftBtn.ontouchstart = netRightBtn.ontouchstart = function(x,y) { Ptero.orb.engageNet(true); };
+		netLeftBtn.ontouchend   = netRightBtn.ontouchend   = function(x,y) { Ptero.orb.engageNet(false); };
+		netLeftBtn.ontouchenter = netRightBtn.ontouchenter = function(x,y) { Ptero.orb.engageNet(true); };
+		netLeftBtn.ontouchleave = netRightBtn.ontouchleave = function(x,y) { Ptero.orb.engageNet(false); };
 
 		// create a player to hold player attributes such as health.
 		Ptero.player = new Ptero.Player();
@@ -431,9 +432,9 @@ Ptero.scene_play = (function() {
 
 	};
 
-	var isNetEnabled = false;
-	function enableNet(on) {
-		isNetEnabled = on;
+	var netBtnEnabled = false;
+	function enableNetBtn(on) {
+		netBtnEnabled = on;
 
 		netLeftBtn.disable();
 		netRightBtn.disable();
@@ -458,7 +459,8 @@ Ptero.scene_play = (function() {
 		update: update,
 		draw: draw,
 		cleanup:cleanup,
-		enableNet: enableNet,
+		enableNetBtn: enableNetBtn,
+		isNetBtnEnabled: function() { return netBtnEnabled; },
 		pause: pause,
 		unpause: unpause,
 		fadeToNextStage: fadeToNextStage,

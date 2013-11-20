@@ -1,0 +1,10 @@
+{
+	"name": "pteroserver",
+	"description": "a server for hosting pterodactyl attack",
+	"author": "shaun williams",
+	"version": "0.0.1",
+	"dependencies": {
+		"express": "latest",
+		"socket.io": "latest"
+	}
+}

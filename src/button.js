@@ -71,7 +71,8 @@ Ptero.Button = function(a) {
 	// scale state for growing/shrinking button for reacting to touch events
 	var origScale  = this.billboard.scale;
 	var focusScale = origScale * 1.1;
-	this.origScale = this.activeScale      = origScale;
+	this.focusScale = focusScale;
+	this.origScale = this.activeScale = origScale;
 	var that = this;
 	function setScale(s) {
 		that.activeScale = s;
@@ -184,7 +185,7 @@ Ptero.Button.fromState = function(state) {
 Ptero.Button.prototype = {
 	draw: function(ctx) {
 		var backupScale = this.billboard.scale;
-		this.billboard.scale = this.activeScale;
+		this.billboard.scale = (this.pressSimulated ? this.focusScale : this.activeScale);
 		if (this.image) {
 			Ptero.painter.drawImage(ctx, this.image, this.pos, this.billboard);
 		}

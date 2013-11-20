@@ -111,7 +111,7 @@ Ptero.Remote.orb = (function(){
 		charge.reset();
 		setOrigin(0,-2);
 		enableTouch();
-		enableNet(false);
+		engageNet(false);
 	};
 
 	function update(dt) {
@@ -252,8 +252,12 @@ Ptero.Remote.orb = (function(){
 						y: v.y,
 						z: v.z,
 					};
-					console.log('shoot', aim_vector);
-					Ptero.socket.emit('shoot', aim_vector);
+					var pos_vector = {
+						x: startOrigin.x,
+						y: startOrigin.y,
+						z: startOrigin.z,
+					};
+					Ptero.socket.emit('shoot', { aim: aim_vector, pos: pos_vector });
 				}
 			}
 		};
@@ -310,7 +314,7 @@ Ptero.Remote.orb = (function(){
 	};
 
 	var isNet = false;
-	function enableNet(on) {
+	function engageNet(on) {
 		isNet = on;
 		console.log('net', on);
 		Ptero.socket.emit('net', on);
@@ -319,7 +323,7 @@ Ptero.Remote.orb = (function(){
 	return {
 		init: init,
 		draw: draw,
-		enableNet: enableNet,
+		engageNet: engageNet,
 		setOrigin: setOrigin,
 		setNextOrigin: setNextOrigin,
 		update: update,

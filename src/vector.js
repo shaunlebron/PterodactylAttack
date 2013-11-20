@@ -6,6 +6,10 @@ Ptero.Vector = function(x,y,z) {
 	this.z = z;
 };
 
+Ptero.Vector.fromXYZ = function(xyz) {
+	return (new Ptero.Vector).set(xyz);
+};
+
 Ptero.Vector.prototype = {
 	set: function(vector) {
 		this.x = vector.x;

@@ -5,8 +5,8 @@ Ptero.Remote.scene_remote = (function() {
 	var netLeftBtn, netRightBtn;
 
 	function enableControls() {
-		if (isNetEnabled) {
-			enableNet(true);
+		if (netBtnEnabled) {
+			enableNetBtn(true);
 		}
 		Ptero.Remote.orb.enableTouch();
 	}
@@ -18,16 +18,15 @@ Ptero.Remote.scene_remote = (function() {
 
 		netLeftBtn = btns["netLeft"];
 		netRightBtn = btns["netRight"];
-		netLeftBtn.ontouchstart = netRightBtn.ontouchstart = function(x,y) { Ptero.Remote.orb.enableNet(true); };
-		netLeftBtn.ontouchend   = netRightBtn.ontouchend   = function(x,y) { Ptero.Remote.orb.enableNet(false); };
-		netLeftBtn.ontouchenter = netRightBtn.ontouchenter = function(x,y) { Ptero.Remote.orb.enableNet(true); };
-		netLeftBtn.ontouchleave = netRightBtn.ontouchleave = function(x,y) { Ptero.Remote.orb.enableNet(false); };
+		netLeftBtn.ontouchstart = netRightBtn.ontouchstart = function(x,y) { Ptero.Remote.orb.engageNet(true); };
+		netLeftBtn.ontouchend   = netRightBtn.ontouchend   = function(x,y) { Ptero.Remote.orb.engageNet(false); };
+		netLeftBtn.ontouchenter = netRightBtn.ontouchenter = function(x,y) { Ptero.Remote.orb.engageNet(true); };
+		netLeftBtn.ontouchleave = netRightBtn.ontouchleave = function(x,y) { Ptero.Remote.orb.engageNet(false); };
 
 		enableControls();
 
 		Ptero.Remote.orb.init();
 		Ptero.Remote.orb.setNextOrigin(0,-1);
-		console.log('inited scene');
 	};
 
 	function update(dt) {
@@ -41,10 +40,9 @@ Ptero.Remote.scene_remote = (function() {
 		Ptero.Remote.orb.draw(ctx);
 	};
 
-	var isNetEnabled = true;
-	function enableNet(on) {
-		console.log('enable net',on);
-		isNetEnabled = on;
+	var netBtnEnabled = true;
+	function enableNetBtn(on) {
+		netBtnEnabled = on;
 
 		netLeftBtn.disable();
 		netRightBtn.disable();
@@ -68,6 +66,6 @@ Ptero.Remote.scene_remote = (function() {
 		init: init,
 		update: update,
 		draw: draw,
-		enableNet: enableNet,
+		enableNetBtn: enableNetBtn,
 	};
 })();

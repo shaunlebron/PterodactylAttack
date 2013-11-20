@@ -163,7 +163,7 @@ Ptero.orb = (function(){
 		charge.reset();
 		setOrigin(0,-2);
 		enableTouch();
-		enableNet(false);
+		engageNet(false);
 	};
 
 	function update(dt) {
@@ -985,7 +985,7 @@ Ptero.orb = (function(){
 	};
 
 	var isNet = false;
-	function enableNet(on) {
+	function engageNet(on) {
 		isNet = on;
 	};
 
@@ -994,7 +994,7 @@ Ptero.orb = (function(){
 		draw: draw,
 		setDrawCones: function(on) { shouldDrawCones = on; },
 		toggleDrawCones: function() { shouldDrawCones = !shouldDrawCones; },
-		enableNet: enableNet,
+		engageNet: engageNet,
 		drawCone: drawCone,
 		setTargets: setTargets,
 		setOrigin: setOrigin,
@@ -1002,6 +1002,11 @@ Ptero.orb = (function(){
 		update: update,
 		enableTouch: enableTouch,
 		disableTouch: disableTouch,
+		isTouchEnabled: function() { return touchEnabled; },
+		shoot: function (data) {
+			startOrigin = Ptero.Vector.fromXYZ(data.pos);
+			shootWithLead(Ptero.Vector.fromXYZ(data.aim));
+		},
 		deselectTarget: deselectTarget,
 		enableGuide: enableGuide,
 	};

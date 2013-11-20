@@ -73,11 +73,17 @@ window.onload = function() {
 				console.log(data.msg);
 				Ptero.socket.emit('serverlog', { msg: 'hello from client'} );
 			});
-			Ptero.socket.on('shoot', function(aim_vector) {
-				console.log('aim_vector',aim_vector);
+			Ptero.socket.on('shoot', function(data) {
+				//console.log('shoot:',data);
+				if (Ptero.orb.isTouchEnabled()) {
+					Ptero.orb.shoot(data);
+				}
 			});
 			Ptero.socket.on('net', function(on) {
-				console.log('net',on);
+				//console.log('net',on);
+				if (Ptero.scene_play.isNetBtnEnabled()) {
+					Ptero.orb.engageNet(on);
+				}
 			});
 		},
 	});
