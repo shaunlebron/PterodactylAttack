@@ -1,0 +1,8 @@
+
+X create a background json data for loading background with no-brain ease
+X create pterodactyl path json file
+X create a default window size and draw with simple executive
+X make scene that can seek to a time position (sprite timings and path)
+X connect scene timing to scroll position
+- make screen resize automatically to fit the window
+- add parallax effect
