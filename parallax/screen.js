@@ -47,13 +47,16 @@ Ptero.screen = (function(){
 	}
 
 	function setWindowAspect(aspect) {
-		var oldWidth = windowWidth;
-		windowAspect = aspect;
-		windowWidth = windowHeight * aspect;
-		makeFrustum(aspect);
-		if (windowLeft != undefined) {
-			windowLeft += (oldWidth-windowWidth)/2  * windowScale;
+		if (aspect > 16/9) {
+			windowWidth = 1280;
+			windowHeight = windowWidth / aspect;
 		}
+		else {
+			windowHeight = 720;
+			windowWidth = windowHeight * aspect;
+		}
+		windowAspect = aspect;
+		makeFrustum(16/9);
 	}
 
 	function centerWindowAtPixel(x,y) {
@@ -67,8 +70,23 @@ Ptero.screen = (function(){
 		centerWindowAtPixel(canvasWidth/2, canvasHeight/2);
 	}
 
+	// Scales the window to fit the height or width of the canvas, then centers horizontally
+	function coverWindow() {
+		windowScale = getWindowCoverScale();
+		centerWindowAtPixel(canvasWidth/2, canvasHeight/2);
+	}
+
 	function getWindowFitScale() {
 		return canvasHeight / windowHeight;
+	}
+
+	function getWindowCoverScale() {
+		if (windowAspect > 16/9) {
+			return canvasWidth / windowWidth;
+		}
+		else {
+			return canvasHeight / windowHeight;
+		}
 	}
 
 	function zoomWindow(scale, cx, cy) {
@@ -84,13 +102,16 @@ Ptero.screen = (function(){
 		ctx.clip();
 	}
 
+	function resizeCanvas(w,h) {
+		setCanvasSize(w,h);
+		setWindowAspect(canvasAspect);
+		coverWindow();
+	}
+
 	function init(_canvas,w,h) {
 		canvas = _canvas;
 		ctx = canvas.getContext("2d");
-
-		setCanvasSize(w,h);
-		setWindowAspect(canvasAspect);
-		fitWindow();
+		resizeCanvas(w,h);
 	}
 
 	function spaceToWindow(vector) {
@@ -101,8 +122,8 @@ Ptero.screen = (function(){
 		};
 		var v = Ptero.frustum.projectToNear(v2);
 		return new Ptero.Vector(
-			(v.x/Ptero.frustum.nearWidth + 0.5) * windowWidth,
-			(-v.y/Ptero.frustum.nearHeight + 0.5) * windowHeight);
+			(v.x/Ptero.frustum.nearWidth + 0.5) * 1280 - (1280-windowWidth)/2,
+			(-v.y/Ptero.frustum.nearHeight + 0.5) * 720 );
 	}
 
 	function windowToSpace(vector) {
@@ -167,6 +188,8 @@ Ptero.screen = (function(){
 		windowToSpace  : windowToSpace,
 		canvasToWindow : canvasToWindow,
 		windowToCanvas : windowToCanvas,
+
+		resizeCanvas : resizeCanvas,
 
 		getCanvasPos: getCanvasPos,
 

@@ -2,21 +2,38 @@ function addParallax() {
 
 	var $window = $(window);
 	var $document = $(document);
+	var $canvas = $('#c');
 
-	var maxScrollTop = 0;
-	function computeMaxScrollTop() {
-		maxScrollTop = $document.height() - $window.height();
+	var startScroll;
+	var endScroll;
+	var scrollRange;
+
+	function computeScrollRange() {
+		var windowHeight = $window.height();
+		var documentHeight = $document.height();
+		var canvasTop = $canvas.offset().top;
+		var canvasHeight = $canvas.height();
+		startScroll = Math.max(0, canvasTop - windowHeight);
+		endScroll = Math.min(documentHeight - windowHeight, canvasTop + canvasHeight + windowHeight);
+		scrollRange = (endScroll - startScroll);
 	}
-	computeMaxScrollTop();
-	$window.resize(computeMaxScrollTop);
 
-	function update() {
+	function resize() {
+		Ptero.screen.resizeCanvas($canvas.width(), $canvas.height());
+		computeScrollRange();
+		scroll();
+	}
+
+	function scroll() {
 		var scrollTop = $window.scrollTop();
-		Ptero.scene.setFracTime(maxScrollTop == 0 ? 0 : scrollTop / maxScrollTop);
-		console.log(scrollTop, maxScrollTop);
-		Ptero.scene.draw();
+		if (startScroll < scrollTop && scrollTop < endScroll) {
+			Ptero.scene.setFracTime(scrollRange == 0 ? 0 : (scrollTop-startScroll) / scrollRange);
+			Ptero.scene.draw();
+		}
 	}
-	console.log('binding scroll');
-	$window.bind('scroll', update);
-	update();
+
+	$window.resize(resize);
+	$window.bind('scroll', scroll);
+
+	resize();
 }
