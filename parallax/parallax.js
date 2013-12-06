@@ -21,7 +21,7 @@ function addParallax() {
 		canvasWidth = $canvas.width();
 		canvasHeight = $canvas.height();
 		scrollStart = Math.max(0, canvasTop - windowHeight);
-		scrollEnd = Math.min(documentHeight - windowHeight, canvasTop + canvasHeight + windowHeight);
+		scrollEnd = Math.min(documentHeight - windowHeight, canvasTop + canvasHeight);
 		scrollRange = (scrollEnd - scrollStart);
 	}
 
