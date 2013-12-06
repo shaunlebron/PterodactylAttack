@@ -99,6 +99,7 @@ Ptero.Billboard.prototype = {
 			h: this.h * scale,
 			x: windowPos.x - this.centerX*scale,
 			y: windowPos.y - this.centerY*scale,
+			scale: scale,
 		};
 	},
 	getCanvasRect: function(pos) {
@@ -206,7 +207,11 @@ Ptero.Billboard.prototype = {
 
 	transform: function(ctx,pos) {
 		var rect = this.getWindowRect(pos);
-		ctx.translate(rect.x, rect.y);
+		ctx.translate(rect.centerX, rect.centerY);
+		if (pos.angle) {
+			ctx.rotate(pos.angle);
+		}
+		ctx.translate(-this.centerX*rect.scale, -this.centerY*rect.scale);
 		var scale = rect.w / this.w;
 		ctx.scale(scale, scale);
 	},

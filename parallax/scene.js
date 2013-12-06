@@ -23,6 +23,8 @@ Ptero.scene = (function(){
 
 	function init() {
 		createPteros();
+		Ptero.setBackground('mountain');
+		Ptero.background.goToIdle();
 	}
 
 	function setFracTime(k) {
@@ -31,6 +33,7 @@ Ptero.scene = (function(){
 
 	function setTime(t) {
 		Ptero.deferredSprites.clear();
+		Ptero.background.setTime(t);
 
 		// update enemies
 		var i,numEnemies = enemies.length;
@@ -56,7 +59,7 @@ Ptero.scene = (function(){
 		ctx.save();
 		Ptero.screen.transformToWindow();
 
-		Ptero.assets.sprites["bg"].draw(ctx, { x: 0, y: 0, z: Ptero.frustum.near });
+		//Ptero.assets.sprites["bg"].draw(ctx, { x: 0, y: 0, z: Ptero.frustum.near });
 		Ptero.deferredSprites.draw(ctx);
 
 		ctx.restore();

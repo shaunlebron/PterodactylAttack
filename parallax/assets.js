@@ -7,11 +7,23 @@ Ptero.assets = (function(){
 	// a concantenated file of external json files.
 	var usePreloadedJson = true;
 
-	var imageSources = {
-		"bg"     : "bg.jpg",
-	};
-
 	var vectorSources = {
+		"bg_mountain_00": "bg/mountain/00.svg",
+		"bg_mountain_01": "bg/mountain/01.svg",
+		"bg_mountain_02": "bg/mountain/02.svg",
+		"bg_mountain_03": "bg/mountain/03.svg",
+		"bg_mountain_04": "bg/mountain/04.svg",
+		"bg_mountain_05": "bg/mountain/05.svg",
+		"bg_mountain_06": "bg/mountain/06.svg",
+		"bg_mountain_07": "bg/mountain/07.svg",
+		"bg_mountain_08": "bg/mountain/08.svg",
+		"bg_mountain_09": "bg/mountain/09.svg",
+		"bg_mountain_10": "bg/mountain/10.svg",
+		"bg_mountain_11": "bg/mountain/11.svg",
+		"bg_mountain_12": "bg/mountain/12.svg",
+		"bg_mountain_13": "bg/mountain/13.svg",
+		"bg_mountain_14": "bg/mountain/14.svg",
+		"bg_mountain_15": "bg/mountain/15.svg",
 	};
 
 	// populated by "addPteroVectorAnim"
@@ -65,16 +77,14 @@ Ptero.assets = (function(){
 	var jsonSources = {
 		// stage paths
 		"ptero_paths": "ptero_paths.json",
+
+		// background layers
+		"bg_mountain_layers" : "bg/mountain/layers.json",
 	};
 
 	// Add secondary sources dependent on the primary sources listed above.
 	(function(){
 		var name;
-
-		// add metadata json sources to loading list
-		for (name in imageSources) {
-			jsonSources[name] = imageSources[name]+".json";
-		}
 
 		// add vector metadata to loading list
 		for (name in vectorSources) {
@@ -106,6 +116,7 @@ Ptero.assets = (function(){
 
 		// load image metadata
 		var meta = json[name];
+		console.log(name);
 
 		// append metadata with the vector path data
 
@@ -122,11 +133,6 @@ Ptero.assets = (function(){
 
 		var name;
 
-		// post-process images
-		for (name in imageSources) {
-			postProcessImage(name);
-		}
-
 		// post-process vectors
 		for (name in vectorSources) {
 			postProcessVector(name);
@@ -137,7 +143,6 @@ Ptero.assets = (function(){
 
 		// Determine the number of files we are loading.
 		var totalCount = 0;
-		for (name in imageSources) { totalCount++; }
 		for (name in jsonSources) { totalCount++; }
 
 		// Running count of how many files have been loaded.
@@ -157,32 +162,6 @@ Ptero.assets = (function(){
 				handleAllDone();
 			}
 		}
-
-		// Load images
-		var img,name,src,req;
-		for (name in imageSources) {
-			if (images[name]) {
-				handleLoad();
-				continue;
-			}
-			src = imageSources[name];
-			console.log('image',name, src);
-			img = new Image();
-			img.src = src;
-			img.onerror = (function(name){
-				return function() {
-					console.error("couldn't load image: "+ name);
-				};
-			})(name);
-			img.onload = (function(name){
-				return function() {
-					console.log("loaded image: "+ name);
-					handleLoad();
-				};
-			})(name);
-			images[name] = img;
-		}
-
 		// Load json data.
 		for (name in jsonSources) {
 			if (json[name]) {

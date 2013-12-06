@@ -1,17 +1,16 @@
-window.onload = function() {
+jQuery(function() {
 
-	var canvas = document.getElementById('c');
+	var canvas = document.getElementById('parallax-ptero');
 	var w,h;
 
 	w = 500;
 	h = w/16*9;
 
-	console.log("initing screen");
 	Ptero.screen.init(canvas,w,h);
 
 	Ptero.assets.load(function() {
-		console.log('starting scene');
+		Ptero.createBackgrounds();
 		Ptero.scene.init();
 		addParallax();
 	});
-};
+});

@@ -1,8 +1,9 @@
 function addParallax() {
+	var $ = jQuery;
 
 	var $window = $(window);
 	var $document = $(document);
-	var $canvas = $('#c');
+	var $canvas = $('#parallax-ptero');
 
 	var startScroll;
 	var endScroll;
