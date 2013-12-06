@@ -12,6 +12,8 @@ Ptero.screen = (function(){
 	var windowLeft;
 	var windowTop;
 
+	var windowHeightDiff;
+
 	// the scale that the window will be drawn inside the canvas.
 	var windowScale;
 
@@ -106,6 +108,12 @@ Ptero.screen = (function(){
 		setCanvasSize(w,h);
 		setWindowAspect(canvasAspect);
 		coverWindow();
+		if (canvasAspect > 16/9) {
+			windowHeightDiff = canvasWidth / 16 * 9 - canvasHeight;
+		}
+		else {
+			windowHeightDiff = 0;
+		}
 	}
 
 	function init(_canvas,w,h) {
@@ -217,12 +225,18 @@ Ptero.screen = (function(){
 		getWindowScale: function() {
 			return windowScale;
 		},
+		setWindowTop: function(y) {
+			windowTop = y;
+		},
 		setWindowPos: function(cx,cy) {
 			windowLeft = cx;
 			windowTop = cy;
 		},
 		setWindowScale: function(s) {
 			windowScale = s;
+		},
+		getWindowHeightDiff: function() {
+			return windowHeightDiff;
 		},
 	};
 })();

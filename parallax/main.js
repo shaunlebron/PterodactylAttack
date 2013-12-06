@@ -9,7 +9,6 @@ jQuery(function() {
 	Ptero.screen.init(canvas,w,h);
 
 	Ptero.assets.load(function() {
-		Ptero.createBackgrounds();
 		Ptero.scene.init();
 		addParallax();
 	});

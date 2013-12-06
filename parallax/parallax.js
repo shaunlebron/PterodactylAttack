@@ -5,30 +5,51 @@ function addParallax() {
 	var $document = $(document);
 	var $canvas = $('#parallax-ptero');
 
-	var startScroll;
-	var endScroll;
+	var scrollStart;
+	var scrollEnd;
 	var scrollRange;
+	var windowHeight;
+	var documentHeight;
+	var canvasTop;
+	var canvasHeight;
+	var canvasWidth;
 
 	function computeScrollRange() {
-		var windowHeight = $window.height();
-		var documentHeight = $document.height();
-		var canvasTop = $canvas.offset().top;
-		var canvasHeight = $canvas.height();
-		startScroll = Math.max(0, canvasTop - windowHeight);
-		endScroll = Math.min(documentHeight - windowHeight, canvasTop + canvasHeight + windowHeight);
-		scrollRange = (endScroll - startScroll);
+		windowHeight = $window.height();
+		documentHeight = $document.height();
+		canvasTop = $canvas.offset().top;
+		canvasWidth = $canvas.width();
+		canvasHeight = $canvas.height();
+		scrollStart = Math.max(0, canvasTop - windowHeight);
+		scrollEnd = Math.min(documentHeight - windowHeight, canvasTop + canvasHeight + windowHeight);
+		scrollRange = (scrollEnd - scrollStart);
 	}
+
+	var scrollOrigin;
+	var fixedCanvasOriginOffset;
+	var parallaxScale = 0.4;
 
 	function resize() {
 		Ptero.screen.resizeCanvas($canvas.width(), $canvas.height());
 		computeScrollRange();
+
+		scrollOrigin = canvasTop + canvasHeight/2 - windowHeight/2;
+		fixedCanvasOriginOffset = (windowHeight - (canvasHeight + Ptero.screen.getWindowHeightDiff())) / 2;
+
 		scroll();
 	}
 
 	function scroll() {
-		var scrollTop = $window.scrollTop();
-		if (startScroll < scrollTop && scrollTop < endScroll) {
-			Ptero.scene.setFracTime(scrollRange == 0 ? 0 : (scrollTop-startScroll) / scrollRange);
+		var pos = $window.scrollTop();
+		if (scrollStart < pos && pos < scrollEnd) {
+			var k = scrollRange ? (pos-scrollStart) / scrollRange : 0;
+			Ptero.scene.setFracTime(k);
+
+			var y = 0;
+			if (canvasWidth >= 768) {
+				y = -(pos - scrollOrigin) * parallaxScale + pos + fixedCanvasOriginOffset - canvasTop;
+			}
+			Ptero.screen.setWindowTop(y);
 			Ptero.scene.draw();
 		}
 	}
