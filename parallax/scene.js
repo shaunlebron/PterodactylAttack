@@ -60,19 +60,6 @@ Ptero.scene = (function(){
 		Ptero.deferredSprites.draw(ctx);
 
 		ctx.restore();
-
-		// color in the margins to prevent artifacts
-		ctx.fillStyle = "#EEE";
-		var h = Ptero.screen.getCanvasHeight();
-		var w = Ptero.screen.getCanvasWidth();
-		var topY = Ptero.screen.getWindowPos().y;
-		var botY = topY + Ptero.screen.getWindowWidth() /16*9*Ptero.screen.getWindowScale();
-		if (topY > 0) {
-			ctx.fillRect(0,0, w, topY);
-		}
-		if (botY < h) {
-			ctx.fillRect(0, botY, w, h-botY);
-		}
 	}
 
 	return {

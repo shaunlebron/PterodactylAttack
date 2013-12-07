@@ -4,6 +4,7 @@ function addParallax() {
 	var $window = $(window);
 	var $document = $(document);
 	var $canvas = $('#parallax-ptero');
+	var $section = $('#section');
 
 	var scrollStart;
 	var scrollEnd;
@@ -13,43 +14,53 @@ function addParallax() {
 	var canvasTop;
 	var canvasHeight;
 	var canvasWidth;
+	var sectionTop;
+	var sectionHeight;
 
 	function computeScrollRange() {
 		windowHeight = $window.height();
 		documentHeight = $document.height();
-		canvasTop = $canvas.offset().top;
+		sectionTop = $section.offset().top;
+		sectionHeight = $section.height();
 		canvasWidth = $canvas.width();
 		canvasHeight = $canvas.height();
-		scrollStart = Math.max(0, canvasTop - windowHeight);
-		scrollEnd = Math.min(documentHeight - windowHeight, canvasTop + canvasHeight);
+		scrollStart = Math.max(0, sectionTop - windowHeight);
+		scrollEnd = Math.min(documentHeight - windowHeight, sectionTop + sectionHeight);
 		scrollRange = (scrollEnd - scrollStart);
 	}
 
 	var scrollOrigin;
-	var fixedCanvasOriginOffset;
+	var canvasOrigin;
 	var parallaxScale = 0.4;
 
 	function resize() {
-		Ptero.screen.resizeCanvas($canvas.width(), $canvas.height());
+		var w = $canvas.width();
+		var h = w/16*9;
+		$canvas.height(h);
+		Ptero.screen.resizeCanvas(w,h);
 		computeScrollRange();
 
-		scrollOrigin = canvasTop + canvasHeight/2 - windowHeight/2;
-		fixedCanvasOriginOffset = (windowHeight - (canvasHeight + Ptero.screen.getWindowHeightDiff())) / 2;
+		scrollOrigin = sectionTop + sectionHeight/2 - windowHeight/2;
+		canvasOrigin = (windowHeight - canvasHeight) / 2;
+		console.log(canvasOrigin);
 
 		scroll();
 	}
 
 	function scroll() {
 		var pos = $window.scrollTop();
+
 		if (scrollStart < pos && pos < scrollEnd) {
 			var k = scrollRange ? (pos-scrollStart) / scrollRange : 0;
 			Ptero.scene.setFracTime(k);
 
-			var y = 0;
+			var y;
 			if (canvasWidth >= 768) {
-				y = -(pos - scrollOrigin) * parallaxScale + pos + fixedCanvasOriginOffset - canvasTop;
+				$canvas.css({ position: 'fixed', top: -(pos - scrollOrigin) * parallaxScale + canvasOrigin});
 			}
-			Ptero.screen.setWindowTop(y);
+			else {
+				$canvas.css({ position: 'relative', top: 0});
+			}
 			Ptero.scene.draw();
 		}
 	}
