@@ -4,7 +4,7 @@ function addParallax() {
 	var $window = $(window);
 	var $document = $(document);
 	var $canvas = $('#parallax-ptero');
-	var $section = $('#section');
+	var $section = $('#parallax-quote');
 
 	var scrollStart;
 	var scrollEnd;
@@ -35,14 +35,14 @@ function addParallax() {
 
 	function resize() {
 		var w = $canvas.width();
-		var h = w/16*9;
+		var minH = $section.height();
+		var h = Math.max(minH, w/16*9);
 		$canvas.height(h);
 		Ptero.screen.resizeCanvas(w,h);
 		computeScrollRange();
 
 		scrollOrigin = sectionTop + sectionHeight/2 - windowHeight/2;
 		canvasOrigin = (windowHeight - canvasHeight) / 2;
-		console.log(canvasOrigin);
 
 		scroll();
 	}

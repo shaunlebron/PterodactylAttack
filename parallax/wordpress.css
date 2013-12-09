@@ -1,0 +1,211 @@
+
+/*=============== Custom CSS Box in Wordpress interface ================== */
+
+/* Something strange broke how the video is sized in blog posts, so this forces an aspect ratio of 16:9 with max-width to fill the container */
+div.post-video {
+    width: 100%;
+ display: inline-block;
+ position: relative;
+}
+div.post-video:after {
+    padding-top: 56.25%; /* height/width */
+    display: block;
+    content: '';
+}
+div.post-video > iframe {
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    width:100%;
+    height: 100%;
+}
+
+/* This allows the canvas to fill the parallax section for the fancy animated pterodactyls */
+div#parallax-quote > div.parallax-bg {
+    background: #EEE;
+}
+div#parallax-quote > div.overlay {
+    display: none;
+}
+div#parallax-quote > div.container {
+    width: 100%;
+}
+div#parallax-quote br {
+    display:none;
+}
+canvas#parallax-ptero {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    margin:0;
+}
+
+/* fix modal popup to be scrollable and displayable on mobile */
+.modal {
+    position: fixed;
+    bottom: 0;
+    overflow: scroll;
+}
+
+/* adding custom social icons */
+.social-bandcamp a {
+	background: url(http://hygoon.com/wp-content/uploads/2013/12/social-bandcamp.png) no-repeat 0 0
+}
+.social-bandcamp a:hover {
+	background-color: #639baa;
+}
+
+.social-soundcloud a {
+	background: url(http://hygoon.com/wp-content/uploads/2013/12/social-soundcloud.png) no-repeat 0 0
+}
+.social-soundcloud a:hover {
+	background-color: #fb5813;
+}
+
+/* for whatever reason, the Oswald font is not loaded by the Jarvis theme.  I think the @import statement is broken */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Oswald Regular'), local('Oswald-Regular'), url(http://themes.googleusercontent.com/static/fonts/oswald/v7/qs_6LdoYjCitupC9judWT-vvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+}
+
+/* Fix subtitles to allow wrapping on mobile */
+div#game div.fancy-header2 h4 {
+    line-height: 1.2;
+}
+
+div#game div.fancy-header2 h2.highlight {
+    line-height: 1em;
+    margin-top: 0.25em;
+}
+
+/* add the shine background from the GoLanding theme to the game window (purchased from themeforest) */
+div#game {
+    background-image: url(http://hygoon.com/wp-content/uploads/2013/12/bgr_header.jpg), url(http://hygoon.com/wp-content/uploads/2013/12/pagebgr.jpg);
+    background-repeat: no-repeat, repeat;
+    background-position: 50% -10%, 0 0;
+    background-size: contain, auto;
+}
+
+/* remove the scanlines from the pterodactyl parallax */
+/*
+div#parallax-quote > div.overlay {
+    display:none;
+}
+*/
+
+/* just figuring out how to make small paragraph text look good */
+div.small-paragraph-text {
+   max-width: 560px;
+   margin-left: auto;
+   margin-right: auto;
+   text-align: center;
+   margin-bottom: 30px;
+}
+
+/* compress the top part of the team page to merge it with the about page */
+div#team {
+    padding-top:0;
+}
+
+/* box containing the social media button links */
+div#social-box {
+   padding: 20px 0px;
+   width: 75%;
+   margin-left: auto;
+   margin-right:auto;
+}
+
+div#social-box img {
+   max-width: 20%;
+   margin: 2%;
+}
+/*FIX WIDTH OF POTATO HEADS*/
+div.team-member {
+    width: 25%;
+}
+div#founders-block > div.team-member {
+    width: 33.33%;
+}
+
+/*FORMAT COPYRIGHT SECTION
+(couldn't figure out how to edit or hide it it any other way
+*/
+div.copyright {
+    display:none;
+}
+
+/*FOOTER FORMATTING
+(basically isolating the full-width-color container
+so we can edit the colors there)
+*/
+div#footer {
+    padding:0;
+}
+div#footer div.full-width {
+    margin-top:0;
+    margin-bottom:0;
+}
+div#footer a:link {
+    color: #AAA;
+}
+div#footer a:hover {
+    color: white;
+}
+div#footer a:visited {
+     color: #AAA;
+}
+div#footer a:active {
+    color: #AAA;
+}
+
+/*REMOVE PADDING FROM DAILIES TITLE*/
+div.section.post-single {
+padding:0px;
+}
+
+/*REMOVE PADDING FROM DEVPENDIUM TITLE*/
+div#devpendium {
+    padding-top:0;
+}
+
+/*IPHONE FRAME FOR YOUTUBE VIDEO
+source: http://stackoverflow.com/a/12121309/142317 */
+
+.iphone-frame {
+ background-image: url(http://hygoon.com/wp-content/uploads/2013/12/iphone31.png);
+ background-repeat: no-repeat;
+ background-size: 100%;
+ width:100%;
+ display: inline-block;
+ position: relative;
+}
+
+.iphone-frame:after {
+    padding-top: 55.86%; /* height/width */
+    display: block;
+    content: '';
+}
+
+.iphone-screen {
+    position: absolute;
+    top: 0; bottom: 0; right: 0; left: 0; /*fill parent*/
+padding-left: 14.41%;
+padding-right: 13.51%;
+padding-top: 2.96%;
+padding-bottom: 11.84%;
+}
+
+.iphone-glare {
+pointer-events:none;
+position: absolute;
+top: 0; bottom: 0; right: 0; left: 0; /*fill parent*/
+background-image: url("http://hygoon.com/wp-content/uploads/2013/11/iphone-glare3.png");
+background-repeat: no-repeat;
+background-size:100%;
+}
+.iphone-frame p {
+height:0px;
+margin: 0px;
+}
