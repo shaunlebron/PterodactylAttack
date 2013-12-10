@@ -116,13 +116,18 @@ Ptero.Bounty.prototype = {
 		}
 		return null;
 	},
-	isComplete: function() {
+	getNumPterosLeft: function() {
+		var count = 0;
+		var i;
 		for (i=0; i<this.size; i++) {
 			if (!this.caught[i]) {
-				return false;
+				count += 1;
 			}
 		}
-		return true;
+		return count;
+	},
+	isComplete: function() {
+		return this.getNumPterosLeft() == 0;
 	},
 	addEnemy: function(e) {
 		if (this.isBlackHole) {
@@ -145,7 +150,8 @@ Ptero.Bounty.prototype = {
 			// flag the caught enemy
 			this.caught[itemIndex] = true;
 
-			if (this.isComplete()) {
+			var pterosLeft = this.getNumPterosLeft();
+			if (pterosLeft == 0) {
 				// signal bounty completion with sound
 				Ptero.audio.play('bountyComplete');
 				Ptero.score.addBounties(1);
@@ -172,7 +178,7 @@ Ptero.Bounty.prototype = {
 			else {
 
 				// signal bounty progression with sound
-				Ptero.audio.play('bountyCorrect');
+				Ptero.audio.play('bountyLeft'+pterosLeft);
 				Ptero.score.addCaptures(1);
 
 			}

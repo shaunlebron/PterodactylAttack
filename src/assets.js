@@ -19,7 +19,10 @@ Ptero.assets = (function(){
 		"damage"         : "audio/damage.ogg",
 		"flap"           : "audio/flap.ogg",
 		"drop_menu"      : "audio/drop_menu.ogg",
-		"bountyCorrect"  : "audio/bounty_correct.ogg",
+		"bountyLeft4"    : "audio/bounty_correct.ogg",
+		"bountyLeft3"    : "audio/bounty_correct2.ogg",
+		"bountyLeft2"    : "audio/bounty_correct3.ogg",
+		"bountyLeft1"    : "audio/bounty_correct4.ogg",
 		"bountyWrong"    : "audio/bounty_wrong.ogg",
 		"bountyComplete" : "audio/bounty_complete.ogg",
 	};
