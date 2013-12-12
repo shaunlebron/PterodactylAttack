@@ -7,7 +7,6 @@ Ptero.Baklava.scene_parallax = (function() {
 	};
 
 	function update(dt) {
-		Ptero.background.update(dt);
 		Ptero.Baklava.model.update(dt);
 	};
 
