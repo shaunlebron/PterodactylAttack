@@ -551,7 +551,7 @@ Ptero.Baklava.LivePane.prototype = {
 	draw: function(ctx) {
 		this.computeHudScale();
 
-		ctx.fillStyle = "#7e6120";
+		ctx.fillStyle = "#c89d41";
 		ctx.fillRect(0,0,Ptero.screen.getCanvasWidth(), Ptero.screen.getCanvasHeight());
 
 		ctx.save();
