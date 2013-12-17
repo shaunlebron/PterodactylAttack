@@ -77,7 +77,7 @@ Ptero.assets = (function(){
 
 		"backplate_mountain" : "img/backplate_menu_mountain.png",
 
-		"net": "img/net_01.png",
+		"net": "img/net_02_purple.png",
 
 		"shaun"     : "img/people/shaun.png",
 		"johnny"    : "img/people/johnny.png",
