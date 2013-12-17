@@ -85,6 +85,7 @@ Ptero.assets = (function(){
 		"jwadd"      : "img/people/jwadd.png",
 		"brandon"   : "img/people/brandon.png",
 		"christian" : "img/people/christian.png",
+		"ben" : "img/people/ben.png",
 		"dead" : "img/people/dead.png",
 	};
 
