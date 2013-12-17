@@ -83,7 +83,7 @@ Ptero.Bullet.prototype = {
 	},
 	draw: function draw(ctx) {
 		if (this.damage < 0) {
-			//this.netsprite.draw(ctx, this.pos);
+			this.netsprite.draw(ctx, this.pos);
 		}
 		else {
 			this.sprite.draw(ctx, this.pos);
