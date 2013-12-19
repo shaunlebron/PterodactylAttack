@@ -75,7 +75,7 @@ Ptero.scene_play = (function() {
 
 	function enableControls() {
 		pauseBtn.enable();
-		if (netBtnEnabled) {
+		if (!netBtnEnabled) {
 			enableNetBtn(true);
 		}
 		if (!Ptero.settings.isTutorialEnabled()) {
