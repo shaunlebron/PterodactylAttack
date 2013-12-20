@@ -400,9 +400,8 @@ Ptero.assets = (function(){
 			var outro = songs[bg+"_outro"];
 			loop.setLoop(true);
 			intro.setContinueSong(loop);
-			loop.setInitVolume(0.1);
-			intro.setInitVolume(0.1);
-			outro.setInitVolume(0.1);
+			loop.volumeScale = intro.volumeScale = outro.volumeScale = 0.1;
+			intro.isSfx = loop.isSfx = outro.isSfx = true;
 		}
 	}
 

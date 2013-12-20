@@ -61,6 +61,7 @@ Ptero.settings = (function(){
 		},
 		enableSound: function(on) {
 			values['soundOn'] = on;
+			Ptero.audio.setSoundVolume(this.getSoundVolume());
 			this.save();
 		},
 		enableMusic: function(on) {
@@ -82,6 +83,9 @@ Ptero.settings = (function(){
 		},
 		isSoundEnabled: function() {
 			return values['soundOn'];
+		},
+		getSoundVolume: function() {
+			return values['soundOn'] ? 1 : 0;
 		},
 		isMusicEnabled: function() {
 			return values['musicOn'];

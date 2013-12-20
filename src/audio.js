@@ -61,13 +61,25 @@ Ptero.audio = (function() {
 			song.update(dt);
 		}
 	}
-	
+
+	function setSoundVolume(vol) {
+		// NOTE: Sorry for the confusing difference between "sounds" and "songs".
+		// Some sounds are long and we need song functions for it, so they use Song objects.
+		var name,sfx;
+		for (name in Ptero.assets.songs) {
+			sfx = Ptero.assets.songs[name];
+			if (sfx.isSfx) {
+				sfx.setVolume(vol * sfx.volumeScale);
+			}
+		}
+	}
+
 	function setMusicVolume(vol) {
 		var name,song;
 		for (name in Ptero.assets.songs) {
 			song = Ptero.assets.songs[name];
-			if (song.initVolume == null) {
-				song.setVolume(vol);
+			if (!song.isSfx) {
+				song.setVolume(vol * song.volumeScale);
 			}
 		}
 	}
@@ -79,12 +91,14 @@ Ptero.audio = (function() {
 		stop           : stop,
 		fadeOut        : fadeOut,
 		setMusicVolume : setMusicVolume,
+		setSoundVolume : setSoundVolume,
 	};
 })();
 
 Ptero.Song = function(audio) {
 	this.audio = audio;
-	this.initVolume = null;
+	this.volumeScale = 1.0;
+	this.isSfx = false;
 };
 
 Ptero.Song.prototype = {
@@ -125,9 +139,6 @@ Ptero.Song.prototype = {
 	setVolume: function(vol) {
 		this.audio.volume = vol;
 	},
-	setInitVolume: function(vol) {
-		this.initVolume = vol;
-	},
 	fadeOut: function(t) {
 		var that = this;
 		this.volumeFader = {
@@ -147,11 +158,11 @@ Ptero.Song.prototype = {
 		};
 	},
 	play: function() {
-		if (this.initVolume != null) {
-			this.setVolume(this.initVolume);
+		if (this.isSfx) {
+			this.setVolume(Ptero.settings.getSoundVolume() * this.volumeScale);
 		}
 		else {
-			this.setVolume(Ptero.settings.getMusicVolume());
+			this.setVolume(Ptero.settings.getMusicVolume() * this.volumeScale);
 		}
 		this.audio.play();
 	},
