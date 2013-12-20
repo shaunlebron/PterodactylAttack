@@ -261,6 +261,7 @@ Ptero.Pinboard.scene_pinboard = (function(){
 			"jwadd",
 			"brandon",
 			"christian",
+			"ben",
 			"dead",
 		];
 		var i,len=images.length;
