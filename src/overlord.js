@@ -1084,7 +1084,7 @@ Ptero.OverlordWaves.prototype = {
 		}
 
 		// add event to advance to next wave
-		addEvent(5, function() {
+		addEvent(0, function() {
 			that.waitingForTheEnd = true;
 		});
 
