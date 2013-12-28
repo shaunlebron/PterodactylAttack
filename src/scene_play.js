@@ -75,7 +75,7 @@ Ptero.scene_play = (function() {
 
 	function enableControls() {
 		pauseBtn.enable();
-		if (!netBtnEnabled) {
+		if (shouldNetBtnVisible) {
 			enableNetBtn(true);
 		}
 		if (!Ptero.settings.isTutorialEnabled()) {
@@ -432,6 +432,10 @@ Ptero.scene_play = (function() {
 
 	};
 
+	var shouldNetBtnVisible = false;
+	function setNetBtnVisible(on) {
+		shouldNetBtnVisible = on;
+	}
 	var netBtnEnabled = false;
 	function enableNetBtn(on) {
 		netBtnEnabled = on;
@@ -460,6 +464,7 @@ Ptero.scene_play = (function() {
 		draw: draw,
 		cleanup:cleanup,
 		enableNetBtn: enableNetBtn,
+		setNetBtnVisible: setNetBtnVisible,
 		isNetBtnEnabled: function() { return netBtnEnabled; },
 		pause: pause,
 		unpause: unpause,

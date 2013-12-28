@@ -395,7 +395,6 @@ Ptero.OverlordTutor.prototype = {
 			that.isShowHealthMsg = false;
 			that.enemies.length = 0;
 			Ptero.audio.play('bountyWrong');
-			Ptero.scene_play.enableNetBtn(false);
 			Ptero.scene_play.getHud().show('health', false);
 			that.lessonTitle.fadeOut();
 
@@ -483,7 +482,6 @@ Ptero.OverlordTutor.prototype = {
 			that.isShowHealthMsg = false;
 			that.enemies.length = 0;
 			Ptero.audio.play('bountyWrong');
-			Ptero.scene_play.enableNetBtn(false);
 			Ptero.scene_play.getHud().show('health', false);
 			Ptero.scene_play.getHud().show('bounty', false);
 			that.lessonTitle.fadeOut();
@@ -592,6 +590,7 @@ Ptero.OverlordTutor.prototype = {
 
 		function revive() {
 			Ptero.orb.setNextOrigin(0,-1);
+			Ptero.scene_play.enableNetBtn(true);
 			Ptero.orb.enableTouch();
 			that.createLesson3Script();
 		}
@@ -656,6 +655,7 @@ Ptero.OverlordTutor.prototype = {
 			{
 				dt: 0.75,
 				action: function() {
+					Ptero.scene_play.setNetBtnVisible(true);
 					Ptero.scene_play.enableNetBtn(true);
 					that.showNetTutor('in');
 				},
@@ -728,6 +728,7 @@ Ptero.OverlordTutor.prototype = {
 
 		function revive() {
 			Ptero.orb.setNextOrigin(0,-1);
+			Ptero.scene_play.enableNetBtn(true);
 			Ptero.orb.enableTouch();
 			that.createLesson4Script();
 		}
@@ -833,7 +834,6 @@ Ptero.OverlordTutor.prototype = {
 					Ptero.bounty.autoReset = false;
 					Ptero.player.setGod(false);
 					Ptero.bounty.isBlackHole = false;
-					Ptero.scene_play.enableNetBtn(true);
 					Ptero.scene_play.getHud().show("health", true);
 					Ptero.scene_play.getHud().show("bounty", false);
 					that.isShowHealthMsg = false;
@@ -865,7 +865,7 @@ Ptero.OverlordTutor.prototype = {
 		Ptero.scene_play.switchBackground('tutorial');
 		Ptero.orb.setOrigin(0,-2);
 		Ptero.orb.setNextOrigin(0,-2);
-		Ptero.scene_play.enableNetBtn(false);
+		Ptero.scene_play.setNetBtnVisible(false);
 		Ptero.scene_play.getHud().show("score", false);
 		Ptero.scene_play.getHud().show("health", false);
 		Ptero.scene_play.getHud().show("bounty", false);
@@ -1109,7 +1109,7 @@ Ptero.OverlordWaves.prototype = {
 
 		Ptero.player.setGod(false);
 
-		Ptero.scene_play.enableNetBtn(true);
+		Ptero.scene_play.setNetBtnVisible(true);
 		Ptero.scene_play.getHud().show("score", true);
 		Ptero.scene_play.getHud().show("health", true);
 		Ptero.scene_play.getHud().show("bounty", true);
