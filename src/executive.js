@@ -63,17 +63,19 @@ Ptero.executive = (function(){
 
 			var dt = (lastTime == undefined) ? 0 : Math.min((time-lastTime)/1000, 1/minFps);
 			lastTime = time;
-
-			Ptero.screen.update(dt);
-			Ptero.audio.update(dt);
-
-			Ptero.deferredSprites.clear();
-			if (Ptero.background) {
-				Ptero.background.update(dt);
-			}
 			var scene = Ptero.scene;
-			scene.update(isPaused ? 0 : dt*speedScale); // this condition could wrap this whole block if we want proper pausing
-			Ptero.deferredSprites.finalize();
+
+			if (!freeze) {
+				Ptero.screen.update(dt);
+				Ptero.audio.update(dt);
+
+				Ptero.deferredSprites.clear();
+				if (Ptero.background) {
+					Ptero.background.update(dt);
+				}
+				scene.update(isPaused ? 0 : dt*speedScale); // this condition could wrap this whole block if we want proper pausing
+				Ptero.deferredSprites.finalize();
+			}
 
 			var ctx = Ptero.screen.getCtx();
 			ctx.save();
@@ -97,7 +99,13 @@ Ptero.executive = (function(){
 		isPaused = false;
 	};
 
+	var freeze = false;
 	function start() {
+		window.addEventListener('keydown', function(e) {
+			if (e.keyCode == 48) {
+				freeze = !freeze;
+			}
+		});
 		requestAnimationFrame(tick);
 	};
 
