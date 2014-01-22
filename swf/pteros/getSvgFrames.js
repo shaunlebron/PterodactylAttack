@@ -1,3 +1,11 @@
+/*
+You can use this script with Google Swiffy to produce SVG frames from an SWF animation.
+ 
+1. Upload your SWF file to Google Swiffy --> https://www.google.com/doubleclick/studio/swiffy/
+2. Save the swiffy output HTML page locally.
+3. Edit the page to include this script with <script src="getSvgFrames.js"></script>
+4. Open the page in Firefox to see the SVG download links appear for each frame.
+*/
 (function(){ 
 	var url = window.location.pathname;
 	var baseName = url.substring(url.lastIndexOf('/')+1).replace(/\..*$/,'');
@@ -32,8 +40,8 @@
 		frames.push(s);
 	}
 
-	window.onload = function() {
+	window.addEventListener('load', function() {
 		setInterval(getSvgFrames, 15);
-	}
+	});
 
 })();
