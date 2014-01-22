@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<style>
+body {
+	background: #e2e2e2;
+}
+canvas {
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+var canvas, ctx;
+function drawMosaicTable(img, frames, frame_names) {
+	var mosaicW = img.width;
+	var mosaicH = img.height;
+	var origW = frames[frame_names[0]].origSize.width;
+	var origH = frames[frame_names[0]].origSize.height;
+	canvas.width = mosaicW + origW;
+	canvas.height = Math.max(mosaicH, origH);
+	var name, frame;
+	var i, tile, tileCount;
+	var w,h;
+	for (name in frames) {
+		frame = frames[name];
+		tileCount = frame.tiles.length;
+		ctx.strokeStyle = "#555";
+		ctx.lineWidth = 1;
+		for (i=0; i<tileCount; i++) {
+			tile = frame.tiles[i];
+			ctx.strokeRect(tile.x, tile.y, tile.w, tile.h);
+		}
+	}
+	ctx.strokeRect(0,0,mosaicW, mosaicH);
+
+	var j;
+	for (i=0; i<frame_names.length; i++) {
+		frame = frames[frame_names[i]];
+		tileCount = frame.tiles.length;
+		if (i == 20) {
+			ctx.strokeStyle = "#00F";
+			ctx.lineWidth = 4;
+			for (j=0; j<tileCount; j++) {
+				tile = frame.tiles[j];
+				ctx.drawImage(img,
+					tile.x, tile.y, tile.w, tile.h,
+					tile.origX+mosaicW, tile.origY, tile.w, tile.h);
+				ctx.strokeRect(tile.origX+mosaicW, tile.origY, tile.w, tile.h);
+				ctx.strokeRect(tile.x, tile.y, tile.w, tile.h);
+			}
+		}
+	}
+	ctx.drawImage(img, 0, 0);
+}
+window.onload = function() {
+	canvas = document.getElementById('c');
+	ctx = canvas.getContext('2d');
+
+	var fname = "boom1s.png";
+	var img = new Image();
+	img.src = fname;
+	img.onload = function() {
+		var req = new XMLHttpRequest();
+		req.onload = function() {
+			var meta = JSON.parse(this.responseText);
+			var frames = meta.mosaic;
+			var frame_names = [];
+			for (name in frames) {
+				frame_names.push(name);
+			}
+			frame_names.sort();
+			drawMosaicTable(img, frames, frame_names);
+		};
+		req.open('GET', fname+".json", true);
+		req.send();
+	};
+};
+</script>
+</body>
+</html>
