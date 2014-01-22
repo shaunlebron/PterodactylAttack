@@ -24,7 +24,7 @@ def cat(in_names,out_name):
 	destination.close()
 
 def isIgnoredFile(filename):
-	for ext in ('.GlyphProject','.html','.swf','.svg','.json','.py','.sh','.DS_Store','notes'):
+	for ext in ('.xcf','.GlyphProject','.html','.swf','.svg','.json','.py','.sh','.DS_Store','notes'):
 		if filename.endswith(ext):
 			return True
 
