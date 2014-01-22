@@ -1,0 +1,137 @@
+
+<html>
+<body>
+<canvas id="c" style="border:1px solid #000" width="852" height="340"></canvas>
+<script>
+var colors = {
+        yellow: {light:"#fce94f", medium:"#edd400", dark:"#c4a000"},
+        orange: {light:"#fcaf3e", medium:"#f57900", dark:"#ce5c00"},
+        brown:  {light:"#e9b96e", medium:"#c17d11", dark:"#8f5902"},
+        green:  {light:"#8ae234", medium:"#73d216", dark:"#4e9a06"},
+        blue:   {light:"#729fcf", medium:"#3465a4", dark:"#204a87"},
+        purple: {light:"#ad7fa8", medium:"#75507b", dark:"#5c3566"},
+        red:    {light:"#ef2929", medium:"#cc0000", dark:"#a40000"},
+        white:  {light:"#eeeeec", medium:"#d3d7cf", dark:"#babdb6"},
+        black:  {light:"#888a85", medium:"#555753", dark:"#2e3436"},
+};
+window.onload = function() {
+	var canvas = document.getElementById('c');
+	var ctx = canvas.getContext('2d');
+	ctx.fillStyle = "#e2e2e2";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	var radius = 2.2;
+	function waveNumToY(waveNum) {
+		return 30 + waveNum*20;
+	}
+	function timeToX(t) {
+		return 70 + t*15;
+	}
+
+	function drawWave(waveNum) {
+		var y = waveNumToY(waveNum);
+
+		ctx.fillStyle = "#555";
+		ctx.font = "14px Roboto";
+		ctx.textBaseline = "middle";
+		ctx.textAlign = "right";
+		var txt = (waveNum+1)+"";
+		ctx.fillText(txt, 60, y);
+
+		// the time to wait between each ptero group
+		var groupWaitTime = (function(){
+			// wait time will decrease to a certain floor
+
+			var waveCap = 12;
+			var maxWait = 3;
+			var minWait = 1;
+			var waitRange = maxWait - minWait;
+
+			var k = Math.min(waveNum,waveCap) / waveCap;
+
+			return maxWait - waitRange * k;
+
+		})();
+
+		// the time to wait between each ptero in a ptero group
+		var pteroWaitTime = (function(){
+
+			var waveCap = 12;
+			var maxWait = 1.0;
+			var minWait = 0.1;
+			var waitRange = maxWait - minWait;
+
+			var k = Math.min(waveNum,waveCap) / waveCap;
+
+			return maxWait - waitRange * k;
+		})();
+
+		// the number of pteros in the initial group
+		var groupStart = (function(){
+			return Math.floor(waveNum/3) + 1;
+		})();
+
+		// the number of pteros added to each subsequent group
+		var groupGrowth = (function(){
+			var w = waveNum % 3;
+			return [2,3,4][w];
+		})();
+
+		// the number of ptero groups in this wave
+		var numGroups = (function(){
+			return 5;
+		})();
+
+		function drawDot(t) {
+			ctx.beginPath();
+			ctx.arc(timeToX(t), y, radius, 0, Math.PI*2);
+			ctx.fill();
+		}
+
+		var i,j,groupCount;
+		groupCount = groupStart;
+		var t = 0;
+		for (i=0; i<numGroups; i++) {
+			t += groupWaitTime;
+			for (j=1; j<groupCount; j++) {
+				t += pteroWaitTime;
+			}
+			groupCount += groupGrowth;
+		}
+		ctx.strokeStyle = "#888";
+		ctx.beginPath();
+		ctx.moveTo(timeToX(0), y);
+		ctx.lineTo(timeToX(t), y);
+		ctx.stroke();
+
+		ctx.fillStyle = "#333";
+		groupCount = groupStart;
+		t = 0;
+		for (i=0; i<numGroups; i++) {
+			ctx.fillStyle = colors[[
+				"red",
+				"blue",
+				"green",
+				"purple",
+				"orange",
+			][i]]["dark"];
+			t += groupWaitTime;
+			drawDot(t);
+			for (j=1; j<groupCount; j++) {
+				t += pteroWaitTime;
+				drawDot(t);
+			}
+			groupCount += groupGrowth;
+		}
+
+	}
+
+	var i,len=15;
+	for (i=0; i<len; i++) {
+		drawWave(i);
+	}
+
+}
+</script>
+</body>
+</html>
