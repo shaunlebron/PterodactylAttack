@@ -143,6 +143,12 @@ server.  You will see a "hub" of links to the game and tools.
 
 ![hub](readme/hub.png)
 
+You can watch these videos to learn how to use the tools:
+
+- [How to use Ptalaga (path tool)](http://www.youtube.com/watch?v=2Tc6txawD4U)
+- [How to use Baklava (environment tool)](http://www.youtube.com/watch?v=gLQTp4_BDoM)
+- [How to use Pinboard (layout tool)](http://www.youtube.com/watch?v=b3_EXQTKDc4)
+
 ### Mobile
 
 Before testing the game on your mobile device, remember to run the build script 
@@ -154,12 +160,6 @@ or b) network your phone to your computer and point CocoonJS launcher to the
 URL http://yourIPaddress:3001/cocoon.zip.
 
 ![cocoon](readme/cocoon.png)
-
-You can watch these videos to learn how to use the tools:
-
-- [How to use Ptalaga (path tool)](http://www.youtube.com/watch?v=2Tc6txawD4U)
-- [How to use Baklava (environment tool)](http://www.youtube.com/watch?v=gLQTp4_BDoM)
-- [How to use Pinboard (layout tool)](http://www.youtube.com/watch?v=b3_EXQTKDc4)
 
 ### Mobile + Desktop (remote control)
 
