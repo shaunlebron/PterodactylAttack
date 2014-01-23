@@ -1,5 +1,7 @@
 # Pterodacyl Attack
 
+![logo](http://www.hygoon.com/press/images/game-title.png)
+
 [Pterodactyl Attack](http://pteroattack.com) is an iOS game made at [Hygoon
 Studio](http://hygoon.com).  It was created in Javascript from the ground up
 and can be played from the web browser as well as mobile devices via CocoonJS.
@@ -11,6 +13,8 @@ stage on January 2014.
 
 ## The Book
 
+![book](http://hygoon.com/wp-content/uploads/2013/08/blog_preview.png)
+
 If you are interested in learning about the game, please see our comprehensive
 guide that illustrates every aspect of our development in detail:
 <http://pteroattack.com/#quick-look>
@@ -19,7 +23,7 @@ guide that illustrates every aspect of our development in detail:
 
 If you wish to play the game on iPhone or iPad, you can buy it here:
 
-[Pterodactyl Attack on the App Store](https://itunes.apple.com/us/app/pterodactyl-attack/id786862892?mt=8&ign-mpt=uo%3D4)
+[![appstore](http://pteroattack.com/img/appstore.png)](https://itunes.apple.com/us/app/pterodactyl-attack/id786862892?mt=8&ign-mpt=uo%3D4)
 
 ## License
 
