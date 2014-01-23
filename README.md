@@ -7,10 +7,10 @@ Studio](http://hygoon.com).  It was created in Javascript/HTML5/Canvas2D from
 the ground up and can be played from the web browser as well as mobile devices
 via [CocoonJS](https://www.ludei.com/cocoonjs/).
 
-This repository contains the our entire development workflow (code, assets,
-tools, workspace, server, build scripts).  It also contains the entire history
-of revisions from its early prototype on January 2013 to its current completed
-stage on January 2014.
+This repository contains our entire development workspace for the game (code,
+assets, tools, workspace, server, build scripts).  It also contains the entire
+history of revisions from its early prototype on January 2013 to its current
+completed stage on January 2014.
 
 ## The Book
 
