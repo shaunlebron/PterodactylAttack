@@ -99,7 +99,7 @@ launcher applications (free) on your mobile devices:
 Now, here are some things that you have to remember to do everytime you want to
 mess around in this workspace.
 
-#### Starting the server
+#### Keep the server running!
 
 The server is the important center of the entire workflow.  It must be
 running whenever you want to test the game or run the tools.  To start the
