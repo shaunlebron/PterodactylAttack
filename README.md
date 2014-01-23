@@ -1,4 +1,4 @@
-# Pterodacyl Attack
+# Pterodactyl Attack
 
 ![logo](readme/logo.png)
 
