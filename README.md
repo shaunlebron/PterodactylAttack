@@ -110,9 +110,9 @@ To Stop the server, hit CTRL+C or simply close the window.
 
 #### Building the game (don't forget this!)
 
-Whenever you make changes to the script, you must remember to "build" the game
-with the following command.  Again, you must execute this from the command line
-at the repository:
+Whenever you make changes to the game, you must remember to "build" the game so
+that your changes are reflected.  To do this, you must execute this from the
+command line at the repository:
 
 ```
 > python build.py
@@ -154,4 +154,25 @@ and point CocoonJS launcher to the URL http://yourIPaddress:3001/cocoon.zip.
 
 ![cocoon](readme/cocoon.png)
 
+### Mobile + Desktop (remote control)
 
+The desktop web browser displays the game at superior image quality, but it the
+game is difficult to control with a mouse.  To make up for this, there is a way
+to use a mobile device to control the game running on a desktop web browser, as
+seen below:
+
+![remote](readme/remote.jpg)
+
+To make this happen:
+
+1. Run the server, of course.
+2. Uncomment out the socket code at the bottom of "src/main.js"
+3. Fill in the correct IP address of your computer at "src/remote/main.js" line 57.
+4. Run `python build_remote.py` at the command line to create the file CocoonJS remote app, "remote.zip".
+5. Run `python build.py` to update the game (as you normally would).
+6. Run "remote.zip" on your CocoonJS launcher on your mobile device, either by copying the file to your device, or pointing the launcher to the URL "http://yourIPadress:3001/remote.zip"
+7. Open the game in the browser, at "http://localhost:3001/play.html"
+
+This should allow you to shoot enemies on the desktop by flicking the screen your mobile device.
+
+__PERFORMANCE NOTE__: To decrease input lag, I highly recommend plugging your phone into your computer via USB, and creating a paired network between them.
