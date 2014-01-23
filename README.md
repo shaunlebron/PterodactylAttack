@@ -3,11 +3,12 @@
 ![logo](readme/logo.png)
 
 [Pterodactyl Attack](http://pteroattack.com) is an iOS game made at [Hygoon
-Studio](http://hygoon.com).  It was created in Javascript from the ground up
-and can be played from the web browser as well as mobile devices via CocoonJS.
+Studio](http://hygoon.com).  It was created in Javascript/HTML5/Canvas2D from
+the ground up and can be played from the web browser as well as mobile devices
+via CocoonJS.
 
 This repository contains the source code for our development workflow (game,
-tools, workspace, server, build scripts).  It also contains the entire history
+assets, tools, workspace, server, build scripts).  It also contains the entire history
 of revisions from its early prototype on January 2013 to its current completed
 stage on January 2014.
 
@@ -18,6 +19,9 @@ stage on January 2014.
 To understand the context of our game, code, and tools, I highly recommend
 reading our comprehensive illustrated guide that covers the high- and low-level
 details of our workflow: <http://pteroattack.com/#quick-look>
+
+This provided context should make it a lot easier to dive into the code
+and workspace.
 
 ## Buying the Game
 
@@ -35,14 +39,14 @@ Software Foundation
 
 ## Setting up
 
-If you want you to start playing the game and messing with the tools and game
-source code, there are some __one-time setup__ steps and some __every-time
-setup__ steps required to complete your workflow, detailed in this section.
+To setup your workstation to start developing and running Pterodactyl Attack,
+there are some "one-time steps" to follow. But there are also some "every-time
+steps" that you must remember to execute in your workflow.
 
 ### One-Time Setup
 
 This section covers all the one-time setup steps for the development workspace.
-You can safely forget them after completing them.
+(You can safely forget them after completing them.)
 
 #### Installing Dependencies 
 
@@ -69,7 +73,7 @@ the command prompt, you can type the following:
 
 OR if you are using a GUI, use the URL above as the source for your clone operation.
 
-#### Setting up NodeJS (for the server)
+#### Setting up server dependencies
 
 Using a command prompt, navigate to the repository that you cloned and type the following:
 
@@ -80,7 +84,7 @@ Using a command prompt, navigate to the repository that you cloned and type the 
 (This automatically creates a "node_modules" folder in the workspace and installs the NodeJS
 modules there required by this project, listed in "package.json".)
 
-#### CocoonJS (for playing on mobile devices)
+#### Setting up your mobile device
 
 The game will run fine on a web browser, but if you want to test it on a mobile
 device, you must register for a free account on
@@ -97,18 +101,17 @@ mess around in this workspace.
 
 #### Starting the server
 
-The server must be running whenever you want to test the game or run the tools.
-To start the server, navigate to the repository on the command line, and type
-the following:
+The server is the important center of the entire workflow.  It must be
+running whenever you want to test the game or run the tools.  To start the
+server, navigate to the repository on the command line, and type the following:
 
 ```
 > node server
 ```
 
-This will run the server.  So you must keep it open when using the game/tools.
-To Stop the server, hit CTRL+C or simply close the window.
+This will run the server. To stop the server, hit CTRL+C or simply close the window.
 
-#### Building the game (don't forget this!)
+#### Rebuild the game after every change!
 
 Whenever you make changes to the game, you must remember to "build" the game so
 that your changes are reflected.  To do this, you must execute this from the
@@ -123,23 +126,20 @@ This will update some dependent files from your current changes and build the
 
 ## Playing the game and running the tools
 
-You can run the game on desktop through a web browser and on mobile devices
-through the CocoonJS launcher (mentioned in a previous section).  But you
-can only run the tools on the Desktop browser.
+The game runs on desktop web browsers or on mobile devices through the CocoonJS
+launcher.  But you can only run the tools on the Desktop browser.
 
 ### Desktop
 
-Remember to start the server (mentioned in previous section)!  To play the game
-or run the tools, open a web browser (preferably Chrome, but Safari and
-Firefox wil do), and navigate to:
+Remember to start the server!  To play the game or run the tools, open a web
+browser (preferably Chrome, but Safari and Firefox wil do), and navigate to:
 
 ```
 http://localhost:3001
 ```
 
-This points your browser to the webpage served by the NodeJS server for the
-Pterodactyl Attack workspace.  You will see a "hub" of links to the game and
-tools.
+This points your browser to the webpage served by the Pterodactyl Attack
+server.  You will see a "hub" of links to the game and tools.
 
 ![hub](readme/hub.png)
 
@@ -148,15 +148,16 @@ tools.
 Before testing the game on your mobile device, remember to run the build script 
 and make sure the server is running.
 
-Your mobile device has to somehow read the "cocoon.zip" file in the root directory of the repository.
-You can either 1) copy the file to your device, or 2) network your phone to your computer
-and point CocoonJS launcher to the URL http://yourIPaddress:3001/cocoon.zip.
+Your mobile device has to somehow read the "cocoon.zip" file in the root
+directory of the repository.  You can either a) copy the file to your device,
+or b) network your phone to your computer and point CocoonJS launcher to the
+URL http://yourIPaddress:3001/cocoon.zip.
 
 ![cocoon](readme/cocoon.png)
 
 ### Mobile + Desktop (remote control)
 
-The desktop web browser displays the game at superior image quality, but it the
+The desktop web browser displays the game at superior image quality, but the
 game is difficult to control with a mouse.  To make up for this, there is a way
 to use a mobile device to control the game running on a desktop web browser, as
 seen below:
