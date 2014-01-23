@@ -1,6 +1,6 @@
 # Pterodacyl Attack
 
-![logo](http://www.hygoon.com/press/images/game-title.png)
+![logo](readme/logo.png)
 
 [Pterodactyl Attack](http://pteroattack.com) is an iOS game made at [Hygoon
 Studio](http://hygoon.com).  It was created in Javascript from the ground up
@@ -13,7 +13,7 @@ stage on January 2014.
 
 ## The Book
 
-![book](http://hygoon.com/wp-content/uploads/2013/08/blog_preview.png)
+![book](readme/book.png)
 
 If you are interested in learning about the game, please see our comprehensive
 guide that illustrates every aspect of our development in detail:
@@ -23,13 +23,15 @@ guide that illustrates every aspect of our development in detail:
 
 If you wish to play the game on iPhone or iPad, you can buy it here:
 
-[![appstore](http://pteroattack.com/img/appstore.png)](https://itunes.apple.com/us/app/pterodactyl-attack/id786862892?mt=8&ign-mpt=uo%3D4)
+[![appstore](readme/appstore.png)](https://itunes.apple.com/us/app/pterodactyl-attack/id786862892?mt=8&ign-mpt=uo%3D4)
 
 ## License
 
 This program is free software: you can redistribute it and/or modify it under
-the terms of the [__GNU General Public License Version 3__ as published by the Free
-Software Foundation](http://www.gnu.org/licenses/gpl.html).
+the terms of the __GNU General Public License Version 3__ as published by the Free
+Software Foundation
+
+[![gplv3](readme/gplv3.png)](http://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Required Setup
 
@@ -113,3 +115,5 @@ http://localhost:3001
 
 This points your browser to the webpage served by the NodeJS server for the Pterodactyl Attack workspace.  You will see
 a "hub" of links to the game and tools.
+
+![hub](readme/hub.png)
