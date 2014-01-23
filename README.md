@@ -40,8 +40,8 @@ Software Foundation
 ## Setting up
 
 To setup your workstation to start developing and running Pterodactyl Attack,
-there are some "one-time steps" to follow. But there are also some "every-time
-steps" that you must remember to execute in your workflow.
+there are some "one-time steps" to follow. But there is also a "pre-run
+checklist" that you must remember to execute in your workflow.
 
 ### One-Time Setup
 
@@ -94,12 +94,12 @@ launcher applications (free) on your mobile devices:
 - [CocoonJS Launcher for Android](https://play.google.com/store/apps/details?id=com.ideateca.cocoonjslauncher)
 - [CocoonJS Launcher for iOS](https://itunes.apple.com/us/app/cocoonjs-by-ludei/id519623307?mt=8)
 
-### Every-time setup
+### Pre-run Checklist
 
-Now, here are some things that you have to remember to do everytime you want to
+Now, here are a couple things that you have to remember to do everytime you want to
 mess around in this workspace.
 
-#### Keep the server running!
+#### 1. Keep the server running!
 
 The server is the important center of the entire workflow.  It must be
 running whenever you want to test the game or run the tools.  To start the
@@ -111,7 +111,7 @@ server, navigate to the repository on the command line, and type the following:
 
 This will run the server. To stop the server, hit CTRL+C or simply close the window.
 
-#### Rebuild the game after every change!
+#### 2. Rebuild the game after every change!
 
 Whenever you make changes to the game, you must remember to "build" the game so
 that your changes are reflected.  To do this, you must execute this from the
