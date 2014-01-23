@@ -155,6 +155,12 @@ URL http://yourIPaddress:3001/cocoon.zip.
 
 ![cocoon](readme/cocoon.png)
 
+You can watch these videos to learn how to use the tools:
+
+- [How to use Ptalaga (path tool)](http://www.youtube.com/watch?v=2Tc6txawD4U)
+- [How to use Baklava (environment tool)](http://www.youtube.com/watch?v=gLQTp4_BDoM)
+- [How to use Pinboard (layout tool)](http://www.youtube.com/watch?v=b3_EXQTKDc4)
+
 ### Mobile + Desktop (remote control)
 
 The desktop web browser displays the game at superior image quality, but the
