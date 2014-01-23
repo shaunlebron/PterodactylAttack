@@ -171,9 +171,9 @@ To make this happen:
 3. Fill in the correct IP address of your computer at "src/remote/main.js" line 57.
 4. Run `python build_remote.py` at the command line to create the file CocoonJS remote app, "remote.zip".
 5. Run `python build.py` to update the game (as you normally would).
-6. Run "remote.zip" on your CocoonJS launcher on your mobile device, either by copying the file to your device, or pointing the launcher to the URL "http://yourIPadress:3001/remote.zip"
+6. Run "remote.zip" on your CocoonJS launcher on your mobile device, either by copying the file to your device, or pointing the launcher to the URL "http://yourIPaddress:3001/remote.zip"
 7. Open the game in the browser, at "http://localhost:3001/play.html"
 
-This should allow you to shoot enemies on the desktop by flicking the screen your mobile device.
+This should allow you to shoot enemies on the desktop using your mobile device screen.
 
 __PERFORMANCE NOTE__: To decrease input lag, I highly recommend plugging your phone into your computer via USB, and creating a paired network between them.
