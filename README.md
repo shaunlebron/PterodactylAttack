@@ -41,4 +41,6 @@ Software Foundation
 
 See the [Setup Guide](setup.md) to setup the workflow environment.
 
-## Navigating the 
+## Getting around
+
+See the [Navigating Guide](navigating.md) to learn how to get around the repository.
