@@ -1,5 +1,27 @@
 #!/usr/bin/env python
 
+"""
+This script is called by "build.py" in order to create "src/vectorPathData.js", which
+contains the definition of a javascript dictionary, mapping a vector image name to its data.
+
+Example:
+
+Ptero.jsonData = {
+    "foo_bar_0": { /* the 0th layer of the image "foo_bar" */
+        shapeCompatible: /* true|false depending on whether this image can be cached using a HTML5 Path object in CocoonJS */,
+        paths: /* an array of path functions (i.e. function(ctx) {} that draws a path to the given Canvas Context object */,
+    },
+    ...
+};
+
+I would've rather kept each of image in its own separate file, but CocoonJS
+would crash if trying to load too many of them.
+
+Dumping all of image drawing functions into a file fixed the issue, so that is
+the purpose of this script.
+
+"""
+
 import sys
 import os
 import fnmatch

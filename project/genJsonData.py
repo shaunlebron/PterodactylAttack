@@ -1,5 +1,27 @@
 #!/usr/bin/env python
 
+"""
+
+This script is called by "build.py" in order to create "src/jsonData.js", which
+contains the definition of a javascript dictionary, mapping a json file
+name to its data.
+
+Example:
+
+Ptero.jsonData = {
+    "foo/bar.json": { /* whatever is inside "bar.json" */ },
+    "foo/baz.json": { /* whatever is inside "baz.json" */ },
+};
+
+This was a strange way to resolve a CocoonJS crash.  CocoonJS seemed
+to not like loading too many JSON files, which I noticed after the
+addition of a single JSON file caused the entire thing to crash.
+
+Dumping JSON data into a file fixed the issue, so that is the purpose
+of this script.
+
+"""
+
 import sys
 import os
 import fnmatch
