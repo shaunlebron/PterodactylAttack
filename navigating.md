@@ -101,43 +101,43 @@ src/button.js       : clickable button class for interace
 
 # Background Environments
 
-src/background.js
-src/collision.js
+src/background.js   : manages each background environment
+src/collision.js    : class for collision shape checks used by background layers
 
 # Orb-Shooting
 
-src/orb.js
-src/bullet.js
-src/bulletpool.js
-src/bounty.js
+src/orb.js          : manages firing of orb
+src/bullet.js       : class for orb projectile bullet
+src/bulletpool.js   : bullet manager
+src/bounty.js       : class for managing the state of the orb's capture bounty
 
 # Trajectory
 
-src/vector.js
-src/path.js
-src/interp.js
+src/vector.js       : class for representing a point in 3D space, with arithmetic operations
+src/path.js         : classes for managing the state along a path or interpolation
+src/interp.js       : math functions for generating interpolations
 
 # Playing
 
-src/scene_play.js
-src/pause_menu.js
-src/overlord.js
-src/player.js
-src/enemy.js
-src/score.js
+src/scene_play.js       : main scene for playing the game
+src/pause_menu.js       : manages the state of the pause menu
+src/overlord.js         : manages the pterodactyl attack timings and patterns
+src/player.js           : manages the health of the player
+src/enemy.js            : class for representing a pterodactyl flying at you
+src/score.js            : manages the score and other related stats
 
 # Other Scenes
 
-src/scene_controlcenter.js
-src/scene_credits.js
-src/scene_erasehighscore.js
-src/scene_gameover.js
-src/scene_highscore.js
-src/scene_loading.js
-src/scene_menu.js
-src/scene_options.js
-src/scene_thanks.js
-src/scene_title.js
+src/scene_loading.js            : the loading screen for the game while its loading assets
+src/scene_title.js              : the falling title shown right after loading screen
+src/scene_menu.js               : the main menu
+src/scene_controlcenter.js      : suggests disabling iOS 7 Control Center
+src/scene_options.js            : the options menu
+src/scene_credits.js            : credit scroller
+src/scene_thanks.js             : special thanks screen
+src/scene_highscore.js          : displays the current high score and best stats
+src/scene_erasehighscore.js     : prompt to confirm if you select to erase high scores
+src/scene_gameover.js           : the game over screen shown when you die
 
 # Misc
 
@@ -150,6 +150,7 @@ src/vectorPathData.js   : auto-generated (see genVectorPathData.py)
 
 ```
 # Ptalaga
+
 src/ptalaga/LivePane.js
 src/ptalaga/Pane.js
 src/ptalaga/RotationPane.js
@@ -163,6 +164,7 @@ src/ptalaga/scene_crater.js
 src/ptalaga/screen.js
 
 # Fourier
+
 src/fourier/LivePane.js
 src/fourier/TimePane.js
 src/fourier/executive.js
@@ -174,6 +176,7 @@ src/fourier/screen.js
 src/fourier/wave.js
 
 # Baklava
+
 src/baklava/LivePane.js
 src/baklava/Pane.js
 src/baklava/executive.js
@@ -185,6 +188,7 @@ src/baklava/scene_parallax.js
 src/baklava/screen.js
 
 # Pinboard
+
 src/pinboard/executive.js
 src/pinboard/loader.js
 src/pinboard/main.js
