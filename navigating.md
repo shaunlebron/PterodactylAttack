@@ -72,53 +72,71 @@ src/remote/*    : source code for phone remote for browser control
 
 ```
 src/ptero.js    : defines the "Ptero" namespace that contains everything in the game.
+```
 
-MAIN FILES
+__MAIN FILES__
+```
 src/main.js         : the game starts here by initializing everything
 src/assets.js       : lists loadable assets, how to load them, and what to do with them when loaded
 src/input.js        : input manager for touch/mouse events
 src/audio.js        : soundfx/song operations
 src/settings.js     : data persistence for things that need to be saved
+```
 
-TIMING/SCHEDULING
+__TIMING/SCHEDULING__
+```
 src/executive.js        : the heartbeat of the engine (determines what to do at every frame)
 src/timed_script.js     : class for executing a timed script of events
 src/time.js             : stopwatch and timer classes
+```
 
-SCREEN/COORDINATES
+__SCREEN/COORDINATES__
+```
 src/screen.js       : manages screen size and camera panning/zooming
 src/frustum.js      : represents 3D frustum space for the game
+```
 
-IMAGE-DRAWING
+__IMAGE-DRAWING__
+```
 src/sprites.js      : classes for different types of supported sprites (fonts, vectors, tables, mosaics)
 src/billboard.js    : handles math for drawing front-facing images in 3D space
 src/painter.js      : drawing functions that take 3D coordinates
 src/button.js       : clickable button class for interace
+```
 
-BACKGROUND ENVIRONMENTS
+__BACKGROUND ENVIRONMENTS__
+```
 src/background.js   : manages each background environment
 src/collision.js    : class for collision shape checks used by background layers
+```
 
-ORB-SHOOTING
+__ORB-SHOOTING__
+```
 src/orb.js          : manages firing of orb
 src/bullet.js       : class for orb projectile bullet
 src/bulletpool.js   : bullet manager
 src/bounty.js       : class for managing the state of the orb's capture bounty
+```
 
-TRAJECTORY
+__TRAJECTORY__
+```
 src/vector.js       : class for representing a point in 3D space, with arithmetic operations
 src/path.js         : classes for managing the state along a path or interpolation
 src/interp.js       : math functions for generating interpolations
+```
 
-PLAYING
+__PLAYING__
+```
 src/scene_play.js       : main scene for playing the game
 src/pause_menu.js       : manages the state of the pause menu
 src/overlord.js         : manages the pterodactyl attack timings and patterns
 src/player.js           : manages the health of the player
 src/enemy.js            : class for representing a pterodactyl flying at you
 src/score.js            : manages the score and other related stats
+```
 
-OTHER SCENES
+__OTHER SCENES__
+```
 src/scene_loading.js            : the loading screen for the game while its loading assets
 src/scene_title.js              : the falling title shown right after loading screen
 src/scene_menu.js               : the main menu
@@ -129,8 +147,10 @@ src/scene_thanks.js             : special thanks screen
 src/scene_highscore.js          : displays the current high score and best stats
 src/scene_erasehighscore.js     : prompt to confirm if you select to erase high scores
 src/scene_gameover.js           : the game over screen shown when you die
+```
 
-MISC
+__MISC__
+```
 src/inherit.js          : allows an object to inherit from parent object
 src/jsonData.js         : auto-generated (see genJsonData.py)
 src/vectorPathData.js   : auto-generated (see genVectorPathData.py)
@@ -138,8 +158,8 @@ src/vectorPathData.js   : auto-generated (see genVectorPathData.py)
 
 #### Tool Code Files
 
+__PTALAGA__
 ```
-PTALAGA
 src/ptalaga/LivePane.js
 src/ptalaga/Pane.js
 src/ptalaga/RotationPane.js
@@ -151,8 +171,10 @@ src/ptalaga/main.js
 src/ptalaga/panes.js
 src/ptalaga/scene_crater.js
 src/ptalaga/screen.js
+```
 
-FOURIER
+__FOURIER__
+```
 src/fourier/LivePane.js
 src/fourier/TimePane.js
 src/fourier/executive.js
@@ -162,8 +184,10 @@ src/fourier/panes.js
 src/fourier/scene_fourier.js
 src/fourier/screen.js
 src/fourier/wave.js
+```
 
-BAKLAVA
+__BAKLAVA__
+```
 src/baklava/LivePane.js
 src/baklava/Pane.js
 src/baklava/executive.js
@@ -173,8 +197,10 @@ src/baklava/model.js
 src/baklava/panes.js
 src/baklava/scene_parallax.js
 src/baklava/screen.js
+```
 
-PINBOARD
+__PINBOARD__
+```
 src/pinboard/executive.js
 src/pinboard/loader.js
 src/pinboard/main.js
