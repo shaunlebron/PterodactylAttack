@@ -2,8 +2,9 @@
 
 ## Directory Tree
 
-### Top-Level Subdirectories
+### TOP-LEVEL
 
+__subdirectories__
 ```
 audio/          : audio assets
 bg/             : background assets for each environment
@@ -20,8 +21,7 @@ svg2canvas/     : tool for converting svg to canvas paths
 swf/            : SWF assets for pterodactyl animations
 ```
 
-### Build Scripts
-
+__build scripts__
 ```
 build.py                        : builds the game to reflect changes (outputs cocoon.js, cocoon.zip)
 build_remote.py                 : builds the game remote to reflect changes (outputs remote.js, remote.zip)
@@ -34,8 +34,7 @@ genParallaxJsonData.py          : (same as "genJsonData.py", but stripped down f
 genParallaxVectorPathData.py    : (same as "getVectorPathData.py", but stripped down for the parallax scroll for hygoon.com)
 ```
 
-### Web Pages
-
+__web pages__
 ```
 index.html      : hub (displays links to the game and tools)
 play.html       : game
@@ -48,17 +47,15 @@ remote.html     : remote controller (for controlling browser with phone)
 visualize_waves.html : tool for visualizing wave patterns for each level
 ```
 
-### NodeJS Server
-
+__nodejs server__
 ```
 server.js       : facilitates page hosting and file operations for the tools
 package.json    : holds library dependencies for server.js
 ```
 
-### Source Code
+### SOURCE CODE
 
-#### Directories
-
+__directories__
 ```
 src/*           : source code for game and core engine
 src/baklava/*   : source code for background environment tool
@@ -67,8 +64,6 @@ src/pinboard/*  : source code for creating hud/menu layouts
 src/ptalaga/*   : source code for creating pterodactyl paths
 src/remote/*    : source code for phone remote for browser control
 ```
-
-#### Game/Engine Code Files
 
 __main files__
 ```
@@ -153,62 +148,74 @@ src/jsonData.js         : auto-generated (see genJsonData.py)
 src/vectorPathData.js   : auto-generated (see genVectorPathData.py)
 ```
 
-#### Tool Code Files
+__ptalaga__ (pterodactyl path tool)
+```
+src/ptalaga/main.js             : the tool starts here by initializing everything
+src/ptalaga/executive.js        : the heartbeat of the tool (determines what to do at every frame)
+src/ptalaga/loader.js           : persists the state of the tool with backup/resume, saving/loading
+src/ptalaga/screen.js           : manages screen and pane sizes
 
-__ptalaga__
-```
-src/ptalaga/LivePane.js
-src/ptalaga/Pane.js
-src/ptalaga/RotationPane.js
-src/ptalaga/TimePane.js
-src/ptalaga/enemy_model.js
-src/ptalaga/executive.js
-src/ptalaga/loader.js
-src/ptalaga/main.js
-src/ptalaga/panes.js
-src/ptalaga/scene_crater.js
-src/ptalaga/screen.js
-```
+src/ptalaga/panes.js            : manages layout, drawing and input for different panes
+src/ptalaga/Pane.js             : class for orthographic perspective pane given two axes
+src/ptalaga/LivePane.js         : class for the perspective preview pane
+src/ptalaga/RotationPane.js     : class for the rotation control pane
+src/ptalaga/TimePane.js         : class for the time control pane
 
-__fourier__
-```
-src/fourier/LivePane.js
-src/fourier/TimePane.js
-src/fourier/executive.js
-src/fourier/loader.js
-src/fourier/main.js
-src/fourier/panes.js
-src/fourier/scene_fourier.js
-src/fourier/screen.js
-src/fourier/wave.js
+src/ptalaga/scene_crater.js     : main scene
+src/ptalaga/enemy_model.js      : manages the state of all the edit operations to the pterodactyls
 ```
 
-__baklava__
+__fourier__ (pterodactyl path orchestrator tool)
 ```
-src/baklava/LivePane.js
-src/baklava/Pane.js
-src/baklava/executive.js
-src/baklava/loader.js
-src/baklava/main.js
-src/baklava/model.js
-src/baklava/panes.js
-src/baklava/scene_parallax.js
-src/baklava/screen.js
-```
+src/fourier/main.js             : the tool starts here by initializing everything
+src/fourier/executive.js        : the heartbeat of the tool (determines what to do at every frame)
+src/fourier/loader.js           : persists the state of the tool with backup/resume, saving/loading
+src/fourier/screen.js           : manages screen and pane sizes
 
-__pinboard__
-```
-src/pinboard/executive.js
-src/pinboard/loader.js
-src/pinboard/main.js
-src/pinboard/scene_pinboard.js
-src/pinboard/screen.js
+src/fourier/panes.js            : manages layout, drawing and input for different panes
+src/fourier/LivePane.js         : class for the perspective preview pane
+src/fourier/TimePane.js         : class for the time control pane
+
+src/fourier/scene_fourier.js    : main scene
+src/fourier/wave.js             : manages the state of all the edit operations to the waves
 ```
 
-## Adding Images
+__baklava__ (background environment tool)
+```
+src/baklava/main.js             : the tool starts here by initializing everything
+src/baklava/executive.js        : the heartbeat of the tool (determines what to do at every frame)
+src/baklava/loader.js           : persists the state of the tool with backup/resume, saving/loading
+src/baklava/screen.js           : manages screen and pane sizes
 
-## Adding Images for use in Pinboard tool
+src/baklava/panes.js            : manages layout, drawing and input for different panes
+src/baklava/Pane.js             : class for orthographic perspective pane given two axes
+src/baklava/LivePane.js         : class for the perspective preview pane
 
-## Creating new background environments
+src/baklava/scene_parallax.js   : main scene
+src/baklava/model.js            : manages the state of all the edit operations to the background
+```
 
+__pinboard__ (menu/hud layout tool)
+```
+src/pinboard/main.js            : the tool starts here by initializing everything
+src/pinboard/executive.js       : the heartbeat of the tool (determines what to do at every frame)
+src/pinboard/loader.js          : persists the state of the tool with backup/resume, saving/loading
+src/pinboard/screen.js          : manages screen and pane sizes
+
+src/pinboard/scene_pinboard.js  : main scene and manages the state of all the edit operations to the layout
+```
+
+### BACKGROUND FILES
+
+### PTERODACTYL ANIMATIONS
+
+## Some common tasks
+
+__Adding Images__
+
+__Adding Images for use in Pinboard tool__
+
+__Creating new background environments__
+
+__Creating new pterodactyls__
 
