@@ -205,9 +205,15 @@ src/pinboard/screen.js          : manages screen and pane sizes
 src/pinboard/scene_pinboard.js  : main scene and manages the state of all the edit operations to the layout
 ```
 
-### BACKGROUND FILES
+### ASSET SCRIPTS
 
-### PTERODACTYL ANIMATIONS
+__packer__ (sprite packing)
+
+__background__ (utility scripts)
+
+__svg2canvas__ (SVG conversion and background creation utility)
+
+__swf__ (SWF conversion for pterodactyl animations)
 
 ## Some common tasks
 
