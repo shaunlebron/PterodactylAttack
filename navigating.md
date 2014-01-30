@@ -70,11 +70,7 @@ src/remote/*    : source code for phone remote for browser control
 
 #### Game/Engine Code Files
 
-```
-src/ptero.js    : defines the "Ptero" namespace that contains everything in the game.
-```
-
-__MAIN FILES__
+__main files__
 ```
 src/main.js         : the game starts here by initializing everything
 src/assets.js       : lists loadable assets, how to load them, and what to do with them when loaded
@@ -83,20 +79,20 @@ src/audio.js        : soundfx/song operations
 src/settings.js     : data persistence for things that need to be saved
 ```
 
-__TIMING/SCHEDULING__
+__timing/scheduling__
 ```
 src/executive.js        : the heartbeat of the engine (determines what to do at every frame)
 src/timed_script.js     : class for executing a timed script of events
 src/time.js             : stopwatch and timer classes
 ```
 
-__SCREEN/COORDINATES__
+__screen/coordinates__
 ```
 src/screen.js       : manages screen size and camera panning/zooming
 src/frustum.js      : represents 3D frustum space for the game
 ```
 
-__IMAGE-DRAWING__
+__image-drawing__
 ```
 src/sprites.js      : classes for different types of supported sprites (fonts, vectors, tables, mosaics)
 src/billboard.js    : handles math for drawing front-facing images in 3D space
@@ -104,13 +100,13 @@ src/painter.js      : drawing functions that take 3D coordinates
 src/button.js       : clickable button class for interace
 ```
 
-__BACKGROUND ENVIRONMENTS__
+__background environments__
 ```
 src/background.js   : manages each background environment
 src/collision.js    : class for collision shape checks used by background layers
 ```
 
-__ORB-SHOOTING__
+__orb-shooting__
 ```
 src/orb.js          : manages firing of orb
 src/bullet.js       : class for orb projectile bullet
@@ -118,14 +114,14 @@ src/bulletpool.js   : bullet manager
 src/bounty.js       : class for managing the state of the orb's capture bounty
 ```
 
-__TRAJECTORY__
+__trajectory__
 ```
 src/vector.js       : class for representing a point in 3D space, with arithmetic operations
 src/path.js         : classes for managing the state along a path or interpolation
 src/interp.js       : math functions for generating interpolations
 ```
 
-__PLAYING__
+__playing__
 ```
 src/scene_play.js       : main scene for playing the game
 src/pause_menu.js       : manages the state of the pause menu
@@ -135,7 +131,7 @@ src/enemy.js            : class for representing a pterodactyl flying at you
 src/score.js            : manages the score and other related stats
 ```
 
-__OTHER SCENES__
+__other scenes__
 ```
 src/scene_loading.js            : the loading screen for the game while its loading assets
 src/scene_title.js              : the falling title shown right after loading screen
@@ -149,8 +145,9 @@ src/scene_erasehighscore.js     : prompt to confirm if you select to erase high 
 src/scene_gameover.js           : the game over screen shown when you die
 ```
 
-__MISC__
+__misc__
 ```
+src/ptero.js            : defines the "Ptero" namespace that contains everything in the game.
 src/inherit.js          : allows an object to inherit from parent object
 src/jsonData.js         : auto-generated (see genJsonData.py)
 src/vectorPathData.js   : auto-generated (see genVectorPathData.py)
@@ -158,7 +155,7 @@ src/vectorPathData.js   : auto-generated (see genVectorPathData.py)
 
 #### Tool Code Files
 
-__PTALAGA__
+__ptalaga__
 ```
 src/ptalaga/LivePane.js
 src/ptalaga/Pane.js
@@ -173,7 +170,7 @@ src/ptalaga/scene_crater.js
 src/ptalaga/screen.js
 ```
 
-__FOURIER__
+__fourier__
 ```
 src/fourier/LivePane.js
 src/fourier/TimePane.js
@@ -186,7 +183,7 @@ src/fourier/screen.js
 src/fourier/wave.js
 ```
 
-__BAKLAVA__
+__baklava__
 ```
 src/baklava/LivePane.js
 src/baklava/Pane.js
@@ -199,7 +196,7 @@ src/baklava/scene_parallax.js
 src/baklava/screen.js
 ```
 
-__PINBOARD__
+__pinboard__
 ```
 src/pinboard/executive.js
 src/pinboard/loader.js
