@@ -1,5 +1,15 @@
 # Navigating the repository
 
+Describing something that took me a year to build is quite daunting.  I believe
+it is probably something that could take me another a year to fully write about
+and illustrate.  In the interest of time, here's what I've done instead.
+
+I have opted to just write about and illustrate the high-level design and
+technical aspects in the [aforementioned "book"](http://pteroattack.com/#quick-look)
+I wrote.  And here I will leave you with a description of our directory tree
+with a description of each file and a list of common tasks that you will need
+to perform if adding assets.
+
 ## Directory Tree
 
 ### TOP-LEVEL
@@ -11,11 +21,11 @@ bg/             : background assets for each environment
 fonts/          : font assets
 hub/            : files used by the hub page
 img/            : image assets
-layout/         : layout assets
+layout/         : layout assets (HUD/menu layouts created with Pinboard tool)
 lib/            : javascript dependencies
 packer/         : tool for packing bitmap textures (e.g. mosaics)
 parallax/       : stripped down version of engine for parallax effect at hygoon.com
-paths/          : pterodactyl paths
+paths/          : pterodactyl paths (created with Ptalaga tool)
 src/            : source code for game, engine, tools
 svg2canvas/     : tool for converting svg to canvas paths
 swf/            : SWF assets for pterodactyl animations
@@ -221,7 +231,7 @@ packer/png.py               : a library for reading/writing PNG images
 packer/termcolor.py         : a library for coloring console output
 ```
 
-__bg/<asset>/*__ (background assets)
+__bg/&lt;asset&gt;/*__ (background assets)
 ```
 bg/<asset>/                 : background files for <asset> (e.g. menu,tutorial,mountain)
 bg/<asset>/<#>.svg          : SVG image for layer <#>
@@ -279,8 +289,8 @@ swf/pteros/notes                    : notes on how to convert pterodactyl SWF an
 
 swf/pteros/stage_colors             : table of colors for original and recolored pterodactyls
 
-swf/pteros/makeAdultColors.sh       : generates the "adult_<bg>_color/" folders from the "adult/" folder
-swf/pteros/makeBabyColors.sh        : generates the "baby_<bg>_color/" folders from the "baby/" folder
+swf/pteros/makeAdultColors.sh       : generates the "adult_<bg>_<color>/" folders from the "adult/" folder
+swf/pteros/makeBabyColors.sh        : generates the "baby_<bg>_<color>/" folders from the "baby/" folder
 
 swf/pteros/getSvgFrames.js          : used by "adult.html" and "baby.html" to dump SVG frames
 swf/pteros/runtime.js               : Google Swiffy's runtime library for animating SWF as SVG
