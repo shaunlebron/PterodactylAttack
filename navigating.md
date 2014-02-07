@@ -319,7 +319,7 @@ Having said that, here are some details for adding common assets.
 To add a __bitmap image__ to be used in-game:
 
 1. Add an entry in the `imageSources` dictionary in "src/assets.js" for your image.
-2. For every image you add with "<filename>", there needs to be a metadata file called "<filename>.json" in the same directory.
+2. For every image you add with "&lt;filename&gt;" there needs to be a metadata file called "&lt;filename&gt;.json" in the same directory.
 3. This metadata file describes the type of object, size, etc.  You can see many examples in the "img/" directory.
 4. Run `build.py`.
 
@@ -335,7 +335,7 @@ folder contains scripts for creating mosaics.
 To add a __vector image__ to be used in-game:
 
 1. Add an entry in the `vectorSources` dictionary in "src/assets.js" for your image.
-2. For every image you add with "<filename>", there needs to be a metadata file called "<filename>.json" in the same directory.
+2. For every image you add with "&lt;filename&gt;", there needs to be a metadata file called "&lt;filename&gt;.json" in the same directory.
 3. This metadata file describes the type of object, size, etc.  You can see many examples in the "bg/mountain/" directory.
 4. Run `build.py`.
 
