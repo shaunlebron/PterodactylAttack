@@ -217,6 +217,11 @@ src/pinboard/scene_pinboard.js  : main scene and manages the state of all the ed
 
 ### ASSET SCRIPTS
 
+__fonts__ (font script)
+```
+fonts/fntToJson.py          : converts Glyph Designer ".fnt" file to a json metadata file (see usage string inside)
+```
+
 __packer__ (sprite packing)
 ```
 packer/packer.py            : main utility script for creating mosaics (see usage string inside)
@@ -299,11 +304,96 @@ swf/pteros/tumble.html              : used to create side-by-side adult/baby ani
 
 ## Some common tasks
 
-__Adding Images__
+### Adding Assets
 
-__Adding Images for use in Pinboard tool__
+Generally, any time you want to see how to add an asset into the game, check the
+"src/assets.js" file.  You will find out exactly what files are loaded, how it
+is processed, and how you can use it.  If you see a structure in the
+"assets.js" file that you want to use, I recommend running a text search of the
+entire "src/" directory for that structure to see examples of its usage.
 
-__Creating new background environments__
+Having said that, here are some details for adding common assets.
 
-__Creating new pterodactyls__
+### Adding Bitmap Images
+
+To add a __bitmap image__ to be used in-game:
+
+1. Add an entry in the `imageSources` dictionary in "src/assets.js" for your image.
+2. For every image you add with "<filename>", there needs to be a metadata file called "<filename>.json" in the same directory.
+3. This metadata file describes the type of object, size, etc.  You can see many examples in the "img/" directory.
+4. Run `build.py`.
+
+Adding a __bitmap animation__ to be used in-game is the same as adding a still
+bitmap image.  The animation frames should be contained in a single image, and
+the data describing the position and size of those frames in the image should
+be described in the _metadata_ json file, as either a "table" or "mosaic" (see
+[here](http://pteroattack.com/#textures) for examples of both). The "packer/"
+folder contains scripts for creating mosaics.
+
+### Adding Vector Images
+
+To add a __vector image__ to be used in-game:
+
+1. Add an entry in the `vectorSources` dictionary in "src/assets.js" for your image.
+2. For every image you add with "<filename>", there needs to be a metadata file called "<filename>.json" in the same directory.
+3. This metadata file describes the type of object, size, etc.  You can see many examples in the "bg/mountain/" directory.
+4. Run `build.py`.
+
+Adding a __vector animation__ to be used in-game is a manual process that you
+can find in "src/assets.js" under the function `addPteroVectorAnim`.  It essentially adds
+vector frames to the `vectorSources` dictionary, and creates an entry in the `vectorAnims`
+dictionary that points to all the vector frames.
+
+### Adding Fonts
+
+Fonts are just bitmap images.  Adding a font to the game currently requires the program [Glyph
+Designer](http://71squared.com/en/glyphdesigner).  Just create and save the
+font, and use the "fonts/fntToJson.py" file to convert the "fnt" file to a
+metadata json file.  Then add the image file to the assets list as you would a
+_bitmap image_.
+
+You can skirt the use of Glyph Designer if you can write a script that converts
+another bitmap font program's metadata into what the engine supports.  See the
+example JSON metadata file in the "fonts" directory.  It just specifies the
+size, location, and kern spacing of each character in the image.
+
+### Using Images
+
+For each image loaded by the engine, a structure is created that helps you use it.
+The type of structure depends on the "type" of the image stated in your metadata file
+for that image.  You can access these structures:
+
+- `Ptero.assets.vectorSprites["<name>"]` if your image is a vector
+- `Ptero.assets.vectorAnim["<name>"]` if your image is a vector animation
+- `Ptero.assets.sprites["<name>"]` if your image is a bitmap
+- `Ptero.assets.tables["<name>"]` if your image is a bitmap table
+- `Ptero.assets.mosaics["<name>"]` if your image is a bitmap mosaic
+- `Ptero.assets.fonts["<name>"]` if your image is a bitmap font
+
+### Using Animations
+
+Anytime you want to use an image animation, you have to create a new instance
+of it.  You want them to be independent of each other. If you don't, for
+example, all the pterodactyl animations will be in sync.
+
+So to create an animation object for your image, use the following function:
+
+```
+var myAnim = Ptero.assets.makeAnimSprite("<name>");
+```
+
+This will work regardless of the type of animation (e.g. bitmap table, mosaic, vector).
+
+### Adding Images for use in Pinboard tool
+
+Not every image listed in "src/assets.js" will display in Pinboard for creating HUD/menu layouts.
+To add one:
+
+1. Make sure the image is added to the engine, following the previous instructions.
+2. Go to "src/pinboard/scene_pinboard.js" and find the function `resetImageListDisplay`.
+3. Add your image's name to the `images` list in the function.
+
+### Creating new background environments
+
+### Creating new pterodactyls
 
