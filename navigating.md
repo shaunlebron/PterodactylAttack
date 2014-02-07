@@ -395,5 +395,19 @@ To add one:
 
 ### Creating new background environments
 
+1. Make sure the workspace server is running (see [the setup section](setup.md))
+2. Go to <http://localhost:3001> in your browser.
+3. Click "Create BG Layers".
+4. Follow instructions on the page.
+
 ### Creating new pterodactyls
 
+If you have a new SWF file you want to use, follow the instructions at the top
+of "swf/pteros/getSvgFrames.js".
+
+If you just want to create a new colored pterodactyl, you can modify the script
+at "swf/pteros/makeBabyColors.sh" or "swf/pteros/makeAdultColors.sh" to create
+one with the colors you want.
+
+After the SVG frames are created, you can add them to the engine as stated in
+previous sections.
