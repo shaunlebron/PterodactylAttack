@@ -8,6 +8,8 @@ usage = """
 
 colorblend.py <svg file> <hex color> <blend factor 0-1>
 
+outputs to STDOUT the given SVG file, but with all its colors blended with the given color/factor
+
 """
 
 def rgb2hex(r,g,b):
