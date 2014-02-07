@@ -208,12 +208,84 @@ src/pinboard/scene_pinboard.js  : main scene and manages the state of all the ed
 ### ASSET SCRIPTS
 
 __packer__ (sprite packing)
+```
+packer/packer.py            : main utility script for creating mosaics (see usage string inside)
 
-__background__ (utility scripts)
+packer/island.py            : an "island" is a contiguous region of opaque pixels
+packer/recpack.py           : tries to pack given rectangles into smallest possible space
+
+packer/test_island.py       : test the "island" functions
+packer/test_recpack.py      : test the "recpack" functions
+
+packer/png.py               : a library for reading/writing PNG images
+packer/termcolor.py         : a library for coloring console output
+```
+
+__bg/<asset>/*__ (background assets)
+```
+bg/<asset>/                 : background files for <asset> (e.g. menu,tutorial,mountain)
+bg/<asset>/<#>.svg          : SVG image for layer <#>
+bg/<asset>/<#>.svg.json     : metadata for layer <#> (e.g. size, scale, type)
+bg/<asset>/<#>.svg.js       : game-drawable JS Paths (canvas) for layer <#>
+bg/<asset>/layers.json      : metadata for all layers (e.g. order, position, animation)
+bg/<asset>/<#>.js           : first pass SVG->JS Paths conversion output for layer <#> (unused)
+
+bg/menu             : main menu background assets
+bg/tutorial         : tutorial background assets
+bg/mountain         : mountain background assets
+bg/ice              : ice background assets
+bg/volcano          : volcano background assets
+```
+
+__bg/*__ (background utilities)
+```
+bg/notes            : some notes on conversion process
+
+bg/extractSvgLayers.py      : split a given SVG file into numbered layers (see usage string inside)
+bg/jsToPaths.py             : converts a "<#>.js" file into "<#>.svg.js" (game-usable path drawing functions)
+
+bg/genPaths.sh              : performs bulk operations with "jsToPaths.py" (see usage string inside)
+bg/genColorLayers.sh        : generates white & red colored versions of the background layers (used by tools)
+
+bg/colorblend.py            : used by "genColorLayers.sh" for coloring layers (see usage string inside)
+bg/printOpacity.py          : used for manually fixing layers with translucency (which CocoonJS hates) (see usage string)
+```
 
 __svg2canvas__ (SVG conversion and background creation utility)
+```
+index.html              : simple interface for converting SVG to JS Paths (canvas)
+create_bg_layers.html   : (super utility) converts SVG file into layers and dumps them into a bg folder
 
-__swf__ (SWF conversion for pterodactyl animations)
+svg2canvas.js           : a sane wrapper around "oss.canvg.min.js"
+
+orig.html               : original web page that used "oss.canvg.min.js"
+jquery.min.js           : jquery library required by "oss.canvg.min.js"
+oss.canvg.min.js        : uglified and indiscernible script for convert svg to js paths (canvas)
+```
+
+__swf/pteros/*__ (SWF assets and scripts for pterodactyl animations)
+```
+swf/pteros/<asset>.swf              : original pterodactyl SWF animation (e.g. adult, baby)
+swf/pteros/<asset>.html             : output of Google Swiffy conversion, modified to dump download links for SVG frames
+
+swf/pteros/<asset>/                 : converted pterodactyl files for <asset>
+swf/pteros/<asset>/<#>.svg          : SVG image for animation frame <#>
+swf/pteros/<asset>/<#>.svg.json     : metadata for animation frame <#> (e.g. size, scale, type)
+swf/pteros/<asset>/<#>.svg.js       : game-drawable JS Paths (canvas) for animation frame <#>
+
+swf/pteros/<asset>_<bg>_<color>/    : pterodactyl <asset> recolored to <color> to match <bg>
+
+swf/pteros/notes                    : notes on how to convert pterodactyl SWF animations to SVG
+
+swf/pteros/stage_colors             : table of colors for original and recolored pterodactyls
+
+swf/pteros/makeAdultColors.sh       : generates the "adult_<bg>_color/" folders from the "adult/" folder
+swf/pteros/makeBabyColors.sh        : generates the "baby_<bg>_color/" folders from the "baby/" folder
+
+swf/pteros/getSvgFrames.js          : used by "adult.html" and "baby.html" to dump SVG frames
+swf/pteros/runtime.js               : Google Swiffy's runtime library for animating SWF as SVG
+swf/pteros/tumble.html              : used to create side-by-side adult/baby anim for blog post
+```
 
 ## Some common tasks
 
