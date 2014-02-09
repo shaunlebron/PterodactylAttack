@@ -44,3 +44,9 @@ See the [Setup Guide](setup.md) to setup the workflow environment.
 ## Getting around
 
 See the [Navigating Guide](navigating.md) to learn how to get around the repository.
+
+## Problems to be aware of
+
+Read about the [Technical Hurdles](hurdles.md) encountered during development
+to understand the design of the engine and to avoid any potential pitfalls when
+modifying the source.
