@@ -1,6 +1,6 @@
 # Pterodactyl Attack
 
-![logo](readme/logo.png)
+[![logo](readme/logo.png)](http://pteroattack.com)
 
 [Pterodactyl Attack](http://pteroattack.com) is an iOS game made at [Hygoon
 Studio](http://hygoon.com).  It was created in Javascript/HTML5/Canvas2D from
