@@ -1,5 +1,6 @@
 # Setting up
 
+This setup is to begin running on Unbuntu or another Linux OS.
 To setup your workstation to start developing and running Pterodactyl Attack,
 there are some "one-time steps" to follow. But there is also a "pre-run
 checklist" that you must remember to execute in your workflow.
@@ -8,6 +9,13 @@ checklist" that you must remember to execute in your workflow.
 
 This section covers all the one-time setup steps for the development workspace.
 (You can safely forget them after completing them.)
+The commands used in this tuturial will require you to have root access on your Unbuntu Profile, or you will need to use the keyword sudo for some of the commands.
+
+## Repository
+The repository mentioned in this tutorial is talking about the location of where you are saving the PterodactylAttack folder. Make sure you are doing everything in the project folder of Pterodactyl Attack.
+To access this part of the folder, find where you extracted the folder, to make it easier, just do the desktop.
+Then in the command prompt (brought up by Ctrl-Alt-T) type in cd Desktop/PterodactylAttack/project.
+This is the repository Shaun references often.
 
 ### Installing Dependencies 
 
@@ -25,8 +33,8 @@ You can get these as well, but they are optional:
 
 ### Retrieving the workspace
 
-You can place the workspace anywhere you want on your computer.  Using Git from
-the command prompt, you can type the following:
+You can place the workspace anywhere you want on your computer. Do this after you have set up everything, this step will be your start for working. 
+Using Git from the command prompt, you can type the following:
 
 ```
 > git clone https://github.com/shaunlebron/PterodactylAttack.git
@@ -37,6 +45,7 @@ OR if you are using a GUI, use the URL above as the source for your clone operat
 ### Setting up server dependencies
 
 Using a command prompt, navigate to the repository that you cloned and type the following:
+(Do this while you are in the Desktop/PterodactylAttack/project)
 
 ```
 > npm install
@@ -65,9 +74,10 @@ mess around in this workspace.
 The server is the important center of the entire workflow.  It must be
 running whenever you want to test the game or run the tools.  To start the
 server, navigate to the repository on the command line, and type the following:
+(Do this while you are in the Desktop/PterodactylAttack/project)
 
 ```
-> node server
+> nodejs server.js
 ```
 
 This will run the server. To stop the server, hit CTRL+C or simply close the window.
