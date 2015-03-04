@@ -36,7 +36,7 @@ OR if you are using a GUI, use the URL above as the source for your clone operat
 
 ### Setting up server dependencies
 
-Using a command prompt, navigate to the repository that you cloned and type the following:
+Using a command prompt, navigate to /PterodactylAttack/project and type the following:
 
 ```
 > npm install
