@@ -1106,7 +1106,6 @@ Ptero.OverlordWaves.prototype = {
 		return Ptero.Enemy.fromState(state);
 	},
 	init: function() {
-
 		Ptero.player.setGod(false);
 
 		Ptero.scene_play.setNetBtnVisible(true);

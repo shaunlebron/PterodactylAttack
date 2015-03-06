@@ -1,4 +1,3 @@
-
 Ptero.scene_play = (function() {
 
 	var state;
@@ -6,14 +5,13 @@ Ptero.scene_play = (function() {
 	var isPaused = false;
 	function pause() {
 		isPaused = true;
-		disableControls();
 		Ptero.pause_menu.enable();
 		Ptero.pause_menu.animateIn();
 	}
 	function unpause() {
 		isPaused = false;
-		Ptero.pause_menu.disable();
 		enableControls();
+		Ptero.pause_menu.disable();
 	}
 
 	var KEY_SPACE = 32;
@@ -21,6 +19,7 @@ Ptero.scene_play = (function() {
 	var KEY_CTRL = 17;
 	var KEY_ALT = 18;
 	var KEY_A = 65;
+	var KEY_Z = 90;  
 
 	function enableKeys() {
 		window.addEventListener("keydown", onKeyDown);
@@ -37,7 +36,7 @@ Ptero.scene_play = (function() {
 		else if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.slowmo();
 		}
-		else if (e.keyCode == KEY_ALT) {
+		else if (e.keyCode == KEY_Z) {
 			if (netBtnEnabled) {
 				Ptero.orb.engageNet(true);
 			}
@@ -49,7 +48,7 @@ Ptero.scene_play = (function() {
 		if (e.keyCode == KEY_SHIFT) {
 			Ptero.executive.regmo();
 		}
-		else if (e.keyCode == KEY_ALT) {
+		else if (e.keyCode == KEY_Z) {
 			Ptero.orb.engageNet(false);
 		}
 	}
@@ -76,13 +75,14 @@ Ptero.scene_play = (function() {
 	function enableControls() {
 		pauseBtn.enable();
 		if (shouldNetBtnVisible) {
+			netBtnEnabled = false;
 			enableNetBtn(true);
 		}
 		if (!Ptero.settings.isTutorialEnabled()) {
 			debugBtn1.enable();
 			debugBtn2.enable();
 		}
-		Ptero.orb.enableTouch();
+		Ptero.orb.init();
 		enableKeys();
 	}
 
@@ -149,7 +149,7 @@ Ptero.scene_play = (function() {
 		netLeftBtn.ontouchleave = netRightBtn.ontouchleave = function(x,y) { Ptero.orb.engageNet(false); };
 
 		// create a player to hold player attributes such as health.
-		Ptero.player = new Ptero.Player();
+		Ptero.player.reset();
 
 		// initialize our clock for internal events
 		time = 0;
@@ -166,6 +166,7 @@ Ptero.scene_play = (function() {
 	};
 
 	var hud;
+
 	function makeHud() {
 		hud = (function(){
 
@@ -346,6 +347,8 @@ Ptero.scene_play = (function() {
 	}
 
 	function fadeToNextStage(onDone, name) {
+		//Play win music for when scene stage changes
+		Ptero.audio.play('Ptero_Win_Music');
 		hud.fadeOut(1, function() {
 			var nextName = name || Ptero.getNextBgName();
 			disableControls();
@@ -378,7 +381,7 @@ Ptero.scene_play = (function() {
 
 	function update(dt) {
 		if (!isPaused) {
-			if (Ptero.player.health <= 0) {
+			if (Ptero.player.health <= 0){
 				Ptero.setScene(Ptero.scene_gameover);
 			}
 			else {
