@@ -993,7 +993,7 @@ Ptero.OverlordWaves.prototype = {
 	},
 	createWaveScript: function(waveNum) {
 		this.waveNum = waveNum;
-		//hello world
+
 		var t = 0;
 		var events = [];
 		var that = this;
@@ -1106,7 +1106,6 @@ Ptero.OverlordWaves.prototype = {
 		return Ptero.Enemy.fromState(state);
 	},
 	init: function() {
-
 		Ptero.player.setGod(false);
 
 		Ptero.scene_play.setNetBtnVisible(true);
