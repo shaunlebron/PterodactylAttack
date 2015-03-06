@@ -1,4 +1,3 @@
-
 Ptero.scene_play = (function() {
 
 	var state;
@@ -150,7 +149,7 @@ Ptero.scene_play = (function() {
 		netLeftBtn.ontouchleave = netRightBtn.ontouchleave = function(x,y) { Ptero.orb.engageNet(false); };
 
 		// create a player to hold player attributes such as health.
-		Ptero.player = new Ptero.Player();
+		Ptero.player.reset();
 
 		// initialize our clock for internal events
 		time = 0;
@@ -167,6 +166,7 @@ Ptero.scene_play = (function() {
 	};
 
 	var hud;
+
 	function makeHud() {
 		hud = (function(){
 
@@ -347,6 +347,8 @@ Ptero.scene_play = (function() {
 	}
 
 	function fadeToNextStage(onDone, name) {
+		//Play win music for when scene stage changes
+		Ptero.audio.play('Ptero_Win_Music');
 		hud.fadeOut(1, function() {
 			var nextName = name || Ptero.getNextBgName();
 			disableControls();
@@ -379,7 +381,7 @@ Ptero.scene_play = (function() {
 
 	function update(dt) {
 		if (!isPaused) {
-			if (Ptero.player.health <= 0) {
+			if (Ptero.player.health <= 0){
 				Ptero.setScene(Ptero.scene_gameover);
 			}
 			else {
