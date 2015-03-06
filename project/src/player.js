@@ -1,6 +1,9 @@
 Ptero.Player = function() {
 	this.maxHealth = 8;
-	this.initHealth = 4;
+	this.initHealth = 1;
+
+	this.lives = 3;
+	console.log("LIVES", this.lives);
 
 	this.reset();
 	this.setGod(false);
@@ -55,5 +58,7 @@ Ptero.Player.prototype = {
 		}
 	},
 	die: function() {
+		this.lives -= 1;
+		console.log(this.lives);
 	},
 };
