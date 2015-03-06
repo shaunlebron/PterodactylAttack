@@ -993,7 +993,7 @@ Ptero.OverlordWaves.prototype = {
 	},
 	createWaveScript: function(waveNum) {
 		this.waveNum = waveNum;
-
+		//hello world
 		var t = 0;
 		var events = [];
 		var that = this;
