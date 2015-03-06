@@ -39,6 +39,8 @@ Ptero.assets = (function(){
 		"volcano_intro"  : "audio/volcano-intro",
 		"volcano_loop"   : "audio/volcano-loop",
 		"volcano_outro"  : "audio/volcano-outro",
+		"Ptero_Win_Music": "audio/Ptero_Win_Music_02",
+		"Ptero_Lose_Music" : "audio/Ptero_Lose_Music_02",
 	};
 
 	var imageSources = {
@@ -59,6 +61,7 @@ Ptero.assets = (function(){
 		"scorefont"    : "fonts/scorefont.png",
 		"redscorefont" : "fonts/redscorefont.png",
 
+		"loading"     : "img/loading.png",
 		"menu_wrench"       : "img/menu/menu_wrench.png",
 		"menu_strong"       : "img/menu/menu_strong.png",
 		"menu_scroll"       : "img/menu/menu_scroll.png",
@@ -218,6 +221,7 @@ Ptero.assets = (function(){
 		"btns_credits_content" : "layout/credits_content.json",
 		"btns_game"            : "layout/game.json",
 		"btns_pause"           : "layout/pause.json",
+		"btns_continue"        : "layout/continue.json",
 		"btns_gameover"        : "layout/gameover.json",
 		"btns_loading"         : "layout/loading.json",
 		"btns_erasehighscore"  : "layout/erasehighscore.json",
